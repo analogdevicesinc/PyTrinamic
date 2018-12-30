@@ -5,3 +5,4 @@ Created on 30.12.2018
 '''
 
 name = "PyTrinamic"
+desc = "TRINAMIC's Python Technology Access Package"
