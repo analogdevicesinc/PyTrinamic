@@ -7,8 +7,9 @@ Created on 16.02.2018
 import struct
 
 class TMCL:
-    PACKAGE_STRUCTURE = ">BBBBiB"
-    PACKAGE_LENGTH    = 9
+    DEFAULT_AXIS        = 0
+    PACKAGE_STRUCTURE   = ">BBBBiB"
+    PACKAGE_LENGTH      = 9
 
 class TMCL_Command:
     ROR                         = 1

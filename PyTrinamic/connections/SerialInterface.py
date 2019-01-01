@@ -54,6 +54,10 @@ class SerialInterface(object):
     def storeAxisParameter(self, commandType, axis):
         return self.send(self.moduleAddress, TMCL_Command.STAP, commandType, axis, 0)
 
+    def setAndStoreAxisParameter(self, commandType, axis, value):
+        self.send(self.moduleAddress, TMCL_Command.SAP, commandType, axis, value)
+        self.send(self.moduleAddress, TMCL_Command.STAP, commandType, axis, 0)
+        
     " motion controller register access "
     def writeMC(self, registerAddress, value):
         return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, value)

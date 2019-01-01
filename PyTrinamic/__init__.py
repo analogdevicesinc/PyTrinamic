@@ -4,10 +4,10 @@ Created on 30.12.2018
 @author: ED
 '''
 
+import serial.tools.list_ports;
+
 name = "PyTrinamic"
 desc = "TRINAMIC's Python Technology Access Package"
-
-import serial.tools.list_ports;
 
 def showInfo():
     print(name + " - " + desc)
@@ -17,6 +17,6 @@ def showAvailableComPorts():
     connected = []
     for element in comlist:
         connected.append(element.device)
-        
+       
     print("Available COM ports: " + str(connected))
     return 0;
