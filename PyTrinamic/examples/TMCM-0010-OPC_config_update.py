@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
 import PyTrinamic
 from PyTrinamic.connections.SerialInterface import SerialInterface
-from PyTrinamic.modules.TMCM_010_OPC import TMCM_0010_OPC
+from PyTrinamic.modules.TMCM_0010_OPC import TMCM_0010_OPC
 
 PyTrinamic.showInfo()
 PyTrinamic.showAvailableComPorts()
