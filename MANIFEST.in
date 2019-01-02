@@ -1,3 +1,2 @@
-recursive-include PyTrinamic/connections *.py
-recursive-include PyTrinamic/modules *.py
-recursive-include PyTrinamic/examples *.py
+recursive-include PyTrinamic *.py
+
