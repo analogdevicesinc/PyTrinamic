@@ -29,6 +29,7 @@ class SerialInterface(object):
         Send a message to the specified module. This is a blocking function that
         will not return until a reply has been received from the module. 
         """
+       
         "prepare TMCL request"
         request = TMCL_Request(address, command, commandType, motorbank, value)
         

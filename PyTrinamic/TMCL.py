@@ -8,7 +8,7 @@ import struct
 
 class TMCL:
     DEFAULT_AXIS        = 0
-    PACKAGE_STRUCTURE   = ">BBBBiB"
+    PACKAGE_STRUCTURE   = ">BBBBIB"
     PACKAGE_LENGTH      = 9
 
 class TMCL_Command:
@@ -84,11 +84,12 @@ class TMCL_Request(object):
         self.command = command
         self.commandType = commandType
         self.motorBank = motorBank
-        self.value = value
+        self.value = value & 0xFFFFFFFF
         self.checksum = 0
-        checksum_struct = struct.pack(TMCL.PACKAGE_STRUCTURE[:-1], address, command, commandType, motorBank, value)
+        checksum_struct = struct.pack(TMCL.PACKAGE_STRUCTURE[:-1], address, command, commandType, motorBank, value & 0xFFFFFFFF)
         for s in checksum_struct:
-            self.checksum += int(s) % 256
+            self.checksum += s
+        self.checksum %= 256
 
     def toBuffer(self):
         return struct.pack(TMCL.PACKAGE_STRUCTURE, self.moduleAddress, self.command,
