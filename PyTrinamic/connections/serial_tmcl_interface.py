@@ -8,7 +8,7 @@ import struct
 from serial import Serial
 from PyTrinamic.TMCL import TMCL, TMCL_Command, TMCL_Request, TMCL_Reply
 
-class SerialInterface(object):
+class serial_tmcl_interface(object):
 
     def __init__(self, comPort):
         self.debugEnabled = False

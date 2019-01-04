@@ -4,7 +4,7 @@ Created on 02.01.2019
 @author: ed
 '''
 
-class TMC4671_Mask_Shift(object):
+class TMC4671_mask_shift(object):
 
     SI_TYPE_MASK                = 0xFFFFFFFF
     SI_TYPE_SHIFT               = 0
@@ -48,16 +48,16 @@ class TMC4671_Mask_Shift(object):
     SEL_NCLK_MCLK_I_A_SHIFT     = 4
     BLANKING_A_MASK             = 0xFF00        # dsADC_MCFG_B_MCFG_A
     BLANKING_A_SHIFT            = 8
-    #define TMC4671_CFG_DSMODULATOR_B_MASK                       0x030000 // dsADC_MCFG_B_MCFG_A //
-    #define TMC4671_CFG_DSMODULATOR_B_SHIFT                      16 // min.: 0, max.: 3, default: 0
-    #define TMC4671_MCLK_POLARITY_B_MASK                         0x040000 // dsADC_MCFG_B_MCFG_A //
-    #define TMC4671_MCLK_POLARITY_B_SHIFT                        18 // min.: 0, max.: 1, default: 0
-    #define TMC4671_MDAT_POLARITY_B_MASK                         0x080000 // dsADC_MCFG_B_MCFG_A //
-    #define TMC4671_MDAT_POLARITY_B_SHIFT                        19 // min.: 0, max.: 1, default: 0
-    #define TMC4671_SEL_NCLK_MCLK_I_B_MASK                       0x100000 // dsADC_MCFG_B_MCFG_A //
-    #define TMC4671_SEL_NCLK_MCLK_I_B_SHIFT                      20 // min.: 0, max.: 1, default: 0
-    #define TMC4671_BLANKING_B_MASK                              0xFF000000 // dsADC_MCFG_B_MCFG_A //
-    #define TMC4671_BLANKING_B_SHIFT                             24 // min.: 0, max.: 255, default: 0
+    CFG_DSMODULATOR_B_MASK      = 0x030000      # dsADC_MCFG_B_MCFG_A
+    CFG_DSMODULATOR_B_SHIFT     = 16
+    MCLK_POLARITY_B_MASK        = 0x040000      # dsADC_MCFG_B_MCFG_A
+    MCLK_POLARITY_B_SHIFT       = 18
+    MDAT_POLARITY_B_MASK        = 0x080000      # dsADC_MCFG_B_MCFG_A
+    MDAT_POLARITY_B_SHIFT       = 19
+    SEL_NCLK_MCLK_I_B_MASK      = 0x100000      # dsADC_MCFG_B_MCFG_A
+    SEL_NCLK_MCLK_I_B_SHIFT     = 20
+    BLANKING_B_MASK             = 0xFF000000    # dsADC_MCFG_B_MCFG_A
+    BLANKING_B_SHIFT            = 24
     #define TMC4671_DSADC_MCLK_A_MASK                            0xFFFFFFFF // dsADC_MCLK_A // fMCLK_A = 2^31 / (fCLK * (dsADC_MCLK_A+1)), dsADC_MCLK_A = (2^31 / (fMCLK * fCLK)) - 1
     #define TMC4671_DSADC_MCLK_A_SHIFT                           0 // min.: 0, max.: 4294967295, default: 0
     #define TMC4671_DSADC_MCLK_B_MASK                            0xFFFFFFFF // dsADC_MCLK_B // fMCLK_B = 2^31 / (fCLK * (dsADC_MCLK_B+1)), dsADC_MCLK_B = (2^31 / (fMCLK * fCLK)) - 1

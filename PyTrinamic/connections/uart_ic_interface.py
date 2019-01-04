@@ -1,12 +1,11 @@
 '''
-Created on 30.12.2018
+Created on 03.01.2019
 
 @author: ED
 '''
 
 import struct
 from serial import Serial
-#from PyTrinamic.TMCL import TMCL, TMCL_Command, TMCL_Request, TMCL_Reply
 
 REGISTER_PACKAGE_STRUCTURE   = ">BI"
 REGISTER_PACKAGE_LENGTH      = 5
@@ -39,11 +38,11 @@ class Register_Reply(object):
     def valueUpper16Bit(self):
         return (self.value>>16) & 0xFFFF
     
-class ic_uart_interface(object):
+class uart_ic_interface(object):
 
     def __init__(self, comPort):
         self.debugEnabled = False
-        self.serial = Serial(comPort, 9600)#115200)
+        self.serial = Serial(comPort, 9600)
         print("Open port: " + self.serial.portstr)
         
     def close( self ):

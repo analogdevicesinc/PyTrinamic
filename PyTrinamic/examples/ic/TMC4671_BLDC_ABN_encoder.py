@@ -1,5 +1,5 @@
 '''
-Created on 02.01.2019
+Created on 03.01.2019
 
 @author: ed
 '''
@@ -9,15 +9,14 @@ if __name__ == '__main__':
 
 import time
 import PyTrinamic
-from PyTrinamic.connections.ic_uart_interface import ic_uart_interface
-from PyTrinamic.ICs.TMC4671.TMC4671_Register import TMC4671_Register
+from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
+from PyTrinamic.ic.TMC4671.TMC4671_register import TMC4671_register
 
 PyTrinamic.showInfo()
 PyTrinamic.showAvailableComPorts()
 
-myInterface = ic_uart_interface('COM6')
-#myInterface = ic_uart_interface(PyTrinamic.firstAvailableComPort())
-tmc4671_reg = TMC4671_Register()
+myInterface = uart_ic_interface(PyTrinamic.firstAvailableComPort())
+tmc4671_reg = TMC4671_register()
 
 print("TMC4671_Eval chip info:")
 

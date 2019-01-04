@@ -9,20 +9,20 @@ if __name__ == '__main__':
 
 import time
 import PyTrinamic
-from PyTrinamic.connections.SerialInterface import SerialInterface
-from PyTrinamic.evalboards.TMC4671_Eval import TMC4671_Eval
-from PyTrinamic.ICs.TMC4671.TMC4671_Register import TMC4671_Register
-from PyTrinamic.ICs.TMC4671.TMC4671_Mask_Shift import TMC4671_Mask_Shift
+from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
+from PyTrinamic.ic.TMC4671.TMC4671_register import TMC4671_register
+from PyTrinamic.ic.TMC4671.TMC4671_mask_shift import TMC4671_mask_shift
 
 PyTrinamic.showInfo()
 PyTrinamic.showAvailableComPorts()
 
-myInterface = SerialInterface('COM5')
-tmc4671_eval = TMC4671_Eval(myInterface)
+myInterface = serial_tmcl_interface('COM5')
+tmc4671_eval = TMC4671_eval(myInterface)
 tmc4671_eval.showChipInfo()
 
-tmc4671_reg = TMC4671_Register()
-tmc4671_ms = TMC4671_Mask_Shift()
+tmc4671_reg = TMC4671_register()
+tmc4671_ms = TMC4671_mask_shift()
 
 " configure TMC4671 for a BLDC motor with ABN-Encoder "
 

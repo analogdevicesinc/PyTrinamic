@@ -4,7 +4,7 @@ Created on 02.01.2019
 @author: ed
 '''
 
-class TMC4671_Register:
+class TMC4671_register:
 
     " ===== TMC4671 register set ===== "
 
