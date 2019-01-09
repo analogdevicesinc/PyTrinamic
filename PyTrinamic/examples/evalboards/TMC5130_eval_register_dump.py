@@ -18,7 +18,6 @@ PyTrinamic.showAvailableComPorts()
 
 myInterface = serial_tmcl_interface('COM3')
 tmc5130_eval = TMC5130_eval(myInterface)
-tmc5130_eval.showChipInfo()
 
 tmc5130_reg = TMC5130_register()
 tmc5130_ms = TMC5130_mask_shift()
