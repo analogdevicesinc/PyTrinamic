@@ -7,6 +7,7 @@ Created on 30.12.2018
 import struct
 from serial import Serial
 from PyTrinamic.TMCL import TMCL, TMCL_Command, TMCL_Request, TMCL_Reply
+from PyTrinamic.helpers import TMC_helpers
 
 class serial_tmcl_interface(object):
 
@@ -60,11 +61,11 @@ class serial_tmcl_interface(object):
         self.send(self.moduleAddress, TMCL_Command.STAP, commandType, axis, 0)
         
     " motion controller register access "
-    def writeMC(self, registerAddress, value):
-        return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, value)
+    def writeMC(self, registerAddress, value, mask=0xFFFFFFFF, shift=0):
+        return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, TMC_helpers.field_set(self.readMC(registerAddress), mask, shift, value))
     
-    def readMC(self, registerAddress):
-        return self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0)
+    def readMC(self, registerAddress, mask=0xFFFFFFFF, shift=0):
+        return TMC_helpers.field_get(self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0), mask, shift)
 
     " driver register access "
     def writeDRV(self, registerAddress, value):
