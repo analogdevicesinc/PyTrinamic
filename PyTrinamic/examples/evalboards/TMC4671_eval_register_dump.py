@@ -16,7 +16,7 @@ from PyTrinamic.ic.TMC4671.TMC4671_mask_shift import TMC4671_mask_shift
 PyTrinamic.showInfo()
 PyTrinamic.showAvailableComPorts()
 
-myInterface = serial_tmcl_interface('COM3')
+myInterface = serial_tmcl_interface('COM5')
 tmc4671_eval = TMC4671_eval(myInterface)
 tmc4671_eval.showChipInfo()
 

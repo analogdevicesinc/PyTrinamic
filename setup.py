@@ -10,8 +10,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.0.9",
-    author="ED,..",
+    version="0.0.11",
+    author="ED, LK,..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
     long_description=long_description,
@@ -33,8 +33,10 @@ setuptools.setup(
                 "PyTrinamic/examples/modules/TMCM-0010-OPC_config_check",
                 "PyTrinamic/examples/modules/TMCM-0010-OPC_config_update",
                 "PyTrinamic/ic/TMC4671/TMC4671_mask_shift",
+                "PyTrinamic/ic/TMC4671/TMC4671_register_variant",
                 "PyTrinamic/ic/TMC4671/TMC4671_register",
                 "PyTrinamic/ic/TMC4672/TMC4672_mask_shift",
+                "PyTrinamic/ic/TMC4672/TMC4672_register_variant",
                 "PyTrinamic/ic/TMC4672/TMC4672_register",
                 "PyTrinamic/ic/TMC4672/TMC5130_mask_shift",
                 "PyTrinamic/ic/TMC4672/TMC5130_register",

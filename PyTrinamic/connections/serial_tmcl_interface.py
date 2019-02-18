@@ -61,10 +61,17 @@ class serial_tmcl_interface(object):
         self.send(self.moduleAddress, TMCL_Command.STAP, commandType, axis, 0)
         
     " motion controller register access "
-    def writeMC(self, registerAddress, value, mask=0xFFFFFFFF, shift=0):
+    
+    def writeMC(self, registerAddress, value):
+        return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, value)
+    
+    def readMC(self, registerAddress):
+        return self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0)
+
+    def writeMCField(self, registerAddress, value, mask=0xFFFFFFFF, shift=0):
         return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, TMC_helpers.field_set(self.readMC(registerAddress), mask, shift, value))
     
-    def readMC(self, registerAddress, mask=0xFFFFFFFF, shift=0):
+    def readMCField(self, registerAddress, mask=0xFFFFFFFF, shift=0):
         return TMC_helpers.field_get(self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0), mask, shift)
 
     " driver register access "
