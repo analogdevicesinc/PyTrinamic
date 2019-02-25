@@ -1,15 +1,40 @@
 '''
 Created on 09.01.2019
 
-@author: LK
+@author: LK, ED
 '''
 
-from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
-from PyTrinamic.ic.TMC5130.TMC5130_mask_shift import TMC5130_mask_shift
+from PyTrinamic.evalboards.eval_interface import eval_interface
+from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
+from PyTrinamic.helpers import TMC_helpers
 
-class TMC5130_eval(object):
+class TMC5130_eval(eval_interface):
     
     def __init__(self, connection):
         self.connection = connection
-        self.tmc5130_reg = TMC5130_register()
-        self.tmc5130_ms = TMC5130_mask_shift()
+        self.tmc5130 = TMC5130(self)
+
+    def register(self):
+        return self.tmc5130.register()
+    
+    def variants(self):
+        return self.tmc5130.variants()
+    
+    def maskShift(self):
+        return self.tmc5130.maskShift()
+    
+    def ic(self):
+        return self.tmc5130
+    
+    " register access: use Landungsbrücke/Startrampe with MotorControl-channel"
+    def writeRegister(self, registerAddress, value):
+        return self.connection.writeMC(registerAddress, value)
+    
+    def readRegister(self, registerAddress):
+        return self.connection.readMC(registerAddress)
+
+    def writeRegisterField(self, registerAddress, value, mask, shift):
+        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
+    
+    def readRegisterField(self, registerAddress, mask, shift):
+        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)

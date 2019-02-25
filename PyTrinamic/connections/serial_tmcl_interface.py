@@ -7,15 +7,19 @@ Created on 30.12.2018
 import struct
 from serial import Serial
 from PyTrinamic.TMCL import TMCL, TMCL_Command, TMCL_Request, TMCL_Reply
-from PyTrinamic.helpers import TMC_helpers
+from PyTrinamic.connections.connection_interface import connection_interface
 
-class serial_tmcl_interface(object):
+class serial_tmcl_interface(connection_interface):
 
     def __init__(self, comPort):
         self.debugEnabled = False
         self.moduleAddress = 1
-        self.serial = Serial(comPort, 115200)
+        self.baudrate = 115200
+        self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
+        
+    def printInfo(self):
+        print("Connection: type=serial_tmcl_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
         
     def close( self ):
         print("Close port: " + self.serial.portstr)
@@ -60,23 +64,15 @@ class serial_tmcl_interface(object):
         self.send(self.moduleAddress, TMCL_Command.SAP, commandType, axis, value)
         self.send(self.moduleAddress, TMCL_Command.STAP, commandType, axis, 0)
         
-    " motion controller register access "
-    
+    " register access "
     def writeMC(self, registerAddress, value):
         return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, value)
     
     def readMC(self, registerAddress):
-        return self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0)
+        return self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0).value
 
-    def writeMCField(self, registerAddress, value, mask=0xFFFFFFFF, shift=0):
-        return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, TMC_helpers.field_set(self.readMC(registerAddress), mask, shift, value))
-    
-    def readMCField(self, registerAddress, mask=0xFFFFFFFF, shift=0):
-        return TMC_helpers.field_get(self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0), mask, shift)
-
-    " driver register access "
     def writeDRV(self, registerAddress, value):
         return self.send(self.moduleAddress, TMCL_Command.WRITE_DRV, registerAddress, 0, value)
     
-    def readDRVC(self, registerAddress):
-        return self.send(self.moduleAddress, TMCL_Command.READ_DRV, registerAddress, 0, 0)
+    def readDRV(self, registerAddress):
+        return self.send(self.moduleAddress, TMCL_Command.READ_DRV, registerAddress, 0, 0).value

@@ -21,7 +21,7 @@ class TMCM_0010_OPC(object):
     def __init__(self, connection):
         self.connection = connection
 
-    def showConfiguration(self):    
+    def showConfiguration(self):
         print("Brake chopper configuration:")
         print("\tenabled:       " + str(self.connection.getAxisParameter(self.AP_Enable, 0).value))
         print("\tvoltage limit: " + str(self.connection.getAxisParameter(self.AP_VoltageLimit, 0).value / 10) + "V")

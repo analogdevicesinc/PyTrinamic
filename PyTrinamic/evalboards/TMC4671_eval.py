@@ -4,36 +4,37 @@ Created on 02.01.2019
 @author: ED
 '''
 
-from PyTrinamic.ic.TMC4671.TMC4671_register import TMC4671_register
-from PyTrinamic.ic.TMC4671.TMC4671_register_variant import TMC4671_register_variant
-from PyTrinamic.ic.TMC4671.TMC4671_mask_shift import TMC4671_mask_shift
+from PyTrinamic.evalboards.eval_interface import eval_interface
+from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671
+from PyTrinamic.helpers import TMC_helpers
 
-class TMC4671_eval(object):
+class TMC4671_eval(eval_interface):
     
     def __init__(self, connection):
         self.connection = connection
-        self.tmc4671_reg = TMC4671_register()
-        self.tmc4671_var = TMC4671_register_variant() 
-        self.tmc4671_ms = TMC4671_mask_shift()
+        self.tmc4671 = TMC4671(self)
+    
+    def register(self):
+        return self.tmc4671.register()
+    
+    def variants(self):
+        return self.tmc4671.variants()
+    
+    def maskShift(self):
+        return self.tmc4671.maskShift()
+    
+    def ic(self):
+        return self.tmc4671
 
-    def showChipInfo(self):    
-        print("TMC4671_Eval chip info:")
-
-        self.connection.writeMC(self.tmc4671_reg.CHIPINFO_ADDR, self.tmc4671_var.CHIPINFO_ADDR_SI_TYPE)
-        print("SI_TYPE:    " + hex(self.connection.readMC(self.tmc4671_reg.CHIPINFO_DATA).value))
-        
-        self.connection.writeMC(self.tmc4671_reg.CHIPINFO_ADDR, self.tmc4671_var.CHIPINFO_ADDR_SI_VERSION)
-        print("SI_VERSION: " + hex(self.connection.readMC(self.tmc4671_reg.CHIPINFO_DATA).value))
-        
-        self.connection.writeMC(self.tmc4671_reg.CHIPINFO_ADDR, self.tmc4671_var.CHIPINFO_ADDR_SI_DATA)
-        print("SI_DATA:    " + hex(self.connection.readMC(self.tmc4671_reg.CHIPINFO_DATA).value))
-        
-        self.connection.writeMC(self.tmc4671_reg.CHIPINFO_ADDR, self.tmc4671_var.CHIPINFO_ADDR_SI_TIME)
-        print("SI_TIME:    " + hex(self.connection.readMC(self.tmc4671_reg.CHIPINFO_DATA).value))
-        
-        self.connection.writeMC(self.tmc4671_reg.CHIPINFO_ADDR, self.tmc4671_var.CHIPINFO_ADDR_SI_VARIANT)
-        print("SI_VARIANT: " + hex(self.connection.readMC(self.tmc4671_reg.CHIPINFO_DATA).value))
-        
-        self.connection.writeMC(self.tmc4671_reg.CHIPINFO_ADDR, self.tmc4671_var.CHIPINFO_ADDR_SI_BUILD)
-        print("SI_BUILD:   " + hex(self.connection.readMC(self.tmc4671_reg.CHIPINFO_DATA).value))
-                     
+    " register access: use Landungsbrücke/Startrampe with MC channel"
+    def writeRegister(self, registerAddress, value):
+        return self.connection.writeMC(registerAddress, value)
+    
+    def readRegister(self, registerAddress):
+        return self.connection.readMC(registerAddress)
+    
+    def writeRegisterField(self, registerAddress, value, mask, shift):
+        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
+     
+    def readRegisterField(self, registerAddress, mask, shift):
+        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)

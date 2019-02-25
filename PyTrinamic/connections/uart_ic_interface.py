@@ -6,6 +6,8 @@ Created on 03.01.2019
 
 import struct
 from serial import Serial
+from PyTrinamic.helpers import TMC_helpers
+from PyTrinamic.connections.connection_interface import connection_interface
 
 REGISTER_PACKAGE_STRUCTURE   = ">BI"
 REGISTER_PACKAGE_LENGTH      = 5
@@ -38,12 +40,16 @@ class Register_Reply(object):
     def valueUpper16Bit(self):
         return (self.value>>16) & 0xFFFF
     
-class uart_ic_interface(object):
+class uart_ic_interface(connection_interface):
 
     def __init__(self, comPort):
         self.debugEnabled = False
-        self.serial = Serial(comPort, 9600)
+        self.baudrate = 9600
+        self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
+        
+    def printInfo(self):
+        print("Connection: type=uart_ic_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
         
     def close( self ):
         print("Close port: " + self.serial.portstr)
@@ -70,9 +76,15 @@ class uart_ic_interface(object):
 
         return reply
 
-    " motion controller register access "
-    def writeMC(self, registerAddress, value):
+    " direct register access "
+    def writeRegister(self, registerAddress, value):
         return self.send(registerAddress | 0x80, value)
     
-    def readMC(self, registerAddress):
-        return self.send(registerAddress, 0)
+    def readRegister(self, registerAddress):
+        return self.send(registerAddress, 0).value
+    
+    def writeRegisterField(self, registerAddress, value, mask, shift):
+        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
+    
+    def readRegisterField(self, registerAddress, mask, shift):
+        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
