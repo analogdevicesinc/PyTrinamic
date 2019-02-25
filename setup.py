@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.0.12",
+    version="0.0.13",
     author="ED, LK,..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -30,6 +30,7 @@ setuptools.setup(
                 "PyTrinamic/examples/evalboards/TMC5130_eval_register_dump",
                 "PyTrinamic/examples/modules/TMCM-0010-OPC_config_check",
                 "PyTrinamic/examples/modules/TMCM-0010-OPC_config_update",
+                "PyTrinamic/ic/ic_interface",                
                 "PyTrinamic/ic/TMC4671/TMC4671_mask_shift",
                 "PyTrinamic/ic/TMC4671/TMC4671_register_variant",
                 "PyTrinamic/ic/TMC4671/TMC4671_register",
@@ -38,10 +39,10 @@ setuptools.setup(
                 "PyTrinamic/ic/TMC4672/TMC4672_register_variant",
                 "PyTrinamic/ic/TMC4672/TMC4672_register",
                 "PyTrinamic/ic/TMC4672/TMC4672",
-                "PyTrinamic/ic/TMC4672/TMC5130_mask_shift",
-                "PyTrinamic/ic/TMC4672/TMC5130_register_variant",
-                "PyTrinamic/ic/TMC4672/TMC5130_register",
-                "PyTrinamic/ic/TMC4672/TMC5130",
+                "PyTrinamic/ic/TMC5130/TMC5130_mask_shift",
+                "PyTrinamic/ic/TMC5130/TMC5130_register_variant",
+                "PyTrinamic/ic/TMC5130/TMC5130_register",
+                "PyTrinamic/ic/TMC5130/TMC5130",
                 "PyTrinamic/modules/TMCM_0010_OPC",
                 "PyTrinamic/helpers"],
     classifiers=[
