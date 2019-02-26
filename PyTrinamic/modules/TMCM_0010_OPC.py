@@ -23,6 +23,6 @@ class TMCM_0010_OPC(object):
 
     def showConfiguration(self):
         print("Brake chopper configuration:")
-        print("\tenabled:       " + str(self.connection.getAxisParameter(self.AP_Enable, 0).value))
-        print("\tvoltage limit: " + str(self.connection.getAxisParameter(self.AP_VoltageLimit, 0).value / 10) + "V")
-        print("\thysteresis:    " + str(self.connection.getAxisParameter(self.AP_Hysteresis, 0).value / 10) + "V")
+        print("\tenabled:       " + str(self.connection.axisParameter(self.AP_Enable, 0)))
+        print("\tvoltage limit: " + str(self.connection.axisParameter(self.AP_VoltageLimit, 0) / 10) + "V")
+        print("\thysteresis:    " + str(self.connection.axisParameter(self.AP_Hysteresis, 0) / 10) + "V")

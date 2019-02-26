@@ -8,13 +8,14 @@ import struct
 from serial import Serial
 from PyTrinamic.TMCL import TMCL, TMCL_Command, TMCL_Request, TMCL_Reply
 from PyTrinamic.connections.connection_interface import connection_interface
+from PyTrinamic.helpers import TMC_helpers
 
 class serial_tmcl_interface(connection_interface):
 
-    def __init__(self, comPort):
+    def __init__(self, comPort, baudrate=115200):
         self.debugEnabled = False
         self.moduleAddress = 1
-        self.baudrate = 115200
+        self.baudrate = baudrate
         self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
         
@@ -51,8 +52,8 @@ class serial_tmcl_interface(connection_interface):
         return reply
 
     " axis parameter access "
-    def getAxisParameter(self, commandType, axis):
-        return self.send(self.moduleAddress, TMCL_Command.GAP, commandType, axis, 0)
+    def axisParameter(self, commandType, axis):
+        return TMC_helpers.toSigned32(self, self.send(self.moduleAddress, TMCL_Command.GAP, commandType, axis, 0).value)
     
     def setAxisParameter(self, commandType, axis, value):
         return self.send(self.moduleAddress, TMCL_Command.SAP, commandType, axis, value)
@@ -76,3 +77,10 @@ class serial_tmcl_interface(connection_interface):
     
     def readDRV(self, registerAddress):
         return self.send(self.moduleAddress, TMCL_Command.READ_DRV, registerAddress, 0, 0).value
+
+    " input / outputs "
+    def analogInput(self, x):
+        return self.send(self.moduleAddress, TMCL_Command.GIO, x, 1, 0).value
+    
+    def digitalInput(self, x):
+        return self.send(self.moduleAddress, TMCL_Command.GIO, x, 0, 0).value

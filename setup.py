@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.0.13",
+    version="0.0.14",
     author="ED, LK,..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -28,8 +28,12 @@ setuptools.setup(
                 "PyTrinamic/examples/evalboards/TMC4671_eval_BLDC_ABN_encoder",
                 "PyTrinamic/examples/evalboards/TMC4671_eval_BLDC_open_loop",
                 "PyTrinamic/examples/evalboards/TMC5130_eval_register_dump",
-                "PyTrinamic/examples/modules/TMCM-0010-OPC_config_check",
-                "PyTrinamic/examples/modules/TMCM-0010-OPC_config_update",
+                "PyTrinamic/examples/modules/TMCM_0010/TMCM-0010-OPC_config_check",
+                "PyTrinamic/examples/modules/TMCM_0010/TMCM-0010-OPC_config_update",
+                "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_analog_input_test",
+                "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_positioning_test",
+                "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_digital_input_test",
+                "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_positioning_test",
                 "PyTrinamic/ic/ic_interface",                
                 "PyTrinamic/ic/TMC4671/TMC4671_mask_shift",
                 "PyTrinamic/ic/TMC4671/TMC4671_register_variant",
@@ -44,6 +48,7 @@ setuptools.setup(
                 "PyTrinamic/ic/TMC5130/TMC5130_register",
                 "PyTrinamic/ic/TMC5130/TMC5130",
                 "PyTrinamic/modules/TMCM_0010_OPC",
+                "PyTrinamic/modules/TMCM_1640",
                 "PyTrinamic/helpers"],
     classifiers=[
         "Programming Language :: Python :: 3",
