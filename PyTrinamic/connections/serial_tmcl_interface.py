@@ -53,7 +53,7 @@ class serial_tmcl_interface(connection_interface):
 
     " axis parameter access "
     def axisParameter(self, commandType, axis):
-        return TMC_helpers.toSigned32(self, self.send(self.moduleAddress, TMCL_Command.GAP, commandType, axis, 0).value)
+        return TMC_helpers.toSigned32(self.send(self.moduleAddress, TMCL_Command.GAP, commandType, axis, 0).value)
     
     def setAxisParameter(self, commandType, axis, value):
         return self.send(self.moduleAddress, TMCL_Command.SAP, commandType, axis, value)

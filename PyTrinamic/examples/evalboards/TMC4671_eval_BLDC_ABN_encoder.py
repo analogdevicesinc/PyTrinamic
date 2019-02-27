@@ -73,11 +73,13 @@ tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, 0x00000001)
 tmc4671.writeRegister(tmc4671_reg.PHI_E_EXT, 0x00000000)
 tmc4671.writeRegister(tmc4671_reg.UQ_UD_EXT, 2000)
 time.sleep(1)
+
+" clear abn_decoder_count "
 tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_COUNT, 0x00000000) 
  
 " Feedback selection "
-tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, 0x00000003) 
-tmc4671.writeRegister(tmc4671_reg.VELOCITY_SELECTION, 0x00000009)
+tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, tmc4671_reg.PHI_E_ABN) 
+tmc4671.writeRegister(tmc4671_reg.VELOCITY_SELECTION, tmc4671_reg.VELOCITY_PHI_M_ABN)
  
 " Switch to torque mode "
 tmc4671.writeRegister(tmc4671_reg.MODE_RAMP_MODE_MOTION, tmc4671_reg.MOTION_MODE_TORQUE)
@@ -95,6 +97,5 @@ time.sleep(3)
 " Stop "
 print("stop...")
 tmc4671.writeRegister(tmc4671_reg.PID_TORQUE_FLUX_TARGET, 0)
-time.sleep(3) 
 
 myInterface.close()

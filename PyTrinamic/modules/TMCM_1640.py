@@ -143,7 +143,7 @@ class TMCM_1640(object):
 
     def positionReached(self):
         return ((self.statusFlags() & self.FLAG_POSITION_END) != 0)
-#    ("disabled" if (self.rampEnabled()==0) else "enabled")
+
     def rampEnabled(self):
         return self.axisParameter(self.AP_EnableRamp)
     

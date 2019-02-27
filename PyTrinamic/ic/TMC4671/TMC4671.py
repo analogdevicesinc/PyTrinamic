@@ -62,6 +62,10 @@ class TMC4671(ic_interface):
         return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
 
     " ic specific functions "
+    
+    def actualVelocity(self):
+        return TMC_helpers.toSigned32(self.readRegister(self.tmc4671_reg.PID_VELOCITY_ACTUAL))
+    
     def pwm_maxcnt(self):
         maxcnt = self.readRegister(self.tmc4671_reg.PWM_MAXCNT);             
         print("get() : pwm_maxcnt:=" + str(hex(maxcnt)) + "(=" + str(maxcnt) + ")")

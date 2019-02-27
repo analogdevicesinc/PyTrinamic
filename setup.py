@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.0.14",
+    version="0.0.15",
     author="ED, LK,..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -25,6 +25,7 @@ setuptools.setup(
                 "PyTrinamic/evalboards/TMC4671_eval",
                 "PyTrinamic/evalboards/TMC4672_eval",
                 "PyTrinamic/evalboards/TMC5130_eval",
+                "PyTrinamic/examples/evalboards/TMC4671_eval_BLDC_ABN_encoder_offset_estimation",
                 "PyTrinamic/examples/evalboards/TMC4671_eval_BLDC_ABN_encoder",
                 "PyTrinamic/examples/evalboards/TMC4671_eval_BLDC_open_loop",
                 "PyTrinamic/examples/evalboards/TMC5130_eval_register_dump",
