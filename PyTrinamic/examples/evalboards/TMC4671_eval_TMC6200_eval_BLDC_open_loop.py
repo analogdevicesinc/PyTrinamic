@@ -1,5 +1,5 @@
 '''
-Created on 02.01.2019
+Created on 06.03.2019
 
 @author: ed
 '''
@@ -9,28 +9,27 @@ if __name__ == '__main__':
 import time
 import PyTrinamic
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
-from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
 from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
-from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671
+from PyTrinamic.evalboards.TMC6200_eval import TMC6200_eval
 
 PyTrinamic.showInfo()
 PyTrinamic.showAvailableComPorts()
 
-" use evalboard via landungsbrücke or directly via UART"
-USE_LANDUNGSBRUECKE = True #False
+" use evalboards via landungsbrücke "
+myInterface = serial_tmcl_interface('COM5')
+tmc4671 = TMC4671_eval(myInterface).ic()
+tmc6200 = TMC6200_eval(myInterface).ic()
 
-if USE_LANDUNGSBRUECKE:
-    myInterface = serial_tmcl_interface('COM5')
-    tmc4671 = TMC4671_eval(myInterface).ic()
-else:
-    myInterface = uart_ic_interface(PyTrinamic.firstAvailableComPort())
-    tmc4671 = TMC4671(myInterface)
-
-" get register set "
+" get register sets "
 tmc4671_reg = tmc4671.register()
+tmc6200_reg = tmc6200.register()
 
 " read ChipInfo "
 tmc4671.showChipInfo()
+tmc6200.showChipInfo()
+
+" configure TMC6200 pwm for use with TMC4671 (disable singleline)"
+tmc6200.writeRegister(tmc6200_reg.GCONF, 0x0)
 
 " configure TMC4671 for a BLDC motor in open loop mode"
 
@@ -38,17 +37,17 @@ tmc4671.showChipInfo()
 tmc4671.writeRegister(tmc4671_reg.MOTOR_TYPE_N_POLE_PAIRS, 0x00030004)
 tmc4671.writeRegister(tmc4671_reg.PWM_POLARITIES, 0x00000000)
 tmc4671.writeRegister(tmc4671_reg.PWM_MAXCNT, int(0x00000F9F))
-tmc4671.writeRegister(tmc4671_reg.PWM_BBM_H_BBM_L, 0x00000505) 
+tmc4671.writeRegister(tmc4671_reg.PWM_BBM_H_BBM_L, 0x00001414) 
 tmc4671.writeRegister(tmc4671_reg.PWM_SV_CHOP, 0x00000007)                    
  
 " ADC configuration "
-tmc4671.writeRegister(tmc4671_reg.ADC_I_SELECT, 0x18000100) 
+tmc4671.writeRegister(tmc4671_reg.ADC_I_SELECT, 0x24000100) 
 tmc4671.writeRegister(tmc4671_reg.dsADC_MCFG_B_MCFG_A, 0x00100010) 
 tmc4671.writeRegister(tmc4671_reg.dsADC_MCLK_A, 0x20000000) 
 tmc4671.writeRegister(tmc4671_reg.dsADC_MCLK_B, 0x00000000) 
 tmc4671.writeRegister(tmc4671_reg.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-tmc4671.writeRegister(tmc4671_reg.ADC_I0_SCALE_OFFSET, 0x01008218) 
-tmc4671.writeRegister(tmc4671_reg.ADC_I1_SCALE_OFFSET, 0x0100820A) 
+tmc4671.writeRegister(tmc4671_reg.ADC_I0_SCALE_OFFSET, 0xFF00826D) 
+tmc4671.writeRegister(tmc4671_reg.ADC_I1_SCALE_OFFSET, 0xFF0081F8) 
 
 " Open loop settings "
 tmc4671.writeRegister(tmc4671_reg.OPENLOOP_MODE, 0x00000000) 
