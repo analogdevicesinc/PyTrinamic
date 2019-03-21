@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.0.16",
+    version="0.0.17",
     author="ED, LK,..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
