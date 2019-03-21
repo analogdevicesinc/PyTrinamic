@@ -31,22 +31,22 @@ class TMC4672(ic_interface):
         print("TMC4672 chip info:")
 
         self.writeRegister(self.tmc4672_reg.CHIPINFO_ADDR, self.tmc4672_var.CHIPINFO_ADDR_SI_TYPE)
-        print("SI_TYPE:    " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA).value))
+        print("SI_TYPE:    " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA)))
         
         self.writeRegister(self.tmc4672_reg.CHIPINFO_ADDR, self.tmc4672_var.CHIPINFO_ADDR_SI_VERSION)
-        print("SI_VERSION: " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA).value))
+        print("SI_VERSION: " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA)))
         
         self.writeRegister(self.tmc4672_reg.CHIPINFO_ADDR, self.tmc4672_var.CHIPINFO_ADDR_SI_DATA)
-        print("SI_DATA:    " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA).value))
+        print("SI_DATA:    " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA)))
         
         self.writeRegister(self.tmc4672_reg.CHIPINFO_ADDR, self.tmc4672_var.CHIPINFO_ADDR_SI_TIME)
-        print("SI_TIME:    " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA).value))
+        print("SI_TIME:    " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA)))
         
         self.writeRegister(self.tmc4672_reg.CHIPINFO_ADDR, self.tmc4672_var.CHIPINFO_ADDR_SI_VARIANT)
-        print("SI_VARIANT: " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA).value))
+        print("SI_VARIANT: " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA)))
         
         self.writeRegister(self.tmc4672_reg.CHIPINFO_ADDR, self.tmc4672_var.CHIPINFO_ADDR_SI_BUILD)
-        print("SI_BUILD:   " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA).value))
+        print("SI_BUILD:   " + hex(self.readRegister(self.tmc4672_reg.CHIPINFO_DATA)))
 
     " use parent readRegister/writeRegister from evaluation board or interface"
     def writeRegister(self, registerAddress, value):
