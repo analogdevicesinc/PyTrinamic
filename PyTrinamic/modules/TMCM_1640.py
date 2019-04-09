@@ -6,6 +6,7 @@ Created on 25.02.2019
 
 class TMCM_1640(object):
     
+    " axis parameters "
     AP_TargetPosition               = 0
     AP_ActualPosition               = 1
     AP_TargetVelocity               = 2
@@ -77,6 +78,13 @@ class TMCM_1640(object):
     
     def setAxisParameter(self, apType, value):
         self.connection.setAxisParameter(apType, self.motor, value)
+
+    " global parameter access " 
+    def globalParameter(self, gpType):
+        return self.connection.globalParameter(gpType, self.motor)
+
+    def setGlobalParameter(self, gpType, value):
+        self.connection.setGlobalParameter(gpType, self.motor, value)
 
     " standard functions "
     def moveToPosition(self, position):

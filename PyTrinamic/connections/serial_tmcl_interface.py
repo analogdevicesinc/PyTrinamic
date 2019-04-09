@@ -64,6 +64,20 @@ class serial_tmcl_interface(connection_interface):
     def setAndStoreAxisParameter(self, commandType, axis, value):
         self.send(self.moduleAddress, TMCL_Command.SAP, commandType, axis, value)
         self.send(self.moduleAddress, TMCL_Command.STAP, commandType, axis, 0)
+
+    " global parameter access "
+    def globalParameter(self, commandType, axis):
+        return TMC_helpers.toSigned32(self.send(self.moduleAddress, TMCL_Command.GGP, commandType, axis, 0).value)
+    
+    def setGlobalParameter(self, commandType, axis, value):
+        return self.send(self.moduleAddress, TMCL_Command.SGP, commandType, axis, value)
+
+    def storeGlobalParameter(self, commandType, axis):
+        return self.send(self.moduleAddress, TMCL_Command.STGP, commandType, axis, 0)
+
+    def setAndStoreGlobalParameter(self, commandType, axis, value):
+        self.send(self.moduleAddress, TMCL_Command.SGP, commandType, axis, value)
+        self.send(self.moduleAddress, TMCL_Command.STGP, commandType, axis, 0)
         
     " register access "
     def writeMC(self, registerAddress, value):

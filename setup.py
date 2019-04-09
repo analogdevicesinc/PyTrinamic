@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.0.18",
+    version="0.0.19",
     author="ED, LK,..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -57,6 +57,7 @@ setuptools.setup(
                 "PyTrinamic/ic/TMC6200/TMC6200_register",
                 "PyTrinamic/ic/TMC6200/TMC6200",
                 "PyTrinamic/modules/TMCM_0010_OPC",
+                "PyTrinamic/modules/TMCM_1160",
                 "PyTrinamic/modules/TMCM_1640",
                 "PyTrinamic/helpers"],
     classifiers=[
