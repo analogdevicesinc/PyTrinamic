@@ -1,3 +1,5 @@
 /dist/
 /build/
 /PyTrinamic.egg-info/
+
+*__pycache__*
