@@ -13,7 +13,7 @@ from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
 from PyTrinamic.evalboards.TMC6200_eval import TMC6200_eval
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts()
+PyTrinamic.showAvailableComPorts(Serial=True)
 
 " use evalboards via landungsbrücke "
 myInterface = serial_tmcl_interface('COM5')

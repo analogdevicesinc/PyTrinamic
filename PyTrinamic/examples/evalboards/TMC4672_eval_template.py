@@ -14,7 +14,7 @@ from PyTrinamic.evalboards.TMC4672_eval import TMC4672_eval
 from PyTrinamic.ic.TMC4672.TMC4672 import TMC4672
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts()
+PyTrinamic.showAvailableComPorts(Serial=True)
 
 " use evalboard via landungsbrücke or directly via UART"
 USE_LANDUNGSBRUECKE = True #False

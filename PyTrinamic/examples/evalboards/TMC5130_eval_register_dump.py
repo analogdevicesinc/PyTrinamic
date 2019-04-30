@@ -12,7 +12,7 @@ from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts()
+PyTrinamic.showAvailableComPorts(Serial=True)
 
 myInterface = serial_tmcl_interface('COM5')
 tmc5130_eval = TMC5130_eval(myInterface)

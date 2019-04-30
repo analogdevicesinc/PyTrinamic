@@ -9,21 +9,69 @@ import serial.tools.list_ports;
 name = "PyTrinamic"
 desc = "TRINAMIC's Python Technology Access Package"
 
+# USB Vendor and Product IDs
+USB_IDS = [
+    { # Landungsbrücke
+    "VID": 0x2A3C,
+    "PID": 0x0700
+    }
+]
+
 def showInfo():
     print(name + " - " + desc)
 
-def showAvailableComPorts():
-    comlist = serial.tools.list_ports.comports()
-    connected = []
-    for element in comlist:
-        connected.append(element.device)
-       
-    print("Available COM ports: " + str(connected))
-    return 0;
+# Print all available Ports
+def showAvailableComPorts(CAN=False, Serial=False, USB=False):
+    ports = getAvailableComPorts(CAN, Serial, USB)
+    print("Available COM ports: " + str(ports))
 
-def firstAvailableComPort():
-    comlist = serial.tools.list_ports.comports()
+# Return a list of all available ports of the selected interfaces
+def getAvailableComPorts(CAN=False, Serial=False, USB=False):
+    if CAN == False and Serial == False and USB == False:
+        raise ValueError
+
     connected = []
-    for element in comlist:
+
+    if CAN:
+        connected = connected + getAvailableCANPorts()
+
+    if Serial:
+        connected = connected + getAvailableSerialPorts()
+
+    if USB:
+        connected = connected + getAvailableUSBPorts()
+
+    return sorted(list(set(connected)))
+
+# Return a list of all available serial ports
+def getAvailableSerialPorts():
+    connected = []
+    for element in serial.tools.list_ports.comports():
         connected.append(element.device)
-        return element.device;
+
+    return connected
+
+# Return a list of all available USB ports with correct Vendor and Product IDs
+def getAvailableUSBPorts():
+    connected = []
+    for element in serial.tools.list_ports.comports():
+        for entry in USB_IDS:
+            if entry["VID"] == element.vid and entry["PID"] == element.pid:
+                connected.append(element.device)
+
+    return connected
+
+# Return a list of all available CAN ports
+def getAvailableCANPorts():
+    print("CAN support is not implemented yet")
+
+    connected = []
+
+    return connected
+
+def firstAvailableComPort(CAN=False, Serial=False, USB=False):
+    ports = getAvailableComPorts(CAN, Serial, USB)
+
+    if len(ports) > 0:
+        return ports[0]
+    return None

@@ -13,7 +13,7 @@ from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.modules.TMCM_1640 import TMCM_1640
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts()
+PyTrinamic.showAvailableComPorts(Serial=True)
 
 " for usb connection "
 myInterface = serial_tmcl_interface('COM9')

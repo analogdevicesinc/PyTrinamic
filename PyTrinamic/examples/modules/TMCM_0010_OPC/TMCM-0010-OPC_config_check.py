@@ -12,7 +12,7 @@ from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.modules.TMCM_0010_OPC import TMCM_0010_OPC
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts()
+PyTrinamic.showAvailableComPorts(Serial=True)
 
 myInterface = serial_tmcl_interface('COM15')
 brakeChopper = TMCM_0010_OPC(myInterface)
