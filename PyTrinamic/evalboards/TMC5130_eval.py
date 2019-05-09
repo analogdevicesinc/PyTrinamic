@@ -4,37 +4,25 @@ Created on 09.01.2019
 @author: LK, ED
 '''
 
-from PyTrinamic.evalboards.eval_interface import eval_interface
 from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
-from PyTrinamic.helpers import TMC_helpers
 
-class TMC5130_eval(eval_interface):
-    
+class TMC5130_eval(TMC5130):
+    """
+    This class represents a TMC5130 Evaluation board
+    """
     def __init__(self, connection):
-        self.connection = connection
-        self.tmc5130 = TMC5130(self)
+        TMC5130.__init__(self, channel=0)
+        self.__connection = connection
 
-    def register(self):
-        return self.tmc5130.register()
-    
-    def variants(self):
-        return self.tmc5130.variants()
-    
-    def maskShift(self):
-        return self.tmc5130.maskShift()
-    
-    def ic(self):
-        return self.tmc5130
-    
-    " register access: use Landungsbrücke/Startrampe with MotorControl-channel"
-    def writeRegister(self, registerAddress, value):
-        return self.connection.writeMC(registerAddress, value)
-    
-    def readRegister(self, registerAddress):
-        return self.connection.readMC(registerAddress)
+    # Use the motion controller channel for register access
+    def writeRegister(self, registerAddress, value, channel=0):
+        if channel != 0:
+            raise ValueError
 
-    def writeRegisterField(self, registerAddress, value, mask, shift):
-        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
-    
-    def readRegisterField(self, registerAddress, mask, shift):
-        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
+        return self.__connection.writeMC(registerAddress, value)
+
+    def readRegister(self, registerAddress, channel=0):
+        if channel != 0:
+            raise ValueError
+
+        return self.__connection.readMC(registerAddress)

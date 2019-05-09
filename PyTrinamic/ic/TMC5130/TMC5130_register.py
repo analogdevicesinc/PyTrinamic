@@ -5,19 +5,27 @@ Created on 09.01.2019
 '''
 
 class TMC5130_register:
+    """
+    Define all registers of the TMC5130.
 
+    Each register is defined either as an integer or as a tuple of integers.
+    Each integer represents a register address. Tuples of addresses are used to
+    represent a register that exists multiple times for multiple motors.
+    """
     GCONF       = 0x00
     GSTAT       = 0x01
     IFCNT       = 0x02
     SLAVECONF   = 0x03
     INP_OUT     = 0x04
     X_COMPARE   = 0x05
+
     IHOLD_IRUN  = 0x10
     TPOWERDOWN  = 0x11
     TSTEP       = 0x12
     TPWMTHRS    = 0x13
     TCOOLTHRS   = 0x14
     THIGH       = 0x15
+
     RAMPMODE    = 0x20
     XACTUAL     = 0x21
     VACTUAL     = 0x22
@@ -31,6 +39,7 @@ class TMC5130_register:
     VSTOP       = 0x2B
     TZEROWAIT   = 0x2C
     XTARGET     = 0x2D
+
     VDCMIN      = 0x33
     SWMODE      = 0x34
     RAMPSTAT    = 0x35
@@ -40,6 +49,7 @@ class TMC5130_register:
     ENC_CONST   = 0x3A
     ENC_STATUS  = 0x3B
     ENC_LATCH   = 0x3C
+
     MSLUT0      = 0x60
     MSLUT1      = 0x61
     MSLUT2      = 0x62
@@ -52,10 +62,12 @@ class TMC5130_register:
     MSLUTSTART  = 0x69
     MSCNT       = 0x6A
     MSCURACT    = 0x6B
+
     CHOPCONF    = 0x6C
     COOLCONF    = 0x6D
     DCCTRL      = 0x6E
     DRVSTATUS   = 0x6F
+
     PWMCONF     = 0x70
     PWMSTATUS   = 0x71
     ENCM_CTRL   = 0x72
