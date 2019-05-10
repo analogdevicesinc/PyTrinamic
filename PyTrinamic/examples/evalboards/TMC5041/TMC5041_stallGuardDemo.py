@@ -76,39 +76,53 @@ TMC5041.writeRegister(TMC5041.registers.DMAX[MOTOR_FOLLOWING], ACCELERATION)
 # Multiply with the velocity constant to get the target velocity
 direction = 1
 
-while True:
-    print("")
-    print("Motor " + str(MOTOR_LEADING) + " Rotating")
-    TMC5041.rotate(MOTOR_LEADING, direction * VELOCITY)
-    
-    
-    print("Motor " + str(MOTOR_LEADING) + " waiting for a stall")
-    # Wait until the leading motor is stalled
-    while TMC5041.readRegisterField(TMC5041.fields.EVENT_STOP_SG[MOTOR_LEADING]) == 0:
-        pass
-                
-    # Stop leading motor once a stall has occured
-    TMC5041.stop(MOTOR_LEADING)
+try:
+    while True:
+        print("")
+        print("Motor " + str(MOTOR_LEADING) + " Rotating")
+        TMC5041.rotate(MOTOR_LEADING, direction * VELOCITY)
 
-    print("Motor " + str(MOTOR_LEADING) + " stalled")
-    
-    time.sleep(DELAY)
-    
-    # Let the other motor follow
-    print("Motor " + str(MOTOR_FOLLOWING) + " following")
-    target = TMC5041.readRegisterField(TMC5041.fields.XACTUAL[MOTOR_LEADING])
-    TMC5041.moveTo(MOTOR_FOLLOWING, target, VELOCITY);
-    
-    # Wait until the other motor reached the target
-    while TMC5041.readRegisterField(TMC5041.fields.POSITION_REACHED[MOTOR_FOLLOWING]) == 0:
-        pass
-    
-    print("Motor " + str(MOTOR_FOLLOWING) + " caught up")
-    
-    time.sleep(DELAY)
-    
-    if CHANGE_DIR:
-        # Flip the direction around
-        direction = -direction    
-    
+        print("Motor " + str(MOTOR_LEADING) + " waiting for a stall")
+        # Wait until the leading motor is stalled
+        while TMC5041.readRegisterField(TMC5041.fields.EVENT_STOP_SG[MOTOR_LEADING]) == 0:
+            pass
+
+        # Stop leading motor once a stall has occured
+        TMC5041.stop(MOTOR_LEADING)
+
+        print("Motor " + str(MOTOR_LEADING) + " stalled")
+
+        time.sleep(DELAY)
+
+        # Let the other motor follow
+        print("Motor " + str(MOTOR_FOLLOWING) + " following")
+        target = TMC5041.readRegisterField(TMC5041.fields.XACTUAL[MOTOR_LEADING])
+        TMC5041.moveTo(MOTOR_FOLLOWING, target, VELOCITY);
+
+        # Wait until the other motor reached the target
+        while TMC5041.readRegisterField(TMC5041.fields.POSITION_REACHED[MOTOR_FOLLOWING]) == 0:
+            pass
+
+        print("Motor " + str(MOTOR_FOLLOWING) + " caught up")
+
+        time.sleep(DELAY)
+
+        if CHANGE_DIR:
+            # Flip the direction around
+            direction = -direction
+except KeyboardInterrupt:
+    print("")
+
+print("Stopping motors")
+# Stop the motors
+TMC5041.stop(0)
+TMC5041.stop(1)
+
+# Wait until the motors are standing still
+while TMC5041.readRegisterField(TMC5041.fields.VACTUAL[0]) != 0 and TMC5041.readRegisterField(TMC5041.fields.VACTUAL[1]) != 0:
+    pass
+
+# Clear any remaining stalls
+TMC5041.readRegisterField(TMC5041.fields.EVENT_STOP_SG[MOTOR_LEADING])
+
 myInterface.close()
