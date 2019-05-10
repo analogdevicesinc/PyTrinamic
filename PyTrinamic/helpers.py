@@ -18,7 +18,3 @@ class TMC_helpers(object):
     def toSigned32(x):
         m = x & 0xffffffff
         return (m ^ 0x80000000) - 0x80000000
-
-    @staticmethod
-    def check_motor(motor, motors):
-        return (motor > 0 and motor <= motors)

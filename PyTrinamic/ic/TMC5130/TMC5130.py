@@ -22,9 +22,6 @@ class TMC5130():
 
         self.MOTORS     = 2
 
-    def __check_motor(motor):
-        return check_motor(motor, self.MOTORS)
-
     def showChipInfo(self):
         print("TMC5130 chip info: ?")
 

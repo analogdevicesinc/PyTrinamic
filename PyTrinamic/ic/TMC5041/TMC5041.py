@@ -22,9 +22,6 @@ class TMC5041():
 
         self.MOTORS     = 2
 
-    def __check_motor(motor):
-        return check_motor(motor, self.MOTORS)
-
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError
 
@@ -39,7 +36,7 @@ class TMC5041():
 
     # Motion Control functions
     def rotate(self, motor, value):
-        if not __check_motor(motor):
+        if not(0 <= motor < self.MOTORS):
             raise ValueError
 
         self.writeRegister(self.registers.AMAX[motor], 1000, self.__channel)
@@ -55,7 +52,7 @@ class TMC5041():
         self.rotate(motor, 0)
 
     def moveTo(self, motor, position, velocity):
-        if motor < 0 or motor >= self.MOTORS:
+        if not(0 <= motor < self.MOTORS):
             raise ValueError
 
         self.writeRegister(self.registers.RAMPMODE[motor], 0, self.__channel)
