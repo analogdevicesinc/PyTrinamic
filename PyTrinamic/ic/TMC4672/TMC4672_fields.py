@@ -4,7 +4,7 @@ Created on unknown
 @author: Mask Shift converter
 '''
 
-class TMC4672_mask_shift(object):
+class TMC4672_fields(object):
 
 	SI_TYPE_MASK                                = 0xFFFFFFFF # CHIPINFO_DATA
 	SI_TYPE_SHIFT                               = 0

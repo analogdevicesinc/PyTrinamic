@@ -4,7 +4,7 @@ Created on 09.05.2019
 @author: LH
 '''
 
-class TMC5130_mask_shift(object):
+class TMC5130_fields(object):
 	"""
 	Define all register bitfields of the TMC5130.
 

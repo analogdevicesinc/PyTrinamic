@@ -6,7 +6,7 @@ Created on 02.01.2019
 
 from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
 from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
-from PyTrinamic.ic.TMC5130.TMC5130_mask_shift import TMC5130_mask_shift
+from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
 from PyTrinamic.helpers import TMC_helpers
 
 class TMC5130():
@@ -15,12 +15,15 @@ class TMC5130():
         self.__channel  = channel
 
         self.registers  = TMC5130_register
-        self.fields     = TMC5130_mask_shift
+        self.fields     = TMC5130_fields
         self.variants   = TMC5130_register_variant
 
         self.MOTORS     = 2
 
-    def showChipInfo(self):    
+    def __check_motor(motor):
+        return check_motor(motor, self.MOTORS)
+
+    def showChipInfo(self):
         print("TMC5130 chip info: ?")
 
     def writeRegister(self, registerAddress, value, channel):

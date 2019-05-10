@@ -4,18 +4,18 @@ Created on 18.04.2019
 @author: LH
 '''
 
-class TMC5041_mask_shift(object):
+class TMC5041_fields(object):
 	"""
 	Define all register bitfields of the TMC5041.
-	
+
 	Each field is defined as a tuple consisting of ( Address, Mask, Shift ).
 	Fields that are present multiple times in different registers (for multiple
 	motors) all of the bitfield tuples are bundled together into another tuple.
-	
+
 	The name of the register is written as a comment behind each tuple. This is
 	intended for IDE users viewing the definition of a field by hovering over
 	it. This allows the user to see the corresponding register name of a field
-	without opening this file and searching for the definition. 
+	without opening this file and searching for the definition.
 	"""
 	# GCONF
 	POSCMP_ENABLE      =  ( 0x00, 0x00000008,  3 ) # GCONF
