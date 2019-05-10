@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 '''
+Demonstrate usage of StallGuard2 homing with the TMC5041
+
+This script uses two motors for a simple demonstration of Stallguard2-based
+homing. One motor is rotated until a stall is detected. Once a stall has been
+detected the other motor moves to the position where the first motor has
+stalled. This process is repeated indefinitely. Optionally the direction of the
+rotation can change after each stall to allow moving back and forth between two
+objects the motor collides with when rotating.
+
 Created on 29.04.2019
 
 @author: LH

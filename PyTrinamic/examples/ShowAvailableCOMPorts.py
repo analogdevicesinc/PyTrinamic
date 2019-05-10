@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 '''
+Print out all available USB and Serial ports that are available for connecting.
+
 Created on 29.04.2019
 
 @author: LH

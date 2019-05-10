@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 '''
+Move a motor back and forth using velocity and position mode of the TMC5041
+
 Created on 29.04.2019
 
 @author: LH

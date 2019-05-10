@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 '''
+Dump all register values of the TMC5041 IC.
+
+The connection to a Landungsbrücke is established over USB. TMCL commands are
+used for communicating with the IC.
+
 Created on 09.01.2019
 
 @author: LK
 '''
-
-if __name__ == '__main__':
-    pass
 
 import PyTrinamic
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface

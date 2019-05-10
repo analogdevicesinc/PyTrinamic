@@ -10,7 +10,9 @@ from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
 from PyTrinamic.helpers import TMC_helpers
 
 class TMC5130():
-
+    """
+    Class for the TMC5130 IC
+    """
     def __init__(self, channel):
         self.__channel  = channel
 

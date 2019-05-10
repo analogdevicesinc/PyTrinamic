@@ -5,9 +5,6 @@ Created on 26.02.2019
 @author: ed
 '''
 
-if __name__ == '__main__':
-    pass
-
 import time
 import PyTrinamic
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
