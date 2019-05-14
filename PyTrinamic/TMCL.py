@@ -59,6 +59,16 @@ class TMCL_Command:
     READ_MC                     = 148
     READ_DRV                    = 149
 
+    BOOT_ERASE_ALL              = 200
+    BOOT_WRITE_BUFFER           = 201
+    BOOT_WRITE_PAGE             = 202
+    BOOT_GET_CHECKSUM           = 203
+    BOOT_READ_MEMORY            = 204
+    BOOT_START_APPL             = 205
+    BOOT_GET_INFO               = 206
+    BOOT_WRITE_LENGTH           = 208
+    BOOT                        = 242
+
 class TMCL_Status (object):
     SUCCESS               = 100
     COMMAND_LOADED        = 101

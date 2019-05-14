@@ -51,6 +51,19 @@ class serial_tmcl_interface(connection_interface):
 
         return reply
 
+    def sendBoot(self, address):
+        """
+        Send the command for entering bootloader mode. This command does not
+        send a reply.
+        """
+        request = TMCL_Request(address, 242, 0x81, 0x92, 0xA3B4C5D6)
+
+        if self.debugEnabled:
+            request.dump()
+
+        "send request, wait, and handle reply"
+        self.serial.write(request.toBuffer())
+
     def getVersionString(self, address):
         """
         Request the ASCII version string.
