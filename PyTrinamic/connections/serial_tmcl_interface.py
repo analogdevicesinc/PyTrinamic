@@ -18,15 +18,15 @@ class serial_tmcl_interface(connection_interface):
         self.baudrate = baudrate
         self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
-        
+
     def printInfo(self):
         print("Connection: type=serial_tmcl_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
-        
+
     def close( self ):
         print("Close port: " + self.serial.portstr)
         self.serial.close()
         return 0;
-    
+
     def enableDebug(self, enable):
         self.debugEnabled = enable
 
