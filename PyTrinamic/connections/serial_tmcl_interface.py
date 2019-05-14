@@ -51,6 +51,14 @@ class serial_tmcl_interface(connection_interface):
 
         return reply
 
+    def getVersionString(self, address):
+        """
+        Request the ASCII version string.
+        """
+        reply = self.send(address, TMCL_Command.GET_FIRMWARE_VERSION, 0, 0, 0)
+
+        return reply.versionString()
+
     " axis parameter access "
     def axisParameter(self, commandType, axis):
         return TMC_helpers.toSigned32(self.send(self.moduleAddress, TMCL_Command.GAP, commandType, axis, 0).value)
