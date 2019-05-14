@@ -12,8 +12,16 @@ desc = "TRINAMIC's Python Technology Access Package"
 # USB Vendor and Product IDs
 USB_IDS = [
     { # Landungsbrücke
-    "VID": 0x2A3C,
-    "PID": 0x0700
+        "VID": 0x2A3C,
+        "PID": 0x0700
+    },
+    { # TMCM1460
+        "VID": 0x16D0,
+        "PID": 0x0461
+    },
+    { # TMC_CDC_DEV
+        "VID": 0x2A3C,
+        "PID": 0x0200
     }
 ]
 
