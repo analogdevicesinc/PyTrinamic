@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.1.2",
+    version="0.1.3",
     author="ED, LK, LH, ..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -65,6 +65,7 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC5041/TMC5041_rotateDemo.py",
         "PyTrinamic/examples/evalboards/TMC5041/TMC5041_stallGuardDemo.py",
         "PyTrinamic/examples/evalboards/TMC5130/TMC5130_eval_register_dump.py",
+        "PyTrinamic/examples/evalboards/TMC5130/TMC5130_MicroStep.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM-0010-OPC_config_check.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM-0010-OPC_config_update.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_analog_input_test.py",
