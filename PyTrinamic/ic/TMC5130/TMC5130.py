@@ -36,3 +36,41 @@ class TMC5130():
 
     def readRegisterField(self, field):
         return TMC_helpers.field_get(self.readRegister(field[0], self.__channel), field[1], field[2])
+
+    # Motion Control functions
+    def rotate(self, motor, value):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        self.writeRegister(self.registers.AMAX, 1000, self.__channel)
+
+        if value >= 0:
+            self.writeRegister(self.registers.VMAX, value, self.__channel)
+            self.writeRegister(self.registers.RAMPMODE, 1, self.__channel)
+        else:
+            self.writeRegister(self.registers.VMAX, -value, self.__channel)
+            self.writeRegister(self.registers.RAMPMODE, 2, self.__channel)
+
+    def stop(self, motor):
+        self.rotate(motor, 0)
+
+    def moveTo(self, motor, position, velocity):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        self.writeRegister(self.registers.RAMPMODE, 0, self.__channel)
+
+        if velocity != 0:
+            self.writeRegister(self.registers.VMAX, velocity, self.__channel)
+
+        self.writeRegister(self.registers.XTARGET, position, self.__channel)
+
+    def moveBy(self, motor, distance, velocity):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        position = self.readRegister(self.registers.XACTUAL, self.__channel)
+
+        self.moveTo(motor, position + distance, velocity)
+
+        return position + distance
