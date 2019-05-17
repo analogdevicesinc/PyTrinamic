@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.1.0",
+    version="0.1.2",
     author="ED, LK, LH, ..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -71,6 +71,7 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_digital_input_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_positioning_test.py",
+        "PyTrinamic/examples/tools/FirmwareUpdate.py",
         "PyTrinamic/examples/ShowAvailableCOMPorts.py"
     ],
     classifiers=[
