@@ -22,6 +22,10 @@ USB_IDS = [
     { # TMC_CDC_DEV
         "VID": 0x2A3C,
         "PID": 0x0200
+    },
+    { # TMCM1160, TMCM1161
+        "VID": 0x2A3C,
+        "PID": 0x0100
     }
 ]
 
