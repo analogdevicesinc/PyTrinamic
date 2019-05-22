@@ -113,6 +113,16 @@ class serial_tmcl_interface(connection_interface):
     def readDRV(self, registerAddress):
         return self.send(self.moduleAddress, TMCL_Command.READ_DRV, registerAddress, 0, 0).value
 
+    # Motion control functions
+    def rotate(self, motor, velocity):
+        return self.send(self.moduleAddress, TMCL_Command.ROR, 0, motor, velocity)
+
+    def stop(self, motor):
+        return self.send(self.moduleAddress, TMCL_Command.MST, 0, motor, 0)
+
+    def move(self, moveType, motor, position):
+        return self.send(self.moduleAddress, TMCL_Command.MVP, moveType, motor, position)
+
     " input / outputs "
     def analogInput(self, x):
         return self.send(self.moduleAddress, TMCL_Command.GIO, x, 1, 0).value
