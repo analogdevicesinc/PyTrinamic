@@ -1,24 +1,24 @@
 '''
 Created on 09.04.2019
 
-@author: ED, AH
+@author: ED, AH, LH
 '''
 
 class TMCM_1160(object):
-    
+
     " axis parameters "
     AP_TargetPosition               = 0
     AP_ActualPosition               = 1
-    AP_TargetSpeed                  = 2
-    AP_ActualSpeed                  = 3
-    AP_MaxPositioningSpeed          = 4
+    AP_TargetVelocity               = 2
+    AP_ActualVelocity               = 3
+    AP_MaxVelocity                  = 4
     AP_MaxAcceleration              = 5
     AP_MaxCurrent                   = 6
     AP_StandbyCurrent               = 7
     AP_PositionReachedFlag          = 8
-    AP_HomeSwitchState              = 9
-    AP_RightLimitSwitchState        = 10 
-    AP_LeftLimitSwitchState         = 11
+    AP_ReferenceSwitchStatus        = 9
+    AP_RightLimitSwitchStatus       = 10
+    AP_LeftLimitSwitchStatus        = 11
     AP_RightLimitSwitchDisable      = 12
     AP_LeftLimitSwitchDisable       = 13
     AP_MinimumSpeed                 = 130
@@ -81,7 +81,7 @@ class TMCM_1160(object):
     GP_SerialHeartbeat              = 68
     GP_CANBitRate                   = 69
     GP_CANReplyID                   = 70
-    GP_CANID                        = 71     
+    GP_CANID                        = 71
     GP_TelegramPauseTime            = 75
     GP_SerialHostAddress            = 76
     GP_AutoStartMode                = 77
@@ -95,105 +95,131 @@ class TMCM_1160(object):
     GP_ReverseShaft                 = 90
 
     GP_TMCLApplicationStatus        = 128
-    GP_DownloadMode                 = 128
+    GP_DownloadMode                 = 129
     GP_TMCLProgramCounter           = 130
+    GP_TMCLLastError                = 131
     GP_TMCLTickTimer                = 132
     GP_RandomNumber                 = 133
     GP_SuppressReply                = 255
-    
-    FLAG_POSITION_END               = 0x00004000
-     
+
     def __init__(self, connection):
         self.connection = connection
-        self.motor = 0
 
-    " axis parameter access " 
-    def axisParameter(self, apType):
-        return self.connection.axisParameter(apType, self.motor)
+        self.MOTORS = 1
+        self.__default_motor = 0
+
+    # Axis parameter access
+    def getAxisParameter(self, apType):
+        return self.connection.axisParameter(apType, self.__default_motor)
 
     def setAxisParameter(self, apType, value):
-        self.connection.setAxisParameter(apType, self.motor, value)
+        self.connection.setAxisParameter(apType, self.__default_motor, value)
 
-    " global parameter access " 
-    def globalParameter(self, gpType):
-        return self.connection.globalParameter(gpType, self.motor)
+    # Global parameter access
+    def getGlobalParameter(self, gpType):
+        return self.connection.globalParameter(gpType, self.__default_motor)
 
     def setGlobalParameter(self, gpType, value):
-        self.connection.setGlobalParameter(gpType, self.motor, value)
+        self.connection.setGlobalParameter(gpType, self.__default_motor, value)
 
-    " standard functions " 
-    def moveToPosition(self, position):
-        self.setAxisParameter(self.AP_TargetPosition, position)
+    # Motion Control functions
+    def rotate(self, velocity):
+        self.setRampMode(2)
 
-    def targetPosition(self):
-        return self.axisParameter(self.AP_TargetPosition)
+        self.setTargetVelocity(velocity)
 
-    def actualPosition(self):
-        return self.axisParameter(self.AP_ActualPosition)
-   
-    def setActualPosition(self, position):
-        return self.setAxisParameter(self.AP_ActualPosition, position)
+    def stop(self):
+        self.rotate(0)
 
-    def rotate(self, speed):
-        self.setAxisParameter(self.AP_TargetSpeed, speed)
+    def moveTo(self, position, velocity=None):
+        if velocity:
+            self.setMaxVelocity(velocity)
 
-    def actualSpeed(self):
-        return self.axisParameter(self.AP_ActualSpeed)
+        self.setTargetPosition(position)
 
-    " StallGuard functions " 
-    def setMotorRunCurrent(self, runCurrent):
-        self.setAxisParameter(self.AP_MaxCurrent, runCurrent)
+        self.setRampMode(0)
 
-    def setMotorStandbyCurrent(self, standbyCurrent):
-        self.setAxisParameter(self.AP_StandbyCurrent, standbyCurrent)
+    def moveBy(self, difference, velocity=None):
+        position = difference + self.getActualPosition()
 
-    def setStallguard2Filter(self, filt):
-        self.setAxisParameter(self.AP_StallGuard2FilterEnable, filt)
+        self.moveTo(position, velocity)
+
+        return position
+
+    # Current control functions
+    def setMotorRunCurrent(self, current):
+        self.setMaxCurrent(current)
+
+    def setMotorStandbyCurrent(self, current):
+        self.setAxisParameter(self.AP_StandbyCurrent, current)
+
+    def getMaxCurrent(self):
+        return self.getAxisParameter(self.AP_MaxCurrent)
+
+    def setMaxCurrent(self, current):
+        self.setAxisParameter(self.AP_MaxCurrent, current)
+
+    # StallGuard2 Functions
+    def setStallguard2Filter(self, enableFilter):
+        self.setAxisParameter(self.AP_StallGuard2FilterEnable, enableFilter)
 
     def setStallguard2Threshold(self, threshold):
         self.setAxisParameter(self.AP_StallGuard2Threshold, threshold)
 
-    def setStopOnStall(self, stopValue):
-        self.setAxisParameter(self.AP_StopOnStall, stopValue)
-        
-        
-    " helpful functions " 
-    def maxVelocity(self):
-        return self.axisParameter(self.AP_MaxPositioningSpeed)
+    def setStopOnStallVelocity(self, velocity):
+        self.setAxisParameter(self.AP_StopOnStall, velocity)
 
-    def setMaxVelocity(self, maxVelocity):
-        self.setAxisParameter(self.AP_MaxPositioningSpeed, maxVelocity)
+    # Motion parameter functions
+    def getTargetPosition(self):
+        return self.getAxisParameter(self.AP_TargetPosition)
 
-    def maxAcceleration(self):
-        return self.axisParameter(self.AP_MaxAcceleration)
+    def setTargetPosition(self, position):
+        self.setAxisParameter(self.AP_TargetPosition, position)
 
-    def setMaxAcceleration(self, maxAcceleration):
-        self.setAxisParameter(self.AP_MaxAcceleration, maxAcceleration)
+    def getActualPosition(self):
+        return self.getAxisParameter(self.AP_ActualPosition)
 
-    def maxCurrent(self):
-        return self.axisParameter(self.AP_MaxCurrent)
+    def setActualPosition(self, position):
+        return self.setAxisParameter(self.AP_ActualPosition, position)
 
-    def setMaxCurrent(self, maxCurrent):
-        self.setAxisParameter(self.AP_MaxCurrent, maxCurrent)
-          
-    def targetSpeed(self):
-        return self.axisParameter(self.AP_TargetSpeed)
- 
-    def setTargetSpeed(self, speed):
-        self.setAxisParameter(self.AP_TargetSpeed, speed)
+    def getTargetVelocity(self):
+        return self.getAxisParameter(self.AP_TargetVelocity)
 
-    def positionReached(self):
-        return ((self.statusFlags() & self.FLAG_POSITION_END) != 0)
+    def setTargetVelocity(self, velocity):
+        self.setAxisParameter(self.AP_TargetVelocity, velocity)
 
-    def rampMode(self):
-        return self.axisParameter(self.AP_RampMode)
+    def getActualVelocity(self):
+        return self.getAxisParameter(self.AP_ActualVelocity)
+
+    def getMaxVelocity(self):
+        return self.getAxisParameter(self.AP_MaxVelocity)
+
+    def setMaxVelocity(self, velocity):
+        self.setAxisParameter(self.AP_MaxVelocity, velocity)
+
+    def getMaxAcceleration(self):
+        return self.getAxisParameter(self.AP_MaxAcceleration)
+
+    def setMaxAcceleration(self, acceleration):
+        self.setAxisParameter(self.AP_MaxAcceleration, acceleration)
+
+    def getRampMode(self):
+        return self.getAxisParameter(self.AP_RampMode)
 
     def setRampMode(self, mode):
         return self.setAxisParameter(self.AP_RampMode, mode)
 
-    def statusFlags(self):
-        return self.axisParameter(self.AP_ExtendedErrorFlags)
+    # Status functions
+    def getStatusFlags(self):
+        return self.getAxisParameter(self.AP_TMC262ErrorFlags)
 
+    def getErrorFlags(self):
+        return self.getAxisParameter(self.AP_ExtendedErrorFlags)
+
+    def positionReached(self):
+        return self.getAxisParameter(self.AP_PositionReachedFlag)
+
+    # IO pin functions
     def analogInput(self, x):
         return self.connection.analogInput(x)
 
@@ -202,6 +228,6 @@ class TMCM_1160(object):
 
     def showMotionConfiguration(self):
         print("Motion configuration:")
-        print("\tMax velocity: " + str(self.maxVelocity()))
-        print("\tAcceleration: " + str(self.maxAcceleration()))
-        print("\tRamp mode: " + ("position" if (self.rampMode()==0) else "velocity"))
+        print("\tMax velocity: " + str(self.getMaxVelocity()))
+        print("\tAcceleration: " + str(self.getMaxAcceleration()))
+        print("\tRamp mode: " + ("position" if (self.getRampMode()==0) else "velocity"))
