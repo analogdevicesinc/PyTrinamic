@@ -111,11 +111,11 @@ class TMCM_1161():
         self.connection.setAxisParameter(apType, self.__default_motor, value)
 
     # Global parameter access
-    def getGlobalParameter(self, gpType):
-        return self.connection.globalParameter(gpType, self.__default_motor)
+    def getGlobalParameter(self, gpType, bank):
+        return self.connection.globalParameter(gpType, bank)
 
-    def setGlobalParameter(self, gpType, value):
-        self.connection.setGlobalParameter(gpType, self.__default_motor, value)
+    def setGlobalParameter(self, gpType, bank, value):
+        self.connection.setGlobalParameter(gpType, bank, value)
 
     # Motion Control functions
     def rotate(self, velocity):

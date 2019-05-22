@@ -6,7 +6,7 @@ Created on 09.04.2019
 
 class TMCM_1160(object):
 
-    " axis parameters "
+    # Axis Parameters
     AP_TargetPosition               = 0
     AP_ActualPosition               = 1
     AP_TargetVelocity               = 2
@@ -74,7 +74,7 @@ class TMCM_1160(object):
     AP_MaxExternalEncoderDeviation  = 218
     AP_StepDirectionMode            = 254
 
-    " global parameters "
+    # Global Parameters
     GP_BaudRate                     = 65
     GP_SerialAddress                = 66
     GP_ASCIIMode                    = 67
@@ -116,11 +116,11 @@ class TMCM_1160(object):
         self.connection.setAxisParameter(apType, self.__default_motor, value)
 
     # Global parameter access
-    def getGlobalParameter(self, gpType):
-        return self.connection.globalParameter(gpType, self.__default_motor)
+    def getGlobalParameter(self, gpType, bank):
+        return self.connection.globalParameter(gpType, bank)
 
-    def setGlobalParameter(self, gpType, value):
-        self.connection.setGlobalParameter(gpType, self.__default_motor, value)
+    def setGlobalParameter(self, gpType, bank, value):
+        self.connection.setGlobalParameter(gpType, bank, value)
 
     # Motion Control functions
     def rotate(self, velocity):
