@@ -104,15 +104,15 @@ class TMCL_Request(object):
     def toBuffer(self):
         return struct.pack(TMCL.PACKAGE_STRUCTURE, self.moduleAddress, self.command,
                            self.commandType, self.motorBank, self.value, self.checksum)
-   
-    def dump(self): 
+
+    def dump(self):
         print("TMCL_Request: " + str(self.moduleAddress) + ","
             + str(self.command) + ","
             + str(self.commandType) + ","
             + str(self.motorBank) + ","
             + str(self.value) + ","
             + str(self.checksum))
-        
+
 class TMCL_Reply(object):
     def __init__(self, reply_struct):
         self.reply_address = reply_struct[0]
@@ -122,7 +122,7 @@ class TMCL_Reply(object):
         self.value = reply_struct[4]
         self.checksum = reply_struct[5]
 
-    def dump(self): 
+    def dump(self):
         print("TMCL_Reply:   " + str(self.reply_address) + ","
             + str(self.module_address) + ","
             + str(self.status) + ","
@@ -135,7 +135,7 @@ class TMCL_Reply(object):
 
     def valueLower16Bit(self):
         return (self.value) & 0xFFFF
-    
+
     def valueUpper16Bit(self):
         return (self.value>>16) & 0xFFFF
 

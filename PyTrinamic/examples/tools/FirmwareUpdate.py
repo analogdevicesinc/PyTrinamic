@@ -145,7 +145,7 @@ print("Checksum:      0x{0:08X}".format(checksum))
 
 print()
 
-############################## Bootloader entry ################################ 
+############################## Bootloader entry ################################
 # Connect to the evaluation board
 print("Connecting")
 myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))

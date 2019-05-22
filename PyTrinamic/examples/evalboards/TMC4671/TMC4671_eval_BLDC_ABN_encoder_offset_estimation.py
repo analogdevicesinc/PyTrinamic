@@ -42,34 +42,34 @@ enocoderResolution = 4000
 tmc4671.writeRegister(tmc4671_reg.MOTOR_TYPE_N_POLE_PAIRS, 0x00030000 | polePairs)
 tmc4671.writeRegister(tmc4671_reg.PWM_POLARITIES, 0x00000000)
 tmc4671.writeRegister(tmc4671_reg.PWM_MAXCNT, int(0x00000F9F))
-tmc4671.writeRegister(tmc4671_reg.PWM_BBM_H_BBM_L, 0x00000505) 
-tmc4671.writeRegister(tmc4671_reg.PWM_SV_CHOP, 0x00000007)                    
+tmc4671.writeRegister(tmc4671_reg.PWM_BBM_H_BBM_L, 0x00000505)
+tmc4671.writeRegister(tmc4671_reg.PWM_SV_CHOP, 0x00000007)
 
 " ADC configuration "
-tmc4671.writeRegister(tmc4671_reg.ADC_I_SELECT, 0x18000100) 
-tmc4671.writeRegister(tmc4671_reg.dsADC_MCFG_B_MCFG_A, 0x00100010) 
-tmc4671.writeRegister(tmc4671_reg.dsADC_MCLK_A, 0x20000000) 
-tmc4671.writeRegister(tmc4671_reg.dsADC_MCLK_B, 0x00000000) 
+tmc4671.writeRegister(tmc4671_reg.ADC_I_SELECT, 0x18000100)
+tmc4671.writeRegister(tmc4671_reg.dsADC_MCFG_B_MCFG_A, 0x00100010)
+tmc4671.writeRegister(tmc4671_reg.dsADC_MCLK_A, 0x20000000)
+tmc4671.writeRegister(tmc4671_reg.dsADC_MCLK_B, 0x00000000)
 tmc4671.writeRegister(tmc4671_reg.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-tmc4671.writeRegister(tmc4671_reg.ADC_I0_SCALE_OFFSET, 0x01008218) 
-tmc4671.writeRegister(tmc4671_reg.ADC_I1_SCALE_OFFSET, 0x0100820A) 
+tmc4671.writeRegister(tmc4671_reg.ADC_I0_SCALE_OFFSET, 0x01008218)
+tmc4671.writeRegister(tmc4671_reg.ADC_I1_SCALE_OFFSET, 0x0100820A)
 
 " ABN encoder settings "
-tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_MODE, 0x00001000) 
-tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PPR, enocoderResolution) 
-tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_COUNT, 0x0) 
+tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_MODE, 0x00001000)
+tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PPR, enocoderResolution)
+tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_COUNT, 0x0)
 tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x0)
 
 " Open loop settings "
-tmc4671.writeRegister(tmc4671_reg.OPENLOOP_MODE, 0x00000000) 
-tmc4671.writeRegister(tmc4671_reg.OPENLOOP_ACCELERATION, 0x0000003C) 
+tmc4671.writeRegister(tmc4671_reg.OPENLOOP_MODE, 0x00000000)
+tmc4671.writeRegister(tmc4671_reg.OPENLOOP_ACCELERATION, 0x0000003C)
 
 " Limits "
-tmc4671.writeRegister(tmc4671_reg.PID_TORQUE_FLUX_LIMITS, 1000) 
+tmc4671.writeRegister(tmc4671_reg.PID_TORQUE_FLUX_LIMITS, 1000)
 
 " PI settings "
-tmc4671.writeRegister(tmc4671_reg.PID_TORQUE_P_TORQUE_I, 0x01000100) 
-tmc4671.writeRegister(tmc4671_reg.PID_FLUX_P_FLUX_I, 0x01000100) 
+tmc4671.writeRegister(tmc4671_reg.PID_TORQUE_P_TORQUE_I, 0x01000100)
+tmc4671.writeRegister(tmc4671_reg.PID_FLUX_P_FLUX_I, 0x01000100)
 
 
 
@@ -77,8 +77,8 @@ tmc4671.writeRegister(tmc4671_reg.PID_FLUX_P_FLUX_I, 0x01000100)
 
 " Init encoder (mode 0) "
 " put a voltage on the motor and wait 1 second for alignment "
-tmc4671.writeRegister(tmc4671_reg.MODE_RAMP_MODE_MOTION, 0x00000008) 
-tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000) 
+tmc4671.writeRegister(tmc4671_reg.MODE_RAMP_MODE_MOTION, 0x00000008)
+tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000)
 tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, tmc4671_reg.PHI_E_EXTERNAL)
 tmc4671.writeRegister(tmc4671_reg.PHI_E_EXT, 0x00000000)
 tmc4671.writeRegister(tmc4671_reg.UQ_UD_EXT, 2000)
@@ -90,18 +90,18 @@ tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_COUNT, 0x00000000)
 print("abn_decoder_count:" + str(tmc4671.readRegister(tmc4671_reg.ABN_DECODER_COUNT)))
 
 " Switch to open loop velocity mode "
-tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, tmc4671_reg.PHI_E_OPEN_LOOP) 
+tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, tmc4671_reg.PHI_E_OPEN_LOOP)
 tmc4671.writeRegister(tmc4671_reg.OPENLOOP_VELOCITY_TARGET, 60)
 
 startTime = time.time()
 while True:
     print("dec: " + str(tmc4671.readRegister(tmc4671_reg.ABN_DECODER_COUNT)) + " dec_n: " + str(tmc4671.readRegister(tmc4671_reg.ABN_DECODER_COUNT_N)))
-    
+
     " stop after 3 seconds "
     if (time.time()-startTime) > 3:
         break
 
-" read encoder offset at N channel"    
+" read encoder offset at N channel"
 decoderCountN = tmc4671.readRegister(tmc4671_reg.ABN_DECODER_COUNT_N)
 decoderCountN_offset = decoderCountN % (enocoderResolution / polePairs)
 
@@ -120,7 +120,7 @@ tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PHI_E_PHI_M_OFFSET, int(decoderCou
 " ===== 4) got to encoder mode ===== "
 
 " Feedback selection "
-tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, tmc4671_reg.PHI_E_ABN) 
+tmc4671.writeRegister(tmc4671_reg.PHI_E_SELECTION, tmc4671_reg.PHI_E_ABN)
 tmc4671.writeRegister(tmc4671_reg.VELOCITY_SELECTION, tmc4671_reg.VELOCITY_PHI_M_ABN)
 
 " Switch to torque mode "
@@ -142,7 +142,7 @@ while True:
     print("velocity: " + str(velocity))
     if velocity > maxVelocity:
         maxVelocity = velocity
-   
+
     " stop after 3 seconds "
     if (time.time()-startTime) > 2:
         break
@@ -156,7 +156,7 @@ while True:
     print("velocity: " + str(velocity))
     if velocity < minVelocity:
         minVelocity = velocity
-    
+
     " stop after 3 seconds "
     if (time.time()-startTime) > 2:
         break

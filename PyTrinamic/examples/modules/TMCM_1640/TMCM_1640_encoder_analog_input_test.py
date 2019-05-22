@@ -55,10 +55,10 @@ module.setVelocityPParameter(800)
 module.setVelocityIParameter(600)
 module.setPositionPParameter(300)
 module.showPIConfiguration()
- 
+
 " set commutation mode to FOC based on hall sensor signals "
 module.setCommutationMode(module.COMM_MODE_FOC_ENCODER)
- 
+
 " read adc value and compute new target velocity "
 while True:
     adcValue = module.analogInput(0)

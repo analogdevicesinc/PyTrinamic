@@ -54,7 +54,7 @@ ranges = [
 print(ranges)
 if not(ranges[0][0] <= ranges[1][0] <= ranges[2][0] <= ranges[3][0]):
     print("Error: Condition X1 <= X2 <= X3 <= X4 not satisfied")
-    
+
 for i in range(0, 8):
     print("MSLUT{0}:      0x{1:08X}".format(i, MSLUT[i]))
 
@@ -104,12 +104,12 @@ if MEASURE:
     TMC5130.writeRegister(TMC5130.registers.VSTART, 0)
     TMC5130.writeRegister(TMC5130.registers.VSTOP, 10)
     TMC5130.writeRegister(TMC5130.registers.AMAX, 1000)
-    
+
     if TMC5130.readRegister(TMC5130.registers.MSCNT) != 0:
         # ToDo: Move to 0 instead of erroring out
         print("Error: Motor not at MS 0")
         exit(1)
-        
+
     measured = []
     for i in range(0, 1025):
         CUR_A = TMC5130.readRegisterField(TMC5130.fields.CUR_A)
@@ -119,11 +119,11 @@ if MEASURE:
         if CUR_B >=256:
             CUR_B -= 512
         STEP  = TMC5130.readRegisterField(TMC5130.fields.MSCNT)
-        
+
         measured = measured + [(STEP, CUR_A, CUR_B)]
         TMC5130.moveBy(0, 1, 1000)
         time.sleep(0.1)
-    
+
     TMC5130.moveTo(0, 0, 1000)
 
 myInterface.close()

@@ -5,7 +5,7 @@ Created on 01.01.2019
 '''
 
 class TMCM_0010_OPC(object):
-    
+
     " brake chopper parameter "
     AP_SupplyVoltage            = 0
     AP_Enable                   = 1
@@ -13,7 +13,7 @@ class TMCM_0010_OPC(object):
     AP_Hysteresis               = 3
     AP_LowerVoltageLimit        = 4
     AP_Active                   = 5
-    
+
     " diagnostic parameter "
     AP_MainLoopsPerSecond       = 200
     AP_UsbLoopsPerSecond        = 201

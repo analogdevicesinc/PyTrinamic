@@ -35,7 +35,7 @@ tmc4672.showChipInfo()
 
 " add your python code here "
 "..."
-time.sleep(1) 
+time.sleep(1)
 
 " close interface"
 myInterface.close()

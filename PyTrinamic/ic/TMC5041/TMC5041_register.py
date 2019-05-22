@@ -7,7 +7,7 @@ Created on 18.04.2019
 class TMC5041_register:
     """
     Define all registers of the TMC5041.
-    
+
     Each register is defined either as an integer or as a tuple of integers.
     Each integer represents a register address. Tuples of addresses are used to
     represent a register that exists multiple times for multiple motors.

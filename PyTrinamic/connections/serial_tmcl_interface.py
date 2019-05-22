@@ -33,19 +33,19 @@ class serial_tmcl_interface(connection_interface):
     def send ( self, address, command, commandType, motorbank, value ):
         """
         Send a message to the specified module. This is a blocking function that
-        will not return until a reply has been received from the module. 
+        will not return until a reply has been received from the module.
         """
-       
+
         "prepare TMCL request"
         request = TMCL_Request(address, command, commandType, motorbank, value)
-        
+
         if self.debugEnabled:
             request.dump()
-        
+
         "send request, wait, and handle reply"
         self.serial.write(request.toBuffer())
         reply = TMCL_Reply(struct.unpack(TMCL.PACKAGE_STRUCTURE, self.serial.read(TMCL.PACKAGE_LENGTH)))
-        
+
         if self.debugEnabled:
             reply.dump()
 
@@ -75,7 +75,7 @@ class serial_tmcl_interface(connection_interface):
     " axis parameter access "
     def axisParameter(self, commandType, axis):
         return TMC_helpers.toSigned32(self.send(self.moduleAddress, TMCL_Command.GAP, commandType, axis, 0).value)
-    
+
     def setAxisParameter(self, commandType, axis, value):
         return self.send(self.moduleAddress, TMCL_Command.SAP, commandType, axis, value)
 
@@ -89,7 +89,7 @@ class serial_tmcl_interface(connection_interface):
     " global parameter access "
     def globalParameter(self, commandType, axis):
         return TMC_helpers.toSigned32(self.send(self.moduleAddress, TMCL_Command.GGP, commandType, axis, 0).value)
-    
+
     def setGlobalParameter(self, commandType, axis, value):
         return self.send(self.moduleAddress, TMCL_Command.SGP, commandType, axis, value)
 
@@ -99,17 +99,17 @@ class serial_tmcl_interface(connection_interface):
     def setAndStoreGlobalParameter(self, commandType, axis, value):
         self.send(self.moduleAddress, TMCL_Command.SGP, commandType, axis, value)
         self.send(self.moduleAddress, TMCL_Command.STGP, commandType, axis, 0)
-        
+
     " register access "
     def writeMC(self, registerAddress, value):
         return self.send(self.moduleAddress, TMCL_Command.WRITE_MC, registerAddress, 0, value)
-    
+
     def readMC(self, registerAddress):
         return self.send(self.moduleAddress, TMCL_Command.READ_MC, registerAddress, 0, 0).value
 
     def writeDRV(self, registerAddress, value):
         return self.send(self.moduleAddress, TMCL_Command.WRITE_DRV, registerAddress, 0, value)
-    
+
     def readDRV(self, registerAddress):
         return self.send(self.moduleAddress, TMCL_Command.READ_DRV, registerAddress, 0, 0).value
 
@@ -126,6 +126,6 @@ class serial_tmcl_interface(connection_interface):
     " input / outputs "
     def analogInput(self, x):
         return self.send(self.moduleAddress, TMCL_Command.GIO, x, 1, 0).value
-    
+
     def digitalInput(self, x):
         return self.send(self.moduleAddress, TMCL_Command.GIO, x, 0, 0).value

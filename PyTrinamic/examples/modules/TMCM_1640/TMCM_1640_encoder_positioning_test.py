@@ -51,23 +51,23 @@ module.setVelocityPParameter(1000)
 module.setVelocityIParameter(1000)
 module.setPositionPParameter(300)
 module.showPIConfiguration()
- 
+
 " set commutation mode to FOC based on hall sensor signals "
 module.setCommutationMode(module.COMM_MODE_FOC_ENCODER)
- 
+
 " set position counter to zero"
-module.setActualPosition(0) 
- 
+module.setActualPosition(0)
+
 " move to zero position"
 module.moveToPosition(0)
- 
+
 print("starting positioning")
- 
+
 module.moveToPosition(300000)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
- 
+
 module.moveToPosition(0)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))

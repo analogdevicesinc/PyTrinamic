@@ -48,7 +48,7 @@ module.setVelocityPParameter(800)
 module.setVelocityIParameter(500)
 module.setPositionPParameter(300)
 module.showPIConfiguration()
- 
+
 " set commutation mode to FOC based on hall sensor signals "
 module.setCommutationMode(module.COMM_MODE_FOC_HALL)
 
