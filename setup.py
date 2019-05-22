@@ -69,6 +69,8 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC5130/TMC5130_MicroStep.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM-0010-OPC_config_check.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM-0010-OPC_config_update.py",
+        "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_rotateDemo.py",
+        "PyTrinamic/examples/modules/TMCM_1161/TMCM_1161_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_analog_input_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_digital_input_test.py",
