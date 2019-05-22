@@ -53,6 +53,7 @@ setuptools.setup(
         "PyTrinamic/modules/TMCM_1160",
         "PyTrinamic/modules/TMCM_1161",
         "PyTrinamic/modules/TMCM_1640",
+        "PyTrinamic/modules/TMCM_6212",
         "PyTrinamic/helpers"
     ],
     scripts=[
