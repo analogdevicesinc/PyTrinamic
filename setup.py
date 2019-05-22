@@ -51,6 +51,7 @@ setuptools.setup(
         "PyTrinamic/ic/TMC6200/TMC6200",
         "PyTrinamic/modules/TMCM_0010_OPC",
         "PyTrinamic/modules/TMCM_1160",
+        "PyTrinamic/modules/TMCM_1161",
         "PyTrinamic/modules/TMCM_1640",
         "PyTrinamic/helpers"
     ],
