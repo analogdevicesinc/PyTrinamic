@@ -106,12 +106,16 @@ class TMCL_Request(object):
                            self.commandType, self.motorBank, self.value, self.checksum)
 
     def dump(self):
-        print("TMCL_Request: " + str(self.moduleAddress) + ","
-            + str(self.command) + ","
-            + str(self.commandType) + ","
-            + str(self.motorBank) + ","
-            + str(self.value) + ","
-            + str(self.checksum))
+        print("TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
+            .format(
+                self.moduleAddress,
+                self.command,
+                self.commandType,
+                self.motorBank,
+                self.value,
+                self.checksum
+            )
+        )
 
 class TMCL_Reply(object):
     def __init__(self, reply_data):
@@ -124,12 +128,16 @@ class TMCL_Reply(object):
         self.checksum = reply_struct[5]
 
     def dump(self):
-        print("TMCL_Reply:   " + str(self.reply_address) + ","
-            + str(self.module_address) + ","
-            + str(self.status) + ","
-            + str(self.command) + ","
-            + str(self.value) + ","
-            + str(self.checksum))
+        print("TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
+            .format(
+                self.reply_address,
+                self.module_address,
+                self.status,
+                self.command,
+                self.value,
+                self.checksum
+            )
+        )
 
     def value(self):
         return self.value
