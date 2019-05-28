@@ -18,9 +18,6 @@ class serial_tmcl_interface(tmcl_interface):
         if self._debug:
             print("Open port: " + self.__serial.portstr)
 
-    def __del__(self):
-        self.close()
-
     # Overridden functions for the tmcl_interface
     def _send(self, hostID, moduleID, data):
         del hostID, moduleID
