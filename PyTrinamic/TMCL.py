@@ -114,7 +114,8 @@ class TMCL_Request(object):
             + str(self.checksum))
 
 class TMCL_Reply(object):
-    def __init__(self, reply_struct):
+    def __init__(self, reply_data):
+        reply_struct = struct.unpack(TMCL.PACKAGE_STRUCTURE, reply_data)
         self.reply_address = reply_struct[0]
         self.module_address = reply_struct[1]
         self.status = reply_struct[2]
