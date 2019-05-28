@@ -10,6 +10,9 @@ from PyTrinamic.connections.tmcl_interface import tmcl_interface
 class serial_tmcl_interface(tmcl_interface):
 
     def __init__(self, comPort, baudrate=115200, hostID=2, moduleID=1, debug=False):
+        if type(comPort) != str:
+            raise TypeError;
+
         tmcl_interface.__init__(self, hostID, moduleID, debug)
 
         self.__baudrate = baudrate
