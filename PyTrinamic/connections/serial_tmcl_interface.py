@@ -5,6 +5,7 @@ Created on 30.12.2018
 '''
 
 from serial import Serial
+from serial import SerialException
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 
 class serial_tmcl_interface(tmcl_interface):
@@ -17,7 +18,11 @@ class serial_tmcl_interface(tmcl_interface):
 
         self.__baudrate = baudrate
 
-        self.__serial = Serial(comPort, self.__baudrate)
+        try:
+            self.__serial = Serial(comPort, self.__baudrate)
+        except SerialException as e:
+            raise ConnectionError from e
+
         if self._debug:
             print("Open port: " + self.__serial.portstr)
 

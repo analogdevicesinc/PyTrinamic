@@ -13,7 +13,6 @@ import struct
 import PyTrinamic
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.TMCL import TMCL_Command
-from serial import SerialException
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
 # command.
@@ -164,7 +163,7 @@ while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
         myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))
         # If no exception occured, exit the retry loop
         break
-    except (SerialException, TypeError):
+    except (ConnectionError, TypeError):
         myInterface = None
 
 if not(myInterface):
