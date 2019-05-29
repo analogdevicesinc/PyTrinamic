@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyTrinamic",
-    version="0.1.5",
+    version="0.1.6",
     author="ED, LK, LH, ..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
@@ -20,7 +20,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     py_modules=[
         "PyTrinamic/connections/connection_interface",
-        "PyTrinamic/connections/dummy_interface"
+        "PyTrinamic/connections/ConnectionManager"
+        "PyTrinamic/connections/dummy_tmcl_interface"
         "PyTrinamic/connections/serial_tmcl_interface",
         "PyTrinamic/connections/tmcl_interface"
         "PyTrinamic/connections/uart_ic_interface",
