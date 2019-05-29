@@ -15,7 +15,9 @@ class dummy_tmcl_interface(tmcl_interface):
         if type(port) != str:
             raise TypeError
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        del debug
+
+        tmcl_interface.__init__(self, hostID, moduleID, debug=True)
 
         if self._debug:
             print("Opened dummy TMCL interface on port '" + port + "'")
@@ -37,6 +39,7 @@ class dummy_tmcl_interface(tmcl_interface):
             This is a required override function for using the tmcl_interface
             class.
         """
+        del hostID, moduleID, data
         pass
 
     def _recv(self, hostID, moduleID):
