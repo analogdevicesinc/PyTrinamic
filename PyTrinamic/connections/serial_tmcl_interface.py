@@ -57,7 +57,7 @@ class serial_tmcl_interface(tmcl_interface):
         return self.__serial.read(9)
 
     def printInfo(self):
-        print("Connection: type=serial_tmcl_interface com=" + self.__serial.portstr + " baud=" + str(self.baudrate))
+        print("Connection: type=serial_tmcl_interface com=" + self.__serial.portstr + " baud=" + str(self._baudrate))
 
     def enableDebug(self, enable):
         self._debug = enable
