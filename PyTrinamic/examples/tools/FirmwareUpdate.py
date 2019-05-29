@@ -4,6 +4,7 @@ Created on 13 May 2019
 
 @author: LH
 '''
+
 import sys
 import time
 import math
@@ -11,7 +12,7 @@ import re
 import struct
 
 import PyTrinamic
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.TMCL import TMCL_Command
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
@@ -21,7 +22,7 @@ SERIAL_BOOT_TIMEOUT = 10
 PyTrinamic.showInfo()
 
 if len(sys.argv) < 2:
-    print("Usage: FirmwareUpdate.py HexFilePath")
+    print("Usage:\n\tFirmwareUpdate.py HexFilePath [connection options]")
     exit(1)
 
 print("Opening hex file (" + sys.argv[1] + ")")
@@ -31,6 +32,8 @@ try:
 except FileNotFoundError:
     print("Error: Hex file not found")
     exit(1)
+
+connectionManager = ConnectionManager(sys.argv)
 
 ############################### Hex file parsing ###############################
 print("Parsing hex file")
@@ -147,7 +150,7 @@ print()
 ############################## Bootloader entry ################################
 # Connect to the evaluation board
 print("Connecting")
-myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))
+myInterface = connectionManager.connect()
 
 # Send the boot command
 print("Switching to bootloader mode")
@@ -160,7 +163,7 @@ timestamp = time.time()
 while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
     try:
         # Attempt to connect
-        myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))
+        myInterface = connectionManager.connect()
         # If no exception occured, exit the retry loop
         break
     except (ConnectionError, TypeError):
