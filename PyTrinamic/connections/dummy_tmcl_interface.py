@@ -50,6 +50,9 @@ class dummy_tmcl_interface(tmcl_interface):
 
         return bytearray(9)
 
+    def printInfo(self):
+        print("Connection: type=dummy_tmcl_interface")
+
     @staticmethod
     def list():
         """
