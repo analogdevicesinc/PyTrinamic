@@ -6,7 +6,7 @@ Created on 27.05.2019
 
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 
-class dummy_interface(tmcl_interface):
+class dummy_tmcl_interface(tmcl_interface):
 
     def __init__(self, hostID=2, moduleID=1 , debug=True):
         tmcl_interface.__init__(self, hostID, moduleID, debug)
@@ -19,7 +19,7 @@ class dummy_interface(tmcl_interface):
 
         return bytearray(9)
 
-interface = dummy_interface()
+interface = dummy_tmcl_interface()
 
 interface.getVersionString()
 interface.sendBoot()
