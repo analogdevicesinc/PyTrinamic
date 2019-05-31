@@ -141,8 +141,9 @@ class tmcl_interface():
         return reply.versionString()
 
     # Axis parameter access functions
-    def axisParameter(self, commandType, axis, moduleID=None):
-        return TMC_helpers.toSigned32(self.send(TMCL_Command.GAP, commandType, axis, 0, moduleID).value)
+    def axisParameter(self, commandType, axis, moduleID=None, signed=False):
+        value = self.send(TMCL_Command.GAP, commandType, axis, 0, moduleID).value
+        return TMC_helpers.toSigned32(value) if signed else value
 
     def setAxisParameter(self, commandType, axis, value, moduleID=None):
         return self.send(TMCL_Command.SAP, commandType, axis, value, moduleID)
@@ -155,8 +156,9 @@ class tmcl_interface():
         self.send(TMCL_Command.STAP, commandType, axis, 0, moduleID)
 
     # Global parameter access functions
-    def globalParameter(self, commandType, bank, moduleID=None):
-        return TMC_helpers.toSigned32(self.send(TMCL_Command.GGP, commandType, bank, 0, moduleID).value)
+    def globalParameter(self, commandType, bank, moduleID=None, signed=False):
+        value = self.send(TMCL_Command.GGP, commandType, bank, 0, moduleID).value
+        return TMC_helpers.toSigned32(value) if signed else value
 
     def setGlobalParameter(self, commandType, bank, value, moduleID=None):
         return self.send(TMCL_Command.SGP, commandType, bank, value, moduleID)
@@ -172,14 +174,16 @@ class tmcl_interface():
     def writeMC(self, registerAddress, value, moduleID=None):
         return self.send(TMCL_Command.WRITE_MC, registerAddress, 0, value, moduleID)
 
-    def readMC(self, registerAddress, moduleID=None):
-        return TMC_helpers.toSigned32(self.send(TMCL_Command.READ_MC, registerAddress, 0, 0, moduleID).value)
+    def readMC(self, registerAddress, moduleID=None, signed=False):
+        value = self.send(TMCL_Command.READ_MC, registerAddress, 0, 0, moduleID).value
+        return TMC_helpers.toSigned32(value) if signed else value
 
     def writeDRV(self, registerAddress, value, moduleID=None):
         return self.send(TMCL_Command.WRITE_DRV, registerAddress, 0, value, moduleID)
 
-    def readDRV(self, registerAddress, moduleID=None):
-        return TMC_helpers.toSigned32(self.send(TMCL_Command.READ_DRV, registerAddress, 0, 0, moduleID).value)
+    def readDRV(self, registerAddress, moduleID=None, signed=False):
+        value = self.send(TMCL_Command.READ_DRV, registerAddress, 0, 0, moduleID).value
+        return TMC_helpers.toSigned32(value) if signed else value
 
     # Motion control functions
     def rotate(self, motor, velocity, moduleID=None):

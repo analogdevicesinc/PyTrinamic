@@ -30,8 +30,8 @@ class TMC4671_eval(eval_interface):
     def writeRegister(self, registerAddress, value):
         return self.connection.writeMC(registerAddress, value)
 
-    def readRegister(self, registerAddress):
-        return self.connection.readMC(registerAddress)
+    def readRegister(self, registerAddress, signed=False):
+        return self.connection.readMC(registerAddress, signed=signed)
 
     def writeRegisterField(self, registerAddress, value, mask, shift):
         return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))

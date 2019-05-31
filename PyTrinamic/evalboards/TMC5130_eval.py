@@ -21,8 +21,8 @@ class TMC5130_eval(TMC5130):
 
         return self.__connection.writeMC(registerAddress, value)
 
-    def readRegister(self, registerAddress, channel=0):
+    def readRegister(self, registerAddress, channel=0, signed=False):
         if channel != 0:
             raise ValueError
 
-        return self.__connection.readMC(registerAddress)
+        return self.__connection.readMC(registerAddress, signed=signed)

@@ -69,7 +69,7 @@ class TMC5130():
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        position = self.readRegister(self.registers.XACTUAL, self.__channel)
+        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
 
         self.moveTo(motor, position + distance, velocity)
 
