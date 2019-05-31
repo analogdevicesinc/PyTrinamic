@@ -71,11 +71,12 @@ class ConnectionManager():
     """
 
     # All available interfaces
+    # The tuples consist of (string representation, class type, default datarate)
     _INTERFACES = [
-        ("dummy_tmcl",  dummy_tmcl_interface),
-        ("serial_tmcl", serial_tmcl_interface),
-        ("uart_ic",     dummy_tmcl_interface),
-        ("usb_tmcl",    usb_tmcl_interface)
+        ("dummy_tmcl",  dummy_tmcl_interface,  0),
+        ("serial_tmcl", serial_tmcl_interface, 9600),
+        ("uart_ic",     dummy_tmcl_interface,  9600),
+        ("usb_tmcl",    usb_tmcl_interface,    115200)
     ]
 
     def __init__(self, argList, debug=False):
@@ -95,7 +96,6 @@ class ConnectionManager():
         self.__interface  = usb_tmcl_interface
         self.__port       = "any"
         self.__no_port    = []
-        self.__data_rate  = 115200
         self.__host_id    = 2
         self.__module_id  = 1
 
@@ -187,6 +187,7 @@ class ConnectionManager():
             for interface in self._INTERFACES:
                 if self.__str_interface == interface[0]:
                     self.__interface = interface[1]
+                    self.__data_rate = interface[2]
                     break
             else:
                 # The for loop never hit the break statement -> invalid interface
