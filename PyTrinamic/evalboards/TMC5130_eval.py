@@ -10,19 +10,23 @@ class TMC5130_eval(TMC5130):
     """
     This class represents a TMC5130 Evaluation board
     """
-    def __init__(self, connection):
-        TMC5130.__init__(self, channel=0)
+    def __init__(self, connection, moduleID=1):
+        TMC5130.__init__(self, moduleID)
+
         self.__connection = connection
+        self._MODULE_ID = moduleID
 
     # Use the motion controller channel for register access
-    def writeRegister(self, registerAddress, value, channel=0):
-        if channel != 0:
-            raise ValueError
+    def writeRegister(self, registerAddress, value, moduleID=None):
+        # If the moduleID argument is omitted, use the stored module ID
+        if not moduleID:
+            moduleID = self._MODULE_ID
 
-        return self.__connection.writeMC(registerAddress, value)
+        return self.__connection.writeMC(registerAddress, value, moduleID)
 
-    def readRegister(self, registerAddress, channel=0, signed=False):
-        if channel != 0:
-            raise ValueError
+    def readRegister(self, registerAddress, moduleID=None, signed=False):
+        # If the moduleID argument is omitted, use the stored module ID
+        if not moduleID:
+            moduleID = self._MODULE_ID
 
-        return self.__connection.readMC(registerAddress, signed=signed)
+        return self.__connection.readMC(registerAddress, moduleID, signed)
