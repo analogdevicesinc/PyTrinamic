@@ -251,7 +251,7 @@ class ConnectionManager():
         ### Parse the port string
         if self.__port == "interactive":
             # "interactive" -> Show a selection dialog
-            port = self.__interactivePortSelection(portList)
+            port = self.__interactivePortSelection()
         elif self.__port == "any":
             # "any" -> Use the first port
             port = portList[0]
@@ -287,20 +287,36 @@ class ConnectionManager():
 
         return portList
 
-    def __interactivePortSelection(self, portList):
-        for i, entry in enumerate(portList, 1):
-            print("{0:2d}: {1:s}".format(i, entry))
-
+    def __interactivePortSelection(self):
         while True:
-            selection = input("Select a port: (1-{0:d}): ".format(len(portList)))
-            try:
-                selection = int(selection)
-                if not (1 <= selection <= len(portList)):
-                    raise ValueError
+            # Get all available ports
+            portList = self.listConnections()
 
-                return portList[selection-1]
-            except ValueError:
-                continue;
+            print("Available options:")
+            for i, entry in enumerate(portList, 1):
+                print("\t{0:2d}: {1:s}".format(i, entry))
+
+            print("\t x: Abort selection")
+            print("\t r: Refresh list")
+
+            while True:
+                selection = input("Enter your selection: ")
+                print()
+
+                if selection == "r":
+                    # Break out of the inner while True loop
+                    break
+                elif selection == "x":
+                    raise ConnectionError("Port selection aborted by user")
+                else:
+                    try:
+                        selection = int(selection)
+                        if not (1 <= selection <= len(portList)):
+                            raise ValueError
+
+                        return portList[selection-1]
+                    except ValueError:
+                        continue;
 
     @staticmethod
     def listInterfaces():
