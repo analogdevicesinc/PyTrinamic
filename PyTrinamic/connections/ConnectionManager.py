@@ -178,7 +178,8 @@ class ConnectionManager():
         if skip == 0:
             self.__strippedArgList += [self.__argList[-1]]
 
-        print()
+        if self.__debug:
+            print()
 
         ### Verify the given arguments
         # Interface
@@ -333,7 +334,7 @@ if __name__ == "__main__":
         if not hasattr(interface[1], "list"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
 
-    print("List of interfaces: " + str(ConnectionManager.listInterfaces()))
+    print("List of interfaces: " + str(ConnectionManager.listInterfaces()) + "\n")
 
     print("Performing test run...\n")
     connectionManager = ConnectionManager(sys.argv, debug=False)
@@ -342,3 +343,5 @@ if __name__ == "__main__":
         connectionManager.disconnect()
     except RuntimeError:
         print("Couldn't connect to the specified port(s)")
+
+    print("Test run complete")
