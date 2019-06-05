@@ -17,17 +17,17 @@ parser = argparse.ArgumentParser(description='Convert XML module descriptors to 
 parser.add_argument('inputs', metavar="input", type=str, nargs='+',
                     help='XML module descriptor file or directory')
 parser.add_argument('--format', dest='format', action='store', nargs=1, type=str, choices=['c_header', 'python', 'latex'], default='c_header',
-                    help='Conversion format')
+                    help='Conversion format (default: %(default)s)')
 parser.add_argument('--output', dest='output', action='append', type=argparse.FileType('w'), nargs='*',
                     help='Output file for n-th descriptor')
 parser.add_argument('--outdir', dest='outdir', action='store', type=str, nargs=1, default=".",
-                    help='Output directory for all descriptors')
+                    help='Output directory for all descriptors (default: %(default)s)')
 parser.add_argument('--mode', dest='mode', action='store', nargs=1, type=str, choices=['remove', 'replace'], default="replace",
-                    help='Rename mode')
+                    help='Rename mode (default: %(default)s)')
 parser.add_argument('--duplicates', dest='dmode', action='store', nargs=1, type=str, choices=['comment', 'keep', 'ignore', 'remove', 'error'], default="comment",
-                    help='Duplicate handling mode')
+                    help='Duplicate handling mode (default: %(default)s)')
 parser.add_argument('--verbosity', dest='verbosity', action='store', nargs=1, type=int, choices=[0, 1, 2], default=1,
-                    help='Verbosity level')
+                    help='Verbosity level (default: %(default)s, 0: no output, 2: highest detail)')
 
 args = parser.parse_args()
 
