@@ -12,7 +12,7 @@ from PyTrinamic.core.xml.XMLHandler import *
 parser = argparse.ArgumentParser(description='Convert XML module descriptors to various output formats.')
 parser.add_argument('inputs', metavar='input', type=argparse.FileType('r'), nargs='+',
                     help='XML module descriptor')
-parser.add_argument('--format, -f', dest='format', action='store', nargs=1, choices=['c_header', 'python', 'latex'], default='c_header'
+parser.add_argument('--format, -f', dest='format', action='store', nargs=1, choices=['c_header', 'python', 'latex'], default='c_header',
                     help='Conversion format')
 parser.add_argument('--output, -o', dest='output', action='append', type=argparse.FileType('w'), nargs='*',
                     help='Output file for n-th descriptor')
