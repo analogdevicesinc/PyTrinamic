@@ -134,7 +134,6 @@ class XMLHandler():
                     v_func(self._verbosity, 2, lambda: print(Strings.CLI_WARNING, "  Raising error.."))
                     raise IOError("Duplicate: %s" % field_name)
             else:
-                #dupelist.append(field_name)
                 list.append((field_name, "#define %(field)s_MASK %%(wspace_mask)s0x%(mask)s\n#define %(field)s_SHIFT %%(wspace_shift)s%(shift)s"
                     % { "field": field_name, "mask": field.attrib["mask"], "shift": field.attrib["shift"] }))
         for r in remove:
