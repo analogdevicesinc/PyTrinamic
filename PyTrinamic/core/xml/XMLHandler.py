@@ -7,10 +7,11 @@ Created: 31.05.2019
 
 import PyTrinamic
 import re
-from xml.etree.ElementTree import ElementTree
+import xml.etree.ElementTree as ET
 
 class Format(object):
-    def __init__(self, name):
+    @staticmethod
+    def from_string(name):
         if(name == "c_header"):
             return FormatCHeader()
         elif(name == "python"):
@@ -18,35 +19,45 @@ class Format(object):
         elif(name == "latex"):
             return FormatLatex()
 
+    @staticmethod
+    def get_extension():
+        raise NotImplementedError()
+
 class FormatCHeader(Format):
-    def __init__(self):
-        pass
+    __EXTENSION = "h"
+    @staticmethod
+    def get_extension():
+        return FormatCHeader.__EXTENSION
 
 class FormatPython(Format):
-    def __init__(self):
-        pass
+    __EXTENSION = "py"
+    @staticmethod
+    def get_extension():
+        return FormatPython.__EXTENSION
 
 class FormatLatex(Format):
-    def __init__(self):
-        pass
+    __EXTENSION = "tex"
+    @staticmethod
+    def get_extension():
+        return FormatLatex.__EXTENSION
 
 class RenameMode(object):
-    def __init__(self, name):
+    @staticmethod
+    def from_string(name):
         if(name == "remove"):
             return RenameModeRemove()
         elif(name == "replace"):
             return RenameModeReplace()
 
 class RenameModeRemove(RenameMode):
-    def __init__(self):
-        pass
+    pass
 
 class RenameModeReplace(RenameMode):
-    def __init__(self):
-        pass
+    pass
 
 class DuplicateMode(object):
-    def __init__(self, name):
+    @staticmethod
+    def from_string(name):
         if(name == "comment"):
             return DuplicateModeComment()
         elif(name == "keep"):
@@ -59,32 +70,28 @@ class DuplicateMode(object):
             return DuplicateModeError()
 
 class DuplicateModeComment(DuplicateMode):
-    def __init__(self):
-        pass
+    pass
 
 class DuplicateModeKeep(DuplicateMode):
-    def __init__(self):
-        pass
+    pass
 
 class DuplicateModeIgnore(DuplicateMode):
-    def __init__(self):
-        pass
+    pass
 
 class DuplicateModeRemove(DuplicateMode):
-    def __init__(self):
-        pass
+    pass
 
 class DuplicateModeError(DuplicateMode):
-    def __init__(self):
-        pass
+    pass
 
 class XMLHandler():
 
-    def __init__(self, file, rename_mode, duplicate_mode):
+    def __init__(self, file, rename_mode, duplicate_mode, verbosity=0):
         self._rename_mode = rename_mode
         self._duplicate_mode = duplicate_mode
-        self._tree = ElementTree.parse(file)
-        self._root = tree.getroot()
+        self._tree = ET.parse(file.name)
+        self._root = self._tree.getroot()
+        self._verbosity = verbosity
 
     def convert(self, to):
         if(isinstance(to, FormatCHeader)):
@@ -93,7 +100,7 @@ class XMLHandler():
             raise NotImplementedError()
 
     def to_c_header(self):
-        out = "#ifndef %(ic)s\n#define %(ic)s\n\n%(fields)s\n#endif" % { "ic": self._format_c_header(self._root.attrib["name"], self._rename_mode) }
+        out = "#ifndef %(ic)s\n#define %(ic)s\n\n%%(fields)s\n#endif" % { "ic": self._format_c_header(self._root.attrib["name"], self._rename_mode) }
         fstr = ""
         list = []
         remove = []
@@ -104,10 +111,10 @@ class XMLHandler():
                 max = len(field_name)
             if(field_name in [i[0] for i in list]):
                 if(isinstance(self._duplicate_mode, DuplicateModeComment)):
-                    list.append((field_name, "//#define %(field)s_MASK %(wspace)s%(mask)s\n//#define %(field)s_SHIFT %(wspace)s%(shift)s"
+                    list.append((field_name, "//#define %(field)s_MASK %%(wspace_mask)s0x%(mask)s\n//#define %(field)s_SHIFT %%(wspace_shift)s%(shift)s"
                         % { "field": field_name, "mask": field.attrib["mask"], "shift": field.attrib["shift"] }))
                 elif(isinstance(self._duplicate_mode, DuplicateModeKeep)):
-                    list.append((field_name, "#define %(field)s_MASK %(wspace)s%(mask)s\n#define %(field)s_SHIFT %(wspace)s%(shift)s"
+                    list.append((field_name, "#define %(field)s_MASK %%(wspace_mask)s0x%(mask)s\n#define %(field)s_SHIFT %%(wspace_shift)s%(shift)s"
                         % { "field": field_name, "mask": field.attrib["mask"], "shift": field.attrib["shift"] }))
                 elif(isinstance(self._duplicate_mode, DuplicateModeIgnore)):
                     pass
@@ -117,13 +124,13 @@ class XMLHandler():
                 elif(isinstance(self._duplicate_mode, DuplicateModeError)):
                     raise IOError("Duplicate: %s" % field_name)
             else:
-                dupelist.append(field_name)
-                list.append((field_name, "#define %(field)s_MASK %(wspace_mask)s%(mask)s\n#define %(field)s_SHIFT %(wspace_shift)s%(shift)s"
+                #dupelist.append(field_name)
+                list.append((field_name, "#define %(field)s_MASK %%(wspace_mask)s0x%(mask)s\n#define %(field)s_SHIFT %%(wspace_shift)s%(shift)s"
                     % { "field": field_name, "mask": field.attrib["mask"], "shift": field.attrib["shift"] }))
-            for r in remove:
-                list = [f for f in list if f[0] == r]
-            for field in list:
-                fstr += (field[1] % { "wspace_mask": " " * (1 + max - len(field[0])), "wspace_shift": " " * (max - len(field[0])) }) + "\n"
+        for r in remove:
+            list = [f for f in list if f[0] == r]
+        for field in list:
+            fstr += (field[1] % { "wspace_mask": " " * (1 + max - len(field[0])), "wspace_shift": " " * (max - len(field[0])) }) + "\n"
         return (out % { "fields": fstr })
 
     def to_python(self):

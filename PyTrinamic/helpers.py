@@ -4,6 +4,10 @@ Created on 09.01.2019
 @author: LK
 '''
 
+def v_func(verbosity, minimum, func):
+    if(verbosity >= minimum):
+        func()
+
 class TMC_helpers(object):
 
     @staticmethod
