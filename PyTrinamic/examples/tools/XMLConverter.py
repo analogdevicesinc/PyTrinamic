@@ -16,15 +16,15 @@ from PyTrinamic.core.xml.XMLHandler import *
 parser = argparse.ArgumentParser(description='Convert XML module descriptors to various output formats.')
 parser.add_argument('inputs', metavar="input", type=str, nargs='+',
                     help='XML module descriptor file or directory')
-parser.add_argument('--format', dest='format', action='store', nargs=1, type=str, choices=['c_header', 'python', 'latex'], default='c_header',
+parser.add_argument('--format', dest='format', action='store', nargs=1, type=str, choices=['c_header', 'python', 'latex'], default=['c_header'],
                     help='Conversion format (default: %(default)s)')
 parser.add_argument('--output', dest='output', action='append', type=argparse.FileType('w'), nargs='*',
                     help='Output file for n-th descriptor')
 parser.add_argument('--outdir', dest='outdir', action='store', type=str, nargs=1, default=".",
                     help='Output directory for all descriptors (default: %(default)s)')
-parser.add_argument('--mode', dest='mode', action='store', nargs=1, type=str, choices=['remove', 'replace'], default="replace",
+parser.add_argument('--mode', dest='mode', action='store', nargs=1, type=str, choices=['remove', 'replace'], default=["replace"],
                     help='Rename mode (default: %(default)s)')
-parser.add_argument('--duplicates', dest='dmode', action='store', nargs=1, type=str, choices=['comment', 'keep', 'ignore', 'remove', 'error'], default="comment",
+parser.add_argument('--duplicates', dest='dmode', action='store', nargs=1, type=str, choices=['comment', 'keep', 'ignore', 'remove', 'error'], default=["comment"],
                     help='Duplicate handling mode (default: %(default)s)')
 parser.add_argument('--verbosity', dest='verbosity', action='store', nargs=1, type=int, choices=[0, 1, 2], default=1,
                     help='Verbosity level (default: %(default)s, 0: no output, 2: highest detail)')
@@ -42,11 +42,12 @@ v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "args.mode:", args.mode))
 v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "args.dmode:", args.dmode))
 v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "args.verbosity:", args.verbosity))
 
-format = Format.from_string(args.format)
-mode = RenameMode.from_string(args.mode)
-dmode = DuplicateMode.from_string(args.dmode)
+format = Format.from_string(args.format[0])
+mode = RenameMode.from_string(args.mode[0])
+dmode = DuplicateMode.from_string(args.dmode[0])
 
 v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "Interpreted arguments:"))
+v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "format:", format))
 v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "mode:", mode))
 v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "dmode:", dmode))
 v_func(verbosity, 2, lambda: print(Strings.CLI_INFO, "verbosity:", verbosity))
