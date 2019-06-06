@@ -34,12 +34,6 @@ class Register_Reply(object):
     def value(self):
         return self.value
 
-    def valueLower16Bit(self):
-        return (self.value) & 0xFFFF
-
-    def valueUpper16Bit(self):
-        return (self.value>>16) & 0xFFFF
-
 class uart_ic_interface(connection_interface):
 
     def __init__(self, comPort):

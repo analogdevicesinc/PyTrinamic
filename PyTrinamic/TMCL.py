@@ -140,12 +140,6 @@ class TMCL_Reply(object):
     def value(self):
         return self.value
 
-    def valueLower16Bit(self):
-        return (self.value) & 0xFFFF
-
-    def valueUpper16Bit(self):
-        return (self.value>>16) & 0xFFFF
-
     def versionString(self):
         byteString = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
         return str(byteString, "ascii")
