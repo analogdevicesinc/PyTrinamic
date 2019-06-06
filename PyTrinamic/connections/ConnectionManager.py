@@ -5,6 +5,7 @@ Created on 28.05.2019
 '''
 
 from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
+from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
@@ -74,6 +75,7 @@ class ConnectionManager():
     # The tuples consist of (string representation, class type, default datarate)
     _INTERFACES = [
         ("dummy_tmcl",  dummy_tmcl_interface,  0),
+        ("pcan_tmcl",   pcan_tmcl_interface,   1000000),
         ("serial_tmcl", serial_tmcl_interface, 9600),
         ("uart_ic",     dummy_tmcl_interface,  9600),
         ("usb_tmcl",    usb_tmcl_interface,    115200)
