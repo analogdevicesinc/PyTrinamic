@@ -4,6 +4,8 @@ Created on 28.05.2019
 @author: LH
 '''
 
+import sys
+
 from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
 from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
@@ -16,7 +18,8 @@ class ConnectionManager():
     initiate connections.
 
     The constructor takes the list of commandline arguments as a list of
-    strings. This allows to directly pass the sys.argv parameter list.
+    strings. This allows to directly pass the sys.argv parameter list. If no
+    list is passed sys.argv is used as default.
 
     The resulting filters for connections are stored in the instance of this
     class which allows repeated connect() and disconnect() calls.
@@ -81,9 +84,9 @@ class ConnectionManager():
         ("usb_tmcl",    usb_tmcl_interface,    115200)
     ]
 
-    def __init__(self, argList, debug=False):
+    def __init__(self, argList=None, debug=False):
         # Attributes
-        self.__argList          = argList
+        self.__argList          = argList if argList else sys.argv
         self.__debug            = debug
         self.__strippedArgList  = []
 
@@ -242,7 +245,11 @@ class ConnectionManager():
         """
         Attempt to connect to a module with the stored connection parameters.
 
-        Failure to connect results in a RuntimeException
+        Returns a connection instance of a class based on the tmcl_interface.
+        Which class type gets returned depends on the interface used.
+
+        If no connections are available or a connection attempt fails, a
+        ConnectionError exception is raised
 
         """
         # Get all available ports
@@ -327,7 +334,6 @@ class ConnectionManager():
         return [x[0] for x in ConnectionManager._INTERFACES]
 
 if __name__ == "__main__":
-    import sys
     # Test if everything is working correctly
 
     print("Verifying interfaces list...\n")
@@ -340,7 +346,7 @@ if __name__ == "__main__":
     print("List of interfaces: " + str(ConnectionManager.listInterfaces()) + "\n")
 
     print("Performing test run...\n")
-    connectionManager = ConnectionManager(sys.argv, debug=False)
+    connectionManager = ConnectionManager()
     try:
         connection = connectionManager.connect()
         connectionManager.disconnect()
