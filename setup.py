@@ -23,7 +23,6 @@ setuptools.setup(
         "python-can>=3,<4"
     ],
     py_modules=[
-        "PyTrinamic/core/xml/XMLHandler",
         "PyTrinamic/connections/connection_interface",
         "PyTrinamic/connections/ConnectionManager",
         "PyTrinamic/connections/dummy_tmcl_interface",
@@ -85,7 +84,6 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_digital_input_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_positioning_test.py",
         "PyTrinamic/examples/tools/FirmwareUpdate.py",
-        "PyTrinamic/examples/tools/XMLConverter.py",
         "PyTrinamic/examples/ShowAvailableCOMPorts.py"
     ],
     classifiers=[
