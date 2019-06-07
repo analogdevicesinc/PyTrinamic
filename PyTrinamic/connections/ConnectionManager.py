@@ -101,6 +101,7 @@ class ConnectionManager():
         self.__interface  = usb_tmcl_interface
         self.__port       = "any"
         self.__no_port    = []
+        self.__data_rate  = 115200
         self.__host_id    = 2
         self.__module_id  = 1
 
