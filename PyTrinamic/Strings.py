@@ -1,3 +1,5 @@
+import PyTrinamic
+
 class Strings:
     CLI_INFO    = "[INFO]   "
     CLI_WARNING = "[WARNING]"
