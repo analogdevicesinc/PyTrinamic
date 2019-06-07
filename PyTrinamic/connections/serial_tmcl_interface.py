@@ -4,9 +4,9 @@ Created on 30.12.2018
 @author: ED
 '''
 
-from serial import Serial
-from serial import SerialException
-import PyTrinamic
+from serial import Serial, SerialException
+import serial.tools.list_ports;
+
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 
 class serial_tmcl_interface(tmcl_interface):
@@ -72,4 +72,8 @@ class serial_tmcl_interface(tmcl_interface):
             This function is required for using this interface with the
             connection manager.
         """
-        return PyTrinamic.getAvailableSerialPorts()
+        connected = []
+        for element in sorted(serial.tools.list_ports.comports()):
+            connected.append(element.device)
+
+        return connected

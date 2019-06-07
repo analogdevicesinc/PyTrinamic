@@ -6,29 +6,13 @@ Created on 30.12.2018
 
 import serial.tools.list_ports;
 
+from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
+from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+
 name = "PyTrinamic"
 desc = "TRINAMIC's Python Technology Access Package"
 VERSION = "0.1.7"
-
-# USB Vendor and Product IDs
-USB_IDS = [
-    { # Landungsbrücke
-        "VID": 0x2A3C,
-        "PID": 0x0700
-    },
-    { # TMCM1460
-        "VID": 0x16D0,
-        "PID": 0x0461
-    },
-    { # TMC_CDC_DEV
-        "VID": 0x2A3C,
-        "PID": 0x0200
-    },
-    { # TMCM1160, TMCM1161
-        "VID": 0x2A3C,
-        "PID": 0x0100
-    }
-]
 
 def showInfo():
     print(name + " - " + desc)
@@ -58,29 +42,15 @@ def getAvailableComPorts(CAN=False, Serial=False, USB=False):
 
 # Return a list of all available serial ports
 def getAvailableSerialPorts():
-    connected = []
-    for element in serial.tools.list_ports.comports():
-        connected.append(element.device)
-
-    return connected
+    return serial_tmcl_interface.list()
 
 # Return a list of all available USB ports with correct Vendor and Product IDs
 def getAvailableUSBPorts():
-    connected = []
-    for element in serial.tools.list_ports.comports():
-        for entry in USB_IDS:
-            if entry["VID"] == element.vid and entry["PID"] == element.pid:
-                connected.append(element.device)
-
-    return connected
+    return usb_tmcl_interface.list()
 
 # Return a list of all available CAN ports
 def getAvailableCANPorts():
-    print("CAN support is not implemented yet")
-
-    connected = []
-
-    return connected
+    return pcan_tmcl_interface.list()
 
 def firstAvailableComPort(CAN=False, Serial=False, USB=False):
     ports = getAvailableComPorts(CAN, Serial, USB)
