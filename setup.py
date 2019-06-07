@@ -4,14 +4,14 @@ Created on 30.12.2018
 @author: ED
 '''
 import setuptools
-from PyTrinamic import VERSION
+from PyTrinamic import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="PyTrinamic",
-    version=VERSION,
+    version=__version__,
     author="ED, LK, LH, ..",
     author_email="tmc_info@trinamic.com",
     description="TRINAMIC's Python Technology Access Package.",
