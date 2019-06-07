@@ -61,7 +61,8 @@ setuptools.setup(
         "PyTrinamic/modules/TMCM_1161",
         "PyTrinamic/modules/TMCM_1640",
         "PyTrinamic/modules/TMCM_6212",
-        "PyTrinamic/helpers"
+        "PyTrinamic/helpers",
+        "PyTrinamic/Strings"
     ],
     scripts=[
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_ABN_encoder_offset_estimation.py",
