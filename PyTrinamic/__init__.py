@@ -8,6 +8,7 @@ import serial.tools.list_ports;
 
 name = "PyTrinamic"
 desc = "TRINAMIC's Python Technology Access Package"
+VERSION = "0.1.6"
 
 # USB Vendor and Product IDs
 USB_IDS = [
