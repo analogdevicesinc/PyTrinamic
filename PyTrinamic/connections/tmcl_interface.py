@@ -54,11 +54,17 @@ class tmcl_interface():
         if not(type(hostID) == type(moduleID) == int):
             raise TypeError
 
+        if not(0 <= hostID < 256):
+            raise ValueError("Incorrect Host ID value")
+
+        if not(0 <= moduleID < 256):
+            raise ValueError("Incorrect Module ID value")
+
         if not type(debug) == bool:
             raise TypeError
 
-        self._HOST_ID    = hostID   & 0xFF
-        self._MODULE_ID  = moduleID & 0xFF
+        self._HOST_ID    = hostID
+        self._MODULE_ID  = moduleID
         self._debug      = debug
 
     def _send(self, hostID, moduleID, data):
