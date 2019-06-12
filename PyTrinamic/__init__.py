@@ -4,8 +4,6 @@ Created on 30.12.2018
 @author: ED
 '''
 
-import serial.tools.list_ports;
-
 from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
