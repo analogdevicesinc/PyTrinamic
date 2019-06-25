@@ -207,3 +207,12 @@ class tmcl_interface():
 
     def digitalInput(self, x, moduleID=None):
         return self.send(TMCL_Command.GIO, x, 0, 0, moduleID).value
+
+    def digitalOutput(self, x, moduleID=None):
+        return self.send(TMCL_Command.GIO, x, 2, 0, moduleID).value
+
+    def setDigitalOutput(self, x, moduleID=None):
+        self.send(TMCL_Command.SIO, x, 2, 1, moduleID).value
+
+    def clearDigitalOutput(self, x, moduleID=None):
+        self.send(TMCL_Command.SIO, x, 2, 0, moduleID).value

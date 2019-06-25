@@ -60,6 +60,7 @@ setuptools.setup(
         "PyTrinamic/modules/TMCM_1160",
         "PyTrinamic/modules/TMCM_1161",
         "PyTrinamic/modules/TMCM_1640",
+        "PyTrinamic/modules/TMCM_1670",
         "PyTrinamic/modules/TMCM_6212",
         "PyTrinamic/helpers",
         "PyTrinamic/Strings"
@@ -84,6 +85,9 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_digital_input_test.py",
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_hall_positioning_test.py",
+        "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_encoder_n_channel.py",
+        "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_limit_switches.py",
+        "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_positioning.py",
         "PyTrinamic/examples/tools/FirmwareUpdate.py",
         "PyTrinamic/examples/ShowAvailableCOMPorts.py"
     ],
