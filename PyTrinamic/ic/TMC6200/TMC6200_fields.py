@@ -4,7 +4,7 @@ Created on 06.03.2019
 @author: ed
 '''
 
-class TMC6200_mask_shift(object):
+class TMC6200_fields(object):
 
 	DISABLE_MASK 			= 0x01 # GCONF
 	DISABLE_SHIFT 			= 0

@@ -52,8 +52,8 @@ tmc4671.writeRegister(tmc4671_reg.ADC_I0_SCALE_OFFSET, 0xFF00826D)
 tmc4671.writeRegister(tmc4671_reg.ADC_I1_SCALE_OFFSET, 0xFF0081F8)
 
 " ABN encoder settings "
-tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_MODE, 0x00001000)
-tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PPR, 16384)
+tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_MODE, 0x00000000)
+tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PPR, 4096)
 tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_COUNT, 0x0)
 tmc4671.writeRegister(tmc4671_reg.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x0)
 

@@ -7,7 +7,7 @@ Created on 06.03.2019
 from PyTrinamic.ic.ic_interface import ic_interface
 from PyTrinamic.ic.TMC6200.TMC6200_register import TMC6200_register
 from PyTrinamic.ic.TMC6200.TMC6200_register_variant import TMC6200_register_variant
-from PyTrinamic.ic.TMC6200.TMC6200_mask_shift import TMC6200_mask_shift
+from PyTrinamic.ic.TMC6200.TMC6200_fields import TMC6200_fields
 from PyTrinamic.helpers import TMC_helpers
 
 class TMC6200(ic_interface):
@@ -16,7 +16,7 @@ class TMC6200(ic_interface):
         self.parent = parent
         self.tmc6200_reg = TMC6200_register()
         self.tmc6200_var = TMC6200_register_variant()
-        self.tmc6200_ms = TMC6200_mask_shift()
+        self.tmc6200_ms = TMC6200_fields()
 
     def register(self):
         return self.tmc6200_reg

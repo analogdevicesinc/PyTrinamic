@@ -10,7 +10,7 @@ from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
 name = "PyTrinamic"
 desc = "TRINAMIC's Python Technology Access Package"
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 
 def showInfo():
     print(name + " - " + desc)
