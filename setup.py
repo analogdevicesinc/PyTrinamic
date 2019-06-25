@@ -30,6 +30,7 @@ setuptools.setup(
         "PyTrinamic/connections/serial_tmcl_interface",
         "PyTrinamic/connections/tmcl_interface",
         "PyTrinamic/connections/uart_ic_interface",
+        "PyTrinamic/connections/usb_tmcl_interface",
         "PyTrinamic/evalboards/eval_interface",
         "PyTrinamic/evalboards/TMC4671_eval",
         "PyTrinamic/evalboards/TMC4672_eval",
