@@ -14,7 +14,7 @@ from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
 from PyTrinamic.modules.TMCM_1633 import TMCM_1633
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts(Serial=True)
+PyTrinamic.showAvailableComPorts(CAN=True)
 
 # for peak can connection
 myInterface = pcan_tmcl_interface('PCAN_USBBUS1', 1000000)

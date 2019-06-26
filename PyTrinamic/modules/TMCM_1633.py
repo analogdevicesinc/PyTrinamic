@@ -66,6 +66,13 @@ class TMCM_1633(object):
         self.connection = connection
         self.motor = 0
 
+    # general parameter access
+    def parameter(self, pCommand, pType, pAxis, pValue):
+        return self.connection.parameter(pCommand, pType, pAxis, pValue)
+
+    def setParameter(self, pCommand, pType, pAxis, pValue):
+        self.connection.setParameter(pCommand, pType, pAxis, pValue)
+
     # axis parameter access
     def axisParameter(self, apType):
         return self.connection.axisParameter(apType, self.motor)

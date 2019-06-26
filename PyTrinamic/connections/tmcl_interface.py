@@ -146,6 +146,14 @@ class tmcl_interface():
 
         return reply.versionString()
 
+    # General parameter access functions
+    def parameter(self, pCommand, pType, pAxis, pValue, moduleID=None, signed=False):
+        value = self.send(pCommand, pType, pAxis, pValue, moduleID).value
+        return TMC_helpers.toSigned32(value) if signed else value
+
+    def setParameter(self, pCommand, pType, pAxis, pValue, moduleID=None):
+        return self.send(pCommand, pType, pAxis, pValue, moduleID)
+
     # Axis parameter access functions
     def axisParameter(self, commandType, axis, moduleID=None, signed=False):
         value = self.send(TMCL_Command.GAP, commandType, axis, 0, moduleID).value
