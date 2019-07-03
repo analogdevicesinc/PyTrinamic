@@ -15,6 +15,12 @@ __version__ = "0.1.12"
 def showInfo():
     print(name + " - " + desc)
 
+def getComPort(name, CAN=False, Serial=False, USB=False):
+    ports = [p for p in getAvailableComPorts(CAN, Serial, USB) if str(p) == name]
+    if(ports):
+        return ports[0]
+    return firstAvailableComPort(CAN, Serial, USB)
+
 # Print all available Ports
 def showAvailableComPorts(CAN=False, Serial=False, USB=False):
     ports = getAvailableComPorts(CAN, Serial, USB)
