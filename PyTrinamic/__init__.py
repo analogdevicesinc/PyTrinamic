@@ -15,11 +15,11 @@ __version__ = "0.1.12"
 def showInfo():
     print(name + " - " + desc)
 
-def getComPort(name, CAN=False, Serial=False, USB=False):
+def getComPort(name, return_default=True, CAN=False, Serial=False, USB=False):
     ports = [p for p in getAvailableComPorts(CAN, Serial, USB) if str(p) == name]
     if(ports):
         return ports[0]
-    return firstAvailableComPort(CAN, Serial, USB)
+    return (firstAvailableComPort(CAN, Serial, USB) if return_default else None)
 
 # Print all available Ports
 def showAvailableComPorts(CAN=False, Serial=False, USB=False):
@@ -29,7 +29,7 @@ def showAvailableComPorts(CAN=False, Serial=False, USB=False):
 # Return a list of all available ports of the selected interfaces
 def getAvailableComPorts(CAN=False, Serial=False, USB=False):
     if CAN == False and Serial == False and USB == False:
-        raise ValueError
+        raise ValueError()
 
     connected = []
 
