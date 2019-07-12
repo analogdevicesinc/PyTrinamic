@@ -20,7 +20,8 @@ setuptools.setup(
     url="https://github.com/trinamic/PyTrinamic",
     packages=setuptools.find_packages(),
     install_requires=[
-        "python-can>=3,<4"
+        "python-can>=3,<4",
+        "pyserial>=3"
     ],
     py_modules=[
         "PyTrinamic/connections/connection_interface",
