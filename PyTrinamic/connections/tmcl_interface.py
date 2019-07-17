@@ -49,7 +49,7 @@ class tmcl_interface():
                 enableDebug(). In debug mode all sent and received TMCL packets
                 get dumped to stdout. The boolean _debug attribute holds the
                 current state of debug mode - subclasses may read it to print
-                futher debug output.
+                further debug output.
         """
         if not(type(hostID) == type(moduleID) == int):
             raise TypeError
