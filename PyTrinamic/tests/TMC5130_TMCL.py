@@ -11,12 +11,12 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
 from PyTrinamic.cli import select_com_port_by_name
 
-class test_TMC5130(object):
+class test_TMC5130_TMCL(object):
     __VERSION = "1.0.0"
     def __init__(self, cm):
         self.test = htf.Test(self.connectivity.with_args(_self=self), self.registers.with_args(_self=self),
             test_name="TMC5130 IC test", test_description="TMC5130 IC general test", test_version=self.__VERSION)
-        self.test.add_output_callbacks(json_factory.OutputToJSON('./{dut_id}.TMC5130.json', indent=2))
+        self.test.add_output_callbacks(json_factory.OutputToJSON('./{dut_id}.%(name)s.json' % {"name": self.__class__.__name__}, indent=2))
         self.interface = None
         self.cm = cm
         self.tmc5130 = None
@@ -47,5 +47,5 @@ class test_TMC5130(object):
             return htf.PhaseResult.REPEAT
 
 if __name__ == '__main__':
-    test = test_TMC5130(ConnectionManager())
+    test = test_TMC5130_TMCL(ConnectionManager())
     test.execute()
