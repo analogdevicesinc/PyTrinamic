@@ -100,9 +100,10 @@ class ConnectionManager():
         parser.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
                             help='TMCL module-id (default: %(default)s)')
 
-        args = parser.parse_known_args(argList if argList else sys.argv)[0]
+        if(not argList):
+            argList = sys.argv
 
-        print(args)
+        args = parser.parse_known_args(argList)[0]
 
         # Attributes
         self.__debug            = debug
