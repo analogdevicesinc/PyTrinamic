@@ -43,7 +43,7 @@ class test_TMC5130(object):
             test.logger.debug("0x{:02X}: {}".format(register, values[register]))
         test.measurements.registers_measurement = values
         _self.register_repititions = _self.register_repititions + 1
-        if(_self.register_repititions < 100):
+        if(_self.register_repititions < 1000):
             return htf.PhaseResult.REPEAT
 
 if __name__ == '__main__':

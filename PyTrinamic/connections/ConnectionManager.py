@@ -5,6 +5,7 @@ Created on 28.05.2019
 '''
 
 import sys
+import argparse
 
 from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
 from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
@@ -85,17 +86,26 @@ class ConnectionManager():
     ]
 
     def __init__(self, argList=None, debug=False):
-        # Attributes
-        self.__argList          = argList if argList else sys.argv
-        self.__debug            = debug
-        self.__strippedArgList  = []
+        parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
+        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=['dummy_tmcl', 'pcan_tmcl', 'serial_tmcl', 'uart_ic', 'usb_tmcl'], default=['usb_tmcl'],
+                            help='Connection interface (default: %(default)s)')
+        parser.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
+                            help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
+        parser.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
+                            help='Exclude ports')
+        parser.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int, default=[115200],
+                            help='Connection data-rate (default: %(default)s)')
+        parser.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
+                            help='TMCL host-id (default: %(default)s)')
+        parser.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
+                            help='TMCL module-id (default: %(default)s)')
 
-        # Storage for extracted commandline strings
-        self.__str_interface  = None
-        self.__str_port       = None
-        self.__str_data_rate  = None
-        self.__str_host_id    = None
-        self.__str_module_id  = None
+        args = parser.parse_known_args(argList if argList else sys.argv)[0]
+
+        print(args)
+
+        # Attributes
+        self.__debug            = debug
 
         # Argument storage - default parameters are set here
         self.__interface  = usb_tmcl_interface
@@ -110,125 +120,46 @@ class ConnectionManager():
             print("Commandline argument list: {0:s}".format(str(self.__argList)))
             print("Parsing {0:d} commandline arguments:".format(len(self.__argList)))
 
-        skip = 0
-        for i, arg in enumerate(self.__argList, 1):
-            if i == len(self.__argList):
-                break
-
-            if arg == "--interface":
-                if self.__str_interface:
-                    raise ValueError("Found two --interface parameters")
-
-                self.__str_interface = self.__argList[i]
-                if self.__debug:
-                    print("\tInterface:  " + self.__str_interface)
-
-                skip = 2
-
-            if arg == "--port":
-                if self.__str_port:
-                    raise ValueError("Found two --port parameters")
-
-                self.__str_port = self.__argList[i]
-                if self.__debug:
-                    print("\tPort:       " + self.__str_port)
-
-                skip = 2
-
-            if arg == "--no-port":
-                # Append the blacklisted port
-                self.__no_port += [self.__argList[i]]
-                if self.__debug:
-                    print("\tNo Port:    " + self.__argList[i])
-
-                skip = 2
-
-            if arg == "--data-rate":
-                if self.__str_data_rate:
-                    raise ValueError("Found two --data-rate parameters")
-
-                self.__str_data_rate = self.__argList[i]
-                if self.__debug:
-                    print("\tData rate:  " + self.__str_data_rate)
-
-                skip = 2
-
-            if arg == "--host-id":
-                if self.__str_host_id:
-                    raise ValueError("Found two --host-id parameters")
-
-                self.__str_host_id = self.__argList[i]
-                if self.__debug:
-                    print("\tHost ID:    " + self.__str_host_id)
-
-                skip = 2
-
-            if arg == "--module-id":
-                if self.__str_module_id:
-                    raise ValueError("Found two --module-id parameters")
-
-                self.__str_module_id = self.__argList[i]
-                if self.__debug:
-                    print("\tModule ID:  " + self.__str_module_id)
-
-            # Check if the last argument needs to be added to the stripped
-            # argument list.
-            if skip == 0:
-                self.__strippedArgList += [arg]
-            else:
-                skip -= 1;
-
-        # The loop skips the last element of the argument list.
-        # Check if that last argument needs to be added to the stripped argument
-        # list.
-        if skip == 0:
-            self.__strippedArgList += [self.__argList[-1]]
-
         if self.__debug:
             print()
 
-        ### Verify the given arguments
+        ### Interpret given arguments
         # Interface
-        if self.__str_interface:
-            for interface in self._INTERFACES:
-                if self.__str_interface == interface[0]:
-                    self.__interface = interface[1]
-                    self.__data_rate = interface[2]
-                    break
-            else:
-                # The for loop never hit the break statement -> invalid interface
-                raise ValueError("Invalid interface: {0:s}".format(self.__str_interface))
+        for interface in self._INTERFACES:
+            if args.interface[0] == interface[0]:
+                self.__interface = interface[1]
+                self.__data_rate = interface[2]
+                break;
+        else:
+            # The for loop never hit the break statement -> invalid interface
+            raise ValueError("Invalid interface: {0:s}".format(args.interface[0]))
 
         # Port
         # Any port string is valid. No check needed
-        if self.__str_port:
-            self.__port = self.__str_port
+        self.__port = args.port[0]
 
         # No-Port
-        for port in self.__no_port:
+        for port in args.exclude:
             if port in ["any", "interactive"]:
-                raise ValueError("Port blacklist (no-port) cannot use the special port: " + self.__no_port)
+                raise ValueError("Port blacklist (no-port) cannot use the special port: " + port)
 
         # Data rate
-        if self.__str_data_rate:
-            try:
-                self.__data_rate = int(self.__str_data_rate)
-            except ValueError:
-                raise ValueError("Invalid data rate: " + self.__str_data_rate)
+        try:
+            self.__data_rate = int(args.data_rate[0])
+        except ValueError:
+            raise ValueError("Invalid data rate: " + args.data_rate[0])
 
         # Host ID
-        if self.__str_host_id:
-            try:
-                self.__host_id = int(self.__str_host_id)
-            except ValueError:
-                raise ValueError("Invalid host id: " + self.__str_host_id)
+        try:
+            self.__host_id = int(args.host_id[0])
+        except ValueError:
+            raise ValueError("Invalid host id: " + args.host_id[0])
 
         # Module ID
-        if self.__str_module_id:
-            try:
-                self.__module_id = int(self.__str_module_id)
-            except ValueError:
-                raise ValueError("Invalid module id: " + self.__str_module_id)
+        try:
+            self.__module_id = int(args.module_id[0])
+        except ValueError:
+            raise ValueError("Invalid module id: " + args.module_id[0])
 
         if self.__debug:
             print("Connection parameters:")
@@ -239,8 +170,6 @@ class ConnectionManager():
             print("\tHost ID:    " + str(self.__host_id))
             print("\tModule ID:  " + str(self.__module_id))
             print()
-
-            print("Leftover commandline arguments: " + str(self.__strippedArgList))
 
     def connect(self):
         """
