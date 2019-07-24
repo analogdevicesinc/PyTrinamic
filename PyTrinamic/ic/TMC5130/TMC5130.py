@@ -74,3 +74,5 @@ class TMC5130():
         self.moveTo(motor, position + distance, velocity)
 
         return position + distance
+
+    def get_pin_state(self):

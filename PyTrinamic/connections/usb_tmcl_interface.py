@@ -19,7 +19,7 @@ class usb_tmcl_interface(serial_tmcl_interface):
     """
 
     # USB Vendor and Product IDs
-    _USB_IDS = [
+    __USB_IDS = [
         { # Landungsbrücke
             "VID": 0x2A3C,
             "PID": 0x0700
@@ -39,7 +39,7 @@ class usb_tmcl_interface(serial_tmcl_interface):
     ]
 
     def __init__(self, comPort, datarate=115200, hostID=2, moduleID=1, debug=False):
-        serial_tmcl_interface.__init__(self, comPort, datarate, hostID, moduleID, debug)
+        super().__init__(self, comPort, datarate, hostID, moduleID, debug)
 
     def printInfo(self):
         print("Connection: type=usb_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
@@ -54,7 +54,7 @@ class usb_tmcl_interface(serial_tmcl_interface):
         """
         connected = []
         for element in sorted(serial.tools.list_ports.comports()):
-            for entry in usb_tmcl_interface._USB_IDS:
+            for entry in usb_tmcl_interface.__USB_IDS:
                 if entry["VID"] == element.vid and entry["PID"] == element.pid:
                     connected.append(element.device)
 

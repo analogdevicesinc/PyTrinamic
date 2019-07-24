@@ -31,6 +31,7 @@ class test_TMC5130_TMCL(object):
         self.__register_tests = int(args.register_tests[0])
         self.__tmc5130 = None
         self.__register_repititions = 0
+        self.__default_pins_repititions = 0
     def execute(self):
         self.__test.execute(test_start=user_input.prompt_for_test_start())
     @htf.measures(htf.Measurement('connectivity_measurement'))
@@ -40,9 +41,25 @@ class test_TMC5130_TMCL(object):
         test.logger.info("Instantiating chip")
         _self.__tmc5130 = TMC5130_eval(_self.__interface)
         test.measurements.connectivity_measurement = 'Connectivity measurement stub'
-    @htf.measures(htf.Measurement('pin_state_default_measurement'))
+    @htf.measures(htf.Measurement('pin_default_states').ValuesEqualDict({
+        
+        TMC5130_register.IHOLD_IRUN  : 464643,
+        TMC5130_register.MSLUT0      : 2863314260,
+        TMC5130_register.MSLUT1      : 1251300522,
+        TMC5130_register.MSLUT2      : 608774441,
+        TMC5130_register.MSLUT3      : 269500962,
+        TMC5130_register.MSLUT4      : 4227858431,
+        TMC5130_register.MSLUT5      : 3048961917,
+        TMC5130_register.MSLUT6      : 1227445590,
+        TMC5130_register.MSLUT7      : 4211234,
+        TMC5130_register.MSLUTSEL    : 4294934614,
+        TMC5130_register.MSLUTSTART  : 1618739,
+        TMC5130_register.MSCNT       : 0,
+        TMC5130_register.MSCURACT    : 0
+    }))
     def pin_state_default(test, _self):
-        pin_states = []
+        pin_states = {}
+
         _self.__interface.globalParameter()
     @htf.measures(htf.Measurement('registers').ValuesEqualDict({
         TMC5130_register.IHOLD_IRUN  : 464643,

@@ -16,6 +16,23 @@ class TMC5130_eval(TMC5130):
     requirements.
     """
 
+    __PIN_MAP = [
+        # (pin_ic, pin_board)
+        (2, 15),
+        (3, 22),
+        (4, 23),
+        (5, 24),
+        (7, 25),
+        (8, 9),
+        (9, 10),
+        (23, 4),
+        (24, 6),
+        (25, 5),
+        (26, 30),
+        (27, 29),
+        (28, 28)
+    ]
+
     def __init__(self, connection, moduleID=1):
         """
         Parameters:
