@@ -4,7 +4,7 @@ Created on 30.12.2018
 @author: ED
 '''
 import setuptools
-from PyTrinamic import __version__
+from PyTrinamic.version import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -67,7 +67,8 @@ setuptools.setup(
         "PyTrinamic/modules/TMCM_1670",
         "PyTrinamic/modules/TMCM_6212",
         "PyTrinamic/helpers",
-        "PyTrinamic/cli"
+        "PyTrinamic/cli",
+        "PyTrinamic/version"
     ],
     scripts=[
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_ABN_encoder_offset_estimation.py",
