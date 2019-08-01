@@ -76,3 +76,4 @@ class TMC5130():
         return position + distance
 
     def get_pin_state(self):
+        pass
