@@ -66,8 +66,6 @@ class tmcl_interface():
         self._HOST_ID    = hostID
         self._MODULE_ID  = moduleID
         self._debug      = debug
-        self.versionString = self.getVersionString(moduleID)
-        print(self.versionString)
 
     def _send(self, hostID, moduleID, data):
         """
