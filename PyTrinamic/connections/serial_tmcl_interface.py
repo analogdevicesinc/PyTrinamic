@@ -17,7 +17,7 @@ class serial_tmcl_interface(tmcl_interface):
         if type(comPort) != str:
             raise TypeError;
 
-        super().__init__(self, hostID, moduleID, debug)
+        super().__init__(hostID, moduleID, debug)
 
         self._baudrate = datarate
 
