@@ -41,6 +41,14 @@ class TMCL_Command:
     AAP                         = 34
     AGP                         = 35
     CLE                         = 36
+    TMCL_UF0                    = 64
+    TMCL_UF1                    = 65
+    TMCL_UF2                    = 66
+    TMCL_UF3                    = 67
+    TMCL_UF4                    = 68
+    TMCL_UF5                    = 69
+    TMCL_UF6                    = 70
+    TMCL_UF7                    = 71
     STOP_APPLICATION            = 128
     RUN_APPLICATION             = 129
     STEP_APPLICATION            = 130
