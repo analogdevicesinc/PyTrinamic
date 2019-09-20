@@ -10,10 +10,9 @@ Created on 07.06.2019
 @author: LH
 '''
 
-import sys
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 
-connectionManager = ConnectionManager(sys.argv, debug=False)
+connectionManager = ConnectionManager()
 
 myInterface = connectionManager.connect()
 print(myInterface.getVersionString())
