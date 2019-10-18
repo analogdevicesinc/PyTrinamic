@@ -23,7 +23,7 @@ TMC2130 = TMC2130_eval(myInterface)
 DEFAULT_MOTOR = 0
 
 print("Rotating")
-TMC2130.rotate(DEFAULT_MOTOR, 20*25600)
+TMC2130.rotate(DEFAULT_MOTOR, 10*25600)
 
 time.sleep(2);
 
@@ -36,7 +36,7 @@ print("Moving back to 0")
 TMC2130.moveTo(DEFAULT_MOTOR, 0, 10000)
  
 # Wait until position 0 is reached
-while TMC2130.getAxisParameter(TMC2130.APs.ACTUAL_POSITION, DEFAULT_MOTOR) != 0:
+while TMC2130.getAxisParameter(TMC2130.APs.ActualPosition, DEFAULT_MOTOR) != 0:
     pass
 
 print("Reached Position 0")

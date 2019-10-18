@@ -57,18 +57,12 @@ class TMC2130_eval(TMC2130):
     def getAxisParameter(self, apType, axis):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
-        
-        if not apType in self.APs._list:
-            raise ValueError("Invalid axis parameter")
 
         return self.__connection.axisParameter(apType, axis)
 
     def setAxisParameter(self, apType, axis, value):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
-
-        if not apType in self.APs._list:
-            raise ValueError("Invalid axis parameter")
 
         self.__connection.setAxisParameter(apType, axis, value)
 
@@ -85,99 +79,52 @@ class TMC2130_eval(TMC2130):
     
     def moveTo(self, motor, position, velocity):
         # Set maximum positioning velocity
-        self.setAxisParameter(self.APs.MAXIMUM_SPEED, motor, velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, motor, velocity)
         
         self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
 
 class _APs():
-    TARGET_POSITION                           =  0
-    ACTUAL_POSITION                           =  1
-    TARGET_SPEED                              =  2
-    ACTUAL_SPEED                              =  3
-    MAXIMUM_SPEED                             =  4
-    MAXIMUM_ACCELERATION                      =  5
-    MAXIMUM_CURRENT                           =  6
-    STANDBY_CURRENT                           =  7
-    POSITION_REACHED_FLAG                     =  8
-    SPEED_THRESHHOLD_FOR_HIGHSPEED_MODE       = 23
-    MINIMUM_SPEED_FOR_SWITCHING_TO_DCSTEP     = 24
-    HIGH_SPEED_FULLSTEP_MODE                  = 26
-    HIGH_SPEED_CHOPPER_MODE                   = 27
-    INTERNAL_RSENSE                           = 28
-    MEASURED_SPEED                            = 29
-    STEP_DIR_SOURCE                           = 50
-    STEP_DIR_FREQUENCY                        = 51
-    MICROSTEP_RESOLUTION                      = 140
-    CHOPPER_BLANK_TIME                        = 162
-    CONSTANT_TOFF_MODE                        = 163
-    DISABLE_FAST_DECAY_COMPARATOR             = 164
-    CHOPPER_HYSTERESIS_END_FAST_DECAY_TIME    = 165
-    CHOPPER_HYSTERESIS_START_SINE_WAVE_OFFSET = 166
-    CHOPPER_OFF_TIME                          = 167
-    SMART_ENERGY_CURRENT_MINIMUM              = 168
-    SMART_ENERGY_CURRENT_DOWN_STEP            = 169
-    SMART_ENERGY_HYSTERESIS                   = 170
-    SMART_ENERGY_CURRENT_UP_STEP              = 171
-    SMART_ENERGY_HYSTERESIS_START             = 172
-    STALL_GUARD2_FILTER_ENABLE                = 173
-    STALL_GUARD2_THRESHOLD                    = 174
-    VSENSE                                    = 179
-    SMART_ENERGY_ACTUAL_CURRENT               = 180
-    SMART_ENERGY_STALL_VELOCITY               = 181
-    SMART_ENERGY_THRESHOLD_SPEED              = 182
-    RANDOM_TOFF_MODE                          = 184
-    CHOPPER_SYNCHRONIZATION                   = 185
-    PWM_TRESHOLD_SPEED                        = 186
-    PWM_GRADIENT                              = 187
-    PWM_AMPLITUDE                             = 188
-    PWM_FREQUENCY                             = 191
-    PWM_AUTOSCALE                             = 192
-    FREEWHEELING_MODE                         = 204
-    LOAD_VALUE                                = 206
-    
-    _list = (
-        TARGET_POSITION                           ,
-        ACTUAL_POSITION                           ,
-        TARGET_SPEED                              ,
-        ACTUAL_SPEED                              ,
-        MAXIMUM_SPEED                             ,
-        MAXIMUM_ACCELERATION                      ,
-        MAXIMUM_CURRENT                           ,
-        STANDBY_CURRENT                           ,
-        POSITION_REACHED_FLAG                     ,
-        SPEED_THRESHHOLD_FOR_HIGHSPEED_MODE       ,
-        MINIMUM_SPEED_FOR_SWITCHING_TO_DCSTEP     ,
-        HIGH_SPEED_FULLSTEP_MODE                  ,
-        HIGH_SPEED_CHOPPER_MODE                   ,
-        INTERNAL_RSENSE                           ,
-        MEASURED_SPEED                            ,
-        STEP_DIR_SOURCE                           ,
-        STEP_DIR_FREQUENCY                        ,
-        MICROSTEP_RESOLUTION                      ,
-        CHOPPER_BLANK_TIME                        ,
-        CONSTANT_TOFF_MODE                        ,
-        DISABLE_FAST_DECAY_COMPARATOR             ,
-        CHOPPER_HYSTERESIS_END_FAST_DECAY_TIME    ,
-        CHOPPER_HYSTERESIS_START_SINE_WAVE_OFFSET ,
-        CHOPPER_OFF_TIME                          ,
-        SMART_ENERGY_CURRENT_MINIMUM              ,
-        SMART_ENERGY_CURRENT_DOWN_STEP            ,
-        SMART_ENERGY_HYSTERESIS                   ,
-        SMART_ENERGY_CURRENT_UP_STEP              ,
-        SMART_ENERGY_HYSTERESIS_START             ,
-        STALL_GUARD2_FILTER_ENABLE                ,
-        STALL_GUARD2_THRESHOLD                    ,
-        VSENSE                                    ,
-        SMART_ENERGY_ACTUAL_CURRENT               ,
-        SMART_ENERGY_STALL_VELOCITY               ,
-        SMART_ENERGY_THRESHOLD_SPEED              ,
-        RANDOM_TOFF_MODE                          ,
-        CHOPPER_SYNCHRONIZATION                   ,
-        PWM_TRESHOLD_SPEED                        ,
-        PWM_GRADIENT                              ,
-        PWM_AMPLITUDE                             ,
-        PWM_FREQUENCY                             ,
-        PWM_AUTOSCALE                             ,
-        FREEWHEELING_MODE                         ,
-        LOAD_VALUE                                ,
-        )
+    TargetPosition = 0
+    ActualPosition = 1
+    TargetVelocity = 2
+    ActualVelocity = 3
+    MaxVelocity = 4
+    MaxAcceleration = 5
+    MaxCurrent = 6
+    StandbyCurrent = 7
+    PositionReachedFlag = 8
+    THIGH = 23
+    VDCMIN = 24
+    HighSpeedFullstepMode = 26
+    HighSpeedChopperMode = 27
+    internal_Rsense = 28
+    MeasuredSpeed = 29
+    StepDirSource = 50
+    StepDirFrequency = 51
+    MicrostepResolution = 140
+    ChopperBlankTime = 162
+    ConstantTOffMode = 163
+    DisableFastDecayComparator = 164
+    ChopperHysteresisEnd = 165
+    ChopperHysteresisStart = 166
+    TOff = 167
+    SEIMIN = 168
+    SECDS = 169
+    smartEnergyHysteresis = 170
+    SECUS = 171
+    smartEnergyHysteresisStart = 172
+    SG2FilterEnable = 173
+    SG2Threshold = 174
+    VSense = 179
+    smartEnergyActualCurrent = 180
+    smartEnergyStallVelocity = 181
+    smartEnergyThresholdSpeed = 182
+    RandomTOffMode = 184
+    ChopperSynchronization = 185
+    PWMThresholdSpeed = 186
+    PWMGrad = 187
+    PWMAmplitude = 188
+    PWMFrequency = 191
+    PWMAutoscale = 192
+    FreewheelingMode = 204
+    LoadValue = 206

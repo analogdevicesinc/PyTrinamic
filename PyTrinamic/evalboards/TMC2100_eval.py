@@ -57,18 +57,12 @@ class TMC2100_eval(TMC2100):
     def getAxisParameter(self, apType, axis):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
-        
-        if not apType in self.APs._list:
-            raise ValueError("Invalid axis parameter")
 
         return self.__connection.axisParameter(apType, axis)
 
     def setAxisParameter(self, apType, axis, value):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
-
-        if not apType in self.APs._list:
-            raise ValueError("Invalid axis parameter")
 
         self.__connection.setAxisParameter(apType, axis, value)
 
@@ -84,40 +78,23 @@ class TMC2100_eval(TMC2100):
      
     def moveTo(self, motor, position, velocity):
         # Set maximum positioning velocity
-        self.setAxisParameter(self.APs.MAXIMUM_SPEED, motor, velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, motor, velocity)
         
         self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
 
 class _APs():
-    TARGET_POSITION                               =  0
-    ACTUAL_POSITION                               =  1
-    TARGET_SPEED                                  =  2
-    ACTUAL_SPEED                                  =  3
-    MAXIMUM_SPEED                                 =  4
-    MAXIMUM_ACCELERATION                          =  5
-    POSITION_REACHED_FLAG                         =  8
-    CHOPPER_OFF_TIME                              = 14
-    MICROSTEP_RESOLUTION_INTERPLATION_AND_CHOPPER = 15
-    MAXIMUM_CURRENT                               = 16
-    CHOPPER_HYSTERESIS                            = 17
-    CHOPPER_BLANK_TIME                            = 18
-    POWER_DOWN_DELAY                              = 19
-    MICROSTEP_RESOLUTION                          = 140
-    
-    _list = (
-        TARGET_POSITION                               ,
-        ACTUAL_POSITION                               ,
-        TARGET_SPEED                                  ,
-        ACTUAL_SPEED                                  ,
-        MAXIMUM_SPEED                                 ,
-        MAXIMUM_ACCELERATION                          ,
-        POSITION_REACHED_FLAG                         ,
-        CHOPPER_OFF_TIME                              ,
-        MICROSTEP_RESOLUTION_INTERPLATION_AND_CHOPPER ,
-        MAXIMUM_CURRENT                               ,
-        CHOPPER_HYSTERESIS                            ,
-        CHOPPER_BLANK_TIME                            ,
-        POWER_DOWN_DELAY                              ,
-        MICROSTEP_RESOLUTION                          ,
-        )
+    TargetPosition = 0
+    ActualPosition = 1
+    TargetVelocity = 2
+    ActualVelocity = 3
+    MaxVelocity = 4
+    MaxAcceleration = 5
+    PositionReachedFlag = 8
+    TOff = 14
+    MicrostepResoIntChopper = 15
+    MaxCurrent = 16
+    ChopperHysteresis = 17
+    ChopperBlankTime = 18
+    PowerDownDelay = 19
+    MicrostepResolution = 140
 
