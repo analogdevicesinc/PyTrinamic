@@ -21,7 +21,7 @@ PyTrinamic.showInfo()
 
 TMC5072 = TMC5072_eval(myInterface)
 
-DEFAULT_MOTOR = 1
+DEFAULT_MOTOR = 0
 
 print("Preparing parameters")
 TMC5072.writeRegister(TMC5072.registers.A1[DEFAULT_MOTOR], 1000)
@@ -46,7 +46,8 @@ print("Moving back to 0")
 TMC5072.moveTo(DEFAULT_MOTOR, 0, 100000)
 
 # Wait until position 0 is reached
-while TMC5072.readRegister(TMC5072.registers.XACTUAL[DEFAULT_MOTOR]) != 0:
+#while TMC5072.readRegister(TMC5072.registers.XACTUAL[DEFAULT_MOTOR]) != 0:
+while TMC5072.getAxisParameter(TMC5072.APs.ActualPosition, DEFAULT_MOTOR) != 0:
     pass
 
 print("Reached Position 0")

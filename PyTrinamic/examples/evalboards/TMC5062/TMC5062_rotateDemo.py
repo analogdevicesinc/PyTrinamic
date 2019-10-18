@@ -45,7 +45,8 @@ print("Moving back to 0")
 TMC5062.moveTo(DEFAULT_MOTOR, 0, 100000)
 
 # Wait until position 0 is reached
-while TMC5062.readRegister(TMC5062.registers.XACTUAL[DEFAULT_MOTOR]) != 0:
+#while TMC5062.readRegister(TMC5062.registers.XACTUAL[DEFAULT_MOTOR]) != 0:
+while TMC5062.getAxisParameter(TMC5062.APs.ActualPosition, DEFAULT_MOTOR) != 0:
     pass
 
 print("Reached Position 0")
