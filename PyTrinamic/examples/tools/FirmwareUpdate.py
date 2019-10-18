@@ -216,7 +216,7 @@ if not(((mem_page_size & (mem_page_size - 1)) == 0) and mem_page_size != 0):
 
 # Check if the start addresses match
 if start_address != mem_start_address:
-    print("Error: Start address of firmware does not match start address of bootloader")
+    print("Error: Start address of firmware (0x{0:08X}) does not match start address of bootloader (0x{1:08X})".format(start_address, mem_start_address))
     exit(1)
 
 ############################### Firmware upload ################################
