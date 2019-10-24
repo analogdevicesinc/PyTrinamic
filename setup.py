@@ -33,6 +33,7 @@ setuptools.setup(
         "PyTrinamic/connections/uart_ic_interface",
         "PyTrinamic/connections/usb_tmcl_interface",
         "PyTrinamic/evalboards/eval_interface",
+        "PyTrinamic/evalboards/TMC2041_eval",
         "PyTrinamic/evalboards/TMC2100_eval",
         "PyTrinamic/evalboards/TMC2130_eval",
         "PyTrinamic/evalboards/TMC2160_eval",
@@ -47,6 +48,10 @@ setuptools.setup(
         "PyTrinamic/evalboards/TMC5160_eval",
         "PyTrinamic/evalboards/TMC6200_eval",
         "PyTrinamic/ic/ic_interface",
+        "PyTrinamic/ic/TMC2041/TMC2041_fields",
+        "PyTrinamic/ic/TMC2041/TMC2041_register_variant",
+        "PyTrinamic/ic/TMC2041/TMC2041_register",
+        "PyTrinamic/ic/TMC2041/TMC2041",
         "PyTrinamic/ic/TMC2100/TMC2100_fields",
         "PyTrinamic/ic/TMC2100/TMC2100_register_variant",
         "PyTrinamic/ic/TMC2100/TMC2100_register",
@@ -111,6 +116,8 @@ setuptools.setup(
         "PyTrinamic/version"
     ],
     scripts=[
+        "PyTrinamic/examples/evalboards/TMC2041/TMC2041_eval_register_dump.py",
+        "PyTrinamic/examples/evalboards/TMC2041/TMC2041_rotateDemo.py",
         "PyTrinamic/examples/evalboards/TMC2100/TMC2100_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC2100/TMC2100_rotateDemo.py",
         "PyTrinamic/examples/evalboards/TMC2130/TMC2130_eval_register_dump.py",
