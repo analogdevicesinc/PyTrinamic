@@ -9,3 +9,7 @@ class TMC2100_register:
     Define all registers of the TMC2100.
     """
     GCONF = 0x00
+    
+    list = [
+        GCONF       ,
+    ]
