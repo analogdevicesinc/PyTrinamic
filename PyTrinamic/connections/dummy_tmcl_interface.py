@@ -25,6 +25,9 @@ class dummy_tmcl_interface(tmcl_interface):
             print("\tHost ID:    " + str(hostID))
             print("\tModule ID:  " + str(moduleID))
 
+    def supportsTMCL(self):
+        return True
+
     def close(self):
         """
         Closes the dummy TMCL connection

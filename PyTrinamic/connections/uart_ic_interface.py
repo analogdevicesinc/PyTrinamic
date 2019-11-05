@@ -44,6 +44,9 @@ class uart_ic_interface(connection_interface):
         self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
 
+    def supportsTMCL(self):
+        return False
+
     def printInfo(self):
         print("Connection: type=uart_ic_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
 

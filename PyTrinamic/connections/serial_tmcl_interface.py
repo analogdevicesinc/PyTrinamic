@@ -29,6 +29,9 @@ class serial_tmcl_interface(tmcl_interface):
         if self._debug:
             print("Open port: " + self._serial.portstr)
 
+    def supportsTMCL(self):
+        return True
+
     def close(self):
         if self._debug:
             print("Close port: " + self._serial.portstr)

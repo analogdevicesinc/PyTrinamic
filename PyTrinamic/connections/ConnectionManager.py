@@ -273,6 +273,8 @@ if __name__ == "__main__":
 
     print("Verifying interfaces list...\n")
     for interface in ConnectionManager._INTERFACES:
+        if not hasattr(interface[1], "supportsTMCL"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the supportsTMCL() function")
         if not hasattr(interface[1], "close"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
         if not hasattr(interface[1], "list"):
