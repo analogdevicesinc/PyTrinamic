@@ -76,9 +76,10 @@ class TMC2100_eval(TMC2100):
     def stop(self, motor):
         self.__connection.stop(motor, moduleID=self._MODULE_ID)
      
-    def moveTo(self, motor, position, velocity):
-        # Set maximum positioning velocity
-        self.setAxisParameter(self.APs.TargetVelocity, motor, velocity)
+    def moveTo(self, motor, position, velocity=None):
+        if velocity and velocity != 0:
+            # Set maximum positioning velocity
+            self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
         
         self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
 
