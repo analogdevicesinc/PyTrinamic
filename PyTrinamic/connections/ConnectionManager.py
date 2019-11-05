@@ -93,7 +93,7 @@ class ConnectionManager():
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
         parser.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
                             help='Exclude ports')
-        parser.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int, default=[115200],
+        parser.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
                             help='Connection data-rate (default: %(default)s)')
         parser.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
                             help='TMCL host-id (default: %(default)s)')
@@ -149,6 +149,9 @@ class ConnectionManager():
             self.__data_rate = int(args.data_rate[0])
         except ValueError:
             raise ValueError("Invalid data rate: " + args.data_rate[0])
+        except TypeError:
+            # No data rate has been set -> keep old value
+            pass
 
         # Host ID
         try:
