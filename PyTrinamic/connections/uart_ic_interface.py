@@ -6,6 +6,7 @@ Created on 03.01.2019
 
 import struct
 from serial import Serial
+import serial.tools.list_ports;
 from PyTrinamic.helpers import TMC_helpers
 from PyTrinamic.connections.connection_interface import connection_interface
 
@@ -36,9 +37,10 @@ class Register_Reply(object):
 
 class uart_ic_interface(connection_interface):
 
-    def __init__(self, comPort):
-        self.debugEnabled = False
-        self.baudrate = 9600
+    def __init__(self, comPort, datarate=9600, hostID=None, moduleID=None, debug=False):
+        del hostID, moduleID
+        self.debugEnabled = debug
+        self.baudrate = datarate
         self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
 
@@ -82,3 +84,17 @@ class uart_ic_interface(connection_interface):
 
     def readRegisterField(self, registerAddress, mask, shift):
         return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
+
+    @staticmethod
+    def list():
+        """
+            Return a list of available connection ports as a list of strings.
+
+            This function is required for using this interface with the
+            connection manager.
+        """
+        connected = []
+        for element in sorted(serial.tools.list_ports.comports()):
+            connected.append(element.device)
+
+        return connected
