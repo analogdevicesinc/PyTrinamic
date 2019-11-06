@@ -30,7 +30,7 @@ class tmcl_interface():
     A subclass may read the _HOST_ID and _MODULE_ID parameters.
     """
 
-    def __init__(self, hostID=2, moduleID=1, debug=False):
+    def __init__(self, hostID=2, defaultModuleID=1, debug=False):
         """
         Parameters:
             hostID:
@@ -51,20 +51,20 @@ class tmcl_interface():
                 current state of debug mode - subclasses may read it to print
                 further debug output.
         """
-        if not(type(hostID) == type(moduleID) == int):
+        if not(type(hostID) == type(defaultModuleID) == int):
             raise TypeError
 
         if not(0 <= hostID < 256):
             raise ValueError("Incorrect Host ID value")
 
-        if not(0 <= moduleID < 256):
-            raise ValueError("Incorrect Module ID value")
+        if not(0 <= defaultModuleID < 256):
+            raise ValueError("Incorrect defaultModule ID value")
 
         if not type(debug) == bool:
             raise TypeError
 
         self._HOST_ID    = hostID
-        self._MODULE_ID  = moduleID
+        self._MODULE_ID  = defaultModuleID
         self._debug      = debug
 
     def _send(self, hostID, moduleID, data):
