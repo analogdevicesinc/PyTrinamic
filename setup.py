@@ -146,7 +146,6 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC5130/TMC5130_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC5130/TMC5130_MicroStep.py",
         "PyTrinamic/examples/evalboards/TMC5160/TMC5160_eval_register_dump.py",
-        "PyTrinamic/examples/evalboards/TMC5160/TMC5160_MicroStep.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM-0010-OPC_config_check.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM-0010-OPC_config_update.py",
         "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_rotateDemo.py",
