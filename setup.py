@@ -133,6 +133,7 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_ABN_encoder_offset_estimation.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_ABN_encoder.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_open_loop.py",
+        "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_TMC6200_eval_BLDC_ABN_encoder.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_TMC6200_eval_BLDC_open_loop.py",
         "PyTrinamic/examples/evalboards/TMC5041/TMC5041_eval_register_dump.py",
