@@ -37,15 +37,16 @@ class Register_Reply(object):
 
 class uart_ic_interface(connection_interface):
 
-    def __init__(self, comPort, datarate=9600, hostID=None, moduleID=None, debug=False):
-        del hostID, moduleID
+    def __init__(self, comPort, datarate=9600, debug=False):
         self.debugEnabled = debug
         self.baudrate = datarate
         self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
 
-    def supportsTMCL(self):
-        return False
+    def send_datagram(self, data, recv_size , channel):
+        del channel
+        self.serial.write(data)
+        return self.serial.read(recv_size)
 
     def printInfo(self):
         print("Connection: type=uart_ic_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
@@ -87,6 +88,10 @@ class uart_ic_interface(connection_interface):
 
     def readRegisterField(self, registerAddress, mask, shift):
         return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
+
+    @staticmethod
+    def supportsTMCL():
+        return False
 
     @staticmethod
     def list():

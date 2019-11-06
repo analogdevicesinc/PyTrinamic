@@ -41,11 +41,12 @@ class usb_tmcl_interface(serial_tmcl_interface):
     def __init__(self, comPort, datarate=115200, hostID=2, moduleID=1, debug=False):
         super().__init__(comPort, datarate, hostID, moduleID, debug)
 
-    def supportsTMCL(self):
-        return True
-
     def printInfo(self):
         print("Connection: type=usb_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
+
+    @staticmethod
+    def supportsTMCL():
+        return True
 
     @staticmethod
     def list():

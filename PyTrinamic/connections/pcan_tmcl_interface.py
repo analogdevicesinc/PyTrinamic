@@ -64,9 +64,6 @@ class pcan_tmcl_interface(tmcl_interface):
         if self.__debug:
             print("Opened bus on channel " + self.__channel)
 
-    def supportsTMCL(self):
-        return True
-
     def close(self):
         if self.__debug:
             print("Closing PCAN bus")
@@ -120,6 +117,10 @@ class pcan_tmcl_interface(tmcl_interface):
 
     def enableDebug(self, enable):
         self.__debug = enable
+
+    @staticmethod
+    def supportsTMCL():
+        return True
 
     @staticmethod
     def list():

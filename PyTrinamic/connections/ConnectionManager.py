@@ -215,7 +215,12 @@ class ConnectionManager():
                 # Not a number -> port string gets passed to interface directly
                 port = self.__port
         try:
-            self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=self.__debug)
+            if self.__interface.supportsTMCL():
+                # Open the connection to a TMCL interface
+                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=self.__debug)
+            else:
+                # Open the connection to a direct IC interface
+                self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
         except ConnectionError as e:
             raise ConnectionError("Couldn't connect to port " + port + ". Connection failed.") from e
 
