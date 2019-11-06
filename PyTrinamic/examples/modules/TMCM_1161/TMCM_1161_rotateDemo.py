@@ -8,13 +8,14 @@ Created on 22.05.2019
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM_1161 import TMCM_1161
 import time
 
 PyTrinamic.showInfo()
 
-myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMCM_1161 = TMCM_1161(myInterface)
 
 DEFAULT_MOTOR = 0

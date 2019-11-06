@@ -9,13 +9,13 @@ if __name__ == '__main__':
     pass
 
 import PyTrinamic
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM_0010_OPC import TMCM_0010_OPC
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts(Serial=True)
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 
-myInterface = serial_tmcl_interface('COM15')
 brakeChopper = TMCM_0010_OPC(myInterface)
 
 " enable break chopper "

@@ -11,13 +11,13 @@ Created on 09.01.2019
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from PyTrinamic.cli import select_com_port_by_name
 
 PyTrinamic.showInfo()
 
-myInterface = serial_tmcl_interface(PyTrinamic.getComPort(name=select_com_port_by_name(USB=True), return_default=False, USB=True))
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMC5130 = TMC5130_eval(myInterface)
 
 print("GCONF:       0x{0:08X}".format(TMC5130.readRegister(TMC5130.registers.GCONF)))

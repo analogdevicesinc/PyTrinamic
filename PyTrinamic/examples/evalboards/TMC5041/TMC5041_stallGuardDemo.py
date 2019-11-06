@@ -14,10 +14,14 @@ Created on 29.04.2019
 @author: LH
 '''
 
-import PyTrinamic
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
-from PyTrinamic.evalboards.TMC5041_eval import TMC5041_eval
 import time
+import PyTrinamic
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.evalboards.TMC5041_eval import TMC5041_eval
+
+connectionManager = ConnectionManager()
+
+myInterface = connectionManager.connect()
 
 ### Parameters #################################################################
 
@@ -42,7 +46,6 @@ PyTrinamic.showInfo()
 
 # Initialization
 
-myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))
 TMC5041 = TMC5041_eval(myInterface)
 
 ### Configuration

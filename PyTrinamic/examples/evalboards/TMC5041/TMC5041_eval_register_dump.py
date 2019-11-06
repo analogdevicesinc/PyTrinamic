@@ -11,13 +11,13 @@ Created on 09.01.2019
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC5041_eval import TMC5041_eval
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts(USB=True)
 
-myInterface = serial_tmcl_interface(PyTrinamic.firstAvailableComPort(USB=True))
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMC5041 = TMC5041_eval(myInterface)
 
 print("GCONF:          0x{0:08X}".format(TMC5041.readRegister(TMC5041.registers.GCONF)))

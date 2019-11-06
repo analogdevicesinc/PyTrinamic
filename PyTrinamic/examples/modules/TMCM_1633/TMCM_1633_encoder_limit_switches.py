@@ -10,14 +10,12 @@ if __name__ == '__main__':
 
 import time
 import PyTrinamic
-from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM_1633 import TMCM_1633
 
 PyTrinamic.showInfo()
-PyTrinamic.showAvailableComPorts(CAN=True)
-
-# for peak can connection
-myInterface = pcan_tmcl_interface('PCAN_USBBUS1', 1000000)
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 
 module = TMCM_1633(myInterface)
 
