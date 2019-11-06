@@ -47,7 +47,7 @@ class TMC5041_eval(TMC5041):
             raise ValueError
 
         self.__connection.rotate(motor, value)
-    
+
     def stop(self, motor):
         self.__connection.stop(motor)
 
@@ -55,7 +55,7 @@ class TMC5041_eval(TMC5041):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
             self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
-        
+
         self.__connection.move(0, motor, position)
 
 class _APs():

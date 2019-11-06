@@ -12,7 +12,6 @@ import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC2130_eval import TMC2130_eval
 
-
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
