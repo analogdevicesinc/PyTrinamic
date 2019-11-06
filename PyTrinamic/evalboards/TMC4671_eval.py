@@ -4,15 +4,14 @@ Created on 02.01.2019
 @author: ED
 '''
 
-from PyTrinamic.evalboards.eval_interface import eval_interface
 from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671
-from PyTrinamic.helpers import TMC_helpers
 
-class TMC4671_eval(eval_interface):
+class TMC4671_eval(TMC4671):
 
-    def __init__(self, connection):
+    def __init__(self, connection, moduleID=1):
         self.connection = connection
-        self.tmc4671 = TMC4671(self)
+        
+        TMC4671.__init__(self, connection=None, channel=0)
 
     def register(self):
         return self.tmc4671.register()
@@ -27,14 +26,12 @@ class TMC4671_eval(eval_interface):
         return self.tmc4671
 
     " register access: use Landungsbrücke/Startrampe with MC channel"
-    def writeRegister(self, registerAddress, value):
+    def writeRegister(self, registerAddress, value , channel=0):
+        if channel != 0:
+            raise ValueError
         return self.connection.writeMC(registerAddress, value)
 
-    def readRegister(self, registerAddress, signed=False):
+    def readRegister(self, registerAddress, channel=0, signed=False):
+        if channel != 0:
+            raise ValueError
         return self.connection.readMC(registerAddress, signed=signed)
-
-    def writeRegisterField(self, registerAddress, value, mask, shift):
-        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
-
-    def readRegisterField(self, registerAddress, mask, shift):
-        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)

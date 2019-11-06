@@ -1,13 +1,13 @@
 '''
 Created on 02.01.2019
 
-@author: ed
+@author: ED
 '''
 
 class TMC4671_register:
-
-    " ===== TMC4671 register set ===== "
-
+    """
+    Define all registers of the TMC4671.
+    """
     CHIPINFO_DATA                       = 0x00
     CHIPINFO_ADDR                       = 0x01
 

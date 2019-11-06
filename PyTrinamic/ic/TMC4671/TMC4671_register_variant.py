@@ -1,7 +1,7 @@
 '''
 Created on 15.02.2019
 
-@author: ed
+@author: ED
 '''
 
 class TMC4671_register_variant:
