@@ -4,43 +4,63 @@ Created on 06.03.2019
 @author: ED
 '''
 
-from PyTrinamic.ic.ic_interface import ic_interface
+import struct
 from PyTrinamic.ic.TMC6200.TMC6200_register import TMC6200_register
 from PyTrinamic.ic.TMC6200.TMC6200_register_variant import TMC6200_register_variant
 from PyTrinamic.ic.TMC6200.TMC6200_fields import TMC6200_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC6200(ic_interface):
+DATAGRAM_FORMAT = ">BI"
+DATAGRAM_LENGTH = 5
 
-    def __init__(self, parent):
-        self.parent = parent
-        self.tmc6200_reg = TMC6200_register()
-        self.tmc6200_var = TMC6200_register_variant()
-        self.tmc6200_ms = TMC6200_fields()
+class TMC6200():
+    """
+    Class for the TMC6200 IC
+    """
+    def __init__(self, connection, channel=0):
+        self.__connection = connection
+        self.__channel    = channel
 
-    def register(self):
-        return self.tmc6200_reg
+        self.registers    = TMC6200_register
+        self.fields       = TMC6200_fields
+        self.variants     = TMC6200_register_variant
 
-    def variants(self):
-        return self.tmc6200_var
-
-    def maskShift(self):
-        return self.tmc6200_ms;
+        self.MOTORS       = 1
 
     def showChipInfo(self):
         print("TMC6200 chip info:")
         print("VERSION:    " + hex(self.readRegister(self.tmc6200_reg.IOIN_OUTPUT) >> 24))
+     
+    def writeRegister(self, registerAddress, value, channel=None):
+        del channel
+        datagram = struct.pack(DATAGRAM_FORMAT, registerAddress | 0x80, value)
+        self.__connection.send_datagram(datagram, DATAGRAM_LENGTH)
 
+    def readRegister(self, registerAddress, signed=False, channel=None):
+        del channel
+        datagram = struct.pack(DATAGRAM_FORMAT, registerAddress, 0)
+        reply = self.__connection.send_datagram(datagram, DATAGRAM_LENGTH)
 
-    " use parent readRegister/writeRegister from evaluation board or interface"
-    def writeRegister(self, registerAddress, value):
-        self.parent.writeRegister(registerAddress, value);
+        values = struct.unpack(DATAGRAM_FORMAT, reply)
+        value = values[1]
 
-    def readRegister(self, registerAddress):
-        return self.parent.readRegister(registerAddress)
+        return TMC_helpers.toSigned32(value) if signed else value
 
-    def writeRegisterField(self, registerAddress, value, mask, shift):
-        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
+    def writeRegisterField(self, field, value):
+        return self.writeRegister(field[0], TMC_helpers.field_set(self.readRegister(field[0], self.__channel), field[1], field[2], value), self.__channel)
 
-    def readRegisterField(self, registerAddress, mask, shift):
-        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
+    def readRegisterField(self, field):
+        return TMC_helpers.field_get(self.readRegister(field[0], self.__channel), field[1], field[2])
+
+    def moveBy(self, motor, distance, velocity):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
+
+        self.moveTo(motor, position + distance, velocity)
+
+        return position + distance
+
+    def get_pin_state(self):
+        pass

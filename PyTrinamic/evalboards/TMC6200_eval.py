@@ -4,15 +4,14 @@ Created on 06.03.2019
 @author: ED
 '''
 
-from PyTrinamic.evalboards.eval_interface import eval_interface
 from PyTrinamic.ic.TMC6200.TMC6200 import TMC6200
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC6200_eval(eval_interface):
+class TMC6200_eval(TMC6200):
 
-    def __init__(self, connection):
+    def __init__(self, connection, moduleID=1):
         self.connection = connection
-        self.tmc6200 = TMC6200(self)
+        TMC6200.__init__(self, connection=None, channel=moduleID)
 
     def register(self):
         return self.tmc6200.register()
