@@ -17,11 +17,11 @@ connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
 if myInterface.supportsTMCL():
-    # Create an TMC4671 IC class which communicates directly over UART
-    TMC4671 = TMC4671_IC(myInterface)
-else:
     # Create an TMC4671-Eval class which communicates over the Landungsbruecke via TMCL
     TMC4671 = TMC4671_eval(myInterface)
+else:
+    # Create an TMC4671 IC class which communicates directly over UART
+    TMC4671 = TMC4671_IC(myInterface)
 
 " read ChipInfo "
 
