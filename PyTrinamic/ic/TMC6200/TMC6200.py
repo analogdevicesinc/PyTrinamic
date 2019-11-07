@@ -52,15 +52,5 @@ class TMC6200():
     def readRegisterField(self, field):
         return TMC_helpers.field_get(self.readRegister(field[0], self.__channel), field[1], field[2])
 
-    def moveBy(self, motor, distance, velocity):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
-
-        self.moveTo(motor, position + distance, velocity)
-
-        return position + distance
-
     def get_pin_state(self):
         pass
