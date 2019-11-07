@@ -37,3 +37,6 @@ class TMC6200_eval(TMC6200):
 
     def readRegisterField(self, registerAddress, mask, shift):
         return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
+
+class _APs():
+    TargetPosition = 0
