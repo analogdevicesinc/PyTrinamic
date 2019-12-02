@@ -28,8 +28,8 @@ class TMC6200():
         self.MOTORS       = 1
 
     def showChipInfo(self):
-        print("TMC6200 chip info:")
-        print("VERSION:    " + hex(self.readRegister(self.tmc6200_reg.IOIN_OUTPUT) >> 24))
+        print("TMC6200 chip info: The TMC6200 is a high-power gate-driver for PMSM servo or BLDC motors. Voltage supply: 8 - 60V")
+        print("VERSION:    " + hex(self.readRegister(self.TMC6200_register.IOIN_OUTPUT) >> 24))
      
     def writeRegister(self, registerAddress, value, channel=None):
         del channel

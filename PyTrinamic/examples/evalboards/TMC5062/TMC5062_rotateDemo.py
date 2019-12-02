@@ -19,6 +19,7 @@ myInterface = connectionManager.connect()
 PyTrinamic.showInfo()
 
 TMC5062 = TMC5062_eval(myInterface)
+TMC5062.showChipInfo()
 
 DEFAULT_MOTOR = 0
 

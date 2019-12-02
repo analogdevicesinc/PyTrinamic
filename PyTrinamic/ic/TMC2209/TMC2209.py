@@ -23,7 +23,7 @@ class TMC2209():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC2209 chip info: ?")
+        print("TMC2209 chip info: The TMC2209 is an ultra-silent motor driver IC for two phase stepper motors. TMC2209 pinning is compatible to a number of legacy drivers as well as to the TMC2208. Voltage supply:  4,75 - 29V")
 
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError

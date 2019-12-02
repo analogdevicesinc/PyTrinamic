@@ -47,6 +47,7 @@ PyTrinamic.showInfo()
 # Initialization
 
 TMC5041 = TMC5041_eval(myInterface)
+TMC5041.showChipInfo()
 
 ### Configuration
 print("Configuring")

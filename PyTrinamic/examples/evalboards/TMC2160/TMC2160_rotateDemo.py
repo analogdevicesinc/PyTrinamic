@@ -19,6 +19,7 @@ myInterface = connectionManager.connect()
 PyTrinamic.showInfo()
 
 TMC2160 = TMC2160_eval(myInterface)
+TMC2160.showChipInfo()
 
 DEFAULT_MOTOR = 0
 

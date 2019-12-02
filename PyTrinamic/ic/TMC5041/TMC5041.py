@@ -22,6 +22,9 @@ class TMC5041():
 
         self.MOTORS     = 2
 
+    def showChipInfo(self):
+        print("TMC5041 chip info: The TMC5041 is a cost-effective dual stepper motor controller and driver IC with serial communication interface. Voltage supply: 4,75 - 26V")
+
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError
 

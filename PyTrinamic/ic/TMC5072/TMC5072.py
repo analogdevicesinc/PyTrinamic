@@ -22,6 +22,9 @@ class TMC5072():
 
         self.MOTORS     = 2
 
+    def showChipInfo(self):
+        print("TMC5072 chip info: The TMC5072 is a dual high performance stepper motor controller and driver IC with serial communication interfaces. Voltage supply: 4,75 - 26V")
+
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError
 

@@ -22,6 +22,9 @@ class TMC5062():
 
         self.MOTORS     = 2
 
+    def showChipInfo(self):
+        print("TMC5062 chip info: The TMC5062 is a high performance motion controller and driver for up two stepper motors. Voltage supply: 4,75 - 20V")
+
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError
 

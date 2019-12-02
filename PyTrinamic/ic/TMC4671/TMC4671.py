@@ -28,7 +28,7 @@ class TMC4671():
         self.MOTORS       = 1
 
     def showChipInfo(self):
-        print("TMC4671 chip info: ?")
+        print("TMC4671 chip info: The TMC4671 is a fully integreated servo controller, providing Field Orianted Control for BLDC/PMSM and 2-phase Stepper Motors as well as DC motors and voice coils. Voltage supply: 0 - 80V")
 
     def writeRegister(self, registerAddress, value):
         datagram = struct.pack(DATAGRAM_FORMAT, registerAddress | 0x80, value & 0xFFFFFFFF)

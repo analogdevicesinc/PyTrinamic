@@ -19,6 +19,7 @@ myInterface = connectionManager.connect()
 PyTrinamic.showInfo()
 
 TMC5160 = TMC5160_eval(myInterface)
+TMC5160.showChipInfo()
 
 DEFAULT_MOTOR = 0
 

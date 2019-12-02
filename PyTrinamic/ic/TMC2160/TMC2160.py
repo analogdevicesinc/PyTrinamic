@@ -23,7 +23,7 @@ class TMC2160():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC2160 chip info: ?")
+        print("TMC2160 chip info: The TMC2160 is a high-power stepper motor driver IC with SPI interface. Voltage supply: 8 - 60V")
 
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError

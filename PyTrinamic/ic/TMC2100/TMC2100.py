@@ -23,7 +23,7 @@ class TMC2100():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC2100 chip info: ?")
+        print("TMC2100 chip info: The TMC2100 is a standalone driver IC for two-phase stepper motors. Voltage supply: 4.75 - 46V")
 
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError

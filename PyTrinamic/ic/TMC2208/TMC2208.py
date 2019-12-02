@@ -23,7 +23,7 @@ class TMC2208():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC2208 chip info: ?")
+        print("TMC2208 chip info: The TMC2208 is a ultra-silent motor driver IC for two-phase stepper motors. Voltage supply: 4,75 - 36V")
 
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError

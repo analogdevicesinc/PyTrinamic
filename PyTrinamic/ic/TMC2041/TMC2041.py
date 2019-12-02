@@ -23,7 +23,7 @@ class TMC2041():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC2041 chip info: ?")
+        print("TMC2041 chip info: The TMC2041 is a compact, dual stepper motor driver IC with serial interfaces for configuration and diagnostics. Voltage supply: 4.75 - 26V")
 
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError

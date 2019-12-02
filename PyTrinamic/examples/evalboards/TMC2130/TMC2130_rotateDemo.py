@@ -18,6 +18,7 @@ myInterface = connectionManager.connect()
 PyTrinamic.showInfo()
 
 TMC2130 = TMC2130_eval(myInterface)
+TMC2130.showChipInfo()
 
 DEFAULT_MOTOR = 0
 

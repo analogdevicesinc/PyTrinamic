@@ -32,6 +32,7 @@ measured = [(0, 0, 247), (1, 1, 247), (2, 3, 247), (3, 4, 247), (4, 6, 247), (5,
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC5130 = TMC5130_eval(myInterface)
+TMC5130.showChipInfo()
 
 MSLUT = [
         TMC5130.readRegister(TMC5130.registers.MSLUT0),

@@ -23,7 +23,7 @@ class TMC2130():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC2130 chip info: ?")
+        print("TMC2130 chip info: The TMC2130 is a high-performane driver IC for two phase stepper motors. Standard SPI and STEP/DIR simply communication. Voltage supply: 4.75 - 46V")
 
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError
