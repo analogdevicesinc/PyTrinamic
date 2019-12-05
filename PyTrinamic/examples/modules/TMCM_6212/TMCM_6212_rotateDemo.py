@@ -36,7 +36,7 @@ time.sleep(1);
 
 print("Doubling moved distance")
 TMCM_6212.moveBy(DEFAULT_MOTOR, TMCM_6212.getActualPosition(DEFAULT_MOTOR), round(VELOCITY/2))
-
+TMCM_6212.getAxisParameter(TMCM_6212.APs.ActualPosition)
 while not(TMCM_6212.positionReached(DEFAULT_MOTOR)):
     pass
 

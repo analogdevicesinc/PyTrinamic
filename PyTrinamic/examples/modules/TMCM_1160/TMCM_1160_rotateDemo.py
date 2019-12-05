@@ -35,7 +35,7 @@ time.sleep(1);
 
 print("Doubling moved distance")
 TMCM_1160.moveBy(TMCM_1160.getActualPosition(), 500)
-
+TMCM_1160.getAxisParameter(TMCM_1160.APs.ActualPosition)
 while not(TMCM_1160.positionReached()):
     pass
 
