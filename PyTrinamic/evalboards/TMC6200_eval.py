@@ -39,4 +39,4 @@ class TMC6200_eval(TMC6200):
         return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
 
 class _APs():
-    TargetPosition = 0
+    TargetPosition                 = 0

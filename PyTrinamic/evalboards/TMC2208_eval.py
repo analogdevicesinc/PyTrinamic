@@ -84,9 +84,9 @@ class TMC2208_eval(TMC2208):
         self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
 
 class _APs():
-    TargetPosition = 0
-    ActualPosition = 1
-    TargetVelocity = 2
-    ActualVelocity = 3
-    MaxVelocity = 4
-    MaxAcceleration = 5
+    TargetPosition                 = 0
+    ActualPosition                 = 1
+    TargetVelocity                 = 2
+    ActualVelocity                 = 3
+    MaxVelocity                    = 4
+    MaxAcceleration                = 5

@@ -84,18 +84,18 @@ class TMC2100_eval(TMC2100):
         self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
 
 class _APs():
-    TargetPosition = 0
-    ActualPosition = 1
-    TargetVelocity = 2
-    ActualVelocity = 3
-    MaxVelocity = 4
-    MaxAcceleration = 5
-    PositionReachedFlag = 8
-    TOff = 14
-    MicrostepResoIntChopper = 15
-    MaxCurrent = 16
-    ChopperHysteresis = 17
-    ChopperBlankTime = 18
-    PowerDownDelay = 19
-    MicrostepResolution = 140
+    TargetPosition                 = 0
+    ActualPosition                 = 1
+    TargetVelocity                 = 2
+    ActualVelocity                 = 3
+    MaxVelocity                    = 4
+    MaxAcceleration                = 5
+    PositionReachedFlag            = 8
+    TOff                           = 14
+    MicrostepResoIntChopper        = 15
+    MaxCurrent                     = 16
+    ChopperHysteresis              = 17
+    ChopperBlankTime               = 18
+    PowerDownDelay                 = 19
+    MicrostepResolution            = 140
 
