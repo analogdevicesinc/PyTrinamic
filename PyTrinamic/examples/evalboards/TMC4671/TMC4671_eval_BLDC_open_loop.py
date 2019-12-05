@@ -59,12 +59,12 @@ TMC4671.writeRegister(TMC4671.registers.MODE_RAMP_MODE_MOTION, TMC4671.registers
 
 " Rotate right "
 print("rotate right...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 60)
+TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 2000)
 time.sleep(3)
 
 " Rotate left "
 print("rotate left...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, -60)
+TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, -2000)
 time.sleep(6)
 
 " Stop "
