@@ -4,62 +4,13 @@ Created on 24.06.2019
 @author: ED
 '''
 
-class TMCM_1670(object):
-
-    # axis parameters
-    AP_TargetPosition               = 0
-    AP_ActualPosition               = 1
-    AP_TargetVelocity               = 2
-    AP_ActualVelocity               = 3
-    AP_MaxVelocity                  = 4
-    AP_MaxTorque                    = 6
-    AP_TargetReachedVelocity        = 7
-    AP_MotorHaltedVelocity          = 9
-    AP_TargetReachedDistance        = 10
-    AP_Acceleration                 = 11
-    AP_RampVelocity                 = 13
-    AP_ReinitBldcRegulation         = 31
-    AP_EnableRamp                   = 146
-    AP_ActualTorque                 = 150
-    AP_SupplyVoltage                = 151
-    AP_DriverTemperature            = 152
-    AP_TargetTorque                 = 155
-    AP_StatusFlags                  = 156
-    AP_CommutationMode              = 159
-    AP_ClearOnNull                  = 161
-    AP_ClearOnce                    = 163
-    AP_EncoderOffset                = 165
-    AP_TorqueP                      = 172
-    AP_TorqueI                      = 173
-    AP_StartCurrent                 = 177
-    AP_CurrentPIDError              = 200
-    AP_CurrentPIDErrorSum           = 201
-    AP_ActualEncoderAngle           = 211
-    AP_ActualControlledAngle        = 212
-    AP_PositionPIDError             = 226
-    AP_VelocityPIDError             = 228
-    AP_VelocityPIDErrorSum          = 229
-    AP_PositionP                    = 230
-    AP_VelocityP                    = 234
-    AP_VelocityI                    = 235
-    AP_VelocityFilter               = 236
-    AP_InitVelocity                 = 241
-    AP_InitSineDelay                = 244
-    AP_EncoderInitMode              = 249
-    AP_EncoderSteps                 = 250
-    AP_EncoderDirection             = 251
-    AP_MotorPoles                   = 253
-
-    COMM_MODE_FOC_ENCODER           = 7
-    COMM_MODE_FOC_CONTROLLED        = 8
- 
-    ENCODER_INIT_MODE_0             = 0
-    ENCODER_INIT_MODE_2             = 2
- 
-    FLAG_POSITION_END               = 0x00004000
-
+class TMCM_1670():
     def __init__(self, connection):
         self.connection = connection
+
+        self.GPs = _GPs
+        self.APs = _APs
+
         self.MOTORS = 1
         self.__default_motor = 0
 
@@ -79,142 +30,142 @@ class TMCM_1670(object):
 
     # standard functions
     def moveToPosition(self, position):
-        self.setAxisParameter(self.AP_TargetPosition, position)
+        self.setAxisParameter(self.APs.TargetPosition, position)
  
     def targetPosition(self):
-        return self.axisParameter(self.AP_TargetPosition)
+        return self.axisParameter(self.APs.TargetPosition)
  
     def actualPosition(self):
-        return self.axisParameter(self.AP_ActualPosition)
+        return self.axisParameter(self.APs.ActualPosition)
  
     def setActualPosition(self, position):
-        return self.setAxisParameter(self.AP_ActualPosition, position)
+        return self.setAxisParameter(self.APs.ActualPosition, position)
  
     def rotate(self, velocity):
-        self.setAxisParameter(self.AP_TargetVelocity, velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, velocity)
  
     def actualVelocity(self):
-        return self.axisParameter(self.AP_ActualVelocity)
+        return self.axisParameter(self.APs.ActualVelocity)
 
     # helpful functions
 
     def maxVelocity(self):
-        return self.axisParameter(self.AP_MaxVelocity)
+        return self.axisParameter(self.APs.MaxVelocity)
  
     def setMaxVelocity(self, maxVelocity):
-        self.setAxisParameter(self.AP_MaxVelocity, maxVelocity)
+        self.setAxisParameter(self.APs.MaxVelocity, maxVelocity)
  
     def maxTorque(self):
-        return self.axisParameter(self.AP_MaxTorque)
+        return self.axisParameter(self.APs.MaxTorque)
  
     def setMaxTorque(self, maxTorque):
-        self.setAxisParameter(self.AP_MaxTorque, maxTorque)
+        self.setAxisParameter(self.APs.MaxTorque, maxTorque)
 
     def openLoopTorque(self):
-        return self.axisParameter(self.AP_StartCurrent)
+        return self.axisParameter(self.APs.StartCurrent)
  
     def setOpenLoopTorque(self, torque):
-        self.setAxisParameter(self.AP_StartCurrent, torque)
+        self.setAxisParameter(self.APs.StartCurrent, torque)
  
     def acceleration(self):
-        return self.axisParameter(self.AP_Acceleration)
+        return self.axisParameter(self.APs.Acceleration)
  
     def setAcceleration(self, acceleration):
-        self.setAxisParameter(self.AP_Acceleration, acceleration)
+        self.setAxisParameter(self.APs.Acceleration, acceleration)
  
     def targetReachedVelocity(self):
-        return self.axisParameter(self.AP_TargetReachedVelocity)
+        return self.axisParameter(self.APs.TargetReachedVelocity)
  
     def setTargetReachedVelocity(self, velocity):
-        self.setAxisParameter(self.AP_TargetReachedVelocity, velocity)
+        self.setAxisParameter(self.APs.TargetReachedVelocity, velocity)
  
     def targetReachedDistance(self):
-        return self.axisParameter(self.AP_TargetReachedDistance)
+        return self.axisParameter(self.APs.TargetReachedDistance)
  
     def setTargetReachedDistance(self, distance):
-        self.setAxisParameter(self.AP_TargetReachedDistance, distance)
+        self.setAxisParameter(self.APs.TargetReachedDistance, distance)
  
     def motorHaltedVelocity(self):
-        return self.axisParameter(self.AP_MotorHaltedVelocity)
+        return self.axisParameter(self.APs.MotorHaltedVelocity)
  
     def setMotorHaltedVelocity(self, velocity):
-        self.setAxisParameter(self.AP_MotorHaltedVelocity, velocity)
+        self.setAxisParameter(self.APs.MotorHaltedVelocity, velocity)
  
     def positionReached(self):
         return ((self.statusFlags() & self.FLAG_POSITION_END) != 0)
  
     def rampEnabled(self):
-        return self.axisParameter(self.AP_EnableRamp)
+        return self.axisParameter(self.APs.EnableRamp)
  
     def setRampEnabled(self, enable):
-        self.setAxisParameter(self.AP_EnableRamp, enable)
+        self.setAxisParameter(self.APs.EnableRamp, enable)
  
     def torquePParameter(self):
-        return self.axisParameter(self.AP_TorqueP)
+        return self.axisParameter(self.APs.TorqueP)
  
     def setTorquePParameter(self, pValue):
-        self.setAxisParameter(self.AP_TorqueP, pValue)
+        self.setAxisParameter(self.APs.TorqueP, pValue)
  
     def torqueIParameter(self):
-        return self.axisParameter(self.AP_TorqueI)
+        return self.axisParameter(self.APs.TorqueI)
  
     def setTorqueIParameter(self, pValue):
-        self.setAxisParameter(self.AP_TorqueI, pValue)
+        self.setAxisParameter(self.APs.TorqueI, pValue)
  
     def velocityPParameter(self):
-        return self.axisParameter(self.AP_VelocityP)
+        return self.axisParameter(self.APs.VelocityP)
  
     def setVelocityPParameter(self, pValue):
-        self.setAxisParameter(self.AP_VelocityP, pValue)
+        self.setAxisParameter(self.APs.VelocityP, pValue)
  
     def velocityIParameter(self):
-        return self.axisParameter(self.AP_VelocityI)
+        return self.axisParameter(self.APs.VelocityI)
  
     def setVelocityIParameter(self, pValue):
-        self.setAxisParameter(self.AP_VelocityI, pValue)
+        self.setAxisParameter(self.APs.VelocityI, pValue)
  
     def positionPParameter(self):
-        return self.axisParameter(self.AP_PositionP)
+        return self.axisParameter(self.APs.PositionP)
  
     def setPositionPParameter(self, pValue):
-        self.setAxisParameter(self.AP_PositionP, pValue)
+        self.setAxisParameter(self.APs.PositionP, pValue)
  
     def motorPoles(self):
-        return self.axisParameter(self.AP_MotorPoles)
+        return self.axisParameter(self.APs.MotorPoles)
  
     def setMotorPoles(self, poles):
-        self.setAxisParameter(self.AP_MotorPoles, poles)
+        self.setAxisParameter(self.APs.MotorPoles, poles)
  
     def encoderInitMode(self):
-        return self.axisParameter(self.AP_EncoderInitMode)
+        return self.axisParameter(self.APs.EncoderInitMode)
 
     def setEncoderInitMode(self, mode):
-        self.setAxisParameter(self.AP_EncoderInitMode, mode)
+        self.setAxisParameter(self.APs.EncoderInitMode, mode)
 
     def encoderResolution(self):
-        return self.axisParameter(self.AP_EncoderSteps)
+        return self.axisParameter(self.APs.EncoderSteps)
  
     def setEncoderResolution(self, steps):
-        self.setAxisParameter(self.AP_EncoderSteps, steps)
+        self.setAxisParameter(self.APs.EncoderSteps, steps)
  
     def encoderDirection(self):
-        return self.axisParameter(self.AP_EncoderDirection)
+        return self.axisParameter(self.APs.EncoderDirection)
  
     def setEncoderDirection(self, direction):
-        self.setAxisParameter(self.AP_EncoderDirection, direction)
+        self.setAxisParameter(self.APs.EncoderDirection, direction)
  
     def commutationMode(self):
-        return self.axisParameter(self.AP_CommutationMode)
+        return self.axisParameter(self.APs.CommutationMode)
  
     def setCommutationMode(self, mode):
-        self.setAxisParameter(self.AP_CommutationMode, mode)
+        self.setAxisParameter(self.APs.CommutationMode, mode)
  
     def clearOnceOnNChannel(self):
-        self.setAxisParameter(self.AP_ClearOnce, 1)
-        self.setAxisParameter(self.AP_ClearOnNull, 1)
+        self.setAxisParameter(self.APs.ClearOnce, 1)
+        self.setAxisParameter(self.APs.ClearOnNull, 1)
  
     def statusFlags(self):
-        return self.axisParameter(self.AP_StatusFlags)
+        return self.axisParameter(self.APs.StatusFlags)
  
     def analogInput(self, x):
         return self.connection.analogInput(x)
@@ -257,3 +208,107 @@ class TMCM_1670(object):
         print("\tTorque   P: " + str(self.torquePParameter()) + " I: " + str(self.torqueIParameter()))
         print("\tVelocity P: " + str(self.velocityPParameter()) + " I: " + str(self.velocityIParameter()))
         print("\tPosition P: " + str(self.positionPParameter()))
+
+class _APs():
+    TargetPosition                 = 0
+    ActualPosition                 = 1
+    TargetVelocity                 = 2
+    ActualVelocity                 = 3
+    MaxVelocity                    = 4
+    TorqueLimit                    = 5
+    MaxTorque                      = 6
+    TargetReachedVelocity          = 7
+    PositionReachedFlag            = 8
+    MotorHaltedVelocity            = 9
+    TargetReachedDistance          = 10
+    Acceleration                   = 11
+    RampVelocity                   = 13
+    RampPosition                   = 14
+    RightStopSwitch                = 20
+    LeftStopSwitch                 = 21
+    ReinitBldcRegulation           = 31
+    BodeControlMode                = 100
+    BodeTargetMode                 = 101
+    BodePlotMagnitude              = 102
+    BodePlotPhi                    = 103
+    BodePlotSweepFrequency         = 104
+    BodePlotSweepDataCount         = 105
+    BodeTargetValue                = 106
+    BodeActualValue                = 107
+    PIDRegulationLoopDelay         = 133
+    CurrentRegulationLoopDelay     = 134
+    EnableRamp                     = 146
+    ActualTorque                   = 150
+    SupplyVoltage                  = 151
+    DriverTemperature              = 152
+    TargetTorque                   = 155
+    StatusFlags                    = 156
+    CommutationMode                = 159
+    ClearOnNull                    = 161
+    ClearOnce                      = 163
+    EncoderOffset                  = 165
+    ReferenceSwitchPolarity        = 166
+    TorqueP                        = 172
+    TorqueI                        = 173
+    StartCurrent                   = 177
+    MainLoopsPerSecond             = 180
+    PwmLoopsPerSecond              = 181
+    TorqueLoopsPerSecond           = 182
+    VelocityLoopsPerSecond         = 183
+    DebugValue0                    = 190
+    DebugValue1                    = 191
+    DebugValue2                    = 192
+    DebugValue3                    = 193
+    DebugValue4                    = 194
+    DebugValue5                    = 195
+    DebugValue6                    = 196
+    DebugValue7                    = 197
+    DebugValue8                    = 198
+    DebugValue9                    = 199
+    CurrentPIDError                = 200
+    CurrentPIDErrorSum             = 201
+    FluxPIDError                   = 202
+    FluxPIDErrorSum                = 203
+    ActualEncoderAngle             = 211
+    ActualControlledAngle          = 212
+    DriverDiagnosticValue          = 214
+    DriverStatusAcknowledge        = 215
+    DriverInitSPI                  = 216
+    DriverStatusRegister2          = 217
+    DriverStatusRegister3          = 218
+    DriverStatusRegister4          = 219
+    PositionPIDError               = 226
+    VelocityPIDError               = 228
+    VelocityPIDErrorSum            = 229
+    PositionP                      = 230
+    VelocityP                      = 234
+    VelocityI                      = 235
+    VelocityFilter                 = 236
+    InitVelocity                   = 241
+    InitSineDelay                  = 244
+    EncoderInitMode                = 249
+    EncoderSteps                   = 250
+    EncoderDirection               = 251
+    MotorPoles                     = 253
+    DriverEnabled                  = 255
+
+class _GPs():
+    serialBaudRate                 = 65
+    serialAddress                  = 66
+    CANBitRate                     = 69
+    CANsendID                      = 70
+    CANreceiveID                   = 71
+    telegramPauseTime              = 75
+    serialHostAddress              = 76
+    autoStartMode                  = 77
+    applicationStatus              = 128
+    programCounter                 = 130
+    tickTimer                      = 132
+
+    COMM_MODE_FOC_ENCODER           = 7
+    COMM_MODE_FOC_CONTROLLED        = 8
+ 
+    ENCODER_INIT_MODE_0             = 0
+    ENCODER_INIT_MODE_2             = 2
+ 
+    FLAG_POSITION_END               = 0x00004000

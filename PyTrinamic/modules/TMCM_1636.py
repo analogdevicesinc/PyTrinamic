@@ -4,108 +4,13 @@ Created on 27.11.2019
 @author: SW
 '''
 
-class TMCM_1636(object):
-
-    " axis parameters "
-    AP_AdcPhaseA                       = 0
-    AP_AdcPhaseB                       = 1
-    AP_CurrentPhaseA                   = 2
-    AP_CurrentPhaseB                   = 3
-    AP_CurrentPhaseC                   = 4
-    AP_dualShuntOffsetPhaseA           = 5
-    AP_dualShuntOffsetPhaseB           = 6
-    AP_dualShuntFactor                 = 7
-    AP_MotorPolePairs                  = 10
-    AP_MaxTorque                       = 11
-    AP_OpenLoopCurrent                 = 12
-    AP_MotorType                       = 14
-    AP_CommutationMode                 = 15
-    AP_ActualControlledAngle           = 16
-    AP_ActualEncoderAngle              = 17
-    AP_ActualHallAngle                 = 18
-    AP_ActualAbsoluteEncoderAngle      = 19
-    AP_CommutationModePosition         = 25
-    AP_TargetTorque                    = 30
-    AP_ActualTorque                    = 31
-    AP_TargetFlux                      = 32
-    AP_TargetFlux                      = 33
-    AP_TargetVelocity                  = 40
-    AP_RampVelocity                    = 41
-    AP_ActualVelocity                  = 42
-    AP_MaxVelocity                     = 43
-    AP_Acceleration                    = 44
-    AP_EnableRamp                      = 45
-    AP_TargetPosition                  = 50
-    AP_RampPosition                    = 51
-    AP_ActualPosition                  = 52
-    AP_TargetReachedDistance           = 53
-    AP_TargetReachedVelocity           = 54
-    AP_PositionReachedFlag             = 55
-    AP_TorqueP                         = 70
-    AP_TorqueI                         = 71
-    AP_VelocityP                       = 72
-    AP_VelocityI                       = 73
-    AP_PositionP                       = 74
-    AP_CurrentPIDErrorSum              = 75
-    AP_FluxPIDErrorSum                 = 76
-    AP_VelocityPIDErrorSum             = 77
-    AP_TorquePIDError                  = 78
-    AP_FluxPIDError                    = 79
-    AP_VelocityPIDError                = 80
-    AP_PositionPIDError                = 81
-    AP_HallSensorPolarity              = 90
-    AP_HallSensorDirection             = 91
-    AP_HallInterpolation               = 92
-    AP_HallSensorOffset                = 93
-    AP_EncoderSteps                    = 100
-    AP_EncoderDirection                = 101
-    AP_EncoderInitMode                 = 102
-    AP_EncoderInitState                = 103
-    AP_EncoderInitDelay                = 104
-    AP_InitVelocity                    = 105
-    AP_EncoderOffset                   = 106
-    AP_ClearOnNull                     = 107
-    AP_ClearOnce                       = 108
-    AP_PWMFrequency                    = 110
-    AP_BrakeEnabled                    = 120
-    AP_BrakeDutyCycle0                 = 121
-    AP_BrakeDutyCycle1                 = 122
-    AP_BrakePhase0Duration             = 123
-    AP_BrakeEnableFunctionality        = 124
-    AP_BrakeInvert                     = 125
-    AP_BrakeChopperEnabled             = 140
-    AP_BrakeChopperVoltage             = 141
-    AP_BrakeChopperHysteresis          = 142
-    AP_BrakeChopperActive              = 144
-    AP_StatusFlags                     = 156
-    AP_AbsoluteEncoderType             = 160
-    AP_AbsoluteEncoderInit             = 161
-    AP_AbsoluteEncoderDirection        = 162
-    AP_AbsoluteEncoderOffset           = 163
-    AP_ReferenceSwitchEnable           = 209
-    AP_ReferenceSwitchPolarity         = 210
-    AP_RightStopSwitch                 = 211
-    AP_LeftStopSwitch                  = 212
-    AP_HomeStopSwitch                  = 213
-    AP_SupplyVoltage                   = 220
-    AP_DriverTemperature               = 221
-        
-    FLAG_POSITION_END               = 0x00004000
-
-    COMM_MODE_DISABLED = 0
-    COMM_MODE_OPENLOOP = 1
-    COMM_MODE_HALL = 2
-    COMM_MODE_ABN = 3
-    COMM_MODE_ABS = 4
-    
-    POS_MODE_SAME = 0
-    POS_MODE_ABN = 1
-    POS_MODE_ABS = 2
-
-
-
+class TMCM_1636():
     def __init__(self, connection):
         self.connection = connection
+
+        self.GPs = _GPs
+        self.APs = _APs
+
         self.motor = 0
 
     " axis parameter access "
@@ -124,21 +29,142 @@ class TMCM_1636(object):
 
     " standard functions "
     def moveToPosition(self, position):
-        self.setAxisParameter(self.AP_TargetPosition, position)
+        self.setAxisParameter(self.APs.TargetPosition, position)
 
     def targetPosition(self):
-        return self.axisParameter(self.AP_TargetPosition)
+        return self.axisParameter(self.APs.TargetPosition)
 
     def actualPosition(self):
-        return self.axisParameter(self.AP_ActualPosition)
+        return self.axisParameter(self.APs.ActualPosition)
 
     def setActualPosition(self, position):
-        return self.setAxisParameter(self.AP_ActualPosition, position)
+        return self.setAxisParameter(self.APs.ActualPosition, position)
 
     def rotate(self, velocity):
-        self.setAxisParameter(self.AP_TargetVelocity, velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
     def actualVelocity(self):
-        return self.axisParameter(self.AP_ActualVelocity)
+        return self.axisParameter(self.APs.ActualVelocity)
 
+class _APs():
+    AdcPhaseA                      = 0
+    AdcPhaseB                      = 1
+    CurrentPhaseA                  = 2
+    CurrentPhaseB                  = 3
+    CurrentPhaseC                  = 4
+    dualShuntOffsetPhaseA          = 5
+    dualShuntOffsetPhaseB          = 6
+    dualShuntFactor                = 7
+    MotorPolePairs                 = 10
+    MaxTorque                      = 11
+    OpenLoopCurrent                = 12
+    MotorType                      = 14
+    CommutationMode                = 15
+    ActualControlledAngle          = 16
+    ActualEncoderAngle             = 17
+    ActualHallAngle                = 18
+    ActualAbsoluteEncoderAngle     = 19
+    CommutationModePosition        = 25
+    TargetTorque                   = 30
+    ActualTorque                   = 31
+    TargetFlux                     = 32
+    ActualFlux                     = 33
+    TargetVelocity                 = 40
+    RampVelocity                   = 41
+    ActualVelocity                 = 42
+    MaxVelocity                    = 43
+    Acceleration                   = 44
+    EnableRamp                     = 45
+    TargetPosition                 = 50
+    RampPosition                   = 51
+    ActualPosition                 = 52
+    TargetReachedDistance          = 53
+    TargetReachedVelocity          = 54
+    PositionReachedFlag            = 55
+    TorqueP                        = 70
+    TorqueI                        = 71
+    VelocityP                      = 72
+    VelocityI                      = 73
+    PositionP                      = 74
+    CurrentPIDErrorSum             = 75
+    FluxPIDErrorSum                = 76
+    VelocityPIDErrorSum            = 77
+    TorquePIDError                 = 78
+    FluxPIDError                   = 79
+    VelocityPIDError               = 80
+    PositionPIDError               = 81
+    HallSensorPolarity             = 90
+    HallSensorDirection            = 91
+    HallInterpolation              = 92
+    HallSensorOffset               = 93
+    EncoderSteps                   = 100
+    EncoderDirection               = 101
+    EncoderInitMode                = 102
+    EncoderInitState               = 103
+    EncoderInitDelay               = 104
+    InitVelocity                   = 105
+    EncoderOffset                  = 106
+    ClearOnNull                    = 107
+    ClearOnce                      = 108
+    PWMFrequency                   = 110
+    BrakeEnabled                   = 120
+    BrakeDutyCycle0                = 121
+    BrakeDutyCycle1                = 122
+    BrakePhase0Duration            = 123
+    BrakeEnableFunctionality       = 124
+    BrakeInvert                    = 125
+    BrakeChopperEnabled            = 140
+    BrakeChopperVoltage            = 141
+    BrakeChopperHysteresis         = 142
+    BrakeChopperActive             = 144
+    StatusFlags                    = 156
+    AbsoluteEncoderType            = 160
+    AbsoluteEncoderInit            = 161
+    AbsoluteEncoderDirection       = 162
+    AbsoluteEncoderOffset          = 163
+    ReferenceSwitchEnable          = 209
+    ReferenceSwitchPolarity        = 210
+    RightStopSwitch                = 211
+    LeftStopSwitch                 = 212
+    HomeStopSwitch                 = 213
+    SupplyVoltage                  = 220
+    DriverTemperature              = 221
+    MainLoopsPerSecond             = 230
+    TorqueLoopsPerSecond           = 231
+    VelocityLoopsPerSecond         = 232
+    DebugValue0                    = 240
+    DebugValue1                    = 241
+    DebugValue2                    = 242
+    DebugValue3                    = 243
+    DebugValue4                    = 244
+    DebugValue5                    = 245
+    DebugValue6                    = 246
+    DebugValue7                    = 247
+    DebugValue8                    = 248
+    DebugValue9                    = 249
+    DriverEnabled                  = 255
 
+class _GPs():
+    serialBaudRate                 = 65
+    serialAddress                  = 66
+    CANBitRate                     = 69
+    CANsendID                      = 70
+    CANreceiveID                   = 71
+    telegramPauseTime              = 75
+    serialHostAddress              = 76
+    autoStartMode                  = 77
+    applicationStatus              = 128
+    programCounter                 = 130
+    tickTimer                      = 132
+
+    FLAG_POSITION_END               = 0x00004000
+
+    COMM_MODE_DISABLED = 0
+    COMM_MODE_OPENLOOP = 1
+    COMM_MODE_HALL = 2
+    COMM_MODE_ABN = 3
+    COMM_MODE_ABS = 4
+    
+    POS_MODE_SAME = 0
+    POS_MODE_ABN = 1
+    POS_MODE_ABS = 2
