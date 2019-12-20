@@ -23,7 +23,7 @@ class TMC4361():
         self.MOTORS     = 2
 
     def showChipInfo(self):
-        print("TMC4361 chip info: TMC4361 is a miniaturized high-performance motion controller for stepper motor drivers.")
+        print("TMC4361 chip info: The TMC4361 is a miniaturized high-performance motion controller for stepper motor drivers.")
     def writeRegister(self, registerAddress, value, channel):
         raise NotImplementedError
 
