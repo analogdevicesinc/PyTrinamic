@@ -19,17 +19,17 @@ myInterface = connectionManager.connect()
 module = TMCM_1636(myInterface)
 
 #config hall
-module.setAxisParameter(module.AP_HallSensorPolarity, 1);
-module.setAxisParameter(module.AP_HallSensorDirection, 1);
-module.setAxisParameter(module.AP_HallInterpolation, 1);
-module.setAxisParameter(module.AP_HallSensorOffset, 22000);
+module.setAxisParameter(module.APs.HallSensorPolarity, 1);
+module.setAxisParameter(module.APs.HallSensorDirection, 1);
+module.setAxisParameter(module.APs.HallInterpolation, 1);
+module.setAxisParameter(module.APs.HallSensorOffset, 22000);
 
 #testdrive
-module.setAxisParameter(module.AP_CommutationMode, module.COMM_MODE_HALL);
-module.setAxisParameter(module.AP_TargetVelocity, 1000);
+module.setAxisParameter(module.APs.CommutationMode, module.GPs.COMM_MODE_HALL);
+module.setAxisParameter(module.APs.TargetVelocity, 1000);
 time.sleep(5);
-module.setAxisParameter(module.AP_TargetVelocity, 0);
+module.setAxisParameter(module.APs.TargetVelocity, 0);
 time.sleep(1);
-module.setAxisParameter(module.AP_CommutationMode, 0);
+module.setAxisParameter(module.APs.CommutationMode, 0);
 print("Done")
 myInterface.close()
