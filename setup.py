@@ -28,6 +28,7 @@ setuptools.setup(
         "PyTrinamic/connections/ConnectionManager",
         "PyTrinamic/connections/dummy_tmcl_interface",
         "PyTrinamic/connections/pcan_tmcl_interface",
+        "PyTrinamic/connections/socketcan_tmcl_interface",
         "PyTrinamic/connections/serial_tmcl_interface",
         "PyTrinamic/connections/tmcl_interface",
         "PyTrinamic/connections/uart_ic_interface",

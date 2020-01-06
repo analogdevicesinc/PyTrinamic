@@ -9,6 +9,7 @@ import argparse
 
 from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
 from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
+from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
 from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
@@ -79,16 +80,17 @@ class ConnectionManager():
     # All available interfaces
     # The tuples consist of (string representation, class type, default datarate)
     _INTERFACES = [
-        ("dummy_tmcl",  dummy_tmcl_interface,  0),
-        ("pcan_tmcl",   pcan_tmcl_interface,   1000000),
-        ("serial_tmcl", serial_tmcl_interface, 9600),
-        ("uart_ic",     uart_ic_interface,     9600),
-        ("usb_tmcl",    usb_tmcl_interface,    115200)
+        ("dummy_tmcl",      dummy_tmcl_interface,       0),
+        ("pcan_tmcl",       pcan_tmcl_interface,        1000000),
+        ("socketcan_tmcl",  socketcan_tmcl_interface,   1000000),
+        ("serial_tmcl",     serial_tmcl_interface,      9600),
+        ("uart_ic",         uart_ic_interface,          9600),
+        ("usb_tmcl",        usb_tmcl_interface,         115200)
     ]
 
     def __init__(self, argList=None, debug=False):
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=['dummy_tmcl', 'pcan_tmcl', 'serial_tmcl', 'uart_ic', 'usb_tmcl'], default=['usb_tmcl'],
+        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=['dummy_tmcl', 'pcan_tmcl', 'socketcan_tmcl', 'serial_tmcl', 'uart_ic', 'usb_tmcl'], default=['usb_tmcl'],
                             help='Connection interface (default: %(default)s)')
         parser.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
