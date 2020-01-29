@@ -59,7 +59,7 @@ class TMC4361_fields(object):
 	LATCH_X_ON_INACTIVE_R               = ( 0x01, 0x00001000, 12 ) # REFERENCE_CONF
 	LATCH_X_ON_ACTIVE_R                 = ( 0x01, 0x00002000, 13 ) # REFERENCE_CONF
 	STOP_LEFT_IS_HOME                   = ( 0x01, 0x00004000, 14 ) # REFERENCE_CONF
-	STOP_LEFT_IS_HOME                   = ( 0x01, 0x00008000, 15 ) # REFERENCE_CONF
+	STOP_RIGHT_IS_HOME                  = ( 0x01, 0x00008000, 15 ) # REFERENCE_CONF
 	HOME_EVENT                          = ( 0x01, 0x000f0000, 16 ) # REFERENCE_CONF
 	START_HOME_TRACKING                 = ( 0x01, 0x00100000, 20 ) # REFERENCE_CONF
 	CLR_POS_AT_TARGET                   = ( 0x01, 0x00200000, 21 ) # REFERENCE_CONF
@@ -118,33 +118,24 @@ class TMC4361_fields(object):
 	# SPI_OUT_CONF
 	SPI_OUTPUT_FORMAT                   = ( 0x04, 0x0000000f,  0 ) # SPI_OUT_CONF
 	SSI_OUT_MTIME                       = ( 0x04, 0x00fffff0,  4 ) # SPI_OUT_CONF
-	SPI_OUTPUT_FORMAT                   = ( 0x04, 0x0000000f,  0 ) # SPI_OUT_CONF
 	MIXED_DECAY                         = ( 0x04, 0x00000030,  4 ) # SPI_OUT_CONF
 	AUTO_DOUBLE_CHOPSYNC                = ( 0x04, 0x00001000, 12 ) # SPI_OUT_CONF
-	MIXED_DECAY                         = ( 0x04, 0x00000030,  4 ) # SPI_OUT_CONF
 	STDBY_ON_STALL_FOR_24X              = ( 0x04, 0x00000040,  6 ) # SPI_OUT_CONF
 	STALL_FLAG_INSTEAD_OF_UV_EN         = ( 0x04, 0x00000080,  7 ) # SPI_OUT_CONF
 	STALL_LOAD_LIMIT                    = ( 0x04, 0x00000700,  8 ) # SPI_OUT_CONF
 	PWM_PHASE_SHFT_EN                   = ( 0x04, 0x00000800, 11 ) # SPI_OUT_CONF
-	AUTO_DOUBLE_CHOPSYNC                = ( 0x04, 0x00001000, 12 ) # SPI_OUT_CONF
 	THREE_PHASE_STEPPER_EN              = ( 0x04, 0x00000010,  4 ) # SPI_OUT_CONF
 	SCALE_VAL_TRANSFER_EN               = ( 0x04, 0x00000020,  5 ) # SPI_OUT_CONF
 	DISABLE_POLLING                     = ( 0x04, 0x00000040,  6 ) # SPI_OUT_CONF
 	POLL_BLOCK_MULT                     = ( 0x04, 0x00001f80,  7 ) # SPI_OUT_CONF
 	SCALE_VALE_TRANSFER_EN              = ( 0x04, 0x00000020,  5 ) # SPI_OUT_CONF
-	DISABLE_POLLING                     = ( 0x04, 0x00000040,  6 ) # SPI_OUT_CONF
-	POLL_BLOCK_MULT                     = ( 0x04, 0x0001f800,  7 ) # SPI_OUT_CONF
-	DISABLE_POLLING                     = ( 0x04, 0x00000040,  6 ) # SPI_OUT_CONF
-	POLL_BLOCK_MULT                     = ( 0x04, 0x0001f800,  7 ) # SPI_OUT_CONF
 	SCK_LOW_BEFORE_CSN                  = ( 0x04, 0x00000010,  4 ) # SPI_OUT_CONF
 	NEW_OUT_BIT_AT_RISE                 = ( 0x04, 0x00000020,  5 ) # SPI_OUT_CONF
 	DAC_CMD_LENGTH                      = ( 0x04, 0x0000f800,  7 ) # SPI_OUT_CONF
-	SCK_LOW_BEFORE_CSN                  = ( 0x04, 0x00000010,  4 ) # SPI_OUT_CONF
-	NEW_OUT_BIT_AT_RISE                 = ( 0x04, 0x00000020,  5 ) # SPI_OUT_CONF
 	COVER_DATA_LENGTH                   = ( 0x04, 0x000fe000, 13 ) # SPI_OUT_CONF
 	SPI_OUT_LOW_TIME                    = ( 0x04, 0x00f00000, 20 ) # SPI_OUT_CONF
 	SPI_OUT_HIGH_TIME                   = ( 0x04, 0x0f000000, 24 ) # SPI_OUT_CONF
-	SPI_OUT_LOW_TIME                    = ( 0x04, 0xf0000000, 28 ) # SPI_OUT_CONF
+	SPI_OUT_IDLE_TIME                   = ( 0x04, 0xf0000000, 28 ) # SPI_OUT_CONF
 
 	# CURRENT_CONF
 	HOLD_CURRENT_SCALE_EN               = ( 0x05, 0x00000001,  0 ) # CURRENT_CONF
@@ -154,26 +145,14 @@ class TMC4361_fields(object):
 	BOOST_CURRENT_AFTER_START_EN        = ( 0x05, 0x00000010,  4 ) # CURRENT_CONF
 	SEC_DRIVE_CURRENT_SCALE_EN          = ( 0x05, 0x00000020,  5 ) # CURRENT_CONF
 	FREEWHEELING_EN                     = ( 0x05, 0x00000040,  6 ) # CURRENT_CONF
-	HOLD_CURRENT_SCALE_EN               = ( 0x05, 0x00000001,  0 ) # CURRENT_CONF
-	DRIVE_CURRENT_SCALE_EN              = ( 0x05, 0x00000002,  1 ) # CURRENT_CONF
-	BOOST_CURRENT_ON_ACC_EN             = ( 0x05, 0x00000004,  2 ) # CURRENT_CONF
-	BOOST_CURRENT_ON_DEC_EN             = ( 0x05, 0x00000008,  3 ) # CURRENT_CONF
-	BOOST_CURRENT_AFTER_START_EN        = ( 0x05, 0x00000010,  4 ) # CURRENT_CONF
-	SEC_DRIVE_CURRENT_SCALE_EN          = ( 0x05, 0x00000020,  5 ) # CURRENT_CONF
-	FREEWHEELING_EN                     = ( 0x05, 0x00000040,  6 ) # CURRENT_CONF
 	CLOSED_LOOP_SCALE_EN                = ( 0x05, 0x00000080,  7 ) # CURRENT_CONF
-	HOLD_CURRENT_SCALE_EN               = ( 0x05, 0x00000001,  0 ) # CURRENT_CONF
 	PWM_SCALE_EN                        = ( 0x05, 0x00000100,  8 ) # CURRENT_CONF
 	PWM_AMPL                            = ( 0x05, 0xffff0000, 16 ) # CURRENT_CONF
 
 	# SCALE_VALUES
 	BOOST_SCALE_VAL                     = ( 0x06, 0x000000ff,  0 ) # SCALE_VALUES
 	DRV1_SCALE_VAL                      = ( 0x06, 0x0000ff00,  8 ) # SCALE_VALUES
-	DRV1_SCALE_VAL                      = ( 0x06, 0x00ff0000, 16 ) # SCALE_VALUES
-	HOLD_SCALE_VAL                      = ( 0x06, 0xff000000, 24 ) # SCALE_VALUES
-	BOOST_SCALE_VAL                     = ( 0x06, 0x000000ff,  0 ) # SCALE_VALUES
-	DRV1_SCALE_VAL                      = ( 0x06, 0x0000ff00,  8 ) # SCALE_VALUES
-	DRV1_SCALE_VAL                      = ( 0x06, 0x00ff0000, 16 ) # SCALE_VALUES
+	DRV2_SCALE_VAL                      = ( 0x06, 0x00ff0000, 16 ) # SCALE_VALUES
 	HOLD_SCALE_VAL                      = ( 0x06, 0xff000000, 24 ) # SCALE_VALUES
 	CL_IMIN                             = ( 0x06, 0x000000ff,  0 ) # SCALE_VALUES
 	CL_IMAX                             = ( 0x06, 0x0000ff00,  8 ) # SCALE_VALUES
@@ -219,22 +198,12 @@ class TMC4361_fields(object):
 	STATUS_BIT_CNT                      = ( 0x08, 0x00000c00, 10 ) # ENC_IN_DATA
 	SERIAL_ADDR_BITS                    = ( 0x08, 0x00ff0000, 16 ) # ENC_IN_DATA
 	SERIAL_DATA_BITS                    = ( 0x08, 0xff000000, 24 ) # ENC_IN_DATA
-	SINGLE_TURN_RES                     = ( 0x08, 0x0000001f,  0 ) # ENC_IN_DATA
-	MULTI_TURN_RES                      = ( 0x08, 0x000003e0,  5 ) # ENC_IN_DATA
-	STATUS_BIT_CNT                      = ( 0x08, 0x00000c00, 10 ) # ENC_IN_DATA
-	SINGLE_TURN_RES                     = ( 0x08, 0x0000001f,  0 ) # ENC_IN_DATA
-	MULTI_TURN_RES                      = ( 0x08, 0x000003e0,  5 ) # ENC_IN_DATA
-	STATUS_BIT_CNT                      = ( 0x08, 0x00000c00, 10 ) # ENC_IN_DATA
-	SERIAL_ADDR_BITS                    = ( 0x08, 0x00ff0000, 16 ) # ENC_IN_DATA
-	SERIAL_DATA_BITS                    = ( 0x08, 0xff000000, 24 ) # ENC_IN_DATA
 
 	# ENC_OUT_DATA
 	SINGLE_TURN_RES_OUT                 = ( 0x09, 0x0000001f,  0 ) # ENC_OUT_DATA
 	MULTI_TURN_RES_OUT                  = ( 0x09, 0x000003e0,  5 ) # ENC_OUT_DATA
 
 	# STEP_CONF
-	MSTEP_PER_FS                        = ( 0x0A, 0x0000000f,  0 ) # STEP_CONF
-	MSTEP_PER_FS                        = ( 0x0A, 0x0000000f,  0 ) # STEP_CONF
 	MSTEP_PER_FS                        = ( 0x0A, 0x0000000f,  0 ) # STEP_CONF
 	FS_PER_REV                          = ( 0x0A, 0x0000fff0,  4 ) # STEP_CONF
 	SG                                  = ( 0x0A, 0x00010000, 16 ) # STEP_CONF
@@ -245,15 +214,9 @@ class TMC4361_fields(object):
 	OLA                                 = ( 0x0A, 0x00200000, 21 ) # STEP_CONF
 	OLB                                 = ( 0x0A, 0x00400000, 22 ) # STEP_CONF
 	STST                                = ( 0x0A, 0x00800000, 23 ) # STEP_CONF
-	SG                                  = ( 0x0A, 0x00010000, 16 ) # STEP_CONF
 	UV_SF                               = ( 0x0A, 0x00010000, 16 ) # STEP_CONF
-	UV_SF                               = ( 0x0A, 0x00010000, 16 ) # STEP_CONF
-	OT                                  = ( 0x0A, 0x00020000, 17 ) # STEP_CONF
-	OTPW                                = ( 0x0A, 0x00040000, 18 ) # STEP_CONF
 	OCA                                 = ( 0x0A, 0x00080000, 19 ) # STEP_CONF
 	OCB                                 = ( 0x0A, 0x00100000, 20 ) # STEP_CONF
-	OLA                                 = ( 0x0A, 0x00200000, 21 ) # STEP_CONF
-	OLB                                 = ( 0x0A, 0x00400000, 22 ) # STEP_CONF
 	OCHS                                = ( 0x0A, 0x00800000, 23 ) # STEP_CONF
 
 	# SPI_STATUS_SELECTION
@@ -271,7 +234,7 @@ class TMC4361_fields(object):
 	STOPL_EVENT                         = ( 0x0B, 0x00000800, 11 ) # SPI_STATUS_SELECTION
 	STOPR_EVENT                         = ( 0x0B, 0x00001000, 12 ) # SPI_STATUS_SELECTION
 	VSTOPL_ACTIVE                       = ( 0x0B, 0x00002000, 13 ) # SPI_STATUS_SELECTION
-	VSTOPL_ACTIVE                       = ( 0x0B, 0x00004000, 14 ) # SPI_STATUS_SELECTION
+	VSTOPR_ACTIVE                       = ( 0x0B, 0x00004000, 14 ) # SPI_STATUS_SELECTION
 	HOME_ERROR                          = ( 0x0B, 0x00008000, 15 ) # SPI_STATUS_SELECTION
 	XLATCH_DONE                         = ( 0x0B, 0x00010000, 16 ) # SPI_STATUS_SELECTION
 	FS_ACTIVE                           = ( 0x0B, 0x00020000, 17 ) # SPI_STATUS_SELECTION
@@ -289,105 +252,6 @@ class TMC4361_fields(object):
 	MOTOR_EV                            = ( 0x0B, 0x40000000, 30 ) # SPI_STATUS_SELECTION
 	RST_EV                              = ( 0x0B, 0x80000000, 31 ) # SPI_STATUS_SELECTION
 
-	# EVENT_CLEAR_CONF
-	TARGET_REACHED                      = ( 0x0C, 0x00000001,  0 ) # EVENT_CLEAR_CONF
-	POS_COMP_REACHED                    = ( 0x0C, 0x00000002,  1 ) # EVENT_CLEAR_CONF
-	VEL_REACHED                         = ( 0x0C, 0x00000004,  2 ) # EVENT_CLEAR_CONF
-	VEL_STATE_00                        = ( 0x0C, 0x00000008,  3 ) # EVENT_CLEAR_CONF
-	VEL_STATE_01                        = ( 0x0C, 0x00000010,  4 ) # EVENT_CLEAR_CONF
-	VEL_STATE_10                        = ( 0x0C, 0x00000020,  5 ) # EVENT_CLEAR_CONF
-	RAMP_STATE_00                       = ( 0x0C, 0x00000040,  6 ) # EVENT_CLEAR_CONF
-	RAMP_STATE_01                       = ( 0x0C, 0x00000080,  7 ) # EVENT_CLEAR_CONF
-	RAMP_STATE_10                       = ( 0x0C, 0x00000100,  8 ) # EVENT_CLEAR_CONF
-	MAX_PHASE_TRAP                      = ( 0x0C, 0x00000200,  9 ) # EVENT_CLEAR_CONF
-	FROZEN                              = ( 0x0C, 0x00000400, 10 ) # EVENT_CLEAR_CONF
-	STOPL_EVENT                         = ( 0x0C, 0x00000800, 11 ) # EVENT_CLEAR_CONF
-	STOPR_EVENT                         = ( 0x0C, 0x00001000, 12 ) # EVENT_CLEAR_CONF
-	VSTOPL_ACTIVE                       = ( 0x0C, 0x00002000, 13 ) # EVENT_CLEAR_CONF
-	VSTOPL_ACTIVE                       = ( 0x0C, 0x00004000, 14 ) # EVENT_CLEAR_CONF
-	HOME_ERROR                          = ( 0x0C, 0x00008000, 15 ) # EVENT_CLEAR_CONF
-	XLATCH_DONE                         = ( 0x0C, 0x00010000, 16 ) # EVENT_CLEAR_CONF
-	FS_ACTIVE                           = ( 0x0C, 0x00020000, 17 ) # EVENT_CLEAR_CONF
-	ENC_FAIL                            = ( 0x0C, 0x00040000, 18 ) # EVENT_CLEAR_CONF
-	N_ACTIVE                            = ( 0x0C, 0x00080000, 19 ) # EVENT_CLEAR_CONF
-	ENC_DONE                            = ( 0x0C, 0x00100000, 20 ) # EVENT_CLEAR_CONF
-	SER_ENC_DATA_FAIL                   = ( 0x0C, 0x00200000, 21 ) # EVENT_CLEAR_CONF
-	SER_DATA_DONE                       = ( 0x0C, 0x00800000, 23 ) # EVENT_CLEAR_CONF
-	SERIAL_ENC_FLAGS                    = ( 0x0C, 0x01000000, 24 ) # EVENT_CLEAR_CONF
-	COVER_DONE                          = ( 0x0C, 0x02000000, 25 ) # EVENT_CLEAR_CONF
-	ENC_VEL0                            = ( 0x0C, 0x04000000, 26 ) # EVENT_CLEAR_CONF
-	CL_MAX                              = ( 0x0C, 0x08000000, 27 ) # EVENT_CLEAR_CONF
-	CL_FIT                              = ( 0x0C, 0x10000000, 28 ) # EVENT_CLEAR_CONF
-	STOP_ON_STALL                       = ( 0x0C, 0x20000000, 29 ) # EVENT_CLEAR_CONF
-	MOTOR_EV                            = ( 0x0C, 0x40000000, 30 ) # EVENT_CLEAR_CONF
-	RST_EV                              = ( 0x0C, 0x80000000, 31 ) # EVENT_CLEAR_CONF
-
-	# INTR_CONF
-	TARGET_REACHED                      = ( 0x0D, 0x00000001,  0 ) # INTR_CONF
-	POS_COMP_REACHED                    = ( 0x0D, 0x00000002,  1 ) # INTR_CONF
-	VEL_REACHED                         = ( 0x0D, 0x00000004,  2 ) # INTR_CONF
-	VEL_STATE_00                        = ( 0x0D, 0x00000008,  3 ) # INTR_CONF
-	VEL_STATE_01                        = ( 0x0D, 0x00000010,  4 ) # INTR_CONF
-	VEL_STATE_10                        = ( 0x0D, 0x00000020,  5 ) # INTR_CONF
-	RAMP_STATE_00                       = ( 0x0D, 0x00000040,  6 ) # INTR_CONF
-	RAMP_STATE_01                       = ( 0x0D, 0x00000080,  7 ) # INTR_CONF
-	RAMP_STATE_10                       = ( 0x0D, 0x00000100,  8 ) # INTR_CONF
-	MAX_PHASE_TRAP                      = ( 0x0D, 0x00000200,  9 ) # INTR_CONF
-	FROZEN                              = ( 0x0D, 0x00000400, 10 ) # INTR_CONF
-	STOPL_EVENT                         = ( 0x0D, 0x00000800, 11 ) # INTR_CONF
-	STOPR_EVENT                         = ( 0x0D, 0x00001000, 12 ) # INTR_CONF
-	VSTOPL_ACTIVE                       = ( 0x0D, 0x00002000, 13 ) # INTR_CONF
-	VSTOPL_ACTIVE                       = ( 0x0D, 0x00004000, 14 ) # INTR_CONF
-	HOME_ERROR                          = ( 0x0D, 0x00008000, 15 ) # INTR_CONF
-	XLATCH_DONE                         = ( 0x0D, 0x00010000, 16 ) # INTR_CONF
-	FS_ACTIVE                           = ( 0x0D, 0x00020000, 17 ) # INTR_CONF
-	ENC_FAIL                            = ( 0x0D, 0x00040000, 18 ) # INTR_CONF
-	N_ACTIVE                            = ( 0x0D, 0x00080000, 19 ) # INTR_CONF
-	ENC_DONE                            = ( 0x0D, 0x00100000, 20 ) # INTR_CONF
-	SER_ENC_DATA_FAIL                   = ( 0x0D, 0x00200000, 21 ) # INTR_CONF
-	SER_DATA_DONE                       = ( 0x0D, 0x00800000, 23 ) # INTR_CONF
-	SERIAL_ENC_FLAGS                    = ( 0x0D, 0x01000000, 24 ) # INTR_CONF
-	COVER_DONE                          = ( 0x0D, 0x02000000, 25 ) # INTR_CONF
-	ENC_VEL0                            = ( 0x0D, 0x04000000, 26 ) # INTR_CONF
-	CL_MAX                              = ( 0x0D, 0x08000000, 27 ) # INTR_CONF
-	CL_FIT                              = ( 0x0D, 0x10000000, 28 ) # INTR_CONF
-	STOP_ON_STALL                       = ( 0x0D, 0x20000000, 29 ) # INTR_CONF
-	MOTOR_EV                            = ( 0x0D, 0x40000000, 30 ) # INTR_CONF
-	RST_EV                              = ( 0x0D, 0x80000000, 31 ) # INTR_CONF
-
-	# EVENTS
-	TARGET_REACHED                      = ( 0x0E, 0x00000001,  0 ) # EVENTS
-	POS_COMP_REACHED                    = ( 0x0E, 0x00000002,  1 ) # EVENTS
-	VEL_REACHED                         = ( 0x0E, 0x00000004,  2 ) # EVENTS
-	VEL_STATE_00                        = ( 0x0E, 0x00000008,  3 ) # EVENTS
-	VEL_STATE_01                        = ( 0x0E, 0x00000010,  4 ) # EVENTS
-	VEL_STATE_10                        = ( 0x0E, 0x00000020,  5 ) # EVENTS
-	RAMP_STATE_00                       = ( 0x0E, 0x00000040,  6 ) # EVENTS
-	RAMP_STATE_01                       = ( 0x0E, 0x00000080,  7 ) # EVENTS
-	RAMP_STATE_10                       = ( 0x0E, 0x00000100,  8 ) # EVENTS
-	MAX_PHASE_TRAP                      = ( 0x0E, 0x00000200,  9 ) # EVENTS
-	FROZEN                              = ( 0x0E, 0x00000400, 10 ) # EVENTS
-	STOPL_EVENT                         = ( 0x0E, 0x00000800, 11 ) # EVENTS
-	STOPR_EVENT                         = ( 0x0E, 0x00001000, 12 ) # EVENTS
-	VSTOPL_ACTIVE                       = ( 0x0E, 0x00002000, 13 ) # EVENTS
-	VSTOPL_ACTIVE                       = ( 0x0E, 0x00004000, 14 ) # EVENTS
-	HOME_ERROR                          = ( 0x0E, 0x00008000, 15 ) # EVENTS
-	XLATCH_DONE                         = ( 0x0E, 0x00010000, 16 ) # EVENTS
-	FS_ACTIVE                           = ( 0x0E, 0x00020000, 17 ) # EVENTS
-	ENC_FAIL                            = ( 0x0E, 0x00040000, 18 ) # EVENTS
-	N_ACTIVE                            = ( 0x0E, 0x00080000, 19 ) # EVENTS
-	ENC_DONE                            = ( 0x0E, 0x00100000, 20 ) # EVENTS
-	SER_ENC_DATA_FAIL                   = ( 0x0E, 0x00200000, 21 ) # EVENTS
-	SER_DATA_DONE                       = ( 0x0E, 0x00800000, 23 ) # EVENTS
-	SERIAL_ENC_FLAGS                    = ( 0x0E, 0x01000000, 24 ) # EVENTS
-	COVER_DONE                          = ( 0x0E, 0x02000000, 25 ) # EVENTS
-	ENC_VEL0                            = ( 0x0E, 0x04000000, 26 ) # EVENTS
-	CL_MAX                              = ( 0x0E, 0x08000000, 27 ) # EVENTS
-	CL_FIT                              = ( 0x0E, 0x10000000, 28 ) # EVENTS
-	STOP_ON_STALL                       = ( 0x0E, 0x20000000, 29 ) # EVENTS
-	MOTOR_EV                            = ( 0x0E, 0x40000000, 30 ) # EVENTS
-	RST_EV                              = ( 0x0E, 0x80000000, 31 ) # EVENTS
-
 	# STATUS
 	TARGET_REACHED_F                    = ( 0x0F, 0x00000001,  0 ) # STATUS
 	POS_COMP_REACHED_F                  = ( 0x0F, 0x00000002,  1 ) # STATUS
@@ -404,30 +268,11 @@ class TMC4361_fields(object):
 	ENC_FAIL_F                          = ( 0x0F, 0x00004000, 14 ) # STATUS
 	N_ACTIVE_F                          = ( 0x0F, 0x00008000, 15 ) # STATUS
 	ENC_LATCH_F                         = ( 0x0F, 0x00010000, 16 ) # STATUS
-	CL_FIT                              = ( 0x0F, 0x00080000, 19 ) # STATUS
 	MULTI_CYCLE_FAIL_F___SER_ENC_VAR_F  = ( 0x0F, 0x00020000, 17 ) # STATUS
-	CL_FIT                              = ( 0x0F, 0x00080000, 19 ) # STATUS
-	SERIAL_ENC_FLAG__                   = ( 0x0F, 0x00100000, 20 ) # STATUS
-	SERIAL_ENC_FLAG__                   = ( 0x0F, 0x00200000, 21 ) # STATUS
-	SERIAL_ENC_FLAG__                   = ( 0x0F, 0x00400000, 22 ) # STATUS
-	SERIAL_ENC_FLAG__                   = ( 0x0F, 0x00800000, 23 ) # STATUS
-	SG                                  = ( 0x0F, 0x01000000, 24 ) # STATUS
-	OT                                  = ( 0x0F, 0x02000000, 25 ) # STATUS
-	OTPW                                = ( 0x0F, 0x04000000, 26 ) # STATUS
-	S2GA                                = ( 0x0F, 0x08000000, 27 ) # STATUS
-	S2GB                                = ( 0x0F, 0x10000000, 28 ) # STATUS
-	OLA                                 = ( 0x0F, 0x20000000, 29 ) # STATUS
-	OLB                                 = ( 0x0F, 0x40000000, 30 ) # STATUS
-	STST                                = ( 0x0F, 0x80000000, 31 ) # STATUS
-	SG                                  = ( 0x0F, 0x01000000, 24 ) # STATUS
-	UV_SF                               = ( 0x0F, 0x01000000, 24 ) # STATUS
-	UV_SF                               = ( 0x0F, 0x01000000, 24 ) # STATUS
-	OTPW                                = ( 0x0F, 0x04000000, 26 ) # STATUS
-	OCA                                 = ( 0x0F, 0x08000000, 27 ) # STATUS
-	OCB                                 = ( 0x0F, 0x10000000, 28 ) # STATUS
-	OLA                                 = ( 0x0F, 0x20000000, 29 ) # STATUS
-	OLB                                 = ( 0x0F, 0x40000000, 30 ) # STATUS
-	OCHS                                = ( 0x0F, 0x80000000, 31 ) # STATUS
+	SERIAL_ENC_FLAG_0                   = ( 0x0F, 0x00100000, 20 ) # STATUS
+	SERIAL_ENC_FLAG_1                   = ( 0x0F, 0x00200000, 21 ) # STATUS
+	SERIAL_ENC_FLAG_2                   = ( 0x0F, 0x00400000, 22 ) # STATUS
+	SERIAL_ENC_FLAG_3                   = ( 0x0F, 0x00800000, 23 ) # STATUS
 
 	# STP_LENGTH_ADD / DIR_SETUP_TIME
 	STP_LENGTH_ADD                      = ( 0x10, 0x0000FFFF,  0 ) # STP_LENGTH_ADD / DIR_SETUP_TIME
@@ -458,12 +303,10 @@ class TMC4361_fields(object):
 	# UP_SCALE_DELAY / CL_UPSCALE_DELAY
 	UP_SCALE_DELAY                      = ( 0x18, 0x00FFFFFF,  0 ) # UP_SCALE_DELAY / CL_UPSCALE_DELAY
 	CL_UPSCALE_DELAY                    = ( 0x18, 0x00FFFFFF,  0 ) # UP_SCALE_DELAY / CL_UPSCALE_DELAY
-	UP_SCALE_DELAY                      = ( 0x18, 0x00FFFFFF,  0 ) # UP_SCALE_DELAY / CL_UPSCALE_DELAY
 
 	# HOLD_SCALE_DELAY / CL_DNSCALE_DELAY
 	HOLD_SCALE_DELAY                    = ( 0x19, 0x00FFFFFF,  0 ) # HOLD_SCALE_DELAY / CL_DNSCALE_DELAY
 	CL_DNSCALE_DELAY                    = ( 0x19, 0x00FFFFFF,  0 ) # HOLD_SCALE_DELAY / CL_DNSCALE_DELAY
-	HOLD_SCALE_DELAY                    = ( 0x19, 0x00FFFFFF,  0 ) # HOLD_SCALE_DELAY / CL_DNSCALE_DELAY
 
 	# DRV_SCALE_DELAY
 	DRV_SCALE_DELAY                     = ( 0x1A, 0x00FFFFFF,  0 ) # DRV_SCALE_DELAY
@@ -502,55 +345,43 @@ class TMC4361_fields(object):
 
 	# VMAX
 	VMAX                                = ( 0x24, 0xFFFFFFFF,  0 ) # VMAX
-	VMAX                                = ( 0x24, 0xFFFFFFFF,  0 ) # VMAX
 
 	# VSTART
 	VSTART                              = ( 0x25, 0x7FFFFFFF,  0 ) # VSTART
 
 	# VSTOP
 	VSTOP                               = ( 0x26, 0x7FFFFFFF,  0 ) # VSTOP
-	VSTOP                               = ( 0x26, 0x7FFFFFFF,  0 ) # VSTOP
 
 	# VBREAK
 	VBREAK                              = ( 0x27, 0x7FFFFFFF,  0 ) # VBREAK
 
 	# AMAX
-	FREQUENCY_MODE                      = ( 0x28, 0x00FFFFFF,  0 ) # AMAX
-	DIRECT_MODE                         = ( 0x28, 0x00FFFFFF,  0 ) # AMAX
+	AMAX                                = ( 0x28, 0x00FFFFFF,  0 ) # AMAX
 
 	# DMAX
-	FREQUENCY_MODE                      = ( 0x29, 0x00FFFFFF,  0 ) # DMAX
-	DIRECT_MODE                         = ( 0x29, 0x00FFFFFF,  0 ) # DMAX
+	DMAX                                = ( 0x29, 0x00FFFFFF,  0 ) # DMAX
 
 	# ASTART
-	FREQUENCY_MODE                      = ( 0x2A, 0x00FFFFFF,  0 ) # ASTART
+	ASTART                              = ( 0x2A, 0x00FFFFFF,  0 ) # ASTART
 	SIGN_AACT                           = ( 0x2A, 0x80000000, 31 ) # ASTART
-	DIRECT_MODE                         = ( 0x2A, 0x00FFFFFF,  0 ) # ASTART
-	SIGN_AACT                           = ( 0x2A, 0x10000000, 32 ) # ASTART
 
 	# DFINAL
-	FREQUENCY_MODE                      = ( 0x2B, 0x00FFFFFF,  0 ) # DFINAL
-	DIRECT_MODE                         = ( 0x2B, 0x00FFFFFF,  0 ) # DFINAL
+	DFINAL                              = ( 0x2B, 0x00FFFFFF,  0 ) # DFINAL
 
 	# DSTOP
-	FREQUENCY_MODE                      = ( 0x2C, 0x00FFFFFF,  0 ) # DSTOP
-	DIRECT_MODE                         = ( 0x2C, 0x00FFFFFF,  0 ) # DSTOP
+	DSTOP                               = ( 0x2C, 0x00FFFFFF,  0 ) # DSTOP
 
 	# BOW1
-	FREQUENCY_MODE                      = ( 0x2D, 0x00FFFFFF,  0 ) # BOW1
-	DIRECT_MODE                         = ( 0x2D, 0x00FFFFFF,  0 ) # BOW1
+	BOW1                                = ( 0x2D, 0x00FFFFFF,  0 ) # BOW1
 
 	# BOW2
-	FREQUENCY_MODE                      = ( 0x2E, 0x00FFFFFF,  0 ) # BOW2
-	DIRECT_MODE                         = ( 0x2E, 0x00FFFFFF,  0 ) # BOW2
+	BOW2                                = ( 0x2E, 0x00FFFFFF,  0 ) # BOW2
 
 	# BOW3
-	FREQUENCY_MODE                      = ( 0x2F, 0x00FFFFFF,  0 ) # BOW3
-	DIRECT_MODE                         = ( 0x2F, 0x00FFFFFF,  0 ) # BOW3
+	BOW3                                = ( 0x2F, 0x00FFFFFF,  0 ) # BOW3
 
 	# BOW4
-	FREQUENCY_MODE                      = ( 0x30, 0x00FFFFFF,  0 ) # BOW4
-	DIRECT_MODE                         = ( 0x30, 0x00FFFFFF,  0 ) # BOW4
+	BOW4                                = ( 0x30, 0x00FFFFFF,  0 ) # BOW4
 
 	# CLK_FREQ
 	CLK_FREQ                            = ( 0x31, 0x01FFFFFF,  0 ) # CLK_FREQ
@@ -568,7 +399,6 @@ class TMC4361_fields(object):
 	X_HOME                              = ( 0x35, 0xFFFFFFFF,  0 ) # X_HOME
 
 	# X_LATCH / REV_CNT / X_RANGE
-	X_LATCH                             = ( 0x36, 0xFFFFFFFF,  0 ) # X_LATCH / REV_CNT / X_RANGE
 	X_LATCH                             = ( 0x36, 0xFFFFFFFF,  0 ) # X_LATCH / REV_CNT / X_RANGE
 	X_RANGE                             = ( 0x36, 0xFFFFFFFF,  0 ) # X_LATCH / REV_CNT / X_RANGE
 
@@ -604,39 +434,25 @@ class TMC4361_fields(object):
 
 	# SH_REG1
 	SH_REG1_AMAX                        = ( 0x41, 0x00FFFFFF,  0 ) # SH_REG1
-	SH_REG1_AMAX                        = ( 0x41, 0x00FFFFFF,  0 ) # SH_REG1
 
 	# SH_REG2
-	SH_REG2_DMAX                        = ( 0x42, 0x00FFFFFF,  0 ) # SH_REG2
 	SH_REG2_DMAX                        = ( 0x42, 0x00FFFFFF,  0 ) # SH_REG2
 
 	# SH_REG3
 	SH_REG3_ASTART                      = ( 0x43, 0x00FFFFFF,  0 ) # SH_REG3
-	SH_REG3_ASTART                      = ( 0x43, 0x00FFFFFF,  0 ) # SH_REG3
 	SH_REG3_BOW1                        = ( 0x43, 0x00FFFFFF,  0 ) # SH_REG3
-	SH_REG3_BOW1                        = ( 0x43, 0x00FFFFFF,  0 ) # SH_REG3
-	SH_REG3_ASTART                      = ( 0x43, 0x00FFFFFF,  0 ) # SH_REG3
-	SH_REG3_ASTART                      = ( 0x43, 0x00FFFFFF,  0 ) # SH_REG3
 
 	# SH_REG4
 	SH_REG4_DFINAL                      = ( 0x44, 0x00FFFFFF,  0 ) # SH_REG4
-	SH_REG4_DFINAL                      = ( 0x44, 0x00FFFFFF,  0 ) # SH_REG4
 	SH_REG4_BOW2                        = ( 0x44, 0x00FFFFFF,  0 ) # SH_REG4
-	SH_REG4_BOW2                        = ( 0x44, 0x00FFFFFF,  0 ) # SH_REG4
-	SH_REG4_DFINAL                      = ( 0x44, 0x00FFFFFF,  0 ) # SH_REG4
-	SH_REG4_DFINAL                      = ( 0x44, 0x00FFFFFF,  0 ) # SH_REG4
 
 	# SH_REG5
 	SH_REG5_VBREAK                      = ( 0x45, 0x7FFFFFFF,  0 ) # SH_REG5
 	SH_REG5_BOW3                        = ( 0x45, 0x00FFFFFF,  0 ) # SH_REG5
-	SH_REG5_BOW3                        = ( 0x45, 0x00FFFFFF,  0 ) # SH_REG5
-	SH_REG5_VBREAK                      = ( 0x45, 0x7FFFFFFF,  0 ) # SH_REG5
 
 	# SH_REG6
 	SH_REG6_VSTART                      = ( 0x46, 0x7FFFFFFF,  0 ) # SH_REG6
 	SH_REG6_BOW4                        = ( 0x46, 0x00FFFFFF,  0 ) # SH_REG6
-	SH_REG6_BOW4                        = ( 0x46, 0x00FFFFFF,  0 ) # SH_REG6
-	SH_REG6_VSTART                      = ( 0x46, 0x7FFFFFFF,  0 ) # SH_REG6
 	SH_REG6_VSTOP                       = ( 0x46, 0x7FFFFFFF,  0 ) # SH_REG6
 
 	# SH_REG7
@@ -645,41 +461,27 @@ class TMC4361_fields(object):
 
 	# SH_REG8
 	SH_REG8_BOW1                        = ( 0x48, 0x00FFFFFF,  0 ) # SH_REG8
-	SH_REG8_BOW1                        = ( 0x48, 0x00FFFFFF,  0 ) # SH_REG8
-	SH_REG8_AMAX                        = ( 0x48, 0x00FFFFFF,  0 ) # SH_REG8
 	SH_REG8_AMAX                        = ( 0x48, 0x00FFFFFF,  0 ) # SH_REG8
 
 	# SH_REG9
 	SH_REG9_BOW2                        = ( 0x49, 0x00FFFFFF,  0 ) # SH_REG9
-	SH_REG9_BOW2                        = ( 0x49, 0x00FFFFFF,  0 ) # SH_REG9
-	SH_REG9_DMAX                        = ( 0x49, 0x00FFFFFF,  0 ) # SH_REG9
 	SH_REG9_DMAX                        = ( 0x49, 0x00FFFFFF,  0 ) # SH_REG9
 
 	# SH_REG10
 	SH_REG10_BOW3                       = ( 0x4A, 0x00FFFFFF,  0 ) # SH_REG10
-	SH_REG10_BOW3                       = ( 0x4A, 0x00FFFFFF,  0 ) # SH_REG10
 	SH_REG10_BOW1                       = ( 0x4A, 0x00FFFFFF,  0 ) # SH_REG10
-	SH_REG10_BOW1                       = ( 0x4A, 0x00FFFFFF,  0 ) # SH_REG10
-	SH_REG10_ASTART                     = ( 0x4A, 0x00FFFFFF,  0 ) # SH_REG10
 	SH_REG10_ASTART                     = ( 0x4A, 0x00FFFFFF,  0 ) # SH_REG10
 
 	# SH_REG11
 	SH_REG11_BOW4                       = ( 0x4B, 0x00FFFFFF,  0 ) # SH_REG11
-	SH_REG11_BOW4                       = ( 0x4B, 0x00FFFFFF,  0 ) # SH_REG11
 	SH_REG11_BOW2                       = ( 0x4B, 0x00FFFFFF,  0 ) # SH_REG11
-	SH_REG11_BOW2                       = ( 0x4B, 0x00FFFFFF,  0 ) # SH_REG11
-	SH_REG11_DFINAL                     = ( 0x4B, 0x00FFFFFF,  0 ) # SH_REG11
 	SH_REG11_DFINAL                     = ( 0x4B, 0x00FFFFFF,  0 ) # SH_REG11
 
 	# SH_REG12
-	OPERATION_MODE                      = ( 0x4C, 0x00000004,  2 ) # SH_REG12
-	RAMP_PROFILE                        = ( 0x4C, 0x00000003,  0 ) # SH_REG12
-	SH_REG12_BOW3                       = ( 0x4C, 0x00FFFFFF,  0 ) # SH_REG12
 	SH_REG12_BOW3                       = ( 0x4C, 0x00FFFFFF,  0 ) # SH_REG12
 	SH_REG12_VBREAK                     = ( 0x4C, 0x7FFFFFFF,  0 ) # SH_REG12
 
 	# SH_REG13
-	SH_REG13_BOW4                       = ( 0x4D, 0x00FFFFFF,  0 ) # SH_REG13
 	SH_REG13_BOW4                       = ( 0x4D, 0x00FFFFFF,  0 ) # SH_REG13
 	SH_REG13_VSTART                     = ( 0x4D, 0x7FFFFFFF,  0 ) # SH_REG13
 	SH_REG13_VSTOP                      = ( 0x4D, 0x7FFFFFFF,  0 ) # SH_REG13
@@ -715,8 +517,6 @@ class TMC4361_fields(object):
 	SER_CLK_IN_LOW                      = ( 0x56, 0xFFFF0000, 16 ) # SER_CLK_IN_HIGH/LOW
 
 	# SSI_IN_CLK_DELAY / SSI_IN_WTIME
-	SSI_IN_CLK_DELAY                    = ( 0x57, 0x0000FFFF,  0 ) # SSI_IN_CLK_DELAY / SSI_IN_WTIME
-	SSI_IN_WTIME                        = ( 0x57, 0xFFFF0000, 16 ) # SSI_IN_CLK_DELAY / SSI_IN_WTIME
 	SSI_IN_CLK_DELAY                    = ( 0x57, 0x0000FFFF,  0 ) # SSI_IN_CLK_DELAY / SSI_IN_WTIME
 	SSI_IN_WTIME                        = ( 0x57, 0xFFFF0000, 16 ) # SSI_IN_CLK_DELAY / SSI_IN_WTIME
 
@@ -772,7 +572,6 @@ class TMC4361_fields(object):
 	ENC_VMEAN_FILTER                    = ( 0x63, 0x00000F00,  8 ) # ENC_VMEAN_... / SER_ENC_VARIATION / CL_CYCLE
 	ENC_VMEAN_INT                       = ( 0x63, 0xFFFF0000, 16 ) # ENC_VMEAN_... / SER_ENC_VARIATION / CL_CYCLE
 	SER_ENC_VARIATION                   = ( 0x63, 0x000000FF,  0 ) # ENC_VMEAN_... / SER_ENC_VARIATION / CL_CYCLE
-	ENC_VMEAN_FILTER                    = ( 0x63, 0x00000F00,  8 ) # ENC_VMEAN_... / SER_ENC_VARIATION / CL_CYCLE
 	CL_CYCLE                            = ( 0x63, 0xFFFF0000, 16 ) # ENC_VMEAN_... / SER_ENC_VARIATION / CL_CYCLE
 
 	# V_ENC
@@ -798,10 +597,8 @@ class TMC4361_fields(object):
 
 	# COVER_LOW
 	COVER_LOW                           = ( 0x6C, 0xFFFFFFFF,  0 ) # COVER_LOW
-	COVER_LOW                           = ( 0x6C, 0xFFFFFFFF,  0 ) # COVER_LOW
 
 	# COVER_HIGH / POLLING_REG
-	COVER_HIGH                          = ( 0x6D, 0xFFFFFFFF,  0 ) # COVER_HIGH / POLLING_REG
 	COVER_HIGH                          = ( 0x6D, 0xFFFFFFFF,  0 ) # COVER_HIGH / POLLING_REG
 
 	# COVER_DRV_LOW
@@ -812,27 +609,6 @@ class TMC4361_fields(object):
 
 	# MSLUT[0]
 	MSLUT__                             = ( 0x70, 0xFFFFFFFF,  0 ) # MSLUT[0]
-
-	# MSLUT[1]
-	MSLUT__                             = ( 0x71, 0xFFFFFFFF,  0 ) # MSLUT[1]
-
-	# MSLUT[2]
-	MSLUT__                             = ( 0x72, 0xFFFFFFFF,  0 ) # MSLUT[2]
-
-	# MSLUT[3]
-	MSLUT__                             = ( 0x73, 0xFFFFFFFF,  0 ) # MSLUT[3]
-
-	# MSLUT[4]
-	MSLUT__                             = ( 0x74, 0xFFFFFFFF,  0 ) # MSLUT[4]
-
-	# MSLUT[5]
-	MSLUT__                             = ( 0x75, 0xFFFFFFFF,  0 ) # MSLUT[5]
-
-	# MSLUT[6]
-	MSLUT__                             = ( 0x76, 0xFFFFFFFF,  0 ) # MSLUT[6]
-
-	# MSLUT[7]
-	MSLUT__                             = ( 0x77, 0xFFFFFFFF,  0 ) # MSLUT[7]
 
 	# MSLUTSEL
 	MSLUTSEL                            = ( 0x78, 0xFFFFFFFF,  0 ) # MSLUTSEL
@@ -857,12 +633,10 @@ class TMC4361_fields(object):
 	# ENC_COMP_...
 	ENC_COMP_XOFFSET                    = ( 0x7D, 0x0000FFFF,  0 ) # ENC_COMP_...
 	ENC_COMP_YOFFSET                    = ( 0x7D, 0x00FF0000, 16 ) # ENC_COMP_...
-	ENC_VMEAN_INT                       = ( 0x7D, 0xFF000000, 24 ) # ENC_COMP_...
 
 	# START_SIN... / DAC_OFFSET
 	START_SIN                           = ( 0x7E, 0x000000FF,  0 ) # START_SIN... / DAC_OFFSET
 	START_SIN90_120                     = ( 0x7E, 0x00FF0000, 16 ) # START_SIN... / DAC_OFFSET
-	DAC_OFFSET                          = ( 0x7E, 0xFF000000, 24 ) # START_SIN... / DAC_OFFSET
 	DAC_OFFSET                          = ( 0x7E, 0xFF000000, 24 ) # START_SIN... / DAC_OFFSET
 
 	# VERSION_NO
