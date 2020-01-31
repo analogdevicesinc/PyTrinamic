@@ -267,6 +267,7 @@ class _APs():
     HallInterpolation              = 252
     MotorPoles                     = 253
     HallSensorInvert               = 254
+    EnableDriver                   = 255
 
 class _GPs():
     serialBaudRate                 = 65
