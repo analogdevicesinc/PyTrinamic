@@ -51,7 +51,7 @@ module.setPositionPParameter(1000)
 module.showPIConfiguration()
 
 # set commutation mode to FOC based on encoder
-module.setCommutationMode(module.COMM_MODE_FOC_ENCODER)
+module.setCommutationMode(module.APs.COMM_MODE_FOC_ENCODER)
 
 targetVelocity = 1000
 

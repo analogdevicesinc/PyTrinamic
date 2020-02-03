@@ -45,7 +45,7 @@ module.setPositionPParameter(1000)
 module.showPIConfiguration()
 
 # set commutation mode to FOC based on hall sensor signals
-module.setCommutationMode(module.COMM_MODE_FOC_HALL)
+module.setCommutationMode(module.APs.COMM_MODE_FOC_HALL)
 
 # use velocity mode until switch is active
 
