@@ -60,7 +60,7 @@ TMC4671.writeRegister(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0xFF0081F8)
 
 " Open loop settings "
 TMC4671.writeRegister(TMC4671.registers.OPENLOOP_MODE, 0x00000000)
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_ACCELERATION, 0x0000003C)
+TMC4671.writeRegister(TMC4671.registers.OPENLOOP_ACCELERATION, 0x00000100)
 
 " Feedback selection "
 TMC4671.writeRegister(TMC4671.registers.PHI_E_SELECTION, TMC4671.registers.PHI_E_OPEN_LOOP)
@@ -73,12 +73,12 @@ TMC4671.writeRegister(TMC4671.registers.MODE_RAMP_MODE_MOTION, TMC4671.registers
 
 " Rotate right "
 print("rotate right...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 1000)
+TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 100)
 time.sleep(6)
 
 " Rotate left "
 print("rotate left...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, -1000)
+TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, -100)
 time.sleep(12)
 
 " Stop "

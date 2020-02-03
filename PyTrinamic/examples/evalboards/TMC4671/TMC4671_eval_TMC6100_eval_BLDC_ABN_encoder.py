@@ -60,7 +60,7 @@ TMC4671.writeRegister(TMC4671.registers.ADC_I0_SCALE_OFFSET, 0xFF00826D)
 TMC4671.writeRegister(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0xFF0081F8)
 
 " ABN encoder settings "
-TMC4671.writeRegister(TMC4671.registers.ABN_DECODER_MODE, 0x00000000)
+TMC4671.writeRegister(TMC4671.registers.ABN_DECODER_MODE, 0x00001000)
 TMC4671.writeRegister(TMC4671.registers.ABN_DECODER_PPR, 4096)
 TMC4671.writeRegister(TMC4671.registers.ABN_DECODER_COUNT, 0x0)
 TMC4671.writeRegister(TMC4671.registers.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x0)
@@ -75,6 +75,7 @@ TMC4671.writeRegister(TMC4671.registers.PID_FLUX_P_FLUX_I, 0x01000100)
 " ===== ABN encoder test drive ===== "
 
 " Init encoder (mode 0) "
+print("Initializing Encoder")
 TMC4671.writeRegister(TMC4671.registers.MODE_RAMP_MODE_MOTION, 0x00000008)
 TMC4671.writeRegister(TMC4671.registers.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000)
 TMC4671.writeRegister(TMC4671.registers.PHI_E_SELECTION, TMC4671.registers.PHI_E_EXTERNAL)
