@@ -94,7 +94,7 @@ class TMCM_1640():
         self.setAxisParameter(self.APs.MotorHaltedVelocity, velocity)
 
     def positionReached(self):
-        return ((self.statusFlags() & self.FLAG_POSITION_END) != 0)
+        return ((self.statusFlags() & self.APs.FLAG_POSITION_END) != 0)
 
     def rampEnabled(self):
         return self.axisParameter(self.APs.EnableRamp)
@@ -272,6 +272,17 @@ class _APs():
     HallSensorInvert               = 254
     EnableDriver                   = 255
 
+    COMM_MODE_BLOCK_HALL            = 0
+    COMM_MODE_FOC_HALL              = 6
+    COMM_MODE_FOC_ENCODER           = 7
+    COMM_MODE_FOC_CONTROLLED        = 8
+
+    ENCODER_INIT_MODE_0             = 0
+    ENCODER_INIT_MODE_1             = 1
+    ENCODER_INIT_MODE_2             = 2
+
+    FLAG_POSITION_END               = 0x00004000
+
 class _GPs():
     serialBaudRate                 = 65
     serialAddress                  = 66
@@ -284,14 +295,3 @@ class _GPs():
     applicationStatus              = 128
     programCounter                 = 130
     tickTimer                      = 132
-
-    COMM_MODE_BLOCK_HALL            = 0
-    COMM_MODE_FOC_HALL              = 6
-    COMM_MODE_FOC_ENCODER           = 7
-    COMM_MODE_FOC_CONTROLLED        = 8
-
-    ENCODER_INIT_MODE_0             = 0
-    ENCODER_INIT_MODE_1             = 1
-    ENCODER_INIT_MODE_2             = 2
-
-    FLAG_POSITION_END               = 0x00004000
