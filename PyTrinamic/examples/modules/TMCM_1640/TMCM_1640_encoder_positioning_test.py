@@ -28,7 +28,7 @@ module.showMotorConfiguration()
 module.setOpenLoopTorque(1000)
 module.setEncoderResolution(4096)
 module.setEncoderDirection(0)
-module.setEncoderInitMode(module.ENCODER_INIT_MODE_0)
+module.setEncoderInitMode(module.APs.ENCODER_INIT_MODE_0)
 module.showEncoderConfiguration()
 
 " motion settings "
@@ -48,7 +48,7 @@ module.setPositionPParameter(300)
 module.showPIConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.COMM_MODE_FOC_ENCODER)
+module.setCommutationMode(module.APs.COMM_MODE_FOC_ENCODER)
 
 " set position counter to zero"
 module.setActualPosition(0)
