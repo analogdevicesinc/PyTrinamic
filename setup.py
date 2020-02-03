@@ -135,13 +135,13 @@ setuptools.setup(
         "PyTrinamic/modules/TMCM_1161",
         "PyTrinamic/modules/TMCM_1270",
         "PyTrinamic/modules/TMCM_1276",
+        "PyTrinamic/modules/TMCM_1630",
         "PyTrinamic/modules/TMCM_1633",
         "PyTrinamic/modules/TMCM_1636",
         "PyTrinamic/modules/TMCM_1640",
         "PyTrinamic/modules/TMCM_1670",
         "PyTrinamic/modules/TMCM_6212",
         "PyTrinamic/helpers",
-        "PyTrinamic/cli",
         "PyTrinamic/version"
     ],
     scripts=[
@@ -193,6 +193,10 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1161/TMCM_1161_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1276/TMCM_1276_rotateDemo.py",
+        "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_encoder_analog_input_test.py",
+        "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_encoder_positioning_test.py",
+        "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_hall_digital_input_test.py",
+        "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_hall_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_encoder_limit_switches.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_hall_limit_switches.py",
         "PyTrinamic/examples/modules/TMCM_1636/TMCM_1636_position_abn_abs.py",
@@ -207,7 +211,6 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_limit_switches.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_positioning.py",
         "PyTrinamic/examples/tools/FirmwareUpdate.py",
-        "PyTrinamic/examples/ShowAvailableCOMPorts.py"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
