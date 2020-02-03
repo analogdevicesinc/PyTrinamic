@@ -28,6 +28,10 @@ class usb_tmcl_interface(serial_tmcl_interface):
             "VID": 0x16D0,
             "PID": 0x0461
         },
+        { # Startrampe
+            "VID": 0x16D0,
+            "PID": 0x07E4
+        },
         { # TMC_CDC_DEV
             "VID": 0x2A3C,
             "PID": 0x0200
