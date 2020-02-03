@@ -14,6 +14,9 @@ class TMCM_1160():
         self.MOTORS = 1
         self.__default_motor = 0
 
+    def showChipInfo(self):
+        ("The TMCM-1160 is a single axis controller/driver module for 2-phase bipolar stepper motors with state of theart feature set. Voltage supply: 12 - 48V");
+
     # Axis parameter access
     def getAxisParameter(self, apType):
         return self.connection.axisParameter(apType, self.__default_motor)

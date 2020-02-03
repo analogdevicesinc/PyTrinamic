@@ -13,6 +13,9 @@ class TMCM_1633():
         self.connection = connection
         self.motor = 0
 
+    def showChipInfo(self):
+        ("The TMCM-1633 is a single axis controller module for brushless DC (BLDC) and PMSM motors. Voltage supply: 14,5 - 48V");
+
     # general parameter access
     def parameter(self, pCommand, pType, pAxis, pValue):
         return self.connection.parameter(pCommand, pType, pAxis, pValue)

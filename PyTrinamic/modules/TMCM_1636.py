@@ -13,6 +13,9 @@ class TMCM_1636():
 
         self.motor = 0
 
+    def showChipInfo(self):
+        ("TMCM-1636. Voltage supply: not implemented yet");
+
     " axis parameter access "
     def axisParameter(self, apType):
         return self.connection.axisParameter(apType, self.motor)

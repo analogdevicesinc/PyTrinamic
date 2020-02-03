@@ -13,6 +13,9 @@ class TMCM_6212():
 
         self.MOTORS = 6
 
+    def showChipInfo(self):
+        ("TMCM-6212 is a six axes controller/driver module for 2-phase bipolar stepper motors with seperate encoder (differential) and HOME / STOP switch inputes for each axis. Voltage supply: 12 - 35");
+
     # Axis parameter access
     def getAxisParameter(self, apType, axis):
         if not(0 <= axis < self.MOTORS):

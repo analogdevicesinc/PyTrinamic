@@ -13,6 +13,9 @@ class TMCM_1640():
 
         self.motor = 0
 
+    def showChipInfo(self):
+        ("The TMCM-1640 is a highly compact controller/driver module for brushless DC (BLDC) motors with up to 5A coil current, optional encoder and/or hall sensor feedback. Voltage supply: 12 - 28,5");
+
     " axis parameter access "
     def axisParameter(self, apType):
         return self.connection.axisParameter(apType, self.motor)

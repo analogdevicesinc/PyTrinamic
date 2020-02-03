@@ -14,6 +14,9 @@ class TMCM_1276():
         self.MOTORS = 1
         self.__default_motor = 0
 
+    def showChipInfo(self):
+        ("The TMCM-1276 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 10 - 30V");
+
     # Axis parameter access
     def getAxisParameter(self, apType):
         return self.connection.axisParameter(apType, self.__default_motor)
