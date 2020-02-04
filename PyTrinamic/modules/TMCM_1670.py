@@ -8,8 +8,9 @@ class TMCM_1670():
     def __init__(self, connection):
         self.connection = connection
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
         self.MOTORS = 1
         self.__default_motor = 0
@@ -95,7 +96,7 @@ class TMCM_1670():
         self.setAxisParameter(self.APs.MotorHaltedVelocity, velocity)
  
     def positionReached(self):
-        return ((self.statusFlags() & self.APs.FLAG_POSITION_END) != 0)
+        return ((self.statusFlags() & self.ENUMs.FLAG_POSITION_END) != 0)
  
     def rampEnabled(self):
         return self.axisParameter(self.APs.EnableRamp)
@@ -295,6 +296,7 @@ class _APs():
     MotorPoles                     = 253
     DriverEnabled                  = 255
 
+class _ENUMs():
     COMM_MODE_FOC_ENCODER           = 7
     COMM_MODE_FOC_CONTROLLED        = 8
 

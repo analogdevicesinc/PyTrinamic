@@ -45,7 +45,7 @@ module.setPositionPParameter(300)
 module.showPIConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.APs.COMM_MODE_FOC_HALL)
+module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
 
 module.rotate(500)
 

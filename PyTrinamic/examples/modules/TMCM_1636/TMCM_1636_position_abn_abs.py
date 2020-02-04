@@ -29,8 +29,8 @@ module.setAxisParameter(module.APs.AbsoluteEncoderInit, 0);
 module.setAxisParameter(module.APs.AbsoluteEncoderDirection, 1);
 
 #cofig drive mode
-module.setAxisParameter(module.APs.CommutationMode, module.GPs.COMM_MODE_ABN);
-module.setAxisParameter(module.APs.CommutationModePosition, module.GPs.POS_MODE_ABS);
+module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_ABN);
+module.setAxisParameter(module.APs.CommutationModePosition, module.ENUMs.POS_MODE_ABS);
 time.sleep(1);
 
 #testdrive

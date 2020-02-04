@@ -7,8 +7,9 @@ Created on 25.06.2019
 class TMCM_1633():
     def __init__(self, connection):
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
         self.connection = connection
         self.motor = 0
@@ -296,6 +297,7 @@ class _APs():
     HallSensorInvert               = 254
     DriverEnabled                  = 255
 
+class _ENUMs():
     COMM_MODE_FOC_HALL              = 6
     COMM_MODE_FOC_ENCODER           = 7
     COMM_MODE_FOC_CONTROLLED        = 8

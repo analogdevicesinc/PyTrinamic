@@ -32,7 +32,7 @@ module.showHallConfiguration()
 module.setOpenLoopTorque(1500)
 module.setEncoderResolution(4000)
 module.setEncoderDirection(0)
-module.setEncoderInitMode(module.APs.ENCODER_INIT_MODE_1)
+module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_1)
 module.showEncoderConfiguration()
 
 " motion settings "
@@ -52,7 +52,7 @@ module.setPositionPParameter(300)
 module.showPIConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.APs.COMM_MODE_FOC_ENCODER)
+module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
 
 " read adc value and compute new target velocity "
 while True:

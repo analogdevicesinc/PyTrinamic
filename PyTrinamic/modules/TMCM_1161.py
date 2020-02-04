@@ -8,8 +8,9 @@ class TMCM_1161():
     def __init__(self, connection):
         self.connection = connection
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
         self.MOTORS = 1
         self.__default_motor = 0
@@ -202,6 +203,9 @@ class _APs():
     Step_DirectionMode             = 254
     CurrentStepping                = 0
 
+class _ENUMs():
+    FLAG_POSITION_END = 0x00004000
+
 class _GPs():
     timer_0                        = 0
     timer_1                        = 1
@@ -232,5 +236,3 @@ class _GPs():
     tickTimer                      = 132
     randomNumber                   = 133
     Intpol                         = 255
-
-    FLAG_POSITION_END = 0x00004000

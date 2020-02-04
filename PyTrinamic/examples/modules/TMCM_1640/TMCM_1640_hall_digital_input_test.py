@@ -45,23 +45,32 @@ module.setPositionPParameter(300)
 module.showPIConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.APs.COMM_MODE_FOC_HALL)
+module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
 
 module.rotate(500)
 
+print()
+print("Current direction: rotate forward")
+print("Press 'input_0' to swap the direction (waiting for input_0)")
+
 " wait for input_0 "
 while (module.digitalInput(0) == 0):
-    print("actual position: " + str(module.actualPosition()))
-    time.sleep(0.2)
-
+#    print("actual position: " + str(module.actualPosition())) # Activated this line if you want constantly actualPosition updates
+#    time.sleep(0.2)
+    pass
 module.rotate(-500)
+
+print()
+print("Current direction: rotate backwards")
+print("Press 'input_1' to stop the digital_input_test (waiting for input_1)")
 
 " wait for input_1 "
 while (module.digitalInput(1) == 0):
-    print("actual position: " + str(module.actualPosition()))
-    time.sleep(0.2)
-
+#    print("actual position: " + str(module.actualPosition())) # Activated this line if you want constantly actualPosition updates
+#    time.sleep(0.2)
+    pass
 module.rotate(0)
 
+print()
 print("Ready.")
 myInterface.close()

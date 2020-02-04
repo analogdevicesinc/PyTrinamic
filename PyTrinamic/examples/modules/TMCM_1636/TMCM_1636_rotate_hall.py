@@ -25,7 +25,7 @@ module.setAxisParameter(module.APs.HallInterpolation, 1);
 module.setAxisParameter(module.APs.HallSensorOffset, 22000);
 
 #testdrive
-module.setAxisParameter(module.APs.CommutationMode, module.GPs.COMM_MODE_HALL);
+module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_HALL);
 module.setAxisParameter(module.APs.TargetVelocity, 1000);
 time.sleep(5);
 module.setAxisParameter(module.APs.TargetVelocity, 0);

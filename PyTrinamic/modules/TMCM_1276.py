@@ -8,8 +8,9 @@ class TMCM_1276():
     def __init__(self, connection):
         self.connection = connection
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
         self.MOTORS = 1
         self.__default_motor = 0
@@ -216,6 +217,9 @@ class _APs():
     PowerDownDelay                 = 214
     UnitMode                       = 255
     CurrentStepping                = 0
+
+class _ENUMs():
+    pass
 
 class _GPs():
     timer_0                        = 0

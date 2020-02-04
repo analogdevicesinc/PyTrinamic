@@ -15,14 +15,14 @@ import time
 
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager()
+connectionManager = ConnectionManager("--interface pcan_tmcl".split()) #This setting is configurated for PCAN , if you want to use another Connection please change this line
 
 
 myInterface = connectionManager.connect()
 
 
 module = TMCM_1636(myInterface)
-module.setAxisParameter(module.APs.CommutationMode, module.GPs.COMM_MODE_OPENLOOP);
+module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_OPENLOOP);
 module.setAxisParameter(module.APs.TargetVelocity, 1000);
 time.sleep(5);
 module.setAxisParameter(module.APs.TargetVelocity, 0);

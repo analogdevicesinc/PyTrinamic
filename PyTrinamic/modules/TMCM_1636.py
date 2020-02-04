@@ -8,8 +8,9 @@ class TMCM_1636():
     def __init__(self, connection):
         self.connection = connection
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
         self.motor = 0
 
@@ -147,6 +148,19 @@ class _APs():
     DebugValue9                    = 249
     DriverEnabled                  = 255
 
+class _ENUMs():
+    COMM_MODE_DISABLED = 0
+    COMM_MODE_OPENLOOP = 1
+    COMM_MODE_HALL = 2
+    COMM_MODE_ABN = 3
+    COMM_MODE_ABS = 4
+
+    POS_MODE_SAME = 0
+    POS_MODE_ABN = 1
+    POS_MODE_ABS = 2
+
+    FLAG_POSITION_END               = 0x00004000
+
 class _GPs():
     serialBaudRate                 = 65
     serialAddress                  = 66
@@ -159,15 +173,3 @@ class _GPs():
     applicationStatus              = 128
     programCounter                 = 130
     tickTimer                      = 132
-
-    FLAG_POSITION_END               = 0x00004000
-
-    COMM_MODE_DISABLED = 0
-    COMM_MODE_OPENLOOP = 1
-    COMM_MODE_HALL = 2
-    COMM_MODE_ABN = 3
-    COMM_MODE_ABS = 4
-    
-    POS_MODE_SAME = 0
-    POS_MODE_ABN = 1
-    POS_MODE_ABS = 2

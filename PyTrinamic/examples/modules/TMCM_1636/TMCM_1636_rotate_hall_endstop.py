@@ -29,7 +29,7 @@ module.setAxisParameter(module.APs.ReferenceSwitchEnable, 1);
 
 
 #testdrive
-module.setAxisParameter(module.APs.CommutationMode, module.GPs.COMM_MODE_HALL);
+module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_HALL);
 module.setAxisParameter(module.APs.TargetVelocity, 1000);
 
 print("Wait for right ref switch")

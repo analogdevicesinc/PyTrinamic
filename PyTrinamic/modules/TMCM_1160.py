@@ -8,8 +8,9 @@ class TMCM_1160():
     def __init__(self, connection):
         self.connection = connection
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
         self.MOTORS = 1
         self.__default_motor = 0
@@ -210,6 +211,9 @@ class _APs():
     ExternalEncoderMax_Deviation   = 218
     Step_DirectionMode             = 254
     CurrentStepping                = 0
+
+class _ENUMs():
+    pass
 
 class _GPs():
     timer_0                        = 0
