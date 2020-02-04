@@ -14,7 +14,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM_1670 import TMCM_1670
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager()
+connectionManager = ConnectionManager("--interface pcan_tmcl".split()) #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
 
 module = TMCM_1670(myInterface)
