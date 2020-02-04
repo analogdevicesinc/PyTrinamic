@@ -27,7 +27,7 @@ module.showMotorConfiguration()
 module.showEncoderConfiguration()
  
 # motion settings
-module.setMaxVelocity(4000)
+module.setMaxVelocity(6000)
 module.setAcceleration(2000)
 module.setRampEnabled(1)
 module.setTargetReachedVelocity(500)
@@ -50,20 +50,20 @@ module.setDigitalOutput(0);
 module.setActualPosition(0)
 
 # move to first position
-module.moveToPosition(300000)
+module.moveToPosition(3000000)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
  
-time.sleep(1.0)
+time.sleep(3.0)
 
 # move to second position
-module.moveToPosition(600000)
+module.moveToPosition(6000000)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
  
-time.sleep(1.0)
+time.sleep(3.0)
 
 # move back to start position 
 module.moveToPosition(0)

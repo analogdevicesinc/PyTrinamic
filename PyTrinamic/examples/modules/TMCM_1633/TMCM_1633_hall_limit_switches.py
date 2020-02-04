@@ -29,8 +29,8 @@ module.setHallInvert(0)
 module.showHallConfiguration()
 
 # motion settings
-module.setMaxVelocity(2000)
-module.setAcceleration(2000)
+module.setMaxVelocity(400)
+module.setAcceleration(200)
 module.setRampEnabled(1)
 module.setTargetReachedVelocity(500)
 module.setTargetReachedDistance(5)

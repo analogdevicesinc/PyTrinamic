@@ -8,7 +8,6 @@ Created on 30.12.2018
 if __name__ == '__main__':
     pass
 
-import time
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM_1640 import TMCM_1640

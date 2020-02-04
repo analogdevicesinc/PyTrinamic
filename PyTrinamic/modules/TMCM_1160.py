@@ -159,7 +159,7 @@ class _APs():
     leftLimitSwitchDisable         = 13
     minimumSpeed                   = 130
     actualAcceleration             = 135
-    rampMode                       = 138
+    RampMode                       = 138
     MicrostepResolution            = 140
     Ref_SwitchTolerance            = 141
     softStopFlag                   = 149
