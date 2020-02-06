@@ -18,14 +18,21 @@ connectionManager = ConnectionManager("--interface pcan_tmcl".split()) #This set
 myInterface = connectionManager.connect()
 
 module = TMCM_1670(myInterface)
- 
+
+"""
+    Define all motor configurations for the the TMCM-1670.
+
+    The configuration is based on our standard BLDC motor(TMCS-28-5-1024-AT.01).
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+"""
+
 # motor configuration
 module.setMaxTorque(2000)
 module.showMotorConfiguration()
- 
+
 # encoder configuration
 module.showEncoderConfiguration()
- 
+
 # motion settings
 module.setMaxVelocity(4000)
 module.setAcceleration(4000)
@@ -34,7 +41,7 @@ module.setTargetReachedVelocity(500)
 module.setTargetReachedDistance(10)
 module.setMotorHaltedVelocity(5)
 module.showMotionConfiguration()
- 
+
 # PI configuration
 module.setTorquePParameter(1000)
 module.setTorqueIParameter(1000)
