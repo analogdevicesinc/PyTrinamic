@@ -19,8 +19,15 @@ myInterface = connectionManager.connect()
 
 module = TMCM_1640(myInterface)
 
+"""
+    Define all motor configurations for the the TMCM-1640.
+
+    The configuration is based on our standard BLDC motor(TMCS-28-5-1024-AT.01).
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+"""
+
 " motor configuration "
-module.setMotorPoles(8)
+module.setMotorPoles(4)
 module.setMaxTorque(2000)
 module.showMotorConfiguration()
 
