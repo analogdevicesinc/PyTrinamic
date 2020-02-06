@@ -1,0 +1,101 @@
+'''
+Created on 06.02.2020
+
+@author: JM
+'''
+
+class TMC4331_register:
+    """
+    Define all registers of the TMC4331.
+    """
+    GENERAL_CONF                     = 0x00
+    REFERENCE_CONF                   = 0x01
+    START_CONF                       = 0x02
+    INPUT_FILT_CONF                  = 0x03
+    SPI_OUT_CONF                     = 0x04
+    CURRENT_CONF                     = 0x05
+    SCALE_VALUES                     = 0x06
+    STEP_CONF                        = 0x0A
+    SPI_STATUS_SELECTION             = 0x0B
+    EVENT_CLEAR_CONF                 = 0x0C
+    INTR_CONF                        = 0x0D
+    EVENTS                           = 0x0E
+    STATUS                           = 0x0F
+    STP_LENGTH_ADD___DIR_SETUP_TIME  = 0x10
+    START_OUT_ADD                    = 0x11
+    GEAR_RATIO                       = 0x12
+    START_DELAY                      = 0x13
+    CLK_GATING_DELAY                 = 0x14
+    STDBY_DELAY                      = 0x15
+    FREEWHEEL_DELAY                  = 0x16
+    VDRV_SCALE_LIMIT___PWM_VMAX      = 0x17
+    UP_SCALE_DELAY                   = 0x18
+    HOLD_SCALE_DELAY                 = 0x19
+    DRV_SCALE_DELAY                  = 0x1A
+    BOOST_TIME                       = 0x1B
+    SPI_SWITCH_VEL___DAC_ADDR        = 0x1D
+    HOME_SAFETY_MARGIN               = 0x1E
+    PWM_FREQ___CHOPSYNC_DIV          = 0x1F
+    RAMPMODE                         = 0x20
+    XACTUAL                          = 0x21
+    VACTUAL                          = 0x22
+    AACTUAL                          = 0x23
+    VMAX                             = 0x24
+    VSTART                           = 0x25
+    VSTOP                            = 0x26
+    VBREAK                           = 0x27
+    AMAX                             = 0x28
+    DMAX                             = 0x29
+    ASTART                           = 0x2A
+    DFINAL                           = 0x2B
+    DSTOP                            = 0x2C
+    BOW1                             = 0x2D
+    BOW2                             = 0x2E
+    BOW3                             = 0x2F
+    BOW4                             = 0x30
+    CLK_FREQ                         = 0x31
+    POS_COMP                         = 0x32
+    VIRT_STOP_LEFT                   = 0x33
+    VIRT_STOP_RIGHT                  = 0x34
+    X_HOME                           = 0x35
+    X_LATCH___REV_CNT___X_RANGE      = 0x36
+    XTARGET                          = 0x37
+    X_PIPE0                          = 0x38
+    X_PIPE1                          = 0x39
+    X_PIPE2                          = 0x3A
+    X_PIPE3                          = 0x3B
+    X_PIPE4                          = 0x3C
+    X_PIPE5                          = 0x3D
+    X_PIPE6                          = 0x3E
+    X_PIPE7                          = 0x3F
+    SH_REG0                          = 0x40
+    SH_REG1                          = 0x41
+    SH_REG2                          = 0x42
+    SH_REG3                          = 0x43
+    SH_REG4                          = 0x44
+    SH_REG5                          = 0x45
+    SH_REG6                          = 0x46
+    SH_REG7                          = 0x47
+    SH_REG8                          = 0x48
+    SH_REG9                          = 0x49
+    SH_REG10                         = 0x4A
+    SH_REG11                         = 0x4B
+    SH_REG12                         = 0x4C
+    SH_REG13                         = 0x4D
+    CLK_Gating___SW_Reset            = 0x4F
+    FS_VEL___DC_VEL                  = 0x60
+    DC_TIME___DC_SG___DC_BLKTIME     = 0x61
+    DC_LSPTM                         = 0x62
+    VSTALL_LIMIT                     = 0x67
+    COVER_LOW___POLLING_STATUS       = 0x6C
+    COVER_HIGH___POLLING_REG         = 0x6D
+    COVER_DRV_LOW                    = 0x6E
+    COVER_DRV_HIGH                   = 0x6F
+    MSLUT__                          = 0x70
+    MSLUTSEL                         = 0x78
+    MSCNT___MSOFFSET                 = 0x79
+    CURRENTA_B                       = 0x7A
+    CURRENTA_B_SPI___TZEROWAIT       = 0x7B
+    SCALE_PARAM___CIRCULAR_DEC       = 0x7C
+    START_SIN______DAC_OFFSET        = 0x7E
+    VERSION_NO                       = 0x7F
