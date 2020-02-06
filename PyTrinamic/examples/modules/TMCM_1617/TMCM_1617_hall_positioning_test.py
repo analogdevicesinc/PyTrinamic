@@ -19,6 +19,13 @@ myInterface = connectionManager.connect()
 
 module = TMCM_1617(myInterface)
 
+"""
+    Define all motor configurations for the the TMCM-1617.
+
+    The configuration is based on our standard BLDC motor(TMCS-28-5-1024-AT.01).
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+"""
+
 " motor configuration "
 module.setMotorPoles(4)
 module.setMaxTorque(2000)
@@ -64,7 +71,7 @@ while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.6)
 
-    if(module.actualPosition() > 299800):
+    if(module.actualPosition() > 299800): # <------ Hall cant reach the exactly targetPosition
         break
 
 print()
