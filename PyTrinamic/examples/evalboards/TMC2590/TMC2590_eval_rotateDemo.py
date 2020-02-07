@@ -11,7 +11,6 @@ if __name__ == '__main__':
 import time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC2590_eval import TMC2590_eval
-from PyTrinamic.evalboards.TMC5072_eval import TMC5072_eval
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
@@ -19,20 +18,9 @@ myInterface = connectionManager.connect()
 # Create an TMC2590-Eval class which communicates over the Landungsbruecke via TMCL
 TMC2590 = TMC2590_eval(myInterface)
 
-# Create an TMC5072-Eval class which communicates over the Landungsbruecke via TMCL
-TMC5072 = TMC5072_eval(myInterface)
-
 " read ChipInfo "
 
 TMC2590.showChipInfo()
-TMC5072.showChipInfo()
-
-" configure TMC5072 pwm for use with TMC2590 (disable singleline)"
-#TMC5072.writeRegister(TMC5072.registers.DRVCTRL,   0x00)
-#TMC5072.writeRegister(TMC5072.registers.CHOPCONF,  0x0C)
-#TMC5072.writeRegister(TMC5072.registers.SMARTEN,   0x0D)
-#TMC5072.writeRegister(TMC5072.registers.SGCSCONF,  0x0E)
-#TMC5072.writeRegister(TMC5072.registers.DRVCONF,   0x0F)
 
 DEFAULT_MOTOR = 0
 
