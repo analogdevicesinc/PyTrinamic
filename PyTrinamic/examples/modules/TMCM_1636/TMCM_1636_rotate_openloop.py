@@ -20,7 +20,7 @@ myInterface = connectionManager.connect()
 module = TMCM_1636(myInterface)
 
 """
-    Define all motor configurations for the the TMCM-1633.
+    Define all motor configurations for the the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
