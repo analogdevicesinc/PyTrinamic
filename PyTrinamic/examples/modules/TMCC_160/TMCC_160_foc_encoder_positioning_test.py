@@ -22,7 +22,7 @@ module = TMCC_160(myInterface)
 """
     Define all motor configurations for the the TMCC-160.
 
-    The configuration is based on our standard BLDC motor(TMCS-28-5-1024-AT.01).
+    The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
 """
 
