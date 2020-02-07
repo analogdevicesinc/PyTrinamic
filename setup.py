@@ -230,7 +230,7 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1276/TMCM_1276_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1617/TMCM_1617_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1617/TMCM_1617_hall_digital_input_test.py",
-        "PyTrinamic/examples/modules/TMCM_1617/TMCM_1617_hall_position_test.py",
+        "PyTrinamic/examples/modules/TMCM_1617/TMCM_1617_hall_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_encoder_analog_input_test.py",
         "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_hall_digital_input_test.py",
