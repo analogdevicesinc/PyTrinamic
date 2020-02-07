@@ -138,7 +138,7 @@ setuptools.setup(
         "PyTrinamic/ic/TMC6200/TMC6200_register_variant",
         "PyTrinamic/ic/TMC6200/TMC6200_register",
         "PyTrinamic/ic/TMC6200/TMC6200",
-        "PyTrinamic/ic/TMCC_160",
+        "PyTrinamic/modules/TMCC_160",
         "PyTrinamic/modules/TMCM_0010_OPC",
         "PyTrinamic/modules/TMCM_1160",
         "PyTrinamic/modules/TMCM_1161",
