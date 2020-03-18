@@ -186,18 +186,23 @@ class tmcl_interface():
 
     # Register access functions
     def writeMC(self, registerAddress, value, moduleID=None):
-        return self.send(TMCL_Command.WRITE_MC, registerAddress, 0, value, moduleID)
+        return self.writeRegister(registerAddress, TMCL_Command.WRITE_MC, 0, value, moduleID)
 
     def readMC(self, registerAddress, moduleID=None, signed=False):
-        value = self.send(TMCL_Command.READ_MC, registerAddress, 0, 0, moduleID).value
-        return TMC_helpers.toSigned32(value) if signed else value
+        return self.readRegister(registerAddress, TMCL_Command.READ_MC, 0, moduleID, signed)
 
     def writeDRV(self, registerAddress, value, moduleID=None):
-        return self.send(TMCL_Command.WRITE_DRV, registerAddress, 0, value, moduleID)
+        return self.writeRegister(registerAddress, TMCL_Command.WRITE_DRV, 1, value, moduleID)
 
     def readDRV(self, registerAddress, moduleID=None, signed=False):
-        value = self.send(TMCL_Command.READ_DRV, registerAddress, 0, 0, moduleID).value
+        return self.readRegister(registerAddress, TMCL_Command.READ_DRV, 1, moduleID, signed)
+
+    def readRegister(self, registerAddress, command, channel, moduleID=None, signed=False):
+        value = self.send(command, registerAddress, channel, 0, moduleID).value
         return TMC_helpers.toSigned32(value) if signed else value
+
+    def writeRegister(self, registerAddress, command, channel, value, moduleID=None):
+        return self.send(command, registerAddress, channel, value, moduleID)
 
     # Motion control functions
     def rotate(self, motor, velocity, moduleID=None):
