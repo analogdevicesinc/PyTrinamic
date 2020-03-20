@@ -47,7 +47,7 @@ class TMC5160_shield(TMC5160):
         self.APs = _APs
 
     def __str__(self):
-        return f"TMC5160_shield[{self.__channel}]"
+        return f"{self.__class__.__name__}[{self.__channel}]"
 
     # Use the motion controller functions for register access
     def writeRegister(self, registerAddress, value, moduleID=None):
@@ -66,16 +66,10 @@ class TMC5160_shield(TMC5160):
 
     # Axis parameter access
     def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        return self.__connection.axisParameter(apType, axis)
+        return self.__connection.axisParameter(apType, self.__channel)
 
     def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        self.__connection.setAxisParameter(apType, axis, value)
+        self.__connection.setAxisParameter(apType, self.__channel, value)
 
     # Motion Control functions
     def rotate(self, motor, value):
