@@ -24,7 +24,8 @@ shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
 
 for shield in shields:
     print(shield)
-    for name, register in shield.registers.dict.items():
-        print("{0}: 0x{1:08X}".format(name, shield.readRegister(register)))
+    for name, register in shield.registers.__dict__.items():
+        if((not name.startswith("__")) and (not name.endswith("__"))):
+            print("{0}: 0x{1:08X}".format(name, shield.readRegister(register)))
 
 myInterface.close()
