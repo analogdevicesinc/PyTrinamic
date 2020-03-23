@@ -165,7 +165,9 @@ setuptools.setup(
         "PyTrinamic/modules/TMCM_1670",
         "PyTrinamic/modules/TMCM_6212",
         "PyTrinamic/helpers",
-        "PyTrinamic/version"
+        "PyTrinamic/version",
+        "PyTrinamic/features/Feature",
+        "PyTrinamic/features/StallGuard",
     ],
     scripts=[
         "PyTrinamic/examples/evalboards/TMC2041/TMC2041_eval_register_dump.py",
@@ -217,6 +219,8 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC5160/TMC5160_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC5160/TMC5160_rotateDemo.py",
         "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_shield_register_dump.py",
+        "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_coolStep_demo.py",
+        "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_stallGuard_demo.py",
         "PyTrinamic/examples/evalboards/TMC5161/TMC5161_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC5161/TMC5161_rotateDemo.py",
         "PyTrinamic/examples/modules/TMC_603/TMC_603_encoder_analog_input_test.py",

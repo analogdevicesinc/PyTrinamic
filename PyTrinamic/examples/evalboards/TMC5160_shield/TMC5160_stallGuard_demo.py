@@ -30,20 +30,15 @@ from threading import Thread
 import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
+from PyTrinamic.features.StallGuard import StallGuard
 
 parser = argparse.ArgumentParser(description='stallGuard demo')
-parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[50000],
-                    help='Target velocity for demonstration on all axes. Default: %(default)s.')
-parser.add_argument('-a', '--acceleration', dest='acceleration', action='store', nargs=1, type=int, default=[1000],
-                    help='Acceleration used for ramping to target velocity. Default: %(default)s.')
-parser.add_argument('-c', '--current', dest='current', action='store', nargs=1, type=int, default=[5],
-                    help='Current Scaler value while motor is running. Default: %(default)s.')
 parser.add_argument('-e', '--threshold-velocity', dest='threshold', action='store', nargs=1, type=int, default=[1],
                     help='Velocity threshold, above which stallGuard is enabled. Default: %(default)s.')
 parser.add_argument('-v', '--verbosity', dest='verbosity', action='store', nargs=1, type=int, choices=[logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL], default=[logging.INFO],
                     help=f'Verbosity level (default: %(default)s, {logging.DEBUG}: DEBUG, {logging.INFO}: INFO, {logging.WARNING}: WARNING, {logging.ERROR}: ERROR, {logging.CRITICAL}: CRITICAL)')
 
-args = parser.parse_args()
+args = parser.parse_known_args()[0]
 verbosity = args.verbosity[0]
 
 logger = logging.getLogger(__name__)
@@ -66,36 +61,7 @@ shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
 # Initialize all attached shields
 for shield in shields:
     logger.info(f"Initializing motor at shield {shield}.")
-
-    logger.info("Rotating motor.")
-    shield.setAxisParameter(shield.APs.MaxCurrent, 0, args.current[0])
-    shield.setAxisParameter(shield.APs.MaxAcceleration, 0, args.acceleration[0])
-    shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, 0)
-    shield.rotate(0, args.velocity[0])
-
-    print("Now, do apply some load to the motor, at which you want it to stop automatically.")
-    input("Press enter to continue ...")
-
-    for i in range(3):
-        logger.info(f"Starting calibration in {3-i} seconds.")
-        time.sleep(1.0)
-
-    logger.info(f"Calibrating SGT.")
-    sgthresh = 0
-    sgt = 0
-    while((sgt == 0) and (sgthresh < 64)):
-        logger.info(f"SGT too low, increasing threshold to {sgthresh}.")
-        shield.setAxisParameter(shield.APs.SG2Threshold, 0, sgthresh)
-        sgthresh = sgthresh + 1
-        time.sleep(0.1)
-        sgt = shield.getAxisParameter(shield.APs.LoadValue, 0)
-        logger.info(f"SGT load: {sgt}")
-    shield.setAxisParameter(shield.APs.SG2Threshold, 0, sgthresh - 1)
-    logger.info(f"Calibration done. Now release the load.")
-
-    input("Press enter to continue ...")
-
-    shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, args.threshold[0])
+    StallGuard(shield, sys.argv, logger).calibrate_zero()
 
 logger.info("Initialization is done. You can now play around with applying loads and see if the motor stops.")
 input("Press enter to continue ...")
