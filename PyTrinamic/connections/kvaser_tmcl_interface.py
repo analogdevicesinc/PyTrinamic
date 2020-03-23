@@ -17,7 +17,7 @@ _CHANNELS = [
 class kvaser_tmcl_interface(tmcl_interface):
     """
     This class implements a TMCL connection for Kvaser adapter using CANLIB.
-    Try 0 as channel Default. Channel 1 and channel 2 are virtual.
+    Try 0 as default channel.
     """
 
     def __init__(self, port = 0, datarate=1000000, hostID=2, moduleID=1, debug=False):
