@@ -32,7 +32,7 @@ from threading import Thread
 import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
-from PyTrinamic.features.StallGuard import StallGuard
+from PyTrinamic.features.CoolStep import CoolStep
 
 parser = argparse.ArgumentParser(description='coolStep demo')
 parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[100000],
@@ -41,18 +41,6 @@ parser.add_argument('-a', '--acceleration', dest='acceleration', action='store',
                     help='Acceleration used for ramping to target velocity. Default: %(default)s.')
 parser.add_argument('-c', '--current', dest='current', action='store', nargs=1, type=int, default=[16],
                     help='Current Scaler value while motor is running. Default: %(default)s.')
-parser.add_argument('--current-minimum', dest='seimin', action='store', nargs=1, type=int, default=[1], choices=range(0, 1),
-                    help='Minimal current after decreasing. 0: maximum_current / 2, 1: maximum_current / 4. Default: %(default)s.')
-parser.add_argument('--current-down-step', dest='down', action='store', nargs=1, type=int, default=[2], choices=range(0, 3),
-                    help='Reaction speed for decreasing. 0: React slowly with ramping, 3: React instantly. Default: %(default)s.')
-parser.add_argument('--current-up-step', dest='up', action='store', nargs=1, type=int, default=[2], choices=range(0, 3),
-                    help='Reaction speed for increasing. 0: React slowly with ramping, 3: React instantly. Default: %(default)s.')
-parser.add_argument('--hysteresis-width', dest='hwidth', action='store', nargs=1, type=int, default=[4], choices=range(0, 15),
-                    help='CoolStep hysteresis window width in [1/16 SGT_MAX]. Default: %(default)s.')
-parser.add_argument('--hysteresis-start', dest='hstart', action='store', nargs=1, type=int, default=[9], choices=range(0, 15),
-                    help='CoolStep hysteresis window start in [1/16 SGT_MAX]. Default: %(default)s.')
-parser.add_argument('--coolstep-threshold', dest='coolstep_threshold', action='store', nargs=1, type=int, default=[0],
-                    help='Velocity threshold, above which CoolStep becomes active. Default: %(default)s.')
 parser.add_argument('-v', '--verbosity', dest='verbosity', action='store', nargs=1, type=int, choices=[logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL], default=[logging.INFO],
                     help=f'Verbosity level (default: %(default)s, {logging.DEBUG}: DEBUG, {logging.INFO}: INFO, {logging.WARNING}: WARNING, {logging.ERROR}: ERROR, {logging.CRITICAL}: CRITICAL)')
 
@@ -70,6 +58,10 @@ logger.addHandler(consoleHandler)
 
 PyTrinamic.showInfo()
 
+logger.debug(f"Target velocity: {args.velocity[0]}")
+logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
+logger.debug(f"Maximum current: {args.current[0]}")
+
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
@@ -85,14 +77,7 @@ for shield in shields:
     shield.setAxisParameter(shield.APs.MaxAcceleration, 0, args.acceleration[0])
     shield.rotate(0, args.velocity[0])
 
-    StallGuard(shield, sys.argv, logger).calibrate_middle()
-
-    shield.setAxisParameter(shield.APs.SEIMIN, 0, args.seimin[0])
-    shield.setAxisParameter(shield.APs.SECDS, 0, args.down[0])
-    shield.setAxisParameter(shield.APs.SECUS, 0, args.up[0])
-    shield.setAxisParameter(shield.APs.smartEnergyHysteresis, 0, args.hwidth[0])
-    shield.setAxisParameter(shield.APs.smartEnergyHysteresisStart, 0, args.hstart[0])
-    shield.setAxisParameter(shield.APs.smartEnergyThresholdSpeed, 0, args.coolstep_threshold[0])
+    CoolStep(shield, sys.argv, logger).calibrate()
 
 print("Initialization is done. You can now play around with applying and releasing loads and see how the current gets adjusted.")
 input("Press enter to continue ...")

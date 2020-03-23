@@ -41,7 +41,7 @@ class StallGuard(Feature):
             self.__logger.info(f"SGT too low, increasing threshold to {sgthresh}.")
             self._module.setAxisParameter(self._module.APs.SG2Threshold, 0, sgthresh)
             sgthresh = sgthresh + 1
-            time.sleep(0.1)
+            time.sleep(0.2)
             sgt = self._module.getAxisParameter(self._module.APs.LoadValue, 0)
             self.__logger.info(f"SGT load: {sgt}")
         self._module.setAxisParameter(self._module.APs.SG2Threshold, 0, sgthresh - 1)
@@ -62,7 +62,7 @@ class StallGuard(Feature):
         self.__logger.info(f"Calibrating SGT.")
         sgthresh = 0
         sgt = 0
-        while((sgt < 512) and (sgthresh < 64)):
+        while((sgt < 450) and (sgthresh < 64)):
             self.__logger.info(f"SGT too low, increasing threshold to {sgthresh}.")
             self._module.setAxisParameter(self._module.APs.SG2Threshold, 0, sgthresh)
             sgthresh = sgthresh + 1

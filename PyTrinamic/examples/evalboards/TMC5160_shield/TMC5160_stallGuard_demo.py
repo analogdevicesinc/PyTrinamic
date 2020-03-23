@@ -58,6 +58,11 @@ logger.addHandler(consoleHandler)
 
 PyTrinamic.showInfo()
 
+logger.debug(f"Target velocity: {args.velocity[0]}")
+logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
+logger.debug(f"Maximum current: {args.current[0]}")
+logger.debug(f"StallGuard velocity threshold: {args.threshold[0]}")
+
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

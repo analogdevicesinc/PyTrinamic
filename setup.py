@@ -168,6 +168,7 @@ setuptools.setup(
         "PyTrinamic/version",
         "PyTrinamic/features/Feature",
         "PyTrinamic/features/StallGuard",
+        "PyTrinamic/features/CoolStep",
     ],
     scripts=[
         "PyTrinamic/examples/evalboards/TMC2041/TMC2041_eval_register_dump.py",
