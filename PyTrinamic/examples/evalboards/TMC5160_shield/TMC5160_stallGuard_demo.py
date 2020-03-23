@@ -74,7 +74,7 @@ for shield in shields:
     shield.rotate(0, args.velocity[0])
 
     print("Now, do apply some load to the motor, at which you want it to stop automatically.")
-    input("Press any key to continue ...")
+    input("Press enter to continue ...")
 
     for i in range(3):
         logger.info(f"Starting calibration in {3-i} seconds.")
@@ -93,11 +93,12 @@ for shield in shields:
     shield.setAxisParameter(shield.APs.SG2Threshold, 0, sgthresh - 1)
     logger.info(f"Calibration done. Now release the load.")
 
-    input("Press any key to continue ...")
+    input("Press enter to continue ...")
 
     shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, args.threshold[0])
 
 logger.info("Initialization is done. You can now play around with applying loads and see if the motor stops.")
+input("Press enter to continue ...")
 
 def handle_key():
     while True:
