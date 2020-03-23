@@ -76,7 +76,7 @@ class TMC5160_shield(TMC5160):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        self.__connection.rotate(motor, value, moduleID=self._MODULE_ID)
+        self.__connection.rotate(self.__channel, value, moduleID=self._MODULE_ID)
 
     def stop(self, motor):
         self.__connection.stop(motor, moduleID=self._MODULE_ID)
