@@ -79,7 +79,7 @@ class TMC5160_shield(TMC5160):
         self.__connection.rotate(self.__channel, value, moduleID=self._MODULE_ID)
 
     def stop(self, motor):
-        self.__connection.stop(motor, moduleID=self._MODULE_ID)
+        self.__connection.stop(self.__channel, moduleID=self._MODULE_ID)
 
     def moveTo(self, motor, position, velocity=None):
         if velocity and velocity != 0:

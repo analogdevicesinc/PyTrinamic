@@ -33,6 +33,12 @@ from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
 from PyTrinamic.features.StallGuard import StallGuard
 
 parser = argparse.ArgumentParser(description='stallGuard demo')
+parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[50000],
+                    help='Target velocity for demonstration on all axes. Default: %(default)s.')
+parser.add_argument('-a', '--acceleration', dest='acceleration', action='store', nargs=1, type=int, default=[1000],
+                    help='Acceleration used for ramping to target velocity. Default: %(default)s.')
+parser.add_argument('-c', '--current', dest='current', action='store', nargs=1, type=int, default=[5],
+                    help='Current Scaler value while motor is running. Default: %(default)s.')
 parser.add_argument('-e', '--threshold-velocity', dest='threshold', action='store', nargs=1, type=int, default=[1],
                     help='Velocity threshold, above which stallGuard is enabled. Default: %(default)s.')
 parser.add_argument('-v', '--verbosity', dest='verbosity', action='store', nargs=1, type=int, choices=[logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL], default=[logging.INFO],
@@ -61,9 +67,15 @@ shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
 # Initialize all attached shields
 for shield in shields:
     logger.info(f"Initializing motor at shield {shield}.")
+
+    logger.info("Rotating motor.")
+    shield.setAxisParameter(shield.APs.MaxCurrent, 0, args.current[0])
+    shield.setAxisParameter(shield.APs.MaxAcceleration, 0, args.acceleration[0])
+    shield.rotate(0, args.velocity[0])
+
     StallGuard(shield, sys.argv, logger).calibrate_zero()
 
-logger.info("Initialization is done. You can now play around with applying loads and see if the motor stops.")
+print("Initialization is done. You can now play around with applying loads and see if the motor stops.")
 input("Press enter to continue ...")
 
 def handle_key():
