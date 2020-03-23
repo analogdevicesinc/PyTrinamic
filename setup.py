@@ -222,6 +222,8 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_shield_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_coolStep_demo.py",
         "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_stallGuard_demo.py",
+        "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_coolStep_demo_min.py",
+        "PyTrinamic/examples/evalboards/TMC5160_shield/TMC5160_stallGuard_demo_min.py",
         "PyTrinamic/examples/evalboards/TMC5161/TMC5161_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC5161/TMC5161_rotateDemo.py",
         "PyTrinamic/examples/modules/TMC_603/TMC_603_encoder_analog_input_test.py",
