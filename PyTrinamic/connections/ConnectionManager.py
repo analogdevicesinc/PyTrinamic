@@ -94,7 +94,7 @@ class ConnectionManager():
         self.__debug = debug
 
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=['dummy_tmcl', 'pcan_tmcl', 'socketcan_tmcl', 'serial_tmcl', 'uart_ic', 'usb_tmcl'], default=['usb_tmcl'],
+        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in self._INTERFACES], default=['usb_tmcl'],
                             help='Connection interface (default: %(default)s)')
         parser.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
