@@ -2,9 +2,9 @@
 '''
 Move a motor back and forth using the TMCM6212 module
 
-Created on 22.05.2019
+Created on 28.02.2019
 
-@author: LH
+@author: JM
 '''
 
 import PyTrinamic
@@ -13,42 +13,44 @@ from PyTrinamic.modules.TMCM_6212 import TMCM_6212
 import time
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
 
-TMCM_6212 = TMCM_6212(myInterface)
+connectionManager = ConnectionManager() # If no Interface is selected , the default interface is usb_tmcl
+myInterface = connectionManager.connect()
+Module_6212 = TMCM_6212(myInterface)
 
 DEFAULT_MOTOR = 0
-VELOCITY      = 25000
 
 print("Preparing parameters")
-TMCM_6212.setMaxAcceleration(DEFAULT_MOTOR, 100000)
+Module_6212.setMaxAcceleration(9000)
 
 print("Rotating")
-TMCM_6212.rotate(DEFAULT_MOTOR, round(VELOCITY/2))
+Module_6212.rotate(40000)
 
-time.sleep(2);
+time.sleep(5);
 
 print("Stopping")
-TMCM_6212.stop(DEFAULT_MOTOR)
+Module_6212.stop()
 
-time.sleep(1);
+print("ActualPostion")
+print(Module_6212.getActualPosition())
+time.sleep(5);
 
 print("Doubling moved distance")
-TMCM_6212.moveBy(DEFAULT_MOTOR, TMCM_6212.getActualPosition(DEFAULT_MOTOR), round(VELOCITY/2))
-TMCM_6212.getAxisParameter(TMCM_6212.APs.ActualPosition)
-while not(TMCM_6212.positionReached(DEFAULT_MOTOR)):
+Module_6212.moveBy(Module_6212.getActualPosition(), 50000)
+Module_6212.getAxisParameter(Module_6212.APs.ActualPosition)
+while not(Module_6212.positionReached()):
     pass
 
 print("Furthest point reached")
+print(Module_6212.getActualPosition())
 
-time.sleep(1)
+time.sleep(5)
 
 print("Moving back to 0")
-TMCM_6212.moveTo(DEFAULT_MOTOR, 0, VELOCITY)
+Module_6212.moveTo(0, 100000)
 
 # Wait until position 0 is reached
-while not(TMCM_6212.positionReached(DEFAULT_MOTOR)):
+while not(Module_6212.positionReached()):
     pass
 
 print("Reached Position 0")
