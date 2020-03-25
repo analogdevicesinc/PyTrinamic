@@ -14,43 +14,43 @@ import time
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager()
+connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
-TMCM_1270 = TMCM_1270(myInterface)
+Module_1270 = TMCM_1270(myInterface)
 
 DEFAULT_MOTOR = 0
 
 print("Preparing parameters")
-TMCM_1270.setMaxAcceleration(9000)
+Module_1270.setMaxAcceleration(9000)
 
 print("Rotating")
-TMCM_1270.rotate(40000)
+Module_1270.rotate(40000)
 
 time.sleep(5);
 
 print("Stopping")
-TMCM_1270.stop()
+Module_1270.stop()
 
 print("ActualPostion") 
-print(TMCM_1270.getActualPosition())
+print(Module_1270.getActualPosition())
 time.sleep(5);
 
 print("Doubling moved distance")
-TMCM_1270.moveBy(TMCM_1270.getActualPosition(), 50000)
-TMCM_1270.getAxisParameter(TMCM_1270.APs.ActualPosition)
-while not(TMCM_1270.positionReached()):
+Module_1270.moveBy(Module_1270.getActualPosition(), 50000)
+Module_1270.getAxisParameter(Module_1270.APs.ActualPosition)
+while not(Module_1270.positionReached()):
     pass
 
 print("Furthest point reached")
-print(TMCM_1270.getActualPosition())
+print(Module_1270.getActualPosition())
 
 time.sleep(5)
 
 print("Moving back to 0")
-TMCM_1270.moveTo(0, 100000)
+Module_1270.moveTo(0, 100000)
 
 # Wait until position 0 is reached
-while not(TMCM_1270.positionReached()):
+while not(Module_1270.positionReached()):
     pass
 
 print("Reached Position 0")
