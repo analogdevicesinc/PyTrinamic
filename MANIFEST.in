@@ -1,2 +1,3 @@
 include PyTrinamic/modules/TMCM1160/TMCM_1160.eds
 include PyTrinamic/modules/TMCM1270/TMCM_1270.eds
+include PyTrinamic/modules/TMCM1276/TMCM_1276.eds

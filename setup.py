@@ -245,6 +245,8 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_CANopen_PP_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_CANopen_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_TMCL_rotateDemo.py",
+        "PyTrinamic/examples/modules/TMCM_1276/TMCM_1276_CANopen_PP_Mode.py",
+        "PyTrinamic/examples/modules/TMCM_1276/TMCM_1276_CANopen_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1276/TMCM_1276_TMCL_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1617/TMCM_1617_TMCL_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1617/TMCM_1617_TMCL_hall_digital_input_test.py",
