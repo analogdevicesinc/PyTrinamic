@@ -20,9 +20,10 @@ class ConnectionManager():
     arguments out of a scripts command line arguments and using these to
     initiate connections.
 
-    The constructor takes the list of commandline arguments as a list of
-    strings. This allows to directly pass the sys.argv parameter list. If no
-    list is passed sys.argv is used as default.
+    The constructor takes a string similar to command line arguments or a list
+    of strings represeting each commandline argument. This allows to directly
+    pass the sys.argv parameter list. If nothing is passed sys.argv is used as
+    default.
 
     The resulting filters for connections are stored in the instance of this
     class which allows repeated connect() and disconnect() calls.
@@ -89,6 +90,9 @@ class ConnectionManager():
     ]
 
     def __init__(self, argList=None, debug=False):
+        # Attributes
+        self.__debug = debug
+
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
         parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=['dummy_tmcl', 'pcan_tmcl', 'socketcan_tmcl', 'serial_tmcl', 'uart_ic', 'usb_tmcl'], default=['usb_tmcl'],
                             help='Connection interface (default: %(default)s)')
@@ -104,12 +108,16 @@ class ConnectionManager():
                             help='TMCL module-id (default: %(default)s)')
 
         if(not argList):
+            if self.__debug:
+                print("Using arguments from the command line")
             argList = sys.argv
 
-        args = parser.parse_known_args(argList)[0]
+        if type(argList) == str:
+            argList = argList.split()
+            if self.__debug:
+                print("Splitting string:", argList)
 
-        # Attributes
-        self.__debug            = debug
+        args = parser.parse_known_args(argList)[0]
 
         # Argument storage - default parameters are set here
         self.__interface  = usb_tmcl_interface
@@ -133,7 +141,7 @@ class ConnectionManager():
             if args.interface[0] == interface[0]:
                 self.__interface = interface[1]
                 self.__data_rate = interface[2]
-                break;
+                break
         else:
             # The for loop never hit the break statement -> invalid interface
             raise ValueError("Invalid interface: {0:s}".format(args.interface[0]))
