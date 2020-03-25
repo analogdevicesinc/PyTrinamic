@@ -13,6 +13,7 @@ from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_inter
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
 from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
 
 class ConnectionManager():
     """
@@ -86,10 +87,11 @@ class ConnectionManager():
         ("socketcan_tmcl",  socketcan_tmcl_interface,   1000000),
         ("serial_tmcl",     serial_tmcl_interface,      9600),
         ("uart_ic",         uart_ic_interface,          9600),
-        ("usb_tmcl",        usb_tmcl_interface,         115200)
+        ("usb_tmcl",        usb_tmcl_interface,         115200),
+        ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
     ]
 
-    def __init__(self, argList=None, debug=False):
+    def __init__(self, argList=None, connectionType="any", debug=False):
         # Attributes
         self.__debug = debug
 
@@ -120,12 +122,22 @@ class ConnectionManager():
         args = parser.parse_known_args(argList)[0]
 
         # Argument storage - default parameters are set here
-        self.__interface  = usb_tmcl_interface
-        self.__port       = "any"
-        self.__no_port    = []
-        self.__data_rate  = 115200
-        self.__host_id    = 2
-        self.__module_id  = 1
+        if connectionType == "CANopen":
+            self.__interface  = pcan_CANopen_interface
+            self.__port       = "any"
+            self.__no_port    = []
+            self.__data_rate  = 1000000
+
+            # Not used by CANopen
+            self.__host_id    = 0
+            self.__module_id  = 0
+        else:
+            self.__interface  = usb_tmcl_interface
+            self.__port       = "any"
+            self.__no_port    = []
+            self.__data_rate  = 115200
+            self.__host_id    = 2
+            self.__module_id  = 1
 
         # Parse the command line
         if self.__debug:
@@ -138,6 +150,12 @@ class ConnectionManager():
         ### Interpret given arguments
         # Interface
         for interface in self._INTERFACES:
+            if connectionType == "tmcl" and not(interface[1].supportsTMCL()):
+                continue
+
+            if connectionType == "CANopen" and not(interface[1].supportsCANopen()):
+                continue
+
             if args.interface[0] == interface[0]:
                 self.__interface = interface[1]
                 self.__data_rate = interface[2]
@@ -228,6 +246,8 @@ class ConnectionManager():
             if self.__interface.supportsTMCL():
                 # Open the connection to a TMCL interface
                 self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=self.__debug)
+            elif self.__interface.supportsCANopen():
+                self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
             else:
                 # Open the connection to a direct IC interface
                 self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
@@ -290,6 +310,8 @@ if __name__ == "__main__":
     for interface in ConnectionManager._INTERFACES:
         if not hasattr(interface[1], "supportsTMCL"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the supportsTMCL() function")
+        if not hasattr(interface[1], "supportsCANopen"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the supportsCANopen() function")
         if not hasattr(interface[1], "close"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
         if not hasattr(interface[1], "list"):

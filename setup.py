@@ -19,8 +19,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/trinamic/PyTrinamic",
     packages=setuptools.find_packages(),
+    include_package_data=True,
     install_requires=[
         "python-can>=3,<4",
+        "canopen",
         "pyserial>=3"
     ],
     py_modules=[
@@ -33,6 +35,8 @@ setuptools.setup(
         "PyTrinamic/connections/tmcl_interface",
         "PyTrinamic/connections/uart_ic_interface",
         "PyTrinamic/connections/usb_tmcl_interface",
+        "PyTrinamic/connections/CANopen_interface",
+        "PyTrinamic/connections/pcan_CANopen_interface",
         "PyTrinamic/evalboards/eval_interface",
         "PyTrinamic/evalboards/TMC2041_eval",
         "PyTrinamic/evalboards/TMC2100_eval",

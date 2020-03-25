@@ -94,6 +94,10 @@ class uart_ic_interface(connection_interface):
         return False
 
     @staticmethod
+    def supportsCANopen():
+        return False
+
+    @staticmethod
     def list():
         """
             Return a list of available connection ports as a list of strings.

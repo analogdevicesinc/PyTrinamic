@@ -108,6 +108,10 @@ class socketcan_tmcl_interface(tmcl_interface):
         return True
 
     @staticmethod
+    def supportsCANopen():
+        return False
+
+    @staticmethod
     def list():
         """
             Return a list of available connection ports as a list of strings.
