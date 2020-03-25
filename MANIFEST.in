@@ -1,2 +1,1 @@
-recursive-include PyTrinamic *.py
-
+include PyTrinamic/modules/TMCM1160/TMCM_1160.eds

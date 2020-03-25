@@ -239,6 +239,8 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM_0010_TMCL_OPC_config_check.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM_0010_TMCL_OPC_config_update.py",
         "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_TMCL_rotateDemo.py",
+        "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_CANopen_PP_Mode.py",
+        "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_CANopen_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1161/TMCM_1161_TMCL_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_TMCL_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1276/TMCM_1276_TMCL_rotateDemo.py",
