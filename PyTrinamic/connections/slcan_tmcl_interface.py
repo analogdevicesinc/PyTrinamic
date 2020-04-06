@@ -10,10 +10,6 @@ import can
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from can import CanError
 
-_CHANNELS = [
-     "0",  "1",  "2",
-     ]
-
 class slcan_tmcl_interface(tmcl_interface):
     """
     This class implements a TMCL connection for CAN over Serial / SLCAN. Comatible with CANable running slcan firmware and similar.
@@ -42,7 +38,7 @@ class slcan_tmcl_interface(tmcl_interface):
             raise ConnectionError("Failed to connect to CAN bus") from e
 
         if self.__debug:
-            print("Opened bus on channel " + self.__channel)
+            print("Opened slcan bus on channel " + self.__Port)
 
     def close(self):
         if self.__debug:
@@ -95,7 +91,7 @@ class slcan_tmcl_interface(tmcl_interface):
         return bytearray([msg.arbitration_id]) + msg.data
 
     def printInfo(self):
-        print("Connection: type=pcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
+        print("Connection: type=slcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
 
     def enableDebug(self, enable):
         self.__debug = enable
@@ -112,4 +108,8 @@ class slcan_tmcl_interface(tmcl_interface):
             This function is required for using this interface with the
             connection manager.
         """
-        return _CHANNELS
+        connected = []
+        for element in sorted(serial.tools.list_ports.comports()):
+            connected.append(element.device)
+
+        return connected
