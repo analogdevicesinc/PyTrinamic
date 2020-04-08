@@ -13,7 +13,7 @@ from PyTrinamic.modules.TMCM1636.TMCM_1636 import TMCM_1636
 import time
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface pcan_tmcl".split()) #This setting is configurated for PCAN , if you want to use another Connection please change this line
+connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
 
 module = TMCM_1636(myInterface)
