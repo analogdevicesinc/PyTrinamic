@@ -17,7 +17,7 @@ from PyTrinamic.TMCL import TMCL_Command
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
 # command.
-SERIAL_BOOT_TIMEOUT = 10
+SERIAL_BOOT_TIMEOUT = 100
 ################################# Preparation ##################################
 PyTrinamic.showInfo()
 
@@ -172,7 +172,7 @@ while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
 if not(myInterface):
     print("Error: Timeout when attempting to reconnect to bootloader")
     exit(1)
-
+myInterface.enableDebug(True)
 # Retrieve the bootloader version
 bootloaderVersion = myInterface.getVersionString(1)
 found = re.search("\d\d\d\dB\d\d\d", bootloaderVersion)

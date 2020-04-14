@@ -48,7 +48,7 @@ class pcan_tmcl_interface(tmcl_interface):
 
         tmcl_interface.__init__(self, hostID, moduleID, debug)
 
-        self.__debug    = debug
+        self._debug    = debug
         self.__channel  = port
         self.__bitrate  = datarate
 
@@ -61,11 +61,11 @@ class pcan_tmcl_interface(tmcl_interface):
             self.__connection = None
             raise ConnectionError("Failed to connect to PCAN bus") from e
 
-        if self.__debug:
+        if self._debug:
             print("Opened bus on channel " + self.__channel)
 
     def close(self):
-        if self.__debug:
+        if self._debug:
             print("Closing PCAN bus")
 
         self.__connection.shutdown()
@@ -116,7 +116,7 @@ class pcan_tmcl_interface(tmcl_interface):
         print("Connection: type=pcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
 
     def enableDebug(self, enable):
-        self.__debug = enable
+        self._debug = enable
 
     @staticmethod
     def supportsTMCL():
