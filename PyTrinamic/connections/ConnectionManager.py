@@ -92,8 +92,7 @@ class ConnectionManager():
         ("serial_tmcl",     serial_tmcl_interface,      9600),
         ("uart_ic",         uart_ic_interface,          9600),
         ("usb_tmcl",        usb_tmcl_interface,         115200),
-        ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
-        ("usb_tmcl",        usb_tmcl_interface,         115200)
+        ("pcan_CANopen",    pcan_CANopen_interface,     1000000)
     ]
 
     def __init__(self, argList=None, connectionType="any", debug=False):
