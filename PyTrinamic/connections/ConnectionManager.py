@@ -10,10 +10,12 @@ import argparse
 from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
 from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
 from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
+from PyTrinamic.connections.kvaser_tmcl_interface import kvaser_tmcl_interface
 from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
 from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
 from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
+from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmcl_interface
 
 class ConnectionManager():
     """
@@ -85,16 +87,18 @@ class ConnectionManager():
         ("dummy_tmcl",      dummy_tmcl_interface,       0),
         ("pcan_tmcl",       pcan_tmcl_interface,        1000000),
         ("socketcan_tmcl",  socketcan_tmcl_interface,   1000000),
+        ("kvaser_tmcl",     kvaser_tmcl_interface,      1000000),
+        ("slcan_tmcl",      slcan_tmcl_interface,       1000000),
         ("serial_tmcl",     serial_tmcl_interface,      9600),
         ("uart_ic",         uart_ic_interface,          9600),
         ("usb_tmcl",        usb_tmcl_interface,         115200),
         ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
+        ("usb_tmcl",        usb_tmcl_interface,         115200)
     ]
 
     def __init__(self, argList=None, connectionType="any", debug=False):
         # Attributes
         self.__debug = debug
-
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
         parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in self._INTERFACES], default=['usb_tmcl'],
                             help='Connection interface (default: %(default)s)')
