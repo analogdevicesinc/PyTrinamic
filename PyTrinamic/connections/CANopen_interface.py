@@ -24,7 +24,7 @@ class CANopen_interface():
             print("Adding network node (id: {0:d}) with {1:d} motors using EDS file: {3:s}".format(node_id, number_of_motors, eds_path))
 
         # Add some nodes with corresponding Object Dictionaries
-        node = canopen.BaseNode402(1, eds_path, number_of_motors)
+        node = canopen.BaseNode402(1, eds_path)
         self.__network.add_node(node)
         node.setup_402_state_machine()
 

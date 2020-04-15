@@ -5,17 +5,23 @@ Created on 04.02.2020
 '''
 
 class TMCM_1617():
-    def __init__(self, connection):
-        self.connection = connection
+    MOTORS = 1
 
+    def __init__(self, connection):
+        
         self.GPs   = _GPs
         self.APs   = _APs
         self.ENUMs = _ENUMs
 
+        self.connection = connection
         self.motor = 0
 
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_1617.py", "TMCM_1617.eds")
+
     def showChipInfo(self):
-        ("TMCM-1617. Voltage supply: 8 - 28V");
+        ("The TMCM-1617 is a low-weight miniaturized single axis servo drive for 3-phase BLDC motors. Voltage supply: 10 - 28V");
 
     " axis parameter access "
     def axisParameter(self, apType):
