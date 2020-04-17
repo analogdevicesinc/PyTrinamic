@@ -72,8 +72,6 @@ class slcan_tmcl_interface(tmcl_interface):
         """
         del moduleID
 
-        
-
         try:
             msg = self.__connection.recv(timeout=3)
         except CanError as e:
@@ -99,6 +97,10 @@ class slcan_tmcl_interface(tmcl_interface):
     @staticmethod
     def supportsTMCL():
         return True
+
+    @staticmethod
+    def supportsCANopen():
+        return False
 
     @staticmethod
     def list():
