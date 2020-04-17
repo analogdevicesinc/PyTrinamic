@@ -110,8 +110,6 @@ class tmcl_interface():
         if self._debug:
             request.dump()
 
-        print(self._debug)
-
         # Send the request
         self._send(self._HOST_ID, moduleID, request.toBuffer())
 
