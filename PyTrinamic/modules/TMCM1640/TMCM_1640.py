@@ -50,6 +50,15 @@ class TMCM_1640():
     def actualVelocity(self):
         return self.axisParameter(self.APs.ActualVelocity)
 
+    def setTargetTorque(self, torque):
+        self.setAxisParameter(self.APs.TargetTorque, torque)
+
+    def targetTorque(self):
+        return self.axisParameter(self.APs.TargetTorque)
+
+    def actualTorque(self):
+        return self.axisParameter(self.APs.ActualTorque)
+
     " helpful functions "
 
     def maxVelocity(self):
@@ -177,6 +186,15 @@ class TMCM_1640():
 
     def digitalInput(self, x):
         return self.connection.digitalInput(x)
+
+    def digitalOutput(self, x):
+        return self.connection.digitalOutput(x)
+
+    def setDigitalOutput(self, x):
+        return self.connection.setDigitalOutput(x, 1)
+
+    def clearDigitalOutput(self, x):
+        return self.connection.setDigitalOutput(x, 0)
 
     def showMotorConfiguration(self):
         print("Motor configuration:")

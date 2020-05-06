@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Created on 25.06.2019
+Created on 06.05.2020
 
 @author: ED
 '''
@@ -14,20 +14,20 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1633.TMCM_1633 import TMCM_1633
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+connectionManager = ConnectionManager("--interface kvaser_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
 
 module = TMCM_1633(myInterface)
 
 """
-    Define all motor configurations for the the TMCM-1633.
+    Define all motor configurations for the TMCM-1633.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
 """
 
 # motor configuration
-module.setMotorPoles(4)
+module.setMotorPoles(8)
 module.setMaxTorque(4000)
 module.showMotorConfiguration()
 
@@ -36,8 +36,8 @@ module.setHallInvert(0)
 module.showHallConfiguration()
 
 # motion settings
-module.setMaxVelocity(400)
-module.setAcceleration(200)
+module.setMaxVelocity(2000)
+module.setAcceleration(1000)
 module.setRampEnabled(1)
 module.setTargetReachedVelocity(500)
 module.setTargetReachedDistance(5)
