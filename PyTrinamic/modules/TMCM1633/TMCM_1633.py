@@ -14,6 +14,10 @@ class TMCM_1633():
 
         self.motor = 0
 
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_1633.py", "TMCM_1633.eds")
+
     def showChipInfo(self):
         ("The TMCM-1633 is a highly integrated single axis BLDC servo controller module with several interface options. Voltage supply: 14,5 - 48V");
 
