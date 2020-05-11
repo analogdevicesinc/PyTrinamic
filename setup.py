@@ -35,6 +35,7 @@ setuptools.setup(
         "PyTrinamic/connections/tmcl_interface",
         "PyTrinamic/connections/uart_ic_interface",
         "PyTrinamic/connections/usb_tmcl_interface",
+        "PyTrinamic/connections/kvaser_tmcl_interface",
         "PyTrinamic/connections/CANopen_interface",
         "PyTrinamic/connections/pcan_CANopen_interface",
         "PyTrinamic/connections/kvaser_CANopen_interface",
