@@ -4,19 +4,128 @@ Created on 24.06.2019
 @author: ED
 '''
 
+class _APs():
+    TargetPosition                 = 0
+    ActualPosition                 = 1
+    TargetVelocity                 = 2
+    ActualVelocity                 = 3
+    MaxVelocity                    = 4
+    TorqueLimit                    = 5
+    MaxTorque                      = 6
+    TargetReachedVelocity          = 7
+    PositionReachedFlag            = 8
+    MotorHaltedVelocity            = 9
+    TargetReachedDistance          = 10
+    Acceleration                   = 11
+    RampVelocity                   = 13
+    RampPosition                   = 14
+    RightStopSwitch                = 20
+    LeftStopSwitch                 = 21
+    ReinitBldcRegulation           = 31
+    BodeControlMode                = 100
+    BodeTargetMode                 = 101
+    BodePlotMagnitude              = 102
+    BodePlotPhi                    = 103
+    BodePlotSweepFrequency         = 104
+    BodePlotSweepDataCount         = 105
+    BodeTargetValue                = 106
+    BodeActualValue                = 107
+    PIDRegulationLoopDelay         = 133
+    CurrentRegulationLoopDelay     = 134
+    EnableRamp                     = 146
+    ActualTorque                   = 150
+    SupplyVoltage                  = 151
+    DriverTemperature              = 152
+    TargetTorque                   = 155
+    StatusFlags                    = 156
+    CommutationMode                = 159
+    ClearOnNull                    = 161
+    ClearOnce                      = 163
+    EncoderOffset                  = 165
+    ReferenceSwitchPolarity        = 166
+    TorqueP                        = 172
+    TorqueI                        = 173
+    StartCurrent                   = 177
+    MainLoopsPerSecond             = 180
+    PwmLoopsPerSecond              = 181
+    TorqueLoopsPerSecond           = 182
+    VelocityLoopsPerSecond         = 183
+    DebugValue0                    = 190
+    DebugValue1                    = 191
+    DebugValue2                    = 192
+    DebugValue3                    = 193
+    DebugValue4                    = 194
+    DebugValue5                    = 195
+    DebugValue6                    = 196
+    DebugValue7                    = 197
+    DebugValue8                    = 198
+    DebugValue9                    = 199
+    CurrentPIDError                = 200
+    CurrentPIDErrorSum             = 201
+    FluxPIDError                   = 202
+    FluxPIDErrorSum                = 203
+    ActualEncoderAngle             = 211
+    ActualControlledAngle          = 212
+    DriverDiagnosticValue          = 214
+    DriverStatusAcknowledge        = 215
+    DriverInitSPI                  = 216
+    DriverStatusRegister2          = 217
+    DriverStatusRegister3          = 218
+    DriverStatusRegister4          = 219
+    PositionPIDError               = 226
+    VelocityPIDError               = 228
+    VelocityPIDErrorSum            = 229
+    PositionP                      = 230
+    VelocityP                      = 234
+    VelocityI                      = 235
+    VelocityFilter                 = 236
+    InitVelocity                   = 241
+    InitSineDelay                  = 244
+    EncoderInitMode                = 249
+    EncoderSteps                   = 250
+    EncoderDirection               = 251
+    MotorPoles                     = 253
+    DriverEnabled                  = 255
+
+class _ENUMs():
+    COMM_MODE_FOC_ENCODER           = 7
+    COMM_MODE_FOC_CONTROLLED        = 8
+
+    ENCODER_INIT_MODE_0             = 0
+    ENCODER_INIT_MODE_2             = 2
+
+    FLAG_POSITION_END               = 0x00004000
+
+class _GPs():
+    serialBaudRate                 = 65
+    serialAddress                  = 66
+    CANBitRate                     = 69
+    CANsendID                      = 70
+    CANreceiveID                   = 71
+    telegramPauseTime              = 75
+    serialHostAddress              = 76
+    autoStartMode                  = 77
+    applicationStatus              = 128
+    programCounter                 = 130
+    tickTimer                      = 132
+
+
 class TMCM_1670():
+    ENUMs = _ENUMs
+    APs   = _APs
+    GPs   = _GPs
+
     def __init__(self, connection):
+
         self.connection = connection
+        self.motor = 0
 
-        self.GPs   = _GPs
-        self.APs   = _APs
-        self.ENUMs = _ENUMs
-
-        self.MOTORS = 1
-        self.__default_motor = 0
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_1670.py", "TMCM_1670.eds")
 
     def showChipInfo(self):
-        ("TMCM-1670. Voltage supply: not implemented yet");
+        ("The PD42-x-1670 is an easy to use and rather compact PANdrive™ smart BLDC motor. Voltage supply: 10 - 28V");
 
     # axis parameter access
     def axisParameter(self, apType):
@@ -212,109 +321,4 @@ class TMCM_1670():
         print("\tTorque   P: " + str(self.torquePParameter()) + " I: " + str(self.torqueIParameter()))
         print("\tVelocity P: " + str(self.velocityPParameter()) + " I: " + str(self.velocityIParameter()))
         print("\tPosition P: " + str(self.positionPParameter()))
-
-class _APs():
-    TargetPosition                 = 0
-    ActualPosition                 = 1
-    TargetVelocity                 = 2
-    ActualVelocity                 = 3
-    MaxVelocity                    = 4
-    TorqueLimit                    = 5
-    MaxTorque                      = 6
-    TargetReachedVelocity          = 7
-    PositionReachedFlag            = 8
-    MotorHaltedVelocity            = 9
-    TargetReachedDistance          = 10
-    Acceleration                   = 11
-    RampVelocity                   = 13
-    RampPosition                   = 14
-    RightStopSwitch                = 20
-    LeftStopSwitch                 = 21
-    ReinitBldcRegulation           = 31
-    BodeControlMode                = 100
-    BodeTargetMode                 = 101
-    BodePlotMagnitude              = 102
-    BodePlotPhi                    = 103
-    BodePlotSweepFrequency         = 104
-    BodePlotSweepDataCount         = 105
-    BodeTargetValue                = 106
-    BodeActualValue                = 107
-    PIDRegulationLoopDelay         = 133
-    CurrentRegulationLoopDelay     = 134
-    EnableRamp                     = 146
-    ActualTorque                   = 150
-    SupplyVoltage                  = 151
-    DriverTemperature              = 152
-    TargetTorque                   = 155
-    StatusFlags                    = 156
-    CommutationMode                = 159
-    ClearOnNull                    = 161
-    ClearOnce                      = 163
-    EncoderOffset                  = 165
-    ReferenceSwitchPolarity        = 166
-    TorqueP                        = 172
-    TorqueI                        = 173
-    StartCurrent                   = 177
-    MainLoopsPerSecond             = 180
-    PwmLoopsPerSecond              = 181
-    TorqueLoopsPerSecond           = 182
-    VelocityLoopsPerSecond         = 183
-    DebugValue0                    = 190
-    DebugValue1                    = 191
-    DebugValue2                    = 192
-    DebugValue3                    = 193
-    DebugValue4                    = 194
-    DebugValue5                    = 195
-    DebugValue6                    = 196
-    DebugValue7                    = 197
-    DebugValue8                    = 198
-    DebugValue9                    = 199
-    CurrentPIDError                = 200
-    CurrentPIDErrorSum             = 201
-    FluxPIDError                   = 202
-    FluxPIDErrorSum                = 203
-    ActualEncoderAngle             = 211
-    ActualControlledAngle          = 212
-    DriverDiagnosticValue          = 214
-    DriverStatusAcknowledge        = 215
-    DriverInitSPI                  = 216
-    DriverStatusRegister2          = 217
-    DriverStatusRegister3          = 218
-    DriverStatusRegister4          = 219
-    PositionPIDError               = 226
-    VelocityPIDError               = 228
-    VelocityPIDErrorSum            = 229
-    PositionP                      = 230
-    VelocityP                      = 234
-    VelocityI                      = 235
-    VelocityFilter                 = 236
-    InitVelocity                   = 241
-    InitSineDelay                  = 244
-    EncoderInitMode                = 249
-    EncoderSteps                   = 250
-    EncoderDirection               = 251
-    MotorPoles                     = 253
-    DriverEnabled                  = 255
-
-class _ENUMs():
-    COMM_MODE_FOC_ENCODER           = 7
-    COMM_MODE_FOC_CONTROLLED        = 8
-
-    ENCODER_INIT_MODE_0             = 0
-    ENCODER_INIT_MODE_2             = 2
-
-    FLAG_POSITION_END               = 0x00004000
-
-class _GPs():
-    serialBaudRate                 = 65
-    serialAddress                  = 66
-    CANBitRate                     = 69
-    CANsendID                      = 70
-    CANreceiveID                   = 71
-    telegramPauseTime              = 75
-    serialHostAddress              = 76
-    autoStartMode                  = 77
-    applicationStatus              = 128
-    programCounter                 = 130
-    tickTimer                      = 132
 
