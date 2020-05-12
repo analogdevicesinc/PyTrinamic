@@ -4,3 +4,4 @@ include PyTrinamic/modules/TMCM1276/TMCM_1276.eds
 include PyTrinamic/modules/TMCM1617/TMCM_1617.eds
 include PyTrinamic/modules/TMCM1633/TMCM_1633.eds
 include PyTrinamic/modules/TMCM1670/TMCM_1670.eds
+include PyTrinamic/modules/TMCM6212/TMCM_6212.eds

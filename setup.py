@@ -299,6 +299,8 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_TMCL_encoder_n_channel.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_TMCL_limit_switches.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_TMCL_positioning.py",
+        "PyTrinamic/examples/modules/TMCM_6212/TMCM_6212_CANopen_PP_Mode.py",
+        "PyTrinamic/examples/modules/TMCM_6212/TMCM_6212_CANopen_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_6212/TMCM_6212_TMCL_rotateDemo.py",
         "PyTrinamic/examples/tools/FirmwareUpdate.py",
     ],

@@ -1,154 +1,148 @@
 '''
-Created on 21.05.2019
+Created on 28.02.2020
 
-@author: LH
+@author: JM
 '''
 
 class TMCM_6212():
+    MOTORS = 6
+
     def __init__(self, connection):
-        self.__connection = connection
+        self.connection = connection
 
-        self.GPs = _GPs
-        self.APs = _APs
+        self.GPs   = _GPs
+        self.APs   = _APs
+        self.ENUMs = _ENUMs
 
-        self.MOTORS = 6
+        self.__default_motor = 0
+
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_6212.py", "TMCM_6212.eds")
 
     def showChipInfo(self):
         ("TMCM-6212 is a six axes controller/driver module for 2-phase bipolar stepper motors with seperate encoder (differential) and HOME / STOP switch inputes for each axis. Voltage supply: 12 - 35");
 
     # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
+    def getAxisParameter(self, apType):
+        return self.connection.axisParameter(apType, self.__default_motor)
 
-        return self.__connection.axisParameter(apType, axis)
-
-    def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        self.__connection.setAxisParameter(apType, axis, value)
+    def setAxisParameter(self, apType, value):
+        self.connection.setAxisParameter(apType, self.__default_motor, value)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
-        if not(0 <= bank < self.MOTORS):
-            raise ValueError("Bank index out of range")
-
-        return self.__connection.globalParameter(gpType, bank)
+        return self.connection.globalParameter(gpType, bank)
 
     def setGlobalParameter(self, gpType, bank, value):
-        if not(0 <= bank < self.MOTORS):
-            raise ValueError("Bank index out of range")
-
-        self.__connection.setGlobalParameter(gpType, bank, value)
+        self.connection.setGlobalParameter(gpType, bank, value)
 
     # Motion Control functions
-    def rotate(self, motor, velocity):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError("Motor index out of range")
+    def rotate(self, velocity):
+        self.setTargetVelocity(velocity)
 
-        self.__connection.rotate(motor, velocity)
+    def stop(self):
+        self.rotate(0)
 
-    def stop(self, motor):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError("Motor index out of range")
-
-        self.__connection.stop(motor)
-
-    def moveTo(self, motor, position, velocity=None):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError("Motor index out of range")
-
+    def moveTo(self, position, velocity=None):
         if velocity:
-            self.setMaxVelocity(motor, velocity)
+            self.setMaxVelocity(velocity)
 
-        self.__connection.move(0, motor, position)
+        self.connection.move(0, self.__default_motor, position)
+        self.setTargetPosition(position)
 
-    def moveBy(self, motor, position, velocity=None):
-        # The TMCL command MVP REL does not correctly work if the previous
-        # motion was in velocity mode. The position used as offset for the
-        # relative motion is the last target position, not the actual position.
-        # Due to that we manually calculate the relative position and use the
-        # moveTo function.
-        position += self.getActualPosition(motor)
+    def moveBy(self, difference, velocity=None):
+        position = difference + self.getActualPosition()
 
-        self.moveTo(motor, position, velocity)
+        self.moveTo(position, velocity)
 
         return position
 
-    # Current Control functions
-    def setMotorRunCurrent(self, axis, current):
-        self.setMaxCurrent(axis, current)
+    # Current control functions
+    def setMotorRunCurrent(self, current):
+        self.setMaxCurrent(current)
 
-    def setMotorStandbyCurrent(self, axis, current):
-        self.setAxisParameter(self.APs.StandbyCurrent, axis, current)
+    def setMotorStandbyCurrent(self, current):
+        self.setAxisParameter(self.APs.StandbyCurrent, current)
 
-    def getMaxCurrent(self, axis):
-        return self.getAxisParameter(self.APs.MaxCurrent, axis)
+    def getMaxCurrent(self):
+        return self.getAxisParameter(self.APs.MaxCurrent)
 
-    def setMaxCurrent(self, axis, current):
-        self.setAxisParameter(self.APs.MaxCurrent, axis, current)
+    def setMaxCurrent(self, current):
+        self.setAxisParameter(self.APs.MaxCurrent, current)
 
     # StallGuard2 Functions
-    def setStallguard2Filter(self, axis, enableFilter):
-        self.setAxisParameter(self.APs.SG2FilterEnable, axis, enableFilter)
+    def setStallguard2Filter(self, enableFilter):
+        self.setAxisParameter(self.APs.StallGuard2FilterEnable, enableFilter)
 
-    def setStallguard2Threshold(self, axis, threshold):
-        self.setAxisParameter(self.APs.SG2Threshold, axis, threshold)
+    def setStallguard2Threshold(self, threshold):
+        self.setAxisParameter(self.APs.StallGuard2Threshold, threshold)
 
-    def setStopOnStallVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.SmartEnergyStallVelocity, axis, velocity)
+    def setStopOnStallVelocity(self, velocity):
+        self.setAxisParameter(self.APs.StopOnStall, velocity)
 
     # Motion parameter functions
-    def getTargetPosition(self, axis):
-        return self.getAxisParameter(self.APs.TargetPosition, axis)
+    def getTargetPosition(self):
+        return self.getAxisParameter(self.APs.TargetPosition)
 
-    def setTargetPosition(self, axis, position):
-        self.setAxisParameter(self.APs.TargetPosition, axis, position)
+    def setTargetPosition(self, position):
+        self.setAxisParameter(self.APs.TargetPosition, position)
 
-    def getActualPosition(self, axis):
-        return self.getAxisParameter(self.APs.ActualPosition, axis)
+    def getActualPosition(self):
+        return self.getAxisParameter(self.APs.ActualPosition)
 
-    def setActualPosition(self, axis, position):
-        return self.setAxisParameter(self.APs.ActualPosition, axis, position)
+    def setActualPosition(self, position):
+        return self.setAxisParameter(self.APs.ActualPosition, position)
 
-    def getTargetVelocity(self, axis):
-        return self.getAxisParameter(self.APs.TargetVelocity, axis)
+    def getTargetVelocity(self):
+        return self.getAxisParameter(self.APs.TargetVelocity)
 
-    def setTargetVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
+    def setTargetVelocity(self, velocity):
+        self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
-    def getActualVelocity(self, axis):
-        return self.getAxisParameter(self.APs.ActualVelocity, axis)
+    def getActualVelocity(self):
+        return self.getAxisParameter(self.APs.ActualVelocity)
 
-    def getMaxVelocity(self, axis):
-        return self.getAxisParameter(self.APs.MaxVelocity, axis)
+    def getMaxVelocity(self):
+        return self.getAxisParameter(self.APs.MaxVelocity)
 
-    def setMaxVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
+    def setMaxVelocity(self, velocity):
+        self.setAxisParameter(self.APs.MaxVelocity, velocity)
 
-    def getMaxAcceleration(self, axis):
-        return self.getAxisParameter(self.APs.MaxAcceleration, axis)
+    def getMaxAcceleration(self):
+        return self.getAxisParameter(self.APs.MaxAcceleration)
 
-    def setMaxAcceleration(self, axis, acceleration):
-        self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
+    def setMaxAcceleration(self, acceleration):
+        self.setAxisParameter(self.APs.MaxAcceleration, acceleration)
+
+    def getRampMode(self):
+        return self.getAxisParameter(self.APs.RampMode)
+
+    def setRampMode(self, mode):
+        return self.setAxisParameter(self.APs.RampMode, mode)
 
     # Status functions
-    def getStatusFlags(self, axis):
-        return self.getAxisParameter(self.APs.DriverErrorFlags, axis)
+    def getStatusFlags(self):
+        return self.getAxisParameter(self.APs.TMC262ErrorFlags)
 
-    def getErrorFlags(self, axis):
-        return self.getAxisParameter(self.APs.ExtendedErrorFlags, axis)
+    def getErrorFlags(self):
+        return self.getAxisParameter(self.APs.ExtendedErrorFlags)
 
-    def positionReached(self, axis):
-        return self.getAxisParameter(self.APs.PositionReachedFlag, axis)
+    def positionReached(self):
+        return self.getAxisParameter(self.APs.PositionReachedFlag)
 
     # IO pin functions
     def analogInput(self, x):
-        return self.__connection.analogInput(x)
+        return self.connection.analogInput(x)
 
     def digitalInput(self, x):
-        return self.__connection.digitalInput(x)
+        return self.connection.digitalInput(x)
+
+    def showMotionConfiguration(self):
+        print("Motion configuration:")
+        print("\tMax velocity: " + str(self.getMaxVelocity()))
+        print("\tAcceleration: " + str(self.getMaxAcceleration()))
+        print("\tRamp mode: " + ("position" if (self.getRampMode()==0) else "velocity"))
 
 class _APs():
     TargetPosition                 = 0
@@ -160,12 +154,12 @@ class _APs():
     MaxCurrent                     = 6
     StandbyCurrent                 = 7
     PositionReachedFlag            = 8
-    referenceSwitchStatus          = 9
+    HomeSwitch                     = 9
     RightEndstop                   = 10
     LeftEndstop                    = 11
-    rightLimitSwitchDisable        = 12
-    leftLimitSwitchDisable         = 13
-    swapLimitSwitches              = 14
+    AutomaticRightStop             = 12
+    AutomaticLeftStop              = 13
+    swapSwitchInputs               = 14
     A1                             = 15
     V1                             = 16
     MaxDeceleration                = 17
@@ -174,17 +168,15 @@ class _APs():
     StopVelocity                   = 20
     RampWaitTime                   = 21
     THIGH                          = 22
-    min_DcStepSpeed                = 23
-    rightLimitSwitchPolarity       = 24
-    leftLimitSwitchPolarity        = 25
+    VDCMIN                         = 23
+    rightSwitchPolarity            = 24
+    leftSwitchPolarity             = 25
     softstop                       = 26
     HighSpeedChopperMode           = 27
     HighSpeedFullstepMode          = 28
     MeasuredSpeed                  = 29
     PowerDownRamp                  = 31
-    dcStepTime                     = 32
-    dcStepStallGuard               = 33
-    relativePositioningOption      = 127
+    RelativePositioningOptionCode  = 127
     MicrostepResolution            = 140
     ChopperBlankTime               = 162
     ConstantTOffMode               = 163
@@ -199,7 +191,7 @@ class _APs():
     smartEnergyHysteresisStart     = 172
     SG2FilterEnable                = 173
     SG2Threshold                   = 174
-    disableShortCircuitProtection  = 177
+    ShortToGroundProtection        = 177
     VSense                         = 179
     smartEnergyActualCurrent       = 180
     smartEnergyStallVelocity       = 181
@@ -210,68 +202,43 @@ class _APs():
     PWMGrad                        = 187
     PWMAmplitude                   = 188
     PWMScale                       = 189
-    PWMMode                        = 190
+    pwmMode                        = 190
     PWMFrequency                   = 191
     PWMAutoscale                   = 192
     ReferenceSearchMode            = 193
     ReferenceSearchSpeed           = 194
-    referenceSwitchSpeed           = 195
-    referenceSwitchDistance        = 196
-    lastReferenceSwitchPosition    = 197
-    latchedActualPosition          = 198
-    latchedEncoderPosition         = 199
+    RefSwitchSpeed                 = 195
+    RightLimitSwitchPosition       = 196
+    LastReferencePosition          = 197
     encoderMode                    = 201
-    motorFullStepResolution        = 202
+    MotorFullStepResolution        = 202
+    pwmSymmetric                   = 203
     FreewheelingMode               = 204
     LoadValue                      = 206
     extendedErrorFlags             = 207
-    driverErrorFlags               = 208
-    encoderPosition                = 209
-    encoderResolution              = 210
+    DrvStatusFlags                 = 208
+    EncoderPosition                = 209
+    EncoderResolution              = 210
     max_EncoderDeviation           = 212
-    groupIndex                     = 213
     PowerDownDelay                 = 214
-    reverseShaft                   = 251
+    UnitMode                       = 255
     CurrentStepping                = 0
 
+class _ENUMs():
+    pass
+
 class _GPs():
-    timer_0                        = 0
-    timer_1                        = 1
-    timer_2                        = 2
-    stopLeft_0                     = 27
-    stopRight_0                    = 28
-    stopLeft_1                     = 29
-    stopRight_1                    = 30
-    stopLeft_2                     = 31
-    stopRight_2                    = 32
-    stopLeft_3                     = 33
-    stopRight_3                    = 34
-    stopLeft_4                     = 35
-    stopRight_4                    = 36
-    stopLeft_5                     = 37
-    stopRight_5                    = 38
-    input_0                        = 39
-    input_1                        = 40
-    input_2                        = 41
-    input_3                        = 42
-    serialBaudRate                 = 65
-    serialAddress                  = 66
-    serialHeartbeat                = 68
-    CANBitrate                     = 69
-    CANSendId                      = 70
-    CANReceiveId                   = 71
-    telegrmPauseTime               = 75
-    serialHostAddress              = 76
-    autoStartMode                  = 77
-    protectionMode                 = 81
-    CANHeartbeat                   = 82
-    CANSecondaryAddress            = 83
-    StoreCoordinatesIn_EEPROM      = 84
-    doNotRestoreUserVariables      = 85
-    serialSecondaryAddress         = 87
-    applicationStatus              = 128
-    downloadMode                   = 129
-    programCounter                 = 130
-    lastTmclError                  = 131
-    tickTimer                      = 132
-    randomNumber                   = 133
+
+    CANBitrate                    = 69
+    CANSendId                     = 70
+    CANReceiveId                  = 71
+    CANSecondaryId                = 72
+    autoStartMode                 = 77
+    protectionMode                = 81
+    eepromCoordinateStore         = 84
+    zeroUserVariables             = 85
+    applicationStatus             = 128
+    programCounter                = 130
+    lastTmclError                 = 131
+    tickTimer                     = 132
+    randomNumber                  = 133
