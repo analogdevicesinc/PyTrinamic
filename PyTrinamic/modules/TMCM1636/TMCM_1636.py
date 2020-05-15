@@ -1,54 +1,8 @@
 '''
-Created on 27.11.2019
+Created on 04.05.2020
 
-@author: SW
+@author: JM
 '''
-
-class TMCM_1636():
-    def __init__(self, connection):
-        self.connection = connection
-
-        self.GPs   = _GPs
-        self.APs   = _APs
-        self.ENUMs = _ENUMs
-
-        self.motor = 0
-
-    def showChipInfo(self):
-        ("TMCM-1636. Voltage supply: not implemented yet");
-
-    " axis parameter access "
-    def axisParameter(self, apType):
-        return self.connection.axisParameter(apType, self.motor)
-
-    def setAxisParameter(self, apType, value):
-        self.connection.setAxisParameter(apType, self.motor, value)
-
-    " global parameter access "
-    def globalParameter(self, gpType):
-        return self.connection.globalParameter(gpType, self.motor)
-
-    def setGlobalParameter(self, gpType, value):
-        self.connection.setGlobalParameter(gpType, self.motor, value)
-
-    " standard functions "
-    def moveToPosition(self, position):
-        self.setAxisParameter(self.APs.TargetPosition, position)
-
-    def targetPosition(self):
-        return self.axisParameter(self.APs.TargetPosition)
-
-    def actualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
-
-    def setActualPosition(self, position):
-        return self.setAxisParameter(self.APs.ActualPosition, position)
-
-    def rotate(self, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, velocity)
-
-    def actualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
 
 class _APs():
     AdcPhaseA                      = 0
@@ -173,3 +127,54 @@ class _GPs():
     applicationStatus              = 128
     programCounter                 = 130
     tickTimer                      = 132
+
+
+class TMCM_1636():
+    ENUMs = _ENUMs
+    APs   = _APs
+    GPs   = _GPs
+
+    def __init__(self, connection):
+
+        self.connection = connection
+        self.motor = 0
+
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_1636.py", "TMCM_1636.eds")
+
+    def showChipInfo(self):
+        ("The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V");
+
+    " axis parameter access "
+    def axisParameter(self, apType):
+        return self.connection.axisParameter(apType, self.motor)
+
+    def setAxisParameter(self, apType, value):
+        self.connection.setAxisParameter(apType, self.motor, value)
+
+    " global parameter access "
+    def globalParameter(self, gpType):
+        return self.connection.globalParameter(gpType, self.motor)
+
+    def setGlobalParameter(self, gpType, value):
+        self.connection.setGlobalParameter(gpType, self.motor, value)
+
+    " standard functions "
+    def moveToPosition(self, position):
+        self.setAxisParameter(self.APs.TargetPosition, position)
+
+    def targetPosition(self):
+        return self.axisParameter(self.APs.TargetPosition)
+
+    def actualPosition(self):
+        return self.axisParameter(self.APs.ActualPosition)
+
+    def setActualPosition(self, position):
+        return self.setAxisParameter(self.APs.ActualPosition, position)
+
+    def rotate(self, velocity):
+        self.setAxisParameter(self.APs.TargetVelocity, velocity)
+
+    def actualVelocity(self):
+        return self.axisParameter(self.APs.ActualVelocity)
