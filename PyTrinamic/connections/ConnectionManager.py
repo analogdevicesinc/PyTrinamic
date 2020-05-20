@@ -207,7 +207,7 @@ class ConnectionManager():
             print("\tModule ID:  " + str(self.__module_id))
             print()
 
-    def connect(self):
+    def connect(self, debug_interface=None):
         """
         Attempt to connect to a module with the stored connection parameters.
 
@@ -217,7 +217,18 @@ class ConnectionManager():
         If no connections are available or a connection attempt fails, a
         ConnectionError exception is raised
 
+        Parameters:
+            debug_interface:
+                Type: bool, optional, default value: None
+                Control whether the connection should be created in
+                debug mode. A boolean value will enable or disable the debug mode,
+                a None value will set the connections debug mode according to the
+                ConnectionManagers debug mode.
         """
+        # If no debug selection has been passed, inherit the debug state from the connection manager
+        if debug_interface == None:
+            debug_interface = self.__debug
+
         # Get all available ports
         portList = self.listConnections()
 
@@ -248,12 +259,12 @@ class ConnectionManager():
         try:
             if self.__interface.supportsTMCL():
                 # Open the connection to a TMCL interface
-                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=self.__debug)
+                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=debug_interface)
             elif self.__interface.supportsCANopen():
-                self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
+                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
             else:
                 # Open the connection to a direct IC interface
-                self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
+                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
         except ConnectionError as e:
             raise ConnectionError("Couldn't connect to port " + port + ". Connection failed.") from e
 
