@@ -146,10 +146,8 @@ class ConnectionManager():
 
         # Parse the command line
         if self.__debug:
-            print("Commandline argument list: {0:s}".format(str(self.__argList)))
-            print("Parsing {0:d} commandline arguments:".format(len(self.__argList)))
-
-        if self.__debug:
+            print("Commandline argument list: {0:s}".format(str(argList)))
+            print("Parsed commandline arguments: {0:s}".format(str(args)))
             print()
 
         ### Interpret given arguments
