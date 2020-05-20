@@ -25,6 +25,16 @@ class dummy_tmcl_interface(tmcl_interface):
             print("\tHost ID:    " + str(hostID))
             print("\tModule ID:  " + str(moduleID))
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exitType, value, traceback):
+        """
+        Close the connection at the end of a with-statement block.
+        """
+        del exitType, value, traceback
+        self.close()
+
     def close(self):
         """
         Closes the dummy TMCL connection

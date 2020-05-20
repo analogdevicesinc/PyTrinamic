@@ -317,6 +317,10 @@ if __name__ == "__main__":
             raise NotImplementedError("Interface " + interface[0] + " is missing the supportsCANopen() function")
         if not hasattr(interface[1], "close"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
+        if not hasattr(interface[1], "__enter__"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the __enter__() function")
+        if not hasattr(interface[1], "__exit__"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the __exit__() function")
         if not hasattr(interface[1], "list"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
 

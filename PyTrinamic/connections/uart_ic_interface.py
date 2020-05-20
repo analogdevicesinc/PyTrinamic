@@ -43,6 +43,16 @@ class uart_ic_interface(connection_interface):
         self.serial = Serial(comPort, self.baudrate)
         print("Open port: " + self.serial.portstr)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exitType, value, traceback):
+        """
+        Close the connection at the end of a with-statement block.
+        """
+        del exitType, value, traceback
+        self.close()
+
     def send_datagram(self, data, recv_size , channel):
         del channel
         self.serial.write(data)

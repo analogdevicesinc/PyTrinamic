@@ -34,6 +34,16 @@ class CANopen_interface():
             })
         return node
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exitType, value, traceback):
+        """
+        Close the connection at the end of a with-statement block.
+        """
+        del exitType, value, traceback
+        self.close()
+
     def close(self):
         if self._debug:
             print("Close PCAN")
