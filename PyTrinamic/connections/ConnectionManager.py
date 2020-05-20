@@ -331,7 +331,7 @@ if __name__ == "__main__":
     try:
         connection = connectionManager.connect()
         connectionManager.disconnect()
-    except RuntimeError:
-        print("Couldn't connect to the specified port(s)")
+    except ConnectionError:
+        print("Error: No connections available")
 
     print("Test run complete")
