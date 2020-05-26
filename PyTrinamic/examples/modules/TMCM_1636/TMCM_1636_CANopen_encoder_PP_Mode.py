@@ -50,7 +50,7 @@ objPID_Position_Error         = module.sdo[0x2043][2]
 objAlwaysUseEncoder           = module.sdo[0x2043][3]
 
 #Commutation Mode
-objCommutationMode           = module.sdo[0x2055]
+objCommutationMode            = module.sdo[0x2055]
 
 #Motor Pole Pairs
 objMotorPolePairs             = module.sdo[0x2056]
@@ -75,7 +75,7 @@ objDesiredVelocity          = module.sdo[0x60FF]
 objVelocityActualValue      = module.sdo[0x606C]
 
 """
-    Define all motor configurations for the the TMCM-1636.
+    Define all motor configurations for the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
