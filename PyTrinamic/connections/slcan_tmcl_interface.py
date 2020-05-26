@@ -40,6 +40,16 @@ class slcan_tmcl_interface(tmcl_interface):
         if self.__debug:
             print("Opened slcan bus on channel " + self.__Port)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exitType, value, traceback):
+        """
+        Close the connection at the end of a with-statement block.
+        """
+        del exitType, value, traceback
+        self.close()
+
     def close(self):
         if self.__debug:
             print("Closing CAN bus")

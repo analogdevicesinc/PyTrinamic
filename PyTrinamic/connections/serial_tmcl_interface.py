@@ -29,6 +29,16 @@ class serial_tmcl_interface(tmcl_interface):
         if self._debug:
             print("Open port: " + self._serial.portstr)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exitType, value, traceback):
+        """
+        Close the connection at the end of a with-statement block.
+        """
+        del exitType, value, traceback
+        self.close()
+
     def close(self):
         if self._debug:
             print("Close port: " + self._serial.portstr)

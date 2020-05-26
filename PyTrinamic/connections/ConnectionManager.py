@@ -146,10 +146,8 @@ class ConnectionManager():
 
         # Parse the command line
         if self.__debug:
-            print("Commandline argument list: {0:s}".format(str(self.__argList)))
-            print("Parsing {0:d} commandline arguments:".format(len(self.__argList)))
-
-        if self.__debug:
+            print("Commandline argument list: {0:s}".format(str(argList)))
+            print("Parsed commandline arguments: {0:s}".format(str(args)))
             print()
 
         ### Interpret given arguments
@@ -209,7 +207,7 @@ class ConnectionManager():
             print("\tModule ID:  " + str(self.__module_id))
             print()
 
-    def connect(self):
+    def connect(self, debug_interface=None):
         """
         Attempt to connect to a module with the stored connection parameters.
 
@@ -219,7 +217,18 @@ class ConnectionManager():
         If no connections are available or a connection attempt fails, a
         ConnectionError exception is raised
 
+        Parameters:
+            debug_interface:
+                Type: bool, optional, default value: None
+                Control whether the connection should be created in
+                debug mode. A boolean value will enable or disable the debug mode,
+                a None value will set the connections debug mode according to the
+                ConnectionManagers debug mode.
         """
+        # If no debug selection has been passed, inherit the debug state from the connection manager
+        if debug_interface == None:
+            debug_interface = self.__debug
+
         # Get all available ports
         portList = self.listConnections()
 
@@ -250,12 +259,12 @@ class ConnectionManager():
         try:
             if self.__interface.supportsTMCL():
                 # Open the connection to a TMCL interface
-                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=self.__debug)
+                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=debug_interface)
             elif self.__interface.supportsCANopen():
-                self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
+                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
             else:
                 # Open the connection to a direct IC interface
-                self.__connection = self.__interface(port, self.__data_rate, debug=self.__debug)
+                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
         except ConnectionError as e:
             raise ConnectionError("Couldn't connect to port " + port + ". Connection failed.") from e
 
@@ -319,6 +328,10 @@ if __name__ == "__main__":
             raise NotImplementedError("Interface " + interface[0] + " is missing the supportsCANopen() function")
         if not hasattr(interface[1], "close"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
+        if not hasattr(interface[1], "__enter__"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the __enter__() function")
+        if not hasattr(interface[1], "__exit__"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the __exit__() function")
         if not hasattr(interface[1], "list"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
 
@@ -329,7 +342,7 @@ if __name__ == "__main__":
     try:
         connection = connectionManager.connect()
         connectionManager.disconnect()
-    except RuntimeError:
-        print("Couldn't connect to the specified port(s)")
+    except ConnectionError:
+        print("Error: No connections available")
 
     print("Test run complete")
