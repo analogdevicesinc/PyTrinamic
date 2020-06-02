@@ -18,7 +18,7 @@ class TMCM_6212():
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_6212.py", "TMCM_6212.eds")
+        return __file__.replace("TMCM_6212.py", "TMCM_6212_V.3.22.eds")
 
     def showChipInfo(self):
         ("TMCM-6212 is a six axes controller/driver module for 2-phase bipolar stepper motors with seperate encoder (differential) and HOME / STOP switch inputes for each axis. Voltage supply: 12 - 35");

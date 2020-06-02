@@ -122,7 +122,7 @@ class TMCM_1670():
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_1670.py", "TMCM_1670.eds")
+        return __file__.replace("TMCM_1670.py", "TMCM_1670_Hw1.2_Fw2.00.eds")
 
     def showChipInfo(self):
         ("The PD42-x-1670 is an easy to use and rather compact PANdrive™ smart BLDC motor. Voltage supply: 10 - 28V");

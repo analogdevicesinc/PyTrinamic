@@ -17,7 +17,7 @@ class TMCM_1276():
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_1276.py", "TMCM_1276.eds")
+        return __file__.replace("TMCM_1276.py", "TMCM_1276_V3.22.eds")
 
     def showChipInfo(self):
         ("The TMCM-1276 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 10 - 30V");

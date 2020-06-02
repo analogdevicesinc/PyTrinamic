@@ -18,7 +18,7 @@ class TMCM_1617():
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_1617.py", "TMCM_1617.eds")
+        return __file__.replace("TMCM_1617.py", "TMCM_1617_Hw1.2_Fw1.06.eds")
 
     def showChipInfo(self):
         ("The TMCM-1617 is a low-weight miniaturized single axis servo drive for 3-phase BLDC motors. Voltage supply: 10 - 28V");

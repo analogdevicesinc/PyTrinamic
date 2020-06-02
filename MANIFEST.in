@@ -1,8 +1,8 @@
-include PyTrinamic/modules/TMCM1160/TMCM_1160.eds
-include PyTrinamic/modules/TMCM1270/TMCM_1270.eds
-include PyTrinamic/modules/TMCM1276/TMCM_1276.eds
-include PyTrinamic/modules/TMCM1617/TMCM_1617.eds
-include PyTrinamic/modules/TMCM1633/TMCM_1633.eds
-include PyTrinamic/modules/TMCM1636/TMCM_1636.eds
-include PyTrinamic/modules/TMCM1670/TMCM_1670.eds
-include PyTrinamic/modules/TMCM6212/TMCM_6212.eds
+include PyTrinamic/modules/TMCM1160/TMCM_1160_V3.20.eds
+include PyTrinamic/modules/TMCM1270/TMCM_1270_V3.22.eds
+include PyTrinamic/modules/TMCM1276/TMCM_1276_V3.22.eds
+include PyTrinamic/modules/TMCM1617/TMCM_1617_Hw1.2_Fw1.06.eds
+include PyTrinamic/modules/TMCM1633/TMCM_1633_Hw1.0_Fw2.10.eds
+include PyTrinamic/modules/TMCM1636/TMCM_1636_Hw1.1_Fw1.08.eds
+include PyTrinamic/modules/TMCM1670/TMCM_1670_Hw1.2_Fw2.00.eds
+include PyTrinamic/modules/TMCM6212/TMCM_6212_V3.22.eds

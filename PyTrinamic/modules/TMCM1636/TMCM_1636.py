@@ -141,7 +141,7 @@ class TMCM_1636():
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_1636.py", "TMCM_1636.eds")
+        return __file__.replace("TMCM_1636.py", "TMCM_1636_Hw1.1_Fw1.08.eds")
 
     def showChipInfo(self):
         ("The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V");
