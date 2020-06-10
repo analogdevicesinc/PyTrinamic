@@ -15,7 +15,7 @@ class TMCC_160():
         self.motor = 0
 
     def showChipInfo(self):
-        ("The TMCC-160 is desinged for evaluating all features of the TMCC160-LC motionCookie. Voltage supply: 7 - 24");
+        ("The TMCC160 is desinged for evaluating all features of the TMCC160-LC motionCookie. Voltage supply: 7 - 24");
 
     " axis parameter access "
     def axisParameter(self, apType):
@@ -239,6 +239,7 @@ class _APs():
     CommutationMode                = 159
     ClearOnNull                    = 161
     ClearOnce                      = 163
+    HallOffset                     = 164
     EncoderOffset                  = 165
     TorqueP                        = 172
     TorqueI                        = 173
@@ -288,12 +289,13 @@ class _APs():
     HallInterpolation              = 252
     MotorPoles                     = 253
     HallSensorInvert               = 254
+    EnableDriver                   = 255
 
 class _ENUMs():
     COMM_MODE_BLOCK_HALL            = 0
-    COMM_MODE_FOC_HALL              = 1
-    COMM_MODE_FOC_ENCODER           = 2
-    COMM_MODE_FOC_CONTROLLED        = 3
+    COMM_MODE_FOC_HALL              = 6
+    COMM_MODE_FOC_ENCODER           = 7
+    COMM_MODE_FOC_CONTROLLED        = 8
 
     ENCODER_INIT_MODE_0             = 0
     ENCODER_INIT_MODE_1             = 1
