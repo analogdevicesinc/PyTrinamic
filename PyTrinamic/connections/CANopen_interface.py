@@ -15,7 +15,7 @@ class CANopen_interface():
         self.__network.connect(bustype=bustype, channel=channel, bitrate=bitrate)
 
         if self._debug:
-            print("Opened Channel " + self.__channel)
+            print("Opened Channel " + channel)
 
         self.__nodes = []
 
