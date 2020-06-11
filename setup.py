@@ -255,6 +255,7 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMC_603/TMC_603_TMCL_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMC_603/TMC_603_TMCL_hall_digital_input_test.py",
         "PyTrinamic/examples/modules/TMC_603/TMC_603_TMCL_hall_positioning_test.py",
+        "PyTrinamic/examples/modules/TMCC_160/TMCC_160_CANopen_hall_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCC_160/TMCC_160_TMCL_foc_encoder_positioning_test.py",
         "PyTrinamic/examples/modules/TMCC_160/TMCC_160_TMCL_foc_hall_digital_analog_input_test.py",
         "PyTrinamic/examples/modules/TMCM_0010_OPC/TMCM_0010_TMCL_OPC_config_check.py",

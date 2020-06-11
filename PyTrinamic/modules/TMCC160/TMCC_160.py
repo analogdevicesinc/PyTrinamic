@@ -5,6 +5,7 @@ Created on 04.02.2020
 '''
 
 class TMCC_160():
+
     def __init__(self, connection):
         self.connection = connection
 
@@ -13,6 +14,10 @@ class TMCC_160():
         self.ENUMs = _ENUMs
 
         self.motor = 0
+
+    @staticmethod
+    def edsFile():
+        return __file__.replace("TMCC_160.py", "TMCC_160_Hw1.0_Fw3.14.eds")
 
     def showChipInfo(self):
         ("The TMCC160 is desinged for evaluating all features of the TMCC160-LC motionCookie. Voltage supply: 7 - 24");
@@ -289,7 +294,7 @@ class _APs():
     HallInterpolation              = 252
     MotorPoles                     = 253
     HallSensorInvert               = 254
-    EnableDriver                   = 255
+    DriverEnabled                  = 255
 
 class _ENUMs():
     COMM_MODE_BLOCK_HALL            = 0
