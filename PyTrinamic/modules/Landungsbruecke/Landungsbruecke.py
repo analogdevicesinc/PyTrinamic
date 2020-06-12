@@ -4,12 +4,15 @@ Created on 24.07.2019
 @author: LK
 '''
 
-# TODO: Inheritance of tmcl interface
+class _GPs():
+    VitalSignsErrorMask  = 1
+    DriversEnable        = 2
+    DebugMode            = 3
+    BoardAssignment      = 4
+    HWID                 = 5
+    PinState             = 6
 
-class Landungsbruecke(object):
-    GP_VitalSignsErrorMask  = 1
-    GP_DriversEnable        = 2
-    GP_DebugMode            = 3
-    GP_BoardAssignment      = 4
-    GP_HWID                 = 5
-    GP_PinState             = 6
+class Landungsbruecke():
+    def __init__(self, connection):
+        self.GPs   = _GPs
+        self.__connection = connection
