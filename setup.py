@@ -283,7 +283,6 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1630/TMCM_1630_TMCL_hall_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_TMCL_encoder_limit_switches.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_TMCL_hall_limit_switches.py",
-        "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_CANopen_encoder_CST_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_CANopen_encoder_PP_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_CANopen_encoder_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1633/TMCM_1633_hall_PV_Mode.py",
