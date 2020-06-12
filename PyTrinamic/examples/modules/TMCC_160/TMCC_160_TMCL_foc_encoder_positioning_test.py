@@ -14,20 +14,21 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCC160.TMCC_160 import TMCC_160
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+#connectionManager = ConnectionManager("--interface pcan_tmcl")
+connectionManager = ConnectionManager("--interface kvaser_tmcl")
 myInterface = connectionManager.connect()
 
 module = TMCC_160(myInterface)
 
 """
-    Define all motor configurations for the the TMCC-160.
+    Define all motor configurations for the TMCC160.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
 " motor/module settings "
-module.setMotorPoles(4)
+module.setMotorPoles(8)
 module.setMaxTorque(2000)
 module.showMotorConfiguration()
 
@@ -39,7 +40,7 @@ module.showHallConfiguration()
 module.setOpenLoopTorque(1000)
 module.setEncoderResolution(4096)
 module.setEncoderDirection(1)
-module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_0)
+module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_1)
 module.showEncoderConfiguration()
 
 " motion settings "
@@ -68,40 +69,30 @@ module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
 " set position counter to zero"
 module.setActualPosition(0)
 
-" move to zero position"
+print("\nMotor move to first target position")
+module.moveToPosition(40960)
+while not module.positionReached():
+    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+    time.sleep(0.1)
+
+print("Motor reached first target position")
+time.sleep(3)
+
+print("\nMotor move to second target position")
+module.moveToPosition(81920)
+while not module.positionReached():
+    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+    time.sleep(0.1)
+
+print("Motor reached second target position")
+time.sleep(3)
+
+print("\nReturn to zero position")
 module.moveToPosition(0)
-
-print("Motor move to new target position")
-module.moveToPosition(5000)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.6)
+    time.sleep(0.1)
 
-print()
-print("Motor reached first new target position")
-time.sleep(5)
-
-module.moveToPosition(10000)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.6)
-
-print()
-print("Motor reached second new target position")
-time.sleep(5)
-
-module.moveToPosition(0)
-
-print()
-print("Motor return to old target position")
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.6)
-
-print()
-print("Motor reached old target position")
-time.sleep(1)
-
-print()
-print("Ready.")
+print("Motor reached zero position")
+print("\nReady.")
 myInterface.close()

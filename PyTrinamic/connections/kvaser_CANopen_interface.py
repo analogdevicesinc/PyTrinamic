@@ -21,10 +21,10 @@ class kvaser_CANopen_interface(CANopen_interface):
             raise ValueError("Invalid port")
 
         CANopen_interface.__init__(self, "kvaser", int(port), datarate, debug=debug)
-        
-        self.__channel = port
-        self.__bitrate = datarate
 
+        self.__channel = str(port)
+        self.__bitrate = datarate
+        
     def printInfo(self):
         print("Connection: type=kvaser_CANopen_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
 

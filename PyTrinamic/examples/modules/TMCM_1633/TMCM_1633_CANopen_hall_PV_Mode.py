@@ -1,5 +1,5 @@
 '''
-Move a motor back and forth in PV_Mode for with CANopen using the TMCM1633 module
+Move a motor back and forth in PV_Mode with CANopen using the TMCM-1633 module
 
 Created on 07.05.2020
 
