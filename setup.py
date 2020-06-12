@@ -304,7 +304,7 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1640/TMCM_1640_TMCL_hall_positioning_test.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_CANopen_encoder_PP_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_CANopen_encoder_PV_Mode.py",
-        "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_CANopen_openloop.py",
+        "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_CANopen_openloop_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_TMCL_encoder_n_channel.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_TMCL_limit_switches.py",
         "PyTrinamic/examples/modules/TMCM_1670/TMCM_1670_TMCL_positioning.py",
