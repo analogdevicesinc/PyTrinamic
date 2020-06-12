@@ -1,0 +1,6062 @@
+
+; This EDS file was created by the CANopen Design Tool 2.3.6.0.
+; port GmbH Halle/Saale Germany, http://www.port.de, mailto:service@port.de
+
+[FileInfo]
+FileName=TMCM-3110.eds
+FileVersion=1
+FileRevision=3
+EDSVersion=4.0
+Description=TMC-428 based 3-axis stepper controller with STM32F2xx
+CreationTime=03:32PM
+CreationDate=02-19-2013
+CreatedBy=Mr. Eggers
+ModificationTime=03:53PM
+ModificationDate=08-26-2016
+ModifiedBy=Mr. Eggers
+
+[DeviceInfo]
+VendorName=Trinamic Motion Control GmbH
+VendorNumber=0x286
+ProductName=TMCM-3110
+ProductNumber=0xC26
+RevisionNumber=0x00030014
+OrderCode=TMCM-3110
+BaudRate_10=0
+BaudRate_20=1
+BaudRate_50=1
+BaudRate_125=1
+BaudRate_250=1
+BaudRate_500=1
+BaudRate_800=1
+BaudRate_1000=1
+DynamicChannelsSupported=0
+GroupMessaging=0
+LSS_Supported=0
+Granularity=8
+SimpleBootUpSlave=1
+SimpleBootUpMaster=0
+NrOfRXPDO=15
+NrOfTXPDO=15
+
+[Comments]
+Lines=0
+
+[DummyUsage]
+Dummy0001=0
+Dummy0002=0
+Dummy0003=0
+Dummy0004=0
+Dummy0005=0
+Dummy0006=0
+Dummy0007=0
+
+[MandatoryObjects]
+SupportedObjects=3
+1=0x1000
+2=0x1001
+3=0x1018
+
+[OptionalObjects]
+SupportedObjects=200
+1=0x1005
+2=0x1008
+3=0x1009
+4=0x100A
+5=0x100C
+6=0x100D
+7=0x1010
+8=0x1011
+9=0x1014
+10=0x1015
+11=0x1016
+12=0x1017
+13=0x1023
+14=0x1029
+15=0x1400
+16=0x1401
+17=0x1402
+18=0x1403
+19=0x1405
+20=0x1440
+21=0x1441
+22=0x1442
+23=0x1443
+24=0x1445
+25=0x1480
+26=0x1481
+27=0x1482
+28=0x1483
+29=0x1485
+30=0x1600
+31=0x1601
+32=0x1602
+33=0x1603
+34=0x1605
+35=0x1640
+36=0x1641
+37=0x1642
+38=0x1643
+39=0x1645
+40=0x1680
+41=0x1681
+42=0x1682
+43=0x1683
+44=0x1685
+45=0x1800
+46=0x1801
+47=0x1802
+48=0x1803
+49=0x1805
+50=0x1840
+51=0x1841
+52=0x1842
+53=0x1843
+54=0x1845
+55=0x1880
+56=0x1881
+57=0x1882
+58=0x1883
+59=0x1885
+60=0x1A00
+61=0x1A01
+62=0x1A02
+63=0x1A03
+64=0x1A05
+65=0x1A40
+66=0x1A41
+67=0x1A42
+68=0x1A43
+69=0x1A45
+70=0x1A80
+71=0x1A81
+72=0x1A82
+73=0x1A83
+74=0x1A85
+75=0x6040
+76=0x6041
+77=0x6042
+78=0x6043
+79=0x6044
+80=0x6046
+81=0x6048
+82=0x6049
+83=0x605A
+84=0x605B
+85=0x605C
+86=0x605D
+87=0x605E
+88=0x6060
+89=0x6061
+90=0x6062
+91=0x6063
+92=0x6064
+93=0x6065
+94=0x6067
+95=0x6068
+96=0x606A
+97=0x606C
+98=0x607A
+99=0x607C
+100=0x607D
+101=0x607F
+102=0x6081
+103=0x6083
+104=0x6084
+105=0x6085
+106=0x6086
+107=0x608F
+108=0x6098
+109=0x6099
+110=0x609A
+111=0x60C5
+112=0x60C6
+113=0x60FD
+114=0x60FF
+115=0x6502
+116=0x67FF
+117=0x6840
+118=0x6841
+119=0x6842
+120=0x6843
+121=0x6844
+122=0x6846
+123=0x6848
+124=0x6849
+125=0x685A
+126=0x685B
+127=0x685C
+128=0x685D
+129=0x685E
+130=0x6860
+131=0x6861
+132=0x6862
+133=0x6863
+134=0x6864
+135=0x6865
+136=0x6867
+137=0x6868
+138=0x686A
+139=0x686C
+140=0x687A
+141=0x687C
+142=0x687D
+143=0x687F
+144=0x6881
+145=0x6883
+146=0x6884
+147=0x6885
+148=0x6886
+149=0x688F
+150=0x6898
+151=0x6899
+152=0x689A
+153=0x68C5
+154=0x68C6
+155=0x68FD
+156=0x68FF
+157=0x6D02
+158=0x6FFF
+159=0x7040
+160=0x7041
+161=0x7042
+162=0x7043
+163=0x7044
+164=0x7046
+165=0x7048
+166=0x7049
+167=0x705A
+168=0x705B
+169=0x705C
+170=0x705D
+171=0x705E
+172=0x7060
+173=0x7061
+174=0x7062
+175=0x7063
+176=0x7064
+177=0x7065
+178=0x7067
+179=0x7068
+180=0x706A
+181=0x706C
+182=0x707A
+183=0x707C
+184=0x707D
+185=0x707F
+186=0x7081
+187=0x7083
+188=0x7084
+189=0x7085
+190=0x7086
+191=0x708F
+192=0x7098
+193=0x7099
+194=0x709A
+195=0x70C5
+196=0x70C6
+197=0x70FD
+198=0x70FF
+199=0x7502
+200=0x77FF
+
+[ManufacturerObjects]
+SupportedObjects=170
+1=0x2000
+2=0x2001
+3=0x2002
+4=0x2003
+5=0x2004
+6=0x2005
+7=0x2006
+8=0x2007
+9=0x2009
+10=0x200A
+11=0x200B
+12=0x200C
+13=0x204E
+14=0x2085
+15=0x2086
+16=0x2087
+17=0x2088
+18=0x208C
+19=0x208E
+20=0x2090
+21=0x2091
+22=0x2092
+23=0x2093
+24=0x2094
+25=0x2095
+26=0x2096
+27=0x2097
+28=0x2098
+29=0x2099
+30=0x209A
+31=0x209B
+32=0x209C
+33=0x209D
+34=0x209E
+35=0x209F
+36=0x20A0
+37=0x20A1
+38=0x20A2
+39=0x20A3
+40=0x20A4
+41=0x20A5
+42=0x20A6
+43=0x2100
+44=0x2101
+45=0x2102
+46=0x2103
+47=0x2104
+48=0x2105
+49=0x2106
+50=0x2107
+51=0x2108
+52=0x210B
+53=0x2200
+54=0x2201
+55=0x2202
+56=0x2203
+57=0x2204
+58=0x2205
+59=0x2206
+60=0x2207
+61=0x2209
+62=0x220A
+63=0x220B
+64=0x220C
+65=0x224E
+66=0x2285
+67=0x2286
+68=0x2287
+69=0x2288
+70=0x228C
+71=0x228E
+72=0x2290
+73=0x2291
+74=0x2292
+75=0x2293
+76=0x2294
+77=0x2295
+78=0x2296
+79=0x2297
+80=0x2298
+81=0x2299
+82=0x229A
+83=0x229B
+84=0x229C
+85=0x229D
+86=0x229E
+87=0x229F
+88=0x22A0
+89=0x22A1
+90=0x22A2
+91=0x22A3
+92=0x22A4
+93=0x22A5
+94=0x22A6
+95=0x2300
+96=0x2301
+97=0x2302
+98=0x2303
+99=0x2304
+100=0x2305
+101=0x2306
+102=0x2307
+103=0x2308
+104=0x230B
+105=0x2400
+106=0x2401
+107=0x2402
+108=0x2403
+109=0x2404
+110=0x2405
+111=0x2406
+112=0x2407
+113=0x2409
+114=0x240A
+115=0x240B
+116=0x240C
+117=0x244E
+118=0x2485
+119=0x2486
+120=0x2487
+121=0x2488
+122=0x248C
+123=0x248E
+124=0x2490
+125=0x2491
+126=0x2492
+127=0x2493
+128=0x2494
+129=0x2495
+130=0x2496
+131=0x2497
+132=0x2498
+133=0x2499
+134=0x249A
+135=0x249B
+136=0x249C
+137=0x249D
+138=0x249E
+139=0x249F
+140=0x24A0
+141=0x24A1
+142=0x24A2
+143=0x24A3
+144=0x24A4
+145=0x24A5
+146=0x24A6
+147=0x2500
+148=0x2501
+149=0x2502
+150=0x2503
+151=0x2504
+152=0x2505
+153=0x2506
+154=0x2507
+155=0x2508
+156=0x250B
+157=0x2700
+158=0x2701
+159=0x2702
+160=0x2703
+161=0x2704
+162=0x2705
+163=0x2706
+164=0x2707
+165=0x2708
+166=0x270B
+167=0x270C
+168=0x270E
+169=0x270F
+170=0x2710
+
+[1000]
+ParameterName=Device Type
+ObjectType=0x07
+DataType=0x0007
+AccessType=const
+DefaultValue=0xFFFF0192
+PDOMapping=0
+
+[1001]
+ParameterName=Error Register
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1005]
+ParameterName=COB-ID SYNC
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000080
+PDOMapping=0
+
+[1008]
+ParameterName=Manufacturer Device Name
+ObjectType=0x07
+DataType=0x0009
+AccessType=const
+PDOMapping=0
+
+[1009]
+ParameterName=Manufacturer Hardware Version
+ObjectType=0x07
+DataType=0x0009
+AccessType=const
+PDOMapping=0
+
+[100A]
+ParameterName=Manufacturer Software Version
+ObjectType=0x07
+DataType=0x0009
+AccessType=const
+PDOMapping=0
+
+[100C]
+ParameterName=Guard Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[100D]
+ParameterName=Life Time Factor
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1010]
+SubNumber=8
+ParameterName=Store Parameter Field
+ObjectType=0x08
+
+[1010sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x7
+PDOMapping=0
+
+[1010sub1]
+ParameterName=Save all Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1010sub2]
+ParameterName=Save Communication Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1010sub3]
+ParameterName=Save Device Profile Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1010sub4]
+ParameterName=Save Axis 0 Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1010sub5]
+ParameterName=Save Axis 1 Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1010sub6]
+ParameterName=Save Axis 2 Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1010sub7]
+ParameterName=Save Device Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1011]
+SubNumber=8
+ParameterName=Restore Default Parameters
+ObjectType=0x08
+
+[1011sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x7
+PDOMapping=0
+
+[1011sub1]
+ParameterName=Restore all Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1011sub2]
+ParameterName=Restore Communication Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1011sub3]
+ParameterName=Restore Device Profile Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1011sub4]
+ParameterName=Restore Axis 0 Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1011sub5]
+ParameterName=Restore Axis 1 Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1011sub6]
+ParameterName=Restore Axis 2 Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1011sub7]
+ParameterName=Restore Device Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1014]
+ParameterName=COB-ID EMCY
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x80
+PDOMapping=0
+
+[1015]
+ParameterName=Inhibit Time Emergency
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1016]
+SubNumber=2
+ParameterName=Heartbeat Consumer Entries
+ObjectType=0x08
+
+[1016sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[1016sub1]
+ParameterName=Consumer Heartbeat Time 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1017]
+ParameterName=Producer Heartbeat Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1018]
+SubNumber=5
+ParameterName=Identity Object
+ObjectType=0x09
+
+[1018sub0]
+ParameterName=number of entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x4
+PDOMapping=0
+
+[1018sub1]
+ParameterName=Vendor Id
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x286
+PDOMapping=0
+
+[1018sub2]
+ParameterName=Product Code
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0xC26
+PDOMapping=0
+
+[1018sub3]
+ParameterName=Revision number
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[1018sub4]
+ParameterName=Serial number
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[1023]
+SubNumber=4
+ParameterName=OS Command
+ObjectType=0x09
+
+[1023sub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x3
+PDOMapping=0
+
+[1023sub1]
+ParameterName=Command
+ObjectType=0x07
+DataType=0x000A
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1023sub2]
+ParameterName=Status
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1023sub3]
+ParameterName=Reply
+ObjectType=0x07
+DataType=0x000A
+AccessType=ro
+PDOMapping=0
+
+[1029]
+SubNumber=3
+ParameterName=Error Behaviour
+ObjectType=0x08
+
+[1029sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x2
+PDOMapping=0
+
+[1029sub1]
+ParameterName=Communication Error
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1029sub2]
+ParameterName=Application Error
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1400]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 1
+ObjectType=0x09
+
+[1400sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1400sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x40000200
+PDOMapping=0
+
+[1400sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1401]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 2
+ObjectType=0x09
+
+[1401sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x2
+PDOMapping=0
+
+[1401sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x40000300
+PDOMapping=0
+
+[1401sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1402]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 3
+ObjectType=0x09
+
+[1402sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x2
+PDOMapping=0
+
+[1402sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x40000400
+PDOMapping=0
+
+[1402sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1403]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 4
+ObjectType=0x09
+
+[1403sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1403sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0xC0000500
+PDOMapping=0
+
+[1403sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+
+[1405]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 6
+ObjectType=0x09
+
+[1405sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x2
+PDOMapping=0
+
+[1405sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1405sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1440]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 65
+ObjectType=0x09
+
+[1440sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1440sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1440sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1441]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 66
+ObjectType=0x09
+
+[1441sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1441sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1441sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1442]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 67
+ObjectType=0x09
+
+[1442sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1442sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1442sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1443]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 68
+ObjectType=0x09
+
+[1443sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1443sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1443sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+
+[1445]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 70
+ObjectType=0x09
+
+[1445sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1445sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1445sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1480]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 129
+ObjectType=0x09
+
+[1480sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1480sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1480sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1481]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 130
+ObjectType=0x09
+
+[1481sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1481sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1481sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1482]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 131
+ObjectType=0x09
+
+[1482sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1482sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1482sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1483]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 132
+ObjectType=0x09
+
+[1483sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1483sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1483sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+
+[1485]
+SubNumber=3
+ParameterName=Receive PDO Communication Parameter 134
+ObjectType=0x09
+
+[1485sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x02
+PDOMapping=0
+
+[1485sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1485sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFF
+PDOMapping=0
+
+[1600]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 1
+ObjectType=0x09
+
+[1600sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x01
+PDOMapping=0
+
+[1600sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60400010
+PDOMapping=0
+
+[1600sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1600sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1601]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 2
+ObjectType=0x09
+
+[1601sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1601sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60400010
+PDOMapping=0
+
+[1601sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60600008
+PDOMapping=0
+
+[1601sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1602]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 3
+ObjectType=0x09
+
+[1602sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1602sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60400010
+PDOMapping=0
+
+[1602sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x607A0020
+PDOMapping=0
+
+[1602sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1603]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 4
+ObjectType=0x09
+
+[1603sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1603sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1603sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1603sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1605]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 6
+ObjectType=0x09
+
+[1605sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1605sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60400010
+PDOMapping=0
+
+[1605sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60420010
+PDOMapping=0
+
+[1605sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1640]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 65
+ObjectType=0x09
+
+[1640sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1640sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68400010
+PDOMapping=0
+
+[1640sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1640sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1641]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 66
+ObjectType=0x09
+
+[1641sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1641sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68400010
+PDOMapping=0
+
+[1641sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68600008
+PDOMapping=0
+
+[1641sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1642]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 67
+ObjectType=0x09
+
+[1642sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1642sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68400010
+PDOMapping=0
+
+[1642sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x687A0020
+PDOMapping=0
+
+[1642sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1643]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 68
+ObjectType=0x09
+
+[1643sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1643sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1643sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1643sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1645]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 70
+ObjectType=0x09
+
+[1645sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1645sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68400010
+PDOMapping=0
+
+[1645sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68420010
+PDOMapping=0
+
+[1645sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1680]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 129
+ObjectType=0x09
+
+[1680sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1680sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70400010
+PDOMapping=0
+
+[1680sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1680sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1681]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 130
+ObjectType=0x09
+
+[1681sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1681sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70400010
+PDOMapping=0
+
+[1681sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70600008
+PDOMapping=0
+
+[1681sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1682]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 131
+ObjectType=0x09
+
+[1682sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1682sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70400010
+PDOMapping=0
+
+[1682sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x707A0020
+PDOMapping=0
+
+[1682sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1683]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 132
+ObjectType=0x09
+
+[1683sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1683sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1683sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1683sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1685]
+SubNumber=4
+ParameterName=Receive PDO Mapping Parameter 134
+ObjectType=0x09
+
+[1685sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1685sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70400010
+PDOMapping=0
+
+[1685sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70420010
+PDOMapping=0
+
+[1685sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1800]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 1
+ObjectType=0x09
+
+[1800sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1800sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x40000180
+PDOMapping=0
+
+[1800sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFF
+PDOMapping=0
+
+[1800sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1800sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1800sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1801]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 2
+ObjectType=0x09
+
+[1801sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1801sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x40000280
+PDOMapping=0
+
+[1801sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFF
+PDOMapping=0
+
+[1801sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1801sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1801sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1802]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 3
+ObjectType=0x09
+
+[1802sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1802sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x40000380
+PDOMapping=0
+
+[1802sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1802sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1802sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1802sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1803]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 4
+ObjectType=0x09
+
+[1803sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1803sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0xC0000480
+PDOMapping=0
+
+[1803sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFE
+PDOMapping=0
+
+[1803sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1803sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1803sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1805]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 6
+ObjectType=0x09
+
+[1805sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1805sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1805sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1805sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1805sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1805sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1840]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 65
+ObjectType=0x09
+
+[1840sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1840sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1840sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFF
+PDOMapping=0
+
+[1840sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1840sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1840sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1841]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 66
+ObjectType=0x09
+
+[1841sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1841sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1841sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFF
+PDOMapping=0
+
+[1841sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1841sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1841sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1842]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 67
+ObjectType=0x09
+
+[1842sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1842sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1842sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1842sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1842sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1842sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1843]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 68
+ObjectType=0x09
+
+[1843sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1843sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1843sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFE
+PDOMapping=0
+
+[1843sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1843sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1843sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1845]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 70
+ObjectType=0x09
+
+[1845sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1845sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1845sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1845sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1845sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1845sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1880]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 129
+ObjectType=0x09
+
+[1880sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1880sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1880sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFF
+PDOMapping=0
+
+[1880sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1880sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1880sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1881]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 130
+ObjectType=0x09
+
+[1881sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1881sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1881sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFF
+PDOMapping=0
+
+[1881sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1881sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1881sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1882]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 131
+ObjectType=0x09
+
+[1882sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1882sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1882sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1882sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1882sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1882sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1883]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 132
+ObjectType=0x09
+
+[1883sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1883sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1883sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0xFE
+PDOMapping=0
+
+[1883sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1883sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1883sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1885]
+SubNumber=6
+ParameterName=Transmit PDO Communication Parameter 134
+ObjectType=0x09
+
+[1885sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1885sub1]
+ParameterName=COB-ID
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xC0000000
+PDOMapping=0
+
+[1885sub2]
+ParameterName=Transmission Type
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1885sub3]
+ParameterName=Inhibit Time
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1885sub4]
+ParameterName=Compatibility Entry
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1885sub5]
+ParameterName=Event Timer
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[1A00]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 1
+ObjectType=0x09
+
+[1A00sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x01
+PDOMapping=0
+
+[1A00sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60410010
+PDOMapping=0
+
+[1A00sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1A00sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1A01]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 2
+ObjectType=0x09
+
+[1A01sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A01sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60410010
+PDOMapping=0
+
+[1A01sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60610008
+PDOMapping=0
+
+[1A01sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[1A02]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 3
+ObjectType=0x09
+
+[1A02sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A02sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60410010
+PDOMapping=0
+
+[1A02sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60640020
+PDOMapping=0
+
+[1A02sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[1A03]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 4
+ObjectType=0x09
+
+[1A03sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A03sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60410010
+PDOMapping=0
+
+[1A03sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x606C0020
+PDOMapping=0
+
+[1A03sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A05]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 6
+ObjectType=0x09
+
+[1A05sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A05sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60410010
+PDOMapping=0
+
+[1A05sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60440010
+PDOMapping=0
+
+[1A05sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1A40]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 65
+ObjectType=0x09
+
+[1A40sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1A40sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68410010
+PDOMapping=0
+
+[1A40sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A40sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A41]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 66
+ObjectType=0x09
+
+[1A41sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A41sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68410010
+PDOMapping=0
+
+[1A41sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68610008
+PDOMapping=0
+
+[1A41sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A42]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 67
+ObjectType=0x09
+
+[1A42sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A42sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68410010
+PDOMapping=0
+
+[1A42sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68640020
+PDOMapping=0
+
+[1A42sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A43]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 68
+ObjectType=0x09
+
+[1A43sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A43sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68410010
+PDOMapping=0
+
+[1A43sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x686C0020
+PDOMapping=0
+
+[1A43sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A45]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 70
+ObjectType=0x09
+
+[1A45sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A45sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68410010
+PDOMapping=0
+
+[1A45sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x68440010
+PDOMapping=0
+
+[1A45sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A80]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 129
+ObjectType=0x09
+
+[1A80sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x1
+PDOMapping=0
+
+[1A80sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70410010
+PDOMapping=0
+
+[1A80sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A80sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A81]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 130
+ObjectType=0x09
+
+[1A81sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A81sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70410010
+PDOMapping=0
+
+[1A81sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70610008
+PDOMapping=0
+
+[1A81sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A82]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 131
+ObjectType=0x09
+
+[1A82sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A82sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70410010
+PDOMapping=0
+
+[1A82sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70640020
+PDOMapping=0
+
+[1A82sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A83]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 132
+ObjectType=0x09
+
+[1A83sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A83sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70410010
+PDOMapping=0
+
+[1A83sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x706C0020
+PDOMapping=0
+
+[1A83sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[1A85]
+SubNumber=4
+ParameterName=Transmit PDO Mapping Parameter 134
+ObjectType=0x09
+
+[1A85sub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x2
+PDOMapping=0
+
+[1A85sub1]
+ParameterName=Mapping Entry 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70410010
+PDOMapping=0
+
+[1A85sub2]
+ParameterName=Mapping Entry 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x70440010
+PDOMapping=0
+
+[1A85sub3]
+ParameterName=Mapping Entry 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[2000]
+ParameterName=Microstep Resolution 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2001]
+ParameterName=Fullstep Resolution 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xC8
+PDOMapping=0
+
+[2002]
+SubNumber=3
+ParameterName=Brake Delay Time 1
+ObjectType=0x08
+
+[2002sub0]
+ParameterName=highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[2002sub1]
+ParameterName=apply
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[2002sub2]
+ParameterName=release
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[2003]
+ParameterName=Absolute Max Current 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2004]
+ParameterName=Standby Current 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2005]
+ParameterName=Switch Parameters 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[2006]
+ParameterName=Mixed Decay Threshold1
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+PDOMapping=0
+
+[2007]
+ParameterName=Stall Detection Threshold 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2009]
+ParameterName=Fullstep Threshold 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[200A]
+ParameterName=Enable drive delay time 1
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[200B]
+SubNumber=4
+ParameterName=Encoder Parameters 1
+ObjectType=0x09
+
+[200Bsub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x3
+PDOMapping=0
+
+[200Bsub1]
+ParameterName=polarity
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[200Bsub2]
+ParameterName=direction
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[200Bsub3]
+ParameterName=initPosition
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[200C]
+SubNumber=3
+ParameterName=Brake Current Feed 1
+ObjectType=0x08
+
+[200Csub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[200Csub1]
+ParameterName=applied
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[200Csub2]
+ParameterName=released
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[204E]
+ParameterName=Boost Current
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2085]
+ParameterName=Ramp Divisor 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2086]
+ParameterName=Pulse Divisor 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2087]
+ParameterName=Max Velocity 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2088]
+ParameterName=Max Acceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x7FF
+PDOMapping=0
+
+[208C]
+ParameterName=Velocity Dimension Index 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[208E]
+ParameterName=Acceleration Dimension Index 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2090]
+ParameterName=Step Interpolation Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2091]
+ParameterName=Double Step Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2092]
+ParameterName=Chopper Blank Time
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2093]
+ParameterName=Chopper Mode
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2094]
+ParameterName=Chopper Hysteresis Decrement
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2095]
+ParameterName=Chopper Hysteresis End
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+PDOMapping=0
+
+[2096]
+ParameterName=Chopper Hysteresis Start
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2097]
+ParameterName=Chopper Off Time
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2098]
+ParameterName=Smart Energy Current Minimum
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2099]
+ParameterName=Smart Energy CurrentDown Step
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[209A]
+ParameterName=Smart Energy Hysteresis
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[209B]
+ParameterName=Smart Energy Current Up Step
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[209C]
+ParameterName=Smart Energy Hysteresis Start
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[209D]
+ParameterName=Stall Guard2 Filter Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[209E]
+ParameterName=Stall Guard2 Threshold
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+PDOMapping=0
+
+[209F]
+ParameterName=Slope Control High Side
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[20A0]
+ParameterName=Slope Control Low Side
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[20A1]
+ParameterName=Short Protection Disable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[20A2]
+ParameterName=Short Detection Timer
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[20A3]
+ParameterName=Vsense
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[20A4]
+ParameterName=Stop On Stall
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+PDOMapping=0
+
+[20A5]
+ParameterName=SmartEnergy Threshold Speed
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[20A6]
+ParameterName=SmartEnergy Slow Run Current
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2100]
+ParameterName=Home Offset Display 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+DefaultValue=0x0
+PDOMapping=0
+
+[2101]
+ParameterName=Actual Load Value 1
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=0
+
+[2102]
+ParameterName=Driver Error Flags 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2103]
+ParameterName=Pulse Divisor Display 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2104]
+ParameterName=Max Velocity Display 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2105]
+ParameterName=Ramp Divisor Display 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2106]
+ParameterName=Max Acceleration Display 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2107]
+ParameterName=Microstep Resolution Display 1
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2108]
+ParameterName=Absolute Resolver Value 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[210B]
+SubNumber=4
+ParameterName=Step Counter
+ObjectType=0x09
+
+[210Bsub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x3
+PDOMapping=0
+
+[210Bsub1]
+ParameterName=value_low_U32
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[210Bsub2]
+ParameterName=value_high_U32
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[210Bsub3]
+ParameterName=value_U64
+ObjectType=0x07
+DataType=0x001B
+AccessType=ro
+PDOMapping=0
+
+[2200]
+ParameterName=Microstep Resolution 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2201]
+ParameterName=Fullstep Resolution 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xC8
+PDOMapping=0
+
+[2202]
+SubNumber=3
+ParameterName=Brake Delay Time 2
+ObjectType=0x08
+
+[2202sub0]
+ParameterName=highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[2202sub1]
+ParameterName=apply
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[2202sub2]
+ParameterName=release
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[2203]
+ParameterName=Absolute Max Current 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2204]
+ParameterName=Standby Current 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2205]
+ParameterName=Switch Parameters 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[2206]
+ParameterName=Mixed Decay Threshold 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+PDOMapping=0
+
+[2207]
+ParameterName=Stall Detection Threshold 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2209]
+ParameterName=Fullstep Threshold 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[220A]
+ParameterName=Enable drive delay time 2
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[220B]
+SubNumber=4
+ParameterName=Encoder Parameters 2
+ObjectType=0x09
+
+[220Bsub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x3
+PDOMapping=0
+
+[220Bsub1]
+ParameterName=polarity
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[220Bsub2]
+ParameterName=direction
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[220Bsub3]
+ParameterName=initPosition
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[220C]
+SubNumber=3
+ParameterName=Brake Current Feed 2
+ObjectType=0x08
+
+[220Csub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[220Csub1]
+ParameterName=applied
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[220Csub2]
+ParameterName=released
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[224E]
+ParameterName=Boost Current
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2285]
+ParameterName=Ramp Divisor 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2286]
+ParameterName=Pulse Divisor 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2287]
+ParameterName=Max Velocity 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2288]
+ParameterName=Max Acceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x7FF
+PDOMapping=0
+
+[228C]
+ParameterName=Velocity Dimension Index 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[228E]
+ParameterName=Acceleration Dimension Index 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2290]
+ParameterName=Step Interpolation Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2291]
+ParameterName=Double Step Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2292]
+ParameterName=Chopper Blank Time
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2293]
+ParameterName=Chopper Mode
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2294]
+ParameterName=Chopper Hysteresis Decrement
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2295]
+ParameterName=Chopper Hysteresis End
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+PDOMapping=0
+
+[2296]
+ParameterName=Chopper Hysteresis Start
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2297]
+ParameterName=Chopper Off Time
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2298]
+ParameterName=Smart Energy Current Minimum
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2299]
+ParameterName=Smart Energy CurrentDown Step
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[229A]
+ParameterName=Smart Energy Hysteresis
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[229B]
+ParameterName=Smart Energy Current Up Step
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[229C]
+ParameterName=Smart Energy Hysteresis Start
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[229D]
+ParameterName=Stall Guard2 Filter Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[229E]
+ParameterName=Stall Guard2 Threshold
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+PDOMapping=0
+
+[229F]
+ParameterName=Slope Control High Side
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[22A0]
+ParameterName=Slope Control Low Side
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[22A1]
+ParameterName=Short Protection Disable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[22A2]
+ParameterName=Short Detection Timer
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[22A3]
+ParameterName=Vsense
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[22A4]
+ParameterName=Stop On Stall
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+PDOMapping=0
+
+[22A5]
+ParameterName=SmartEnergy Threshold Speed
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[22A6]
+ParameterName=SmartEnergy Slow Run Current
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2300]
+ParameterName=Home Offset Display 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+DefaultValue=0x0
+PDOMapping=0
+
+[2301]
+ParameterName=Actual Load Value 2
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=0
+
+[2302]
+ParameterName=Driver Error Flags 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2303]
+ParameterName=Pulse Divisor Display 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2304]
+ParameterName=Max Velocity Display 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2305]
+ParameterName=Ramp Divisor Display 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2306]
+ParameterName=Max Acceleration Display 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2307]
+ParameterName=Microstep Resolution Display 2
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2308]
+ParameterName=Absolute Resolver Value 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[230B]
+SubNumber=4
+ParameterName=Step Counter
+ObjectType=0x09
+
+[230Bsub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x3
+PDOMapping=0
+
+[230Bsub1]
+ParameterName=value_low_U32
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[230Bsub2]
+ParameterName=value_high_U32
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[230Bsub3]
+ParameterName=value_U64
+ObjectType=0x07
+DataType=0x001B
+AccessType=ro
+PDOMapping=0
+
+[2400]
+ParameterName=Microstep Resolution 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2401]
+ParameterName=Fullstep Resolution 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xC8
+PDOMapping=0
+
+[2402]
+SubNumber=3
+ParameterName=Brake Delay Time 3
+ObjectType=0x08
+
+[2402sub0]
+ParameterName=highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[2402sub1]
+ParameterName=apply
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[2402sub2]
+ParameterName=release
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[2403]
+ParameterName=Absolute Max Current 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2404]
+ParameterName=Standby Current 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2405]
+ParameterName=Switch Parameters 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[2406]
+ParameterName=Mixed Decay Threshold 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+PDOMapping=0
+
+[2407]
+ParameterName=Stall Detection Threshold 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2409]
+ParameterName=Fullstep Threshold 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[240A]
+ParameterName=Enable drive delay time 3
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[240B]
+SubNumber=4
+ParameterName=Encoder Parameters 3
+ObjectType=0x09
+
+[240Bsub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x3
+PDOMapping=0
+
+[240Bsub1]
+ParameterName=polarity
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[240Bsub2]
+ParameterName=direction
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[240Bsub3]
+ParameterName=initPosition
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[240C]
+SubNumber=3
+ParameterName=Brake Current Feed 3
+ObjectType=0x08
+
+[240Csub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[240Csub1]
+ParameterName=applied
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[240Csub2]
+ParameterName=released
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[244E]
+ParameterName=Boost Current
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2485]
+ParameterName=Ramp Divisor 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2486]
+ParameterName=Pulse Divisor 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2487]
+ParameterName=Max Velocity 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2488]
+ParameterName=Max Acceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x7FF
+PDOMapping=0
+
+[248C]
+ParameterName=Velocity Dimension Index 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[248E]
+ParameterName=Acceleration Dimension Index 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2490]
+ParameterName=Step Interpolation Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2491]
+ParameterName=Double Step Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2492]
+ParameterName=Chopper Blank Time
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2493]
+ParameterName=Chopper Mode
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2494]
+ParameterName=Chopper Hysteresis Decrement
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2495]
+ParameterName=Chopper Hysteresis End
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+PDOMapping=0
+
+[2496]
+ParameterName=Chopper Hysteresis Start
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2497]
+ParameterName=Chopper Off Time
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2498]
+ParameterName=Smart Energy Current Minimum
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2499]
+ParameterName=Smart Energy CurrentDown Step
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[249A]
+ParameterName=Smart Energy Hysteresis
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[249B]
+ParameterName=Smart Energy Current Up Step
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[249C]
+ParameterName=Smart Energy Hysteresis Start
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[249D]
+ParameterName=Stall Guard2 Filter Enable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[249E]
+ParameterName=Stall Guard2 Threshold
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+PDOMapping=0
+
+[249F]
+ParameterName=Slope Control High Side
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[24A0]
+ParameterName=Slope Control Low Side
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[24A1]
+ParameterName=Short Protection Disable
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[24A2]
+ParameterName=Short Detection Timer
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[24A3]
+ParameterName=Vsense
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[24A4]
+ParameterName=Stop On Stall
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+PDOMapping=0
+
+[24A5]
+ParameterName=SmartEnergy Threshold Speed
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+
+[24A6]
+ParameterName=SmartEnergy Slow Run Current
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2500]
+ParameterName=Home Offset Display 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+DefaultValue=0x0
+PDOMapping=0
+
+[2501]
+ParameterName=Actual Load Value 3
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=0
+
+[2502]
+ParameterName=Driver Error Flags 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2503]
+ParameterName=Pulse Divisor Display 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2504]
+ParameterName=Max Velocity Display 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2505]
+ParameterName=Ramp Divisor Display 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2506]
+ParameterName=Max Acceleration Display 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[2507]
+ParameterName=Microstep Resolution Display 3
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[2508]
+ParameterName=Absolute Resolver Value 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[250B]
+SubNumber=4
+ParameterName=Step Counter
+ObjectType=0x09
+
+[250Bsub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x3
+PDOMapping=0
+
+[250Bsub1]
+ParameterName=value_low_U32
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[250Bsub2]
+ParameterName=value_high_U32
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[250Bsub3]
+ParameterName=value_U64
+ObjectType=0x07
+DataType=0x001B
+AccessType=ro
+PDOMapping=0
+
+[2700]
+ParameterName=TMCL Direct Communication
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[2701]
+ParameterName=PDO Disabling
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[2702]
+ParameterName=Device Digital Inputs
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=1
+
+[2703]
+SubNumber=3
+ParameterName=Device Digital Outputs
+ObjectType=0x08
+
+[2703sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[2703sub1]
+ParameterName=Physical Outputs
+ObjectType=0x07
+DataType=0x0007
+AccessType=rww
+DefaultValue=0x0
+PDOMapping=1
+
+[2703sub2]
+ParameterName=Output Mask
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[2704]
+ParameterName=CAN Bit Rate
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000003
+
+[2705]
+ParameterName=Node-ID
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+PDOMapping=0
+
+[2706]
+SubNumber=2
+ParameterName=Store
+ObjectType=0x08
+
+[2706sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x1
+PDOMapping=0
+
+[2706sub1]
+ParameterName=Save all Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[2707]
+ParameterName=CAN Bit Rate Load
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=0
+ObjFlags=0x00000002
+
+[2708]
+ParameterName=Node-ID Load
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[270B]
+ParameterName=HAL version
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270C]
+SubNumber=7
+ParameterName=CL Information
+ObjectType=0x08
+
+[270Csub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x6
+PDOMapping=0
+
+[270Csub1]
+ParameterName=info 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub2]
+ParameterName=info 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub3]
+ParameterName=info 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub4]
+ParameterName=info 4
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub5]
+ParameterName=info 5
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub6]
+ParameterName=info 6
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270E]
+SubNumber=9
+ParameterName=Device Analog Inputs
+ObjectType=0x08
+
+[270Esub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x8
+PDOMapping=0
+
+[270Esub1]
+ParameterName=AIN0
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub2]
+ParameterName=AIN1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub3]
+ParameterName=AIN2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub4]
+ParameterName=AIN3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub5]
+ParameterName=AIN4
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub6]
+ParameterName=AIN5
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub7]
+ParameterName=AIN6
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Esub8]
+ParameterName=AIN7
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270F]
+ParameterName=Service Period
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+PDOMapping=0
+
+[2710]
+ParameterName=Pull-up Resistors
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[6040]
+ParameterName=Controlword 1
+ObjectType=0x07
+DataType=0x0006
+AccessType=rww
+PDOMapping=1
+
+[6041]
+ParameterName=Statusword 1
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=1
+
+[6042]
+ParameterName=vl Target Velocity 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=rww
+DefaultValue=0x0000
+PDOMapping=1
+
+[6043]
+ParameterName=vl Velocity Demand 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+PDOMapping=0
+
+[6044]
+ParameterName=vl Velocity Actual Value 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+PDOMapping=1
+
+[6046]
+SubNumber=3
+ParameterName=vl Velocity Min Max Amount 1
+ObjectType=0x08
+
+[6046sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6046sub1]
+ParameterName=vl_velocity_min_amount
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x0
+PDOMapping=0
+
+[6046sub2]
+ParameterName=vl_velocity_max_amount
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[6048]
+SubNumber=3
+ParameterName=vl Velocity Acceleration 1
+ObjectType=0x09
+
+[6048sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6048sub1]
+ParameterName=Delta speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6048sub2]
+ParameterName=Delta time
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[6049]
+SubNumber=3
+ParameterName=vl Velocity Deceleration 1
+ObjectType=0x09
+
+[6049sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6049sub1]
+ParameterName=Delta speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[6049sub2]
+ParameterName=Delta time
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[605A]
+ParameterName=Quick Stop Option Code 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+DefaultValue=0x0002
+PDOMapping=0
+
+[605B]
+ParameterName=Shutdown Option Code 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0000
+PDOMapping=0
+
+[605C]
+ParameterName=Disable Operation Option Code 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0001
+PDOMapping=0
+
+[605D]
+ParameterName=Halt Option Code 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0001
+PDOMapping=0
+
+[605E]
+ParameterName=Fault Reaction Option Code 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0002
+PDOMapping=0
+
+[6060]
+ParameterName=Modes of Operation 1
+ObjectType=0x07
+DataType=0x0002
+AccessType=rww
+DefaultValue=0x00
+PDOMapping=1
+
+[6061]
+ParameterName=Modes of Operation Display 1
+ObjectType=0x07
+DataType=0x0002
+AccessType=ro
+PDOMapping=1
+
+[6062]
+ParameterName=Position Demand Value 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[6063]
+ParameterName=Position Actual Internal Value 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[6064]
+ParameterName=Position Actual Value 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[6065]
+ParameterName=Following Error Window 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6067]
+ParameterName=Position Window 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xFFFFFFFF
+PDOMapping=0
+
+[6068]
+ParameterName=Position Window Time 1
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[606A]
+ParameterName=Sensor Selection Code 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+PDOMapping=0
+
+[606C]
+ParameterName=Velocity Actual Value 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[607A]
+ParameterName=Target Position 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=rww
+DefaultValue=0x0
+PDOMapping=1
+
+[607C]
+ParameterName=Home Offset 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[607D]
+SubNumber=3
+ParameterName=Software Position Limit 1
+ObjectType=0x08
+
+[607Dsub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[607Dsub1]
+ParameterName=Min Software Position Limit
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x80000001
+PDOMapping=0
+
+[607Dsub2]
+ParameterName=Max Software Position Limit
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x7FFFFFFF
+PDOMapping=0
+
+[607F]
+ParameterName=Max Profile Velocity 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[6081]
+ParameterName=Profile Velocity in pp-mode 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6083]
+ParameterName=Profile Acceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6084]
+ParameterName=Profile Deceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[6085]
+ParameterName=Quick Stop Deceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6086]
+ParameterName=Motion Profile Type 1
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[608F]
+SubNumber=3
+ParameterName=Position Encoder Resolution 1
+ObjectType=0x08
+
+[608Fsub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x00000002
+PDOMapping=0
+
+[608Fsub1]
+ParameterName=Encoder Increments
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[608Fsub2]
+ParameterName=Motor Revolutions
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000001
+PDOMapping=0
+
+[6098]
+ParameterName=Homing Method 1
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[6099]
+SubNumber=3
+ParameterName=Homing Speeds 1
+ObjectType=0x08
+
+[6099sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6099sub1]
+ParameterName=Fast Homing Speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6099sub2]
+ParameterName=Slow Homing Speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[609A]
+ParameterName=Homing Acceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[60C5]
+ParameterName=Max Acceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[60C6]
+ParameterName=Max Deceleration 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[60FD]
+ParameterName=Digital Inputs 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=1
+
+[60FF]
+ParameterName=Target Velocity 1
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=1
+
+[6502]
+ParameterName=Supported Drive Modes 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000023
+PDOMapping=0
+
+[67FF]
+ParameterName=Single Device Type 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00040192
+PDOMapping=0
+
+[6840]
+ParameterName=Controlword 2
+ObjectType=0x07
+DataType=0x0006
+AccessType=rww
+PDOMapping=1
+
+[6841]
+ParameterName=Statusword 2
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=1
+
+[6842]
+ParameterName=vl Target Velocity 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=rww
+DefaultValue=0x0000
+PDOMapping=1
+
+[6843]
+ParameterName=vl Velocity Demand 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+PDOMapping=0
+
+[6844]
+ParameterName=vl Velocity Actual Value 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+PDOMapping=1
+
+[6846]
+SubNumber=3
+ParameterName=vl Velocity Min Max Amount 2
+ObjectType=0x08
+
+[6846sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6846sub1]
+ParameterName=vl_velocity_min_amount
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x0
+PDOMapping=0
+
+[6846sub2]
+ParameterName=vl_velocity_max_amount
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[6848]
+SubNumber=3
+ParameterName=vl Velocity Acceleration 2
+ObjectType=0x09
+
+[6848sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6848sub1]
+ParameterName=Delta speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6848sub2]
+ParameterName=Delta time
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[6849]
+SubNumber=3
+ParameterName=vl Velocity Deceleration 2
+ObjectType=0x09
+
+[6849sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6849sub1]
+ParameterName=Delta speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[6849sub2]
+ParameterName=Delta time
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[685A]
+ParameterName=Quick Stop Option Code 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+DefaultValue=0x0002
+PDOMapping=0
+
+[685B]
+ParameterName=Shutdown Option Code 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0000
+PDOMapping=0
+
+[685C]
+ParameterName=Disable Operation Option Code 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0001
+PDOMapping=0
+
+[685D]
+ParameterName=Halt Option Code 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0001
+PDOMapping=0
+
+[685E]
+ParameterName=Fault Reaction Option Code 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0002
+PDOMapping=0
+
+[6860]
+ParameterName=Modes of Operation 2
+ObjectType=0x07
+DataType=0x0002
+AccessType=rww
+DefaultValue=0x00
+PDOMapping=1
+
+[6861]
+ParameterName=Modes of Operation Display 2
+ObjectType=0x07
+DataType=0x0002
+AccessType=ro
+PDOMapping=1
+
+[6862]
+ParameterName=Position Demand Value 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[6863]
+ParameterName=Position Actual Internal Value 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[6864]
+ParameterName=Position Actual Value 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[6865]
+ParameterName=Following Error Window 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6867]
+ParameterName=Position Window 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xFFFFFFFF
+PDOMapping=0
+
+[6868]
+ParameterName=Position Window Time 2
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[686A]
+ParameterName=Sensor Selection Code 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+PDOMapping=0
+
+[686C]
+ParameterName=Velocity Actual Value 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[687A]
+ParameterName=Target Position 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=rww
+DefaultValue=0x0
+PDOMapping=1
+
+[687C]
+ParameterName=Home Offset 2
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[687D]
+SubNumber=3
+ParameterName=Software Position Limit 2
+ObjectType=0x08
+
+[687Dsub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[687Dsub1]
+ParameterName=Min Software Position Limit
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x80000001
+PDOMapping=0
+
+[687Dsub2]
+ParameterName=Max Software Position Limit
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x7FFFFFFF
+PDOMapping=0
+
+[687F]
+ParameterName=Max Profile Velocity 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[6881]
+ParameterName=Profile Velocity in pp-mode 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6883]
+ParameterName=Profile Acceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6884]
+ParameterName=Profile Deceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[6885]
+ParameterName=Quick Stop Deceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6886]
+ParameterName=Motion Profile Type 2
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[688F]
+SubNumber=3
+ParameterName=Position Encoder Resolution 2
+ObjectType=0x08
+
+[688Fsub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x00000002
+PDOMapping=0
+
+[688Fsub1]
+ParameterName=Encoder Increments
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[688Fsub2]
+ParameterName=Motor Revolutions
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000001
+PDOMapping=0
+
+[6898]
+ParameterName=Homing Method 2
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[6899]
+SubNumber=3
+ParameterName=Homing Speeds 2
+ObjectType=0x08
+
+[6899sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[6899sub1]
+ParameterName=Fast Homing Speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[6899sub2]
+ParameterName=Slow Homing Speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[689A]
+ParameterName=Homing Acceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[68C5]
+ParameterName=Max Acceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[68C6]
+ParameterName=Max Deceleration 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[68FD]
+ParameterName=Digital Inputs 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=1
+
+[68FF]
+ParameterName=Target Velocity
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=1
+
+[6D02]
+ParameterName=Supported Drive Modes 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000023
+PDOMapping=0
+
+[6FFF]
+ParameterName=Single Device Type 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00040192
+PDOMapping=0
+
+[7040]
+ParameterName=Controlword 3
+ObjectType=0x07
+DataType=0x0006
+AccessType=rww
+PDOMapping=1
+
+[7041]
+ParameterName=Statusword 3
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=1
+
+[7042]
+ParameterName=vl Target Velocity 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=rww
+DefaultValue=0x0000
+PDOMapping=1
+
+[7043]
+ParameterName=vl Velocity Demand 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+PDOMapping=0
+
+[7044]
+ParameterName=vl Velocity Actual Value 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+PDOMapping=1
+
+[7046]
+SubNumber=3
+ParameterName=vl Velocity Min Max Amount 3
+ObjectType=0x08
+
+[7046sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[7046sub1]
+ParameterName=vl_velocity_min_amount
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x0
+PDOMapping=0
+
+[7046sub2]
+ParameterName=vl_velocity_max_amount
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x7FF
+PDOMapping=0
+
+[7048]
+SubNumber=3
+ParameterName=vl Velocity Acceleration 3
+ObjectType=0x09
+
+[7048sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[7048sub1]
+ParameterName=Delta speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[7048sub2]
+ParameterName=Delta time
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[7049]
+SubNumber=3
+ParameterName=vl Velocity Deceleration 3
+ObjectType=0x09
+
+[7049sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[7049sub1]
+ParameterName=Delta speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[7049sub2]
+ParameterName=Delta time
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+DefaultValue=0x1
+PDOMapping=0
+
+[705A]
+ParameterName=Quick Stop Option Code 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+DefaultValue=0x0002
+PDOMapping=0
+
+[705B]
+ParameterName=Shutdown Option Code 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0000
+PDOMapping=0
+
+[705C]
+ParameterName=Disable Operation Option Code 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0001
+PDOMapping=0
+
+[705D]
+ParameterName=Halt Option Code 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0001
+PDOMapping=0
+
+[705E]
+ParameterName=Fault Reaction Option Code 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=ro
+DefaultValue=0x0002
+PDOMapping=0
+
+[7060]
+ParameterName=Modes of Operation 3
+ObjectType=0x07
+DataType=0x0002
+AccessType=rww
+DefaultValue=0x00
+PDOMapping=1
+
+[7061]
+ParameterName=Modes of Operation Display 3
+ObjectType=0x07
+DataType=0x0002
+AccessType=ro
+PDOMapping=1
+
+[7062]
+ParameterName=Position Demand Value 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[7063]
+ParameterName=Position Actual Internal Value 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[7064]
+ParameterName=Position Actual Value 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[7065]
+ParameterName=Following Error Window 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[7067]
+ParameterName=Position Window 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0xFFFFFFFF
+PDOMapping=0
+
+[7068]
+ParameterName=Position Window Time 3
+ObjectType=0x07
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[706A]
+ParameterName=Sensor Selection Code 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+PDOMapping=0
+
+[706C]
+ParameterName=Velocity Actual Value 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=ro
+PDOMapping=1
+
+[707A]
+ParameterName=Target Position 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=rww
+DefaultValue=0x0
+PDOMapping=1
+
+[707C]
+ParameterName=Home Offset 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[707D]
+SubNumber=3
+ParameterName=Software Position Limit 3
+ObjectType=0x08
+
+[707Dsub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[707Dsub1]
+ParameterName=Min Software Position Limit
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x80000001
+PDOMapping=0
+
+[707Dsub2]
+ParameterName=Max Software Position Limit
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x7FFFFFFF
+PDOMapping=0
+
+[707F]
+ParameterName=Max Profile Velocity 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[7081]
+ParameterName=Profile Velocity in pp-mode 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[7083]
+ParameterName=Profile Acceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[7084]
+ParameterName=Profile Deceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[7085]
+ParameterName=Quick Stop Deceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[7086]
+ParameterName=Motion Profile Type 3
+ObjectType=0x07
+DataType=0x0003
+AccessType=rw
+DefaultValue=0x0000
+PDOMapping=0
+
+[708F]
+SubNumber=3
+ParameterName=Position Encoder Resolution 3
+ObjectType=0x08
+
+[708Fsub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x00000002
+PDOMapping=0
+
+[708Fsub1]
+ParameterName=Encoder Increments
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[708Fsub2]
+ParameterName=Motor Revolutions
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000001
+PDOMapping=0
+
+[7098]
+ParameterName=Homing Method 3
+ObjectType=0x07
+DataType=0x0002
+AccessType=rw
+DefaultValue=0x00
+PDOMapping=0
+
+[7099]
+SubNumber=3
+ParameterName=Homing Speeds 3
+ObjectType=0x08
+
+[7099sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x2
+PDOMapping=0
+
+[7099sub1]
+ParameterName=Fast Homing Speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[7099sub2]
+ParameterName=Slow Homing Speed
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[709A]
+ParameterName=Homing Acceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[70C5]
+ParameterName=Max Acceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[70C6]
+ParameterName=Max Deceleration 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[70FD]
+ParameterName=Digital Inputs 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=1
+
+[70FF]
+ParameterName=Target Velocity 3
+ObjectType=0x07
+DataType=0x0004
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=1
+
+[7502]
+ParameterName=Supported Drive Modes 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000023
+PDOMapping=0
+
+[77FF]
+ParameterName=Single Device Type 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00040192
+PDOMapping=0
+

@@ -5,6 +5,8 @@ Created on 05.06.2020
 '''
 
 class TMCM_3110():
+    MOTORS = 3
+
     def __init__(self, connection):
         self.connection = connection
 
@@ -12,8 +14,11 @@ class TMCM_3110():
         self.APs   = _APs
         #self.ENUMs = _ENUMs
 
-        self.MOTORS = 1
         self.__default_motor = 0
+
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_3110.py", "TMCM_3110_V.320.eds")
 
     def showChipInfo(self):
         ("The TMCM-3110 is a 3-Axis Stepper Controller / Driver. Voltage supply: 12 - 48V");
