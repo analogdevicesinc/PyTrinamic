@@ -39,6 +39,7 @@ setuptools.setup(
         "PyTrinamic/connections/CANopen_interface",
         "PyTrinamic/connections/pcan_CANopen_interface",
         "PyTrinamic/connections/kvaser_CANopen_interface",
+        "PyTrinamic/connections/slcan_tmcl_interface",
         "PyTrinamic/evalboards/eval_interface",
         "PyTrinamic/evalboards/TMC2041_eval",
         "PyTrinamic/evalboards/TMC2100_eval",
