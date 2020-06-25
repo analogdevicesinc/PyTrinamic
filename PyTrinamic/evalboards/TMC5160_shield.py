@@ -47,7 +47,7 @@ class TMC5160_shield(TMC5160):
         self.APs = _APs
 
     def __str__(self):
-        return f"{self.__class__.__name__}[{self.__channel}]"
+        return "{}[{}]".format(self.__class__.__name__, self.__channel)
 
     # Use the motion controller functions for register access
     def writeRegister(self, registerAddress, value, moduleID=None):
