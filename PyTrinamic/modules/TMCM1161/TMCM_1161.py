@@ -19,8 +19,8 @@ class TMCM_1161():
         ("The TMCM-1161 is a single axis controller/driver module for 2-phase bipolar stepper motors with state of theart feature set. Voltage supply: 10 - 30V");
 
     # Axis parameter access
-    def getAxisParameter(self, apType):
-        return self.connection.axisParameter(apType, self.__default_motor)
+    def getAxisParameter(self, apType, signed=False):
+        return self.connection.axisParameter(apType, self.__default_motor, signed=signed)
 
     def setAxisParameter(self, apType, value):
         self.connection.setAxisParameter(apType, self.__default_motor, value)
@@ -81,25 +81,25 @@ class TMCM_1161():
 
     # Motion parameter functions
     def getTargetPosition(self):
-        return self.getAxisParameter(self.APs.TargetPosition)
+        return self.getAxisParameter(self.APs.TargetPosition, signed=True)
 
     def setTargetPosition(self, position):
         self.setAxisParameter(self.APs.TargetPosition, position)
 
     def getActualPosition(self):
-        return self.getAxisParameter(self.APs.ActualPosition)
+        return self.getAxisParameter(self.APs.ActualPosition, signed=True)
 
     def setActualPosition(self, position):
         return self.setAxisParameter(self.APs.ActualPosition, position)
 
     def getTargetVelocity(self):
-        return self.getAxisParameter(self.APs.TargetVelocity)
+        return self.getAxisParameter(self.APs.TargetVelocity, signed=True)
 
     def setTargetVelocity(self, velocity):
         self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
     def getActualVelocity(self):
-        return self.getAxisParameter(self.APs.ActualVelocity)
+        return self.getAxisParameter(self.APs.ActualVelocity, signed=True)
 
     def getMaxVelocity(self):
         return self.getAxisParameter(self.APs.MaxVelocity)
