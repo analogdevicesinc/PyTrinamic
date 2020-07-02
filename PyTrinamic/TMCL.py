@@ -148,6 +148,9 @@ class TMCL_Reply(object):
     def value(self):
         return self.value
 
+    def isValid(self):
+        return self.status == TMCL_Status.SUCCESS
+
     def versionString(self):
         byteString = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
         return str(byteString, "ascii")
