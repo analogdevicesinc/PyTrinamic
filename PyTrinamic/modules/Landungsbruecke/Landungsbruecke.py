@@ -5,6 +5,7 @@ Created on 24.07.2019
 '''
 
 from PyTrinamic.TMCL import TMCL_Command
+from PyTrinamic.helpers import EEPROM
 
 class _GPs():
     VitalSignsErrorMask  = 1
@@ -21,6 +22,9 @@ class Landungsbruecke():
 
         self._mcId = 0
         self._drvId = 0
+
+        self.EepromMc  = EEPROM(self._readMcEeprom, self._writeMcEeprom)
+        self.EepromDrv = EEPROM(self._readDrvEeprom, self._writeDrvEeprom)
 
     def getBoardIDs(self):
         '''
@@ -67,6 +71,28 @@ class Landungsbruecke():
             drvName = str(boardIDs[1])
 
         return (mcName, drvName)
+
+    def _readMcEeprom(self, address):
+        reply = self.__connection.send(TMCL_Command.TMCL_UF1, 1, 0, address)
+
+        if not reply.isValid():
+            raise RuntimeError("Failed to read driver ID EEPROM")
+
+        return reply.value
+
+    def _writeMcEeprom(self, address, value):
+        self.__connection.send(TMCL_Command.TMCL_UF2, 1, value, address)
+
+    def _readDrvEeprom(self, address):
+        reply = self.__connection.send(TMCL_Command.TMCL_UF1, 2, 0, address)
+
+        if not reply.isValid():
+            raise RuntimeError("Failed to read driver ID EEPROM")
+
+        return reply.value
+
+    def _writeDrvEeprom(self, address, value):
+        self.__connection.send(TMCL_Command.TMCL_UF2, 2, value & 0xFF, address)
 
     mcIdNames = {
         0  : "None",
