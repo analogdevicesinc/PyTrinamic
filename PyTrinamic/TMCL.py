@@ -6,8 +6,7 @@ Created on 16.02.2018
 
 import struct
 
-class TMCL:
-    PACKAGE_STRUCTURE   = ">BBBBIB"
+_PACKAGE_STRUCTURE = ">BBBBIB"
 
 class TMCL_Command:
     ROR                         = 1
@@ -102,13 +101,13 @@ class TMCL_Request(object):
         self.motorBank = motorBank
         self.value = value & 0xFFFFFFFF
         self.checksum = 0
-        checksum_struct = struct.pack(TMCL.PACKAGE_STRUCTURE[:-1], address, command, commandType, motorBank, value & 0xFFFFFFFF)
+        checksum_struct = struct.pack(_PACKAGE_STRUCTURE[:-1], address, command, commandType, motorBank, value & 0xFFFFFFFF)
         for s in checksum_struct:
             self.checksum += s
         self.checksum %= 256
 
     def toBuffer(self):
-        return struct.pack(TMCL.PACKAGE_STRUCTURE, self.moduleAddress, self.command,
+        return struct.pack(_PACKAGE_STRUCTURE, self.moduleAddress, self.command,
                            self.commandType, self.motorBank, self.value, self.checksum)
 
     def dump(self):
@@ -125,7 +124,7 @@ class TMCL_Request(object):
 
 class TMCL_Reply(object):
     def __init__(self, reply_data):
-        reply_struct = struct.unpack(TMCL.PACKAGE_STRUCTURE, reply_data)
+        reply_struct = struct.unpack(_PACKAGE_STRUCTURE, reply_data)
         self.reply_address = reply_struct[0]
         self.module_address = reply_struct[1]
         self.status = reply_struct[2]
