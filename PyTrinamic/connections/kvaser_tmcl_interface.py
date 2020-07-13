@@ -34,7 +34,10 @@ class kvaser_tmcl_interface(tmcl_interface):
         self.__bitrate  = datarate
 
         try:
-            self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate,can_filters=[{ "can_id": hostID, "can_mask": 0x7F }])
+            if self.__debug:
+                self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate)
+            else:
+                self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate,can_filters=[{ "can_id": hostID, "can_mask": 0x7F }])
 
         except CanError as e:
             self.__connection = None
@@ -99,7 +102,8 @@ class kvaser_tmcl_interface(tmcl_interface):
         if msg.arbitration_id != hostID:
             # The filter shouldn't let wrong messages through.
             # This is just a sanity check
-            raise ConnectionError("Received wrong ID")
+            if self.__debug:
+                print ("Received wrong ID")
 
         return bytearray([msg.arbitration_id]) + msg.data
 
