@@ -232,21 +232,29 @@ class ConnectionManager():
         # Get all available ports
         portList = self.listConnections()
 
-        # Check if ports are available
-        if len(portList) == 0:
-            raise ConnectionError("No connections available")
-
         ### Parse the port string
         if self.__port == "interactive":
+            # Check if ports are available
+            if len(portList) == 0:
+                raise ConnectionError("No connections available")
+
             # "interactive" -> Show a selection dialog
             port = self.__interactivePortSelection()
         elif self.__port == "any":
+            # Check if ports are available
+            if len(portList) == 0:
+                raise ConnectionError("No connections available")
+
             # "any" -> Use the first port
             port = portList[0]
         else:
             try:
                 # Check if the port string is a number
                 tmp = int(self.__port)
+
+                # Check if ports are available
+                if len(portList) == 0:
+                    raise ConnectionError("No connections available")
 
                 # Port string is a Number -> Use the n-th port
                 try:
@@ -255,6 +263,9 @@ class ConnectionManager():
                     raise ConnectionError("Couldn't connect to Port Number " + self.__port + ". Only " + str(len(portList)) +" ports available")
             except ValueError:
                 # Not a number -> port string gets passed to interface directly
+                # Do not check against the port list in this case. In certain
+                # scenarios a port might be available without it being found by
+                # the listConnections() method.
                 port = self.__port
         try:
             if self.__interface.supportsTMCL():
