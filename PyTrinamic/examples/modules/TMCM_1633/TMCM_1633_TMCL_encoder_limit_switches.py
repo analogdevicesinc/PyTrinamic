@@ -14,7 +14,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1633.TMCM_1633 import TMCM_1633
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface kvaser_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+connectionManager = ConnectionManager("--interface kvaser_tmcl") # You can select any CAN TMCL interface here
 myInterface = connectionManager.connect()
 
 module = TMCM_1633(myInterface)
