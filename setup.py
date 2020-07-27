@@ -221,6 +221,7 @@ setuptools.setup(
         "PyTrinamic/examples/evalboards/TMC4330/TMC4330_eval_TMC2160_eval_rotateDemo.py",
         "PyTrinamic/examples/evalboards/TMC4361/TMC4361_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC4361/TMC4361_eval_TMC2660_eval_rotateDemo.py",
+        "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_adc_offset_calibration.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_ABN_encoder_offset_estimation.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_ABN_encoder.py",
         "PyTrinamic/examples/evalboards/TMC4671/TMC4671_eval_BLDC_open_loop.py",
