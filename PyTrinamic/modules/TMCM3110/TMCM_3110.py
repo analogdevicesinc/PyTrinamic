@@ -14,8 +14,6 @@ class TMCM_3110():
         self.APs   = _APs
         #self.ENUMs = _ENUMs
 
-        self.__default_motor = 0
-
     @staticmethod
     def getEdsFile():
         return __file__.replace("TMCM_3110.py", "TMCM_3110_V.320.eds")
@@ -24,11 +22,11 @@ class TMCM_3110():
         ("The TMCM-3110 is a 3-Axis Stepper Controller / Driver. Voltage supply: 12 - 48V");
 
     # Axis parameter access
-    def getAxisParameter(self, apType):
-        return self.connection.axisParameter(apType, self.__default_motor)
+    def getAxisParameter(self, apType, motor):
+        return self.connection.axisParameter(apType, motor)
 
-    def setAxisParameter(self, apType, value):
-        self.connection.setAxisParameter(apType, self.__default_motor, value)
+    def setAxisParameter(self, apType, motor, value):
+        self.connection.setAxisParameter(apType, motor, value)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
@@ -38,41 +36,41 @@ class TMCM_3110():
         self.connection.setGlobalParameter(gpType, bank, value)
 
     # Motion Control functions
-    def rotate(self, velocity):
-        self.setRampMode(2)
+    def rotate(self, motor, velocity):
+        self.setRampMode(motor, 2)
 
-        self.setAxisParameter(self.APs.TargetVelocity, velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, motor, velocity)
 
-    def stop(self):
-        self.rotate(0)
+    def stop(self, motor):
+        self.rotate(motor, 0)
 
-    def moveTo(self, position, velocity=None):
+    def moveTo(self, motor, position, velocity=None):
         if velocity:
-            self.setMaxVelocity(velocity)
+            self.setMaxVelocity(motor, velocity)
 
-        self.setTargetPosition(position)
+        self.setTargetPosition(motor, position)
 
-        self.setRampMode(0)
+        self.setRampMode(motor, 0)
 
-    def moveBy(self, difference, velocity=None):
-        position = difference + self.getActualPosition()
+    def moveBy(self, motor, difference, velocity=None):
+        position = difference + self.getActualPosition(motor)
 
-        self.moveTo(position, velocity)
+        self.moveTo(motor, position, velocity)
 
         return position
 
     # Current control functions
-    def setMotorRunCurrent(self, current):
-        self.setMaxCurrent(current)
+    def setMotorRunCurrent(self, motor, current):
+        self.setMaxCurrent(motor, current)
 
-    def setMotorStandbyCurrent(self, current):
-        self.setAxisParameter(self.APs.StandbyCurrent, current)
+    def setMotorStandbyCurrent(self, motor, current):
+        self.setAxisParameter(self.APs.StandbyCurrent, motor, current)
 
-    def getMaxCurrent(self):
-        return self.getAxisParameter(self.APs.MaxCurrent)
+    def getMaxCurrent(self, motor):
+        return self.getAxisParameter(self.APs.MaxCurrent, motor)
 
-    def setMaxCurrent(self, current):
-        self.setAxisParameter(self.APs.MaxCurrent, current)
+    def setMaxCurrent(self, motor, current):
+        self.setAxisParameter(self.APs.MaxCurrent, motor, current)
 
     # StallGuard2 Functions
     def setStallguard2Filter(self, enableFilter):
@@ -85,54 +83,54 @@ class TMCM_3110():
         self.setAxisParameter(self.APs.SmartEnergyStallVelocity, velocity)
 
     # Motion parameter functions
-    def getTargetPosition(self):
-        return self.getAxisParameter(self.APs.TargetPosition)
+    def getTargetPosition(self, motor):
+        return self.getAxisParameter(self.APs.TargetPosition, motor)
 
-    def setTargetPosition(self, position):
-        self.setAxisParameter(self.APs.TargetPosition, position)
+    def setTargetPosition(self, motor, position):
+        self.setAxisParameter(self.APs.TargetPosition, motor, position)
 
-    def getActualPosition(self):
-        return self.getAxisParameter(self.APs.ActualPosition)
+    def getActualPosition(self, motor):
+        return self.getAxisParameter(self.APs.ActualPosition, motor)
 
-    def setActualPosition(self, position):
-        return self.setAxisParameter(self.APs.ActualPosition, position)
+    def setActualPosition(self, motor, position):
+        return self.setAxisParameter(self.APs.ActualPosition, motor, position)
 
-    def getTargetVelocity(self):
-        return self.getAxisParameter(self.APs.TargetVelocity)
+    def getTargetVelocity(self, motor):
+        return self.getAxisParameter(self.APs.TargetVelocity, motor)
 
-    def setTargetVelocity(self, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, velocity)
+    def setTargetVelocity(self, velocity, motor):
+        self.setAxisParameter(self.APs.TargetVelocity, motor, velocity)
 
-    def getActualVelocity(self):
-        return self.getAxisParameter(self.APs.ActualVelocity)
+    def getActualVelocity(self, motor):
+        return self.getAxisParameter(self.APs.ActualVelocity, motor)
 
-    def getMaxVelocity(self):
-        return self.getAxisParameter(self.APs.MaxVelocity)
+    def getMaxVelocity(self, motor):
+        return self.getAxisParameter(self.APs.MaxVelocity, motor)
 
-    def setMaxVelocity(self, velocity):
-        self.setAxisParameter(self.APs.MaxVelocity, velocity)
+    def setMaxVelocity(self, motor, velocity):
+        self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
 
-    def getMaxAcceleration(self):
-        return self.getAxisParameter(self.APs.MaxAcceleration)
+    def getMaxAcceleration(self, motor):
+        return self.getAxisParameter(self.APs.MaxAcceleration, motor)
 
-    def setMaxAcceleration(self, acceleration):
-        self.setAxisParameter(self.APs.MaxAcceleration, acceleration)
+    def setMaxAcceleration(self, motor, acceleration):
+        self.setAxisParameter(self.APs.MaxAcceleration, motor, acceleration)
 
-    def getRampMode(self):
-        return self.getAxisParameter(self.APs.RampMode)
+    def getRampMode(self, motor):
+        return self.getAxisParameter(self.APs.RampMode, motor)
 
-    def setRampMode(self, mode):
-        return self.setAxisParameter(self.APs.RampMode, mode)
+    def setRampMode(self, motor, mode):
+        return self.setAxisParameter(self.APs.RampMode, motor, mode)
 
     # Status functions
-    def getStatusFlags(self):
-        return self.getAxisParameter(self.APs.DrvStatusFlags)
+    def getStatusFlags(self, motor):
+        return self.getAxisParameter(self.APs.DrvStatusFlags, motor)
 
-    def getErrorFlags(self):
-        return self.getAxisParameter(self.APs.ExtendedErrorFlags)
+    def getErrorFlags(self, motor):
+        return self.getAxisParameter(self.APs.ExtendedErrorFlags, motor)
 
-    def positionReached(self):
-        return self.getAxisParameter(self.APs.PositionReachedFlag)
+    def positionReached(self, motor):
+        return self.getAxisParameter(self.APs.PositionReachedFlag, motor)
 
     # IO pin functions
     def analogInput(self, x):
