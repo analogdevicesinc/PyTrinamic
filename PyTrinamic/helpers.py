@@ -47,6 +47,8 @@ class EEPROM():
     ADDR_HW_VERSION_MAJOR  = 18
     ADDR_HW_VERSION_MINOR  = 19
     ADDR_MAGIC_NUMBER      = 20
+    # Magic number (little-endian) for the Evalsystem ID EEPROM
+    MAGIC_NUMBER           = 0x3412
 
     """
     For initialization two functions need to be provided.
@@ -85,6 +87,18 @@ class EEPROM():
 
         return text
 
+    def read_id_info(self):
+        # Check magic number
+        if self.readShort(self.ADDR_MAGIC_NUMBER) != self.MAGIC_NUMBER:
+            return None
+
+        desc     = self.readASCII(self.ADDR_DESCRIPTION, 16)
+        board_id = self.readShort(self.ADDR_ID)
+        hw_major = self.readByte(self.ADDR_HW_VERSION_MAJOR)
+        hw_minor = self.readByte(self.ADDR_HW_VERSION_MINOR)
+
+        return { "description":desc.strip('\x00'), "id":board_id, "hw_major":hw_major, "hw_minor":hw_minor }
+
     def writeByte(self, address, value):
         self._write8func(address, value)
 
@@ -99,3 +113,22 @@ class EEPROM():
     def writeASCII(self, address, text):
         for i, c in enumerate(text):
             self._write8func(address + i, ord(c))
+
+    def write_id_info(self, description, board_id, hw_major_version, hw_minor_version):
+        if type(description) != str:
+            raise TypeError("Description must be a string")
+
+        if len(description) > 16:
+            raise ValueError("Description cannot be longer than 16 characters")
+
+        if not(type(board_id) == type(hw_major_version) == type(hw_minor_version) == int):
+            raise TypeError("Board ID and Hardware versions must be integers")
+
+        # Pad the string with zeros if necessary
+        description += "\x00" * (16-len(description))
+
+        self.writeASCII(self.ADDR_DESCRIPTION, description)
+        self.writeShort(self.ADDR_ID, board_id)
+        self.writeByte(self.ADDR_HW_VERSION_MAJOR, hw_major_version)
+        self.writeByte(self.ADDR_HW_VERSION_MINOR, hw_minor_version)
+        self.writeByte(self.ADDR_MAGIC_NUMBER, self.MAGIC_NUMBER)
