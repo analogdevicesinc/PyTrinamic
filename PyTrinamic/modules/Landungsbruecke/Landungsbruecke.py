@@ -133,3 +133,20 @@ class Landungsbruecke():
         21 : "TMC6300",
         22 : "TMC2226",
     }
+
+if __name__ == "__main__":
+    from PyTrinamic.connections.ConnectionManager import ConnectionManager
+
+    cm = ConnectionManager()
+    interface = cm.connect()
+    LB = Landungsbruecke(interface)
+
+    print("ID EEPROM content:")
+    print("Mc: ", LB.EepromDrv.read_id_info())
+    print("Drv:", LB.EepromMc.read_id_info())
+
+    print("Board IDs:")
+    print(LB.getBoardIDs())
+
+    print("Board Names:")
+    print(LB.getBoardNames())
