@@ -75,13 +75,13 @@ class TMCM_1160():
 
     # StallGuard2 Functions
     def setStallguard2Filter(self, enableFilter):
-        self.setAxisParameter(self.APs.StallGuard2FilterEnable, enableFilter)
+        self.setAxisParameter(self.APs.SG2FilterEnable, enableFilter)
 
     def setStallguard2Threshold(self, threshold):
-        self.setAxisParameter(self.APs.StallGuard2Threshold, threshold)
+        self.setAxisParameter(self.APs.SG2Threshold, threshold)
 
     def setStopOnStallVelocity(self, velocity):
-        self.setAxisParameter(self.APs.StopOnStall, velocity)
+        self.setAxisParameter(self.APs.smartEnergyStallVelocity, velocity)
 
     # Motion parameter functions
     def getTargetPosition(self):
@@ -125,10 +125,10 @@ class TMCM_1160():
 
     # Status functions
     def getStatusFlags(self):
-        return self.getAxisParameter(self.APs.TMC262ErrorFlags)
+        return self.getAxisParameter(self.APs.DrvStatusFlags)
 
     def getErrorFlags(self):
-        return self.getAxisParameter(self.APs.ExtendedErrorFlags)
+        return self.getAxisParameter(self.APs.extendedErrorFlags)
 
     def positionReached(self):
         return self.getAxisParameter(self.APs.PositionReachedFlag)
