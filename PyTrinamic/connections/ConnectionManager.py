@@ -17,6 +17,7 @@ from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
 from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmcl_interface
 from PyTrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_interface
+from PyTrinamic.connections.socket_tmcl_interface import socket_tmcl_interface
 
 class ConnectionManager():
     """
@@ -94,7 +95,8 @@ class ConnectionManager():
         ("uart_ic",         uart_ic_interface,          9600),
         ("usb_tmcl",        usb_tmcl_interface,         115200),
         ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
-        ("kvaser_CANopen",  kvaser_CANopen_interface,   1000000)
+        ("kvaser_CANopen",  kvaser_CANopen_interface,   1000000),
+        ("socket_tmcl",     socket_tmcl_interface,      0),
     ]
 
     def __init__(self, argList=None, connectionType="any", debug=False):
