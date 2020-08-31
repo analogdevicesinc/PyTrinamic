@@ -131,4 +131,4 @@ class EEPROM():
         self.writeShort(self.ADDR_ID, board_id)
         self.writeByte(self.ADDR_HW_VERSION_MAJOR, hw_major_version)
         self.writeByte(self.ADDR_HW_VERSION_MINOR, hw_minor_version)
-        self.writeByte(self.ADDR_MAGIC_NUMBER, self.MAGIC_NUMBER)
+        self.writeShort(self.ADDR_MAGIC_NUMBER, self.MAGIC_NUMBER)
