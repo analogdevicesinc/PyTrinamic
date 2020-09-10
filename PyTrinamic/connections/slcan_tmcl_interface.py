@@ -9,6 +9,7 @@ Created on 03.01.2020
 import can
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from can import CanError
+from serial.tools.list_ports import comports
 
 class slcan_tmcl_interface(tmcl_interface):
     """
@@ -121,7 +122,7 @@ class slcan_tmcl_interface(tmcl_interface):
             connection manager.
         """
         connected = []
-        for element in sorted(serial.tools.list_ports.comports()):
+        for element in sorted(comports()):
             connected.append(element.device)
 
         return connected

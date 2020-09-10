@@ -95,13 +95,14 @@ class TMCL_Status (object):
 
 class TMCL_Request(object):
     def __init__(self, address, command, commandType, motorBank, value):
-        self.moduleAddress = address
-        self.command = command
-        self.commandType = commandType
-        self.motorBank = motorBank
-        self.value = value & 0xFFFFFFFF
-        self.checksum = 0
-        checksum_struct = struct.pack(_PACKAGE_STRUCTURE[:-1], address, command, commandType, motorBank, value & 0xFFFFFFFF)
+        self.moduleAddress = address     & 0xFF
+        self.command       = command     & 0xFF
+        self.commandType   = commandType & 0xFF
+        self.motorBank     = motorBank   & 0xFF
+        self.value         = value       & 0xFFFFFFFF
+        self.checksum      = 0
+        
+        checksum_struct = self.toBuffer()
         for s in checksum_struct:
             self.checksum += s
         self.checksum %= 256
