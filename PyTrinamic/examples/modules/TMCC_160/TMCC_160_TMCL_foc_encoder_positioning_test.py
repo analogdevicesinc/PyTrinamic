@@ -39,7 +39,7 @@ module.showHallConfiguration()
 " encoder settings "
 module.setOpenLoopTorque(1000)
 module.setEncoderResolution(4096)
-module.setEncoderDirection(1)
+module.setEncoderDirection(0)
 module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_1)
 module.showEncoderConfiguration()
 
