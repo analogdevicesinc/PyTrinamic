@@ -101,6 +101,7 @@ setuptools.setup(
         "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_CANopen_PP_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1160/TMCM_1160_CANopen_PV_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1161/TMCM_1161_TMCL_rotateDemo.py",
+        "PyTrinamic/examples/modules/TMCM_1240/TMCM_1240_TMCL_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1260/TMCM_1260_TMCL_rotateDemo.py",
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_CANopen_PP_Mode.py",
         "PyTrinamic/examples/modules/TMCM_1270/TMCM_1270_CANopen_PV_Mode.py",
