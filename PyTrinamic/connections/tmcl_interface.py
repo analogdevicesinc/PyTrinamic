@@ -37,7 +37,7 @@ class tmcl_interface():
                 Type: int, optional, default value: 2
                 The ID of the TMCL host. This ID is the same for each module
                 when communicating with multiple modules.
-            moduleID:
+            defaultModuleID:
                 Type: int, optional, default value: 1
                 The default module ID to use when no ID is given to any of the
                 tmcl_interface functions. When only communicating with one
