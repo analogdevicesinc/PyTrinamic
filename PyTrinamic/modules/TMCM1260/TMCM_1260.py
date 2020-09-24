@@ -110,10 +110,8 @@ class TMCM_1260():
     def setMaxAcceleration(self, acceleration):
         self.setAxisParameter(self.APs.MaxAcceleration, acceleration)
 
-    def setMicrostepResolution(self, MicrostepResolution):
-
-    #def getMicrostepResolution(self):
-        return self.setAxisParameter(self.APs.MicrostepResolution)
+    def setMicrostepResolution(self, microstepResolution):
+        self.setAxisParameter(self.APs.MicrostepResolution, microstepResolution)
 
     # Status functions
     def getStatusFlags(self):
