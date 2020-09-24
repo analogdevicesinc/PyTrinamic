@@ -214,6 +214,24 @@ class tmcl_interface():
     def move(self, moveType, motor, position, moduleID=None):
         return self.send(TMCL_Command.MVP, moveType, motor, position, moduleID)
 
+    def moveTo(self, motor, position, moduleID=None):
+        """
+        Use the TMCL MVP command to perform an absolute movement.
+
+        Returns the value of the reply. Refer to the documentation of your
+        specific module for details on what is returned.
+        """
+        return self.move(0, motor, position, moduleID).value
+
+    def moveBy(self, motor, distance, moduleID=None):
+        """
+        Use the TMCL MVP command to perform a relative movement.
+
+        Returns the value of the reply. Refer to the documentation of your
+        specific module for details on what is returned.
+        """
+        return self.move(1, motor, distance, moduleID).value
+
     # IO pin functions
     def analogInput(self, x, moduleID=None):
         return self.send(TMCL_Command.GIO, x, 1, 0, moduleID).value
