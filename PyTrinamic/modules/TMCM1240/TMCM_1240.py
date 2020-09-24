@@ -44,14 +44,13 @@ class TMCM_1240():
         if velocity:
             self.setMaxVelocity(velocity)
 
-        self.setTargetPosition(position)
+        return self.connection.moveTo(self.__default_motor, position)
 
     def moveBy(self, difference, velocity=None):
-        position = difference + self.getActualPosition()
+        if velocity:
+            self.setMaxVelocity(velocity)
 
-        self.moveTo(position, velocity)
-
-        return position
+        return self.connection.moveBy(self.__default_motor, difference)
 
     # Current control functions
     def setMotorRunCurrent(self, current):
