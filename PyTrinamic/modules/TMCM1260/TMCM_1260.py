@@ -5,8 +5,9 @@ Created on 07.07.2020
 '''
 
 class TMCM_1260():
-    def __init__(self, connection):
+    def __init__(self, connection, moduleID=1):
         self.connection = connection
+        self.MODULE_ID  = moduleID
 
         self.GPs   = _GPs
         self.APs   = _APs
@@ -20,17 +21,17 @@ class TMCM_1260():
 
     # Axis parameter access
     def getAxisParameter(self, apType, signed=False):
-        return self.connection.axisParameter(apType, self.__default_motor, signed=signed)
+        return self.connection.axisParameter(apType, self.__default_motor, self.MODULE_ID, signed)
 
     def setAxisParameter(self, apType, value):
-        self.connection.setAxisParameter(apType, self.__default_motor, value)
+        self.connection.setAxisParameter(apType, self.__default_motor, value, self.MODULE_ID)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
-        return self.connection.globalParameter(gpType, bank)
+        return self.connection.globalParameter(gpType, bank, self.MODULE_ID)
 
     def setGlobalParameter(self, gpType, bank, value):
-        self.connection.setGlobalParameter(gpType, bank, value)
+        self.connection.setGlobalParameter(gpType, bank, value, self.MODULE_ID)
 
     # Motion Control functions
     def rotate(self, velocity):
@@ -44,13 +45,13 @@ class TMCM_1260():
         if velocity:
             self.setMaxVelocity(velocity)
 
-        return self.connection.moveTo(self.__default_motor, position)
+        return self.connection.moveTo(self.__default_motor, position, self.MODULE_ID)
 
     def moveBy(self, distance, velocity=None):
         if velocity:
             self.setMaxVelocity(velocity)
 
-        return self.connection.moveBy(self.__default_motor, distance)
+        return self.connection.moveBy(self.__default_motor, distance, self.MODULE_ID)
 
     # Current control functions
     def setMotorRunCurrent(self, current):
@@ -126,10 +127,10 @@ class TMCM_1260():
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x)
+        return self.connection.analogInput(x, self.MODULE_ID)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x)
+        return self.connection.digitalInput(x, self.MODULE_ID)
 
 class _APs():
     TargetPosition                 = 0
