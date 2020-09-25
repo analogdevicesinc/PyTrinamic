@@ -37,7 +37,7 @@ class tmcl_interface():
                 Type: int, optional, default value: 2
                 The ID of the TMCL host. This ID is the same for each module
                 when communicating with multiple modules.
-            moduleID:
+            defaultModuleID:
                 Type: int, optional, default value: 1
                 The default module ID to use when no ID is given to any of the
                 tmcl_interface functions. When only communicating with one
@@ -213,6 +213,24 @@ class tmcl_interface():
 
     def move(self, moveType, motor, position, moduleID=None):
         return self.send(TMCL_Command.MVP, moveType, motor, position, moduleID)
+
+    def moveTo(self, motor, position, moduleID=None):
+        """
+        Use the TMCL MVP command to perform an absolute movement.
+
+        Returns the value of the reply. Refer to the documentation of your
+        specific module for details on what is returned.
+        """
+        return self.move(0, motor, position, moduleID).value
+
+    def moveBy(self, motor, distance, moduleID=None):
+        """
+        Use the TMCL MVP command to perform a relative movement.
+
+        Returns the value of the reply. Refer to the documentation of your
+        specific module for details on what is returned.
+        """
+        return self.move(1, motor, distance, moduleID).value
 
     # IO pin functions
     def analogInput(self, x, moduleID=None):

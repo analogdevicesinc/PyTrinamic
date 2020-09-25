@@ -1,10 +1,10 @@
 '''
-Created on 07.07.2020
+Created on 21.09.2020
 
-@author: JM
+@author: AA
 '''
 
-class TMCM_1260():
+class TMCM_1240():
     def __init__(self, connection, moduleID=1):
         self.connection = connection
         self.MODULE_ID  = moduleID
@@ -17,7 +17,7 @@ class TMCM_1260():
         self.__default_motor = 0
 
     def showChipInfo(self):
-        ("The TMCM-1260 is a single axis controller/driver module. Voltage supply: 24V");
+        ("The TMCM-1240 is a single axis controller/driver module. Voltage supply: 24V");
 
     # Axis parameter access
     def getAxisParameter(self, apType, signed=False):
@@ -47,11 +47,11 @@ class TMCM_1260():
 
         return self.connection.moveTo(self.__default_motor, position, self.MODULE_ID)
 
-    def moveBy(self, distance, velocity=None):
+    def moveBy(self, difference, velocity=None):
         if velocity:
             self.setMaxVelocity(velocity)
 
-        return self.connection.moveBy(self.__default_motor, distance, self.MODULE_ID)
+        return self.connection.moveBy(self.__default_motor, difference, self.MODULE_ID)
 
     # Current control functions
     def setMotorRunCurrent(self, current):
@@ -215,7 +215,7 @@ class _APs():
     reverse_shaft                  = 251
     step_direction_mode            = 254
     unit_mode                      = 255
-    CurrentStepping                = 0
+    CurrentStepping                = 0              
 
 
 class _ENUMs():
@@ -233,21 +233,21 @@ class _GPs():
     input_3                        = 42
     serialBaudRate                 = 65
     serialAddress                  = 66
-    ASCIIMode                      = 67
+    ASCIIMode                      = 67           
     serialHeartbeat                = 68
     telegramPauseTime              = 75
     serialHostAddress              = 76
     autoStartMode                  = 77
-    limitSwitchPolarity            = 79
+    limitSwitchPolarity            = 79             
     protectionMode                 = 81
     eepromCoordinateStore          = 84
     zeroUserVariables              = 85
     serialSecondaryAddress         = 87
-    reverseShaftDirection          = 90
+    reverseShaftDirection          = 90            
     applicationStatus              = 128
     downloadMode                   = 129
     programCounter                 = 130
-    lastTmclError                  = 131
+    lastTmclError                  = 131        
     tickTimer                      = 132
     randomNumber                   = 133
     Intpol                         = 255
