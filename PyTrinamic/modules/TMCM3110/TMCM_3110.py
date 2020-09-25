@@ -205,4 +205,3 @@ class _APs():
     GroupIndex                     = 213
     PowerDownDelay                 = 214
     StepDirectionMode              = 254
-    CurrentStepping                = 0

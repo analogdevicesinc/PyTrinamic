@@ -214,7 +214,6 @@ class _APs():
     externalEncoderPrescaler       = 217
     ExternalEncoderMax_Deviation   = 218
     Step_DirectionMode             = 254
-    CurrentStepping                = 0
 
 class _ENUMs():
     pass

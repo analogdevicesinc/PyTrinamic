@@ -236,8 +236,6 @@ class _APs():
     AllStatusBits                  = 250
     ReverseShaft                   = 251
     ClearAlarmOutputs              = 252
-    CurrentStepping                = 0
-
 
 class _ENUMs():
     FLAG_POSITION_END = 0x00004000

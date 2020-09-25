@@ -215,8 +215,6 @@ class _APs():
     reverse_shaft                  = 251
     step_direction_mode            = 254
     unit_mode                      = 255
-    CurrentStepping                = 0              
-
 
 class _ENUMs():
     FLAG_POSITION_END = 0x00004000

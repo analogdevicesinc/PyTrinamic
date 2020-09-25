@@ -220,7 +220,6 @@ class _APs():
     max_EncoderDeviation           = 212
     PowerDownDelay                 = 214
     UnitMode                       = 255
-    CurrentStepping                = 0
 
 class _ENUMs():
     pass

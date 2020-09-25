@@ -201,7 +201,6 @@ class _APs():
     PowerDownDelay                 = 214
     absoluteResolverValue          = 215
     Step_DirectionMode             = 254
-    CurrentStepping                = 0
 
 class _ENUMs():
     FLAG_POSITION_END = 0x00004000
