@@ -63,6 +63,8 @@ while not module.positionReached():
     time.sleep(0.2)
 
 " the actual position of 0 is now located at the N-Channel "
+time.sleep(1.0)
+print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
 
 print("Ready.")
 myInterface.close()
