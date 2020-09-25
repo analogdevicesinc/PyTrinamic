@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Turn a motor using hall sensors
+Turn a motor without feedback in open loop mode
 
 Created on 28.11.2019
 
@@ -15,7 +15,7 @@ import time
 PyTrinamic.showInfo()
 
 " please select your CAN adapter "
-#connectionManager = ConnectionManager("--interface pcan_tmcl") 
+#connectionManager = ConnectionManager("--interface pcan_tmcl")
 connectionManager = ConnectionManager("--interface kvaser_tmcl")
 
 myInterface = connectionManager.connect()
@@ -23,20 +23,14 @@ myInterface = connectionManager.connect()
 module = TMCM_1636(myInterface)
 
 """
-    Define all motor configurations for the the TMCM-1636.
+    Define all motor configurations for the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
-" hall sensor config "
-module.setAxisParameter(module.APs.HallSensorPolarity, 1);
-module.setAxisParameter(module.APs.HallSensorDirection, 0);
-module.setAxisParameter(module.APs.HallSensorOffset, 0);
-module.setAxisParameter(module.APs.HallInterpolation, 1);
-
-" select Hall sensor mode "
-module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_HALL);
+" select open loop mode "
+module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_OPENLOOP);
 
 print("Starting motor...")
 module.setAxisParameter(module.APs.TargetVelocity, 1000);

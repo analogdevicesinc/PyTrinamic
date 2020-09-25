@@ -1,71 +1,53 @@
 '''
-Move a motor back and forth in HM_Mode for with CANopen using the TMCM1636 module
+Do a homing with CANopen using the TMCM-1636 module
 
 Created on 15.05.2020
 
-@author: JM
+@author: JM, ED
 '''
 
 if __name__ == '__main__':
     pass
 
-import time
+import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1636.TMCM_1636 import TMCM_1636
+import time
 
-"""
-    Choose the right bustype before starting the script
-"""
+PyTrinamic.showInfo()
 
+" choose the right bustype before starting the script "
 connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType = "CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_1636.getEdsFile(), 1)
 module = node
 
-#This function initialized the ds402StateMachine
+" this function initializes the DS402 state machine "
 node.setup_402_state_machine()
 
-#####################
-#Communication area
-objManufacturerDeviceName      = module.sdo[0x1008]
-objManufacturerHardwareVersion = module.sdo[0x1009]
+" communication area "
+objManufacturerDeviceName       = module.sdo[0x1008]
+objManufacturerHardwareVersion  = module.sdo[0x1009]
 
 print()
-print("Module name: %s"        % objManufacturerDeviceName.raw)
-print("Hardware version: %s"   % objManufacturerHardwareVersion.raw)
+print("Module name:        %s" % objManufacturerDeviceName.raw)
+print("Hardware version:   %s" % objManufacturerHardwareVersion.raw)
 
-######################
-#Manufacturer specific area
-
-#Current
+" manufacturer specific area "
 objMaximumCurrent             = module.sdo[0x2003]
-
-#Limit Switches
 objSwitchParameter            = module.sdo[0x2005]
-
-#Position Mode Settings
-objP_Parameter                = module.sdo[0x2043][1]
-objPID_Position_Error         = module.sdo[0x2043][2]
-objAlwaysUseEncoder           = module.sdo[0x2043][3]
-
-#Commutation Mode
 objCommutationMode            = module.sdo[0x2055]
-
-#Motor Pole Pairs
 objMotorPolePairs             = module.sdo[0x2056]
 
-#ABN Encoder Settings
+" ABN encoder settings "
 objEncoderDirection           = module.sdo[0x2080][1]
 objEncoderSteps               = module.sdo[0x2080][2]
 objEncoderInitMode            = module.sdo[0x2080][3]
 
-#Digital Inputs
 objDeviceDigitalInputs        = module.sdo[0x2702]
 
-######################
-#Profile specific area
-
+" profile specific area "
 objControlWord              = module.sdo[0x6040]
 objStatusWord               = module.sdo[0x6041]
 objModeOfOperation          = module.sdo[0x6060]
@@ -85,15 +67,12 @@ objHomingAcceleration       = module.sdo[0x609A]
     Define all motor configurations for the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
-
-
-
 objMotorPolePairs.raw              = 4
 objMaximumCurrent.raw              = 1500
 objCommutationMode.raw             = 3
-objEncoderSteps.raw                = 16384
+objEncoderSteps.raw                = 4096
 objEncoderDirection.raw            = 1
 
 print("MotorPoles:               %d" % objMotorPolePairs.raw)
@@ -102,26 +81,19 @@ print("Encoder_StepsPerRotation: %d" % objEncoderSteps.raw)
 print("Encoder_Direction:        %d" % objEncoderDirection.raw)
 print()
 
-'''
-Configuration Setup for using HM_Mode
-'''
+" setup Homing Mode (HM) "
 
-# Setup Homing Method
-objHomingMethod.raw = 17 #(Homing on negative Limit Switch)
-# Setup Homing Speed
+" setup homing speed "
 objHomingSpeedFast.raw = 1000
 objHomingSpeedsSlow.raw = 500
-# Setup Homing Acceleration
+
+" setup homing acceleration "
 objHomingAcceleration.raw = 500
 
-if node.is_faulted():
-    print("Resetting fault")
-    node.reset_from_fault() # Reset node from fault and set it to Operation Enable state
+" reset node from fault and set it to Operation Enable state "
+node.reset_from_fault()
 
 def startHM():
-
-    print("Node state before switcHParameter write:" + node.state)
-    objSwitchParameter.raw = 3
 
     timeout = time.time() + 15
     node.state = 'READY TO SWITCH ON'
@@ -156,14 +128,31 @@ def startHM():
 
     return
 
-def HM_RUN():
+def homingRunning():
     return (objStatusWord.raw & (1 << 10)) != 0
+
+print("enable REF switches and use default polarity ")
+objSwitchParameter.raw = 0
+
+" select one of the homing methods "
+objHomingMethod.raw = 17 
+#objHomingMethod.raw = 18
+#objHomingMethod.raw = 19
+#objHomingMethod.raw = 21
+#objHomingMethod.raw = 35
 
 startHM()
 
-while not HM_RUN():
+" trigger the homing process "
+node.controlword = 0x001F
+
+while not homingRunning():
     print("Homing...")
     time.sleep(0.4)
 
+print("Actual position: %d" % objActualPosition.raw)
+
+node.controlword = 0x000F
+
 network.close()
-print("disconnected.")
+print("Ready.")

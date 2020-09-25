@@ -23,7 +23,7 @@ myInterface = connectionManager.connect()
 module = TMCM_1636(myInterface)
 
 """
-    Define all motor configurations for the the TMCM-1636.
+    Define all motor configurations for the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -36,7 +36,7 @@ module.setAxisParameter(module.APs.HallSensorOffset, 0);
 module.setAxisParameter(module.APs.HallInterpolation, 1);
 
 " enable ref switch "
-module.setAxisParameter(module.APs.ReferenceSwitchEnable, 1);
+module.setAxisParameter(module.APs.ReferenceSwitchEnable, 3);
 
 " select Hall sensor mode "
 module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_HALL);
