@@ -33,7 +33,8 @@ module.showMotorConfiguration()
 
 " encoder configuration "
 module.setOpenLoopTorque(1000)
-module.setEncoderResolution(4096) #16384
+module.setEncoderResolution(4096)
+#module.setEncoderResolution(16384)
 module.setEncoderDirection(0)
 module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_0)
 module.showEncoderConfiguration()
