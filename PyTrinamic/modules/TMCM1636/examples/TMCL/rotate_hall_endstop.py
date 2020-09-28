@@ -17,7 +17,6 @@ PyTrinamic.showInfo()
 " please select your CAN adapter "
 #connectionManager = ConnectionManager("--interface pcan_tmcl")
 connectionManager = ConnectionManager("--interface kvaser_tmcl")
-
 myInterface = connectionManager.connect()
 
 module = TMCM_1636(myInterface)

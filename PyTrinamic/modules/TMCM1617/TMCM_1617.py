@@ -213,7 +213,10 @@ class TMCM_1617():
 
     def showHallConfiguration(self):
         print("Hall configuration:")
-#       print("\tHall invert: " + str(self.hallInvert()))
+        print("\tDirection:     " + str(self.axisParameter(self.APs.HallSensorDirection)))
+        print("\tPolarity:      " + str(self.axisParameter(self.APs.HallSensorInvert)))
+        print("\tOffset:        " + str(self.axisParameter(self.APs.HallSensorOffset)))
+        print("\tInterpolation enabled: " + ("disabled" if (self.axisParameter(self.APs.HallInterpolation)==0) else "enabled"))
 
     def showEncoderConfiguration(self):
         print("Encoder configuration:")
@@ -333,6 +336,10 @@ class _ENUMs():
     ENCODER_INIT_MODE_2             = 2
 
     FLAG_POSITION_END               = 0x00004000
+
+    MOTOR_TYPE_NO_MOTOR             = 0
+    MOTOR_TYPE_SINGLE_PHASE_DC      = 1
+    MOTOR_TYPE_THREE_PHASE_BLDC     = 3
 
 class _GPs():
     serialBaudRate                 = 65
