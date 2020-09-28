@@ -1,26 +1,26 @@
 
-; This EDS file was created by the CANopen Design Tool 2.3.20.0.
+; This EDS file was created by the CANopen Design Tool 2.3.7.0.
 ; port GmbH Halle/Saale Germany, http://www.port.de, mailto:service@port.de
 
 [FileInfo]
-FileName=TMCC160_Hw1.0_Fw3.14.eds
-FileVersion=3
-FileRevision=14
+FileName=TMCC160.eds
+FileVersion=2
+FileRevision=11
 EDSVersion=4.0
 Description=TMCC160 BLDC/PMSM ic
-CreationTime=08:37AM
-CreationDate=06-10-2020
+CreationTime=04:19PM
+CreationDate=08-17-2017
 CreatedBy=
-ModificationTime=10:24AM
-ModificationDate=06-10-2020
+ModificationTime=08:49AM
+ModificationDate=08-25-2017
 ModifiedBy=
 
 [DeviceInfo]
 VendorName=Trinamic Motion Control GmbH
 VendorNumber=0x286
 ProductName=TMCC160
-ProductNumber=0xA0
-RevisionNumber=0x00030014
+ProductNumber=0x661
+RevisionNumber=0x00010000
 OrderCode=TMCC160
 BaudRate_10=0
 BaudRate_20=1
@@ -58,7 +58,7 @@ SupportedObjects=3
 3=0x1018
 
 [OptionalObjects]
-SupportedObjects=66
+SupportedObjects=64
 1=0x1005
 2=0x1008
 3=0x1009
@@ -71,63 +71,61 @@ SupportedObjects=66
 10=0x1015
 11=0x1016
 12=0x1017
-13=0x1029
-14=0x1400
-15=0x1401
-16=0x1402
-17=0x1403
-18=0x1600
-19=0x1601
-20=0x1602
-21=0x1603
-22=0x1800
-23=0x1801
-24=0x1802
-25=0x1803
-26=0x1A00
-27=0x1A01
-28=0x1A02
-29=0x1A03
-30=0x6040
-31=0x6041
-32=0x605A
-33=0x605B
-34=0x605C
-35=0x605D
-36=0x605E
-37=0x6060
-38=0x6061
-39=0x6062
-40=0x6063
-41=0x6064
-42=0x6067
-43=0x606B
-44=0x606C
-45=0x606D
-46=0x6071
-47=0x6077
-48=0x607A
-49=0x607C
-50=0x607D
-51=0x6081
-52=0x6082
-53=0x6083
-54=0x6084
-55=0x6085
-56=0x608F
-57=0x6098
-58=0x6099
-59=0x609A
-60=0x60B0
-61=0x60B1
-62=0x60B2
-63=0x60C2
-64=0x60FD
-65=0x60FF
-66=0x6502
+13=0x1023
+14=0x1029
+15=0x1400
+16=0x1401
+17=0x1402
+18=0x1403
+19=0x1600
+20=0x1601
+21=0x1602
+22=0x1603
+23=0x1800
+24=0x1801
+25=0x1802
+26=0x1803
+27=0x1A00
+28=0x1A01
+29=0x1A02
+30=0x1A03
+31=0x6040
+32=0x6041
+33=0x605A
+34=0x605B
+35=0x605C
+36=0x605D
+37=0x605E
+38=0x6060
+39=0x6061
+40=0x6062
+41=0x6063
+42=0x6064
+43=0x6067
+44=0x606B
+45=0x606C
+46=0x606D
+47=0x6071
+48=0x6077
+49=0x607A
+50=0x607C
+51=0x607D
+52=0x6081
+53=0x6082
+54=0x6083
+55=0x6084
+56=0x6085
+57=0x608F
+58=0x6098
+59=0x6099
+60=0x609A
+61=0x60B2
+62=0x60FD
+63=0x60FF
+64=0x6502
 
 [ManufacturerObjects]
-SupportedObjects=23
+SupportedObjects=30
 1=0x2005
 2=0x200D
 3=0x200E
@@ -145,12 +143,19 @@ SupportedObjects=23
 15=0x2090
 16=0x2095
 17=0x2100
-18=0x2702
-19=0x2703
-20=0x2704
-21=0x2705
-22=0x270E
-23=0x5FFF
+18=0x2700
+19=0x2701
+20=0x2702
+21=0x2703
+22=0x2704
+23=0x2705
+24=0x2706
+25=0x2707
+26=0x2708
+27=0x270B
+28=0x270C
+29=0x270E
+30=0x270F
 
 [1000]
 ParameterName=Device Type
@@ -209,11 +214,11 @@ ParameterName=Life Time Factor
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x00
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1010]
-SubNumber=5
+SubNumber=8
 ParameterName=Store Parameter Field
 ObjectType=0x08
 
@@ -222,7 +227,7 @@ ParameterName=Number of Entries
 ObjectType=0x07
 DataType=5
 AccessType=ro
-DefaultValue=0x4
+DefaultValue=0x7
 PDOMapping=0
 
 [1010sub1]
@@ -257,8 +262,29 @@ AccessType=rw
 PDOMapping=0
 ObjFlags=0x00000001
 
+[1010sub5]
+ParameterName=Save Axis 1 Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1010sub6]
+ParameterName=Save Axis 2 Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1010sub7]
+ParameterName=Save Device Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
 [1011]
-SubNumber=5
+SubNumber=8
 ParameterName=Restore Default Parameters
 ObjectType=0x08
 
@@ -267,7 +293,7 @@ ParameterName=Number of Entries
 ObjectType=0x07
 DataType=5
 AccessType=ro
-DefaultValue=0x4
+DefaultValue=0x7
 PDOMapping=0
 
 [1011sub1]
@@ -302,6 +328,27 @@ AccessType=rw
 PDOMapping=0
 ObjFlags=0x00000001
 
+[1011sub5]
+ParameterName=Restore Axis 1 Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1011sub6]
+ParameterName=Restore Axis 2 Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
+[1011sub7]
+ParameterName=Restore Device Default Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+
 [1014]
 ParameterName=COB-ID EMCY
 ObjectType=0x07
@@ -315,7 +362,7 @@ ParameterName=Inhibit Time Emergency
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x0
+DefaultValue=0x0000
 PDOMapping=0
 
 [1016]
@@ -344,7 +391,7 @@ ParameterName=Producer Heartbeat Time
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x00
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1018]
@@ -373,7 +420,7 @@ ParameterName=Product Code
 ObjectType=0x07
 DataType=0x0007
 AccessType=ro
-DefaultValue=0xA0
+DefaultValue=0x661
 PDOMapping=0
 
 [1018sub3]
@@ -387,6 +434,41 @@ PDOMapping=0
 ParameterName=Serial number
 ObjectType=0x07
 DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[1023]
+SubNumber=4
+ParameterName=OS Command
+ObjectType=0x09
+
+[1023sub0]
+ParameterName=NumOfEntries
+ObjectType=0x07
+DataType=0x0005
+AccessType=const
+DefaultValue=0x3
+PDOMapping=0
+
+[1023sub1]
+ParameterName=Command
+ObjectType=0x07
+DataType=0x000A
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[1023sub2]
+ParameterName=Status
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[1023sub3]
+ParameterName=Reply
+ObjectType=0x07
+DataType=0x000A
 AccessType=ro
 PDOMapping=0
 
@@ -532,7 +614,7 @@ ParameterName=Transmission Type
 ObjectType=0x07
 DataType=0x0005
 AccessType=ro
-DefaultValue=0xFF
+DefaultValue=0xFE
 PDOMapping=0
 
 [1600]
@@ -821,7 +903,7 @@ ParameterName=Inhibit Time
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x0
+DefaultValue=0x0000
 PDOMapping=0
 
 [1802sub4]
@@ -836,7 +918,7 @@ ParameterName=Event Timer
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x0
+DefaultValue=0x0000
 PDOMapping=0
 
 [1803]
@@ -938,7 +1020,7 @@ ParameterName=Number of Entries
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x02
+DefaultValue=0x2
 PDOMapping=0
 
 [1A01sub1]
@@ -975,7 +1057,7 @@ ParameterName=Number of Entries
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x02
+DefaultValue=0x2
 PDOMapping=0
 
 [1A02sub1]
@@ -1012,7 +1094,7 @@ ParameterName=Number of Entries
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x02
+DefaultValue=0x2
 PDOMapping=0
 
 [1A03sub1]
@@ -1104,7 +1186,7 @@ ParameterName=MaxTorque
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xFA0
+DefaultValue=0x0
 PDOMapping=0
 
 [2020sub2]
@@ -1112,7 +1194,7 @@ ParameterName=MaxVelocity
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xFA0
+DefaultValue=0x0
 PDOMapping=0
 
 [2020sub3]
@@ -1120,7 +1202,7 @@ ParameterName=MaxAcceleration
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x7D0
+DefaultValue=0x0
 PDOMapping=0
 
 [2030]
@@ -1165,7 +1247,7 @@ ParameterName=P_Parameter
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x1F4
+DefaultValue=0x0
 PDOMapping=0
 
 [2030sub5]
@@ -1173,7 +1255,7 @@ ParameterName=I_Parameter
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x1F4
+DefaultValue=0x0
 PDOMapping=0
 
 [2030sub6]
@@ -1250,7 +1332,7 @@ ParameterName=MotorHaltedVelocity
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x5
+DefaultValue=0x0
 PDOMapping=0
 
 [2040sub5]
@@ -1258,7 +1340,7 @@ ParameterName=P_Parameter
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x1F4
+DefaultValue=0x0
 PDOMapping=0
 
 [2040sub6]
@@ -1266,7 +1348,7 @@ ParameterName=I_Parameter
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x1F4
+DefaultValue=0x0
 PDOMapping=0
 
 [2040sub7]
@@ -1327,7 +1409,7 @@ ParameterName=P_Parameter
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x12C
+DefaultValue=0x0
 PDOMapping=0
 
 [2050sub5]
@@ -1343,7 +1425,7 @@ ParameterName=TargetReachedVelocity
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x1F4
+DefaultValue=0x0
 PDOMapping=0
 
 [2050sub7]
@@ -1351,7 +1433,7 @@ ParameterName=TargetReachedDistance
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x5
+DefaultValue=0x0
 PDOMapping=0
 
 [2055]
@@ -1396,11 +1478,11 @@ ParameterName=OpenLoopCurrent
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x7D0
+DefaultValue=0x0
 PDOMapping=0
 
 [2070]
-SubNumber=5
+SubNumber=4
 ParameterName=Hall Sensor Settings 1
 ObjectType=0x09
 
@@ -1409,7 +1491,7 @@ ParameterName=NumOfEntries
 ObjectType=0x07
 DataType=0x0005
 AccessType=const
-DefaultValue=0x4
+DefaultValue=0x3
 PDOMapping=0
 
 [2070sub1]
@@ -1434,14 +1516,6 @@ ObjectType=0x07
 DataType=0x0005
 AccessType=rw
 DefaultValue=0x0
-PDOMapping=0
-
-[2070sub4]
-ParameterName=Offset
-ObjectType=0x07
-DataType=0x0003
-AccessType=rw
-DefaultValue=0x0000
 PDOMapping=0
 
 [2080]
@@ -1470,7 +1544,7 @@ ParameterName=StepsPerRotation
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0xFA0
+DefaultValue=0x0
 PDOMapping=0
 
 [2080sub3]
@@ -1494,7 +1568,7 @@ ParameterName=InitMode
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x1
+DefaultValue=0x0
 PDOMapping=0
 
 [2080sub6]
@@ -1502,7 +1576,7 @@ ParameterName=InitDelay
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x3E8
+DefaultValue=0x0
 PDOMapping=0
 
 [2080sub7]
@@ -1611,6 +1685,22 @@ AccessType=ro
 DefaultValue=0x0
 PDOMapping=0
 
+[2700]
+ParameterName=TMCL Direct Communication
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
+[2701]
+ParameterName=PDO Disabling
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
 [2702]
 ParameterName=Device Digital Inputs
 ObjectType=0x07
@@ -1660,6 +1750,104 @@ ParameterName=Node-ID
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
+PDOMapping=0
+
+[2706]
+SubNumber=2
+ParameterName=Store
+ObjectType=0x08
+
+[2706sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x07
+DataType=5
+AccessType=const
+DefaultValue=0x1
+PDOMapping=0
+
+[2706sub1]
+ParameterName=Save all Parameters
+ObjectType=0x07
+DataType=0x0007
+AccessType=rw
+PDOMapping=0
+ObjFlags=0x00000001
+
+[2707]
+ParameterName=CAN Bit Rate Load
+ObjectType=0x07
+DataType=0x0006
+AccessType=ro
+PDOMapping=0
+ObjFlags=0x00000002
+
+[2708]
+ParameterName=Node-ID Load
+ObjectType=0x07
+DataType=0x0005
+AccessType=ro
+PDOMapping=0
+
+[270B]
+ParameterName=HAL version
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270C]
+SubNumber=7
+ParameterName=CL Information
+ObjectType=0x08
+
+[270Csub0]
+ParameterName=Number of Entries
+ObjectType=0x07
+DataType=5
+AccessType=const
+DefaultValue=0x6
+PDOMapping=0
+
+[270Csub1]
+ParameterName=info 1
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub2]
+ParameterName=info 2
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub3]
+ParameterName=info 3
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub4]
+ParameterName=info 4
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub5]
+ParameterName=info 5
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
+PDOMapping=0
+
+[270Csub6]
+ParameterName=info 6
+ObjectType=0x07
+DataType=0x0007
+AccessType=ro
 PDOMapping=0
 
 [270E]
@@ -1717,12 +1905,11 @@ DataType=0x0007
 AccessType=ro
 PDOMapping=0
 
-[5FFF]
-ParameterName=Enter Boot Mode
+[270F]
+ParameterName=Service Period
 ObjectType=0x07
-DataType=0x0007
+DataType=0x0004
 AccessType=rw
-DefaultValue=0x0
 PDOMapping=0
 
 [6040]
@@ -1841,7 +2028,7 @@ ParameterName=Velocity Window 1
 ObjectType=0x07
 DataType=0x0006
 AccessType=rw
-DefaultValue=0x0
+DefaultValue=0x0000
 PDOMapping=0
 
 [6071]
@@ -1910,8 +2097,7 @@ ParameterName=Profile Velocity in pp-mode 1
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0xFA0
-PDOMapping=1
+PDOMapping=0
 
 [6082]
 ParameterName=End Velocity 1
@@ -1925,16 +2111,14 @@ ParameterName=Profile Acceleration 1
 ObjectType=0x07
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x7D0
-PDOMapping=1
+PDOMapping=0
 
 [6084]
 ParameterName=Profile Deceleration 1
 ObjectType=0x07
 DataType=0x0007
 AccessType=ro
-DefaultValue=0x7D0
-PDOMapping=1
+PDOMapping=0
 
 [6085]
 ParameterName=Quick Stop Deceleration 1
@@ -2013,57 +2197,12 @@ DataType=0x0007
 AccessType=rw
 PDOMapping=0
 
-[60B0]
-ParameterName=Position Offset 1
-ObjectType=0x07
-DataType=0x0004
-AccessType=rw
-DefaultValue=0x0
-PDOMapping=1
-
-[60B1]
-ParameterName=Velocity Offset 1
-ObjectType=0x07
-DataType=0x0004
-AccessType=rw
-DefaultValue=0x0
-PDOMapping=1
-
 [60B2]
 ParameterName=Offset torque 1
 ObjectType=0x07
 DataType=0x0004
 AccessType=rw
 DefaultValue=0x0
-PDOMapping=1
-
-[60C2]
-SubNumber=3
-ParameterName=Interpolation Time Period 1
-ObjectType=0x09
-
-[60C2sub0]
-ParameterName=NumOfEntries
-ObjectType=0x07
-DataType=0x0005
-AccessType=const
-DefaultValue=0x2
-PDOMapping=0
-
-[60C2sub1]
-ParameterName=Interpolation time period value
-ObjectType=0x07
-DataType=0x0005
-AccessType=rw
-DefaultValue=0x1
-PDOMapping=0
-
-[60C2sub2]
-ParameterName=Interpolation time index
-ObjectType=0x07
-DataType=0x0002
-AccessType=rw
-DefaultValue=0xFD
 PDOMapping=0
 
 [60FD]
@@ -2085,6 +2224,6 @@ ParameterName=Supported Drive Modes 1
 ObjectType=0x07
 DataType=0x0007
 AccessType=ro
-DefaultValue=0x225
+DefaultValue=0x00000225
 PDOMapping=0
 

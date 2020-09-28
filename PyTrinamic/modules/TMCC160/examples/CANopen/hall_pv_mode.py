@@ -3,23 +3,23 @@ Move a motor back and forth in PV_Mode with CANopen using the TMCC160 ic
 
 Created on 07.05.2020
 
-@author: JM
+@author: JM, ED
 '''
 
 if __name__ == '__main__':
     pass
 
-import time
+import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCC160.TMCC_160 import TMCC_160
+import time
 
-"""
-    choose the right bustype before starting the script
-"""
+PyTrinamic.showInfo()
+
+" choose the right bustype before starting the script "
 connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType = "CANopen")
 network = connectionManager.connect()
 
-" use EDS file "
 node = network.addDs402Node(TMCC_160.edsFile(), 1)
 module = node
 
@@ -37,7 +37,6 @@ objMotorPolePairs               = module.sdo[0x2010]
 objCommutationMode              = module.sdo[0x2055]
 objHallDirection                = module.sdo[0x2070][2]
 objHallInterpolation            = module.sdo[0x2070][3]
-objHallPHI_E_offset             = module.sdo[0x2070][4]
 
 " profile specific objects "
 objControlWord                  = module.sdo[0x6040]
@@ -46,30 +45,30 @@ objAcceleration                 = module.sdo[0x6083]
 objActualVelocity               = module.sdo[0x606C]
 objTargetVelocity               = module.sdo[0x60FF]
 
-print("\nModule name:    %s" % objManufacturerDeviceName.raw)
-print("Hardware version: %s" % objManufacturerHardwareVersion.raw)
+print("\nModule name:       %s" % objManufacturerDeviceName.raw)
+print("Hardware version:   %s" % objManufacturerHardwareVersion.raw)
 
 """
-    Configure motor settings. The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+    Define motor configuration for the TMCC160-EVAL.
+
+    The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 objMotorPolePairs.raw              = 4
 objMaximumCurrent.raw              = 1500
 objCommutationMode.raw             = 6
 objHallDirection.raw               = 0
-objHallPHI_E_offset.raw            = 0
 objAcceleration.raw                = 500
 
 print("MotorPoles:               %d" % objMotorPolePairs.raw)
 print("MaxCurrent:               %d" % objMaximumCurrent.raw)
 print("CommutationMode:          %d" % objCommutationMode.raw)
 print("HallDirection:            %d" % objHallDirection.raw)
-print("HallPHI_E_offset:         %d" % objHallPHI_E_offset.raw)
 print("Acceleration:             %d" % objAcceleration.raw)
+print()
 
-if node.is_faulted():
-    print("\nResetting fault\n")
-    node.reset_from_fault() # Reset node from fault and set it to Operation Enable state 
+" reset node from fault and set it to Operation Enable state "
+node.reset_from_fault() 
 
 def startPV():
 
@@ -119,10 +118,11 @@ startPV()
 objTargetVelocity.raw = 1000
 
 while not velocityReached():
-    print("TargetVelocity: " + str(objTargetVelocity.raw) + " ActualVelocity: " + str(objActualVelocity.raw))
+    print("DesiredVelocity: " + str(objTargetVelocity.raw) + " ActualVelocity: " + str(objActualVelocity.raw))
     time.sleep(0.1)
 
-time.sleep(1)
+print("\nHold desired velocity for three seconds\n")
+time.sleep(3)
 
 " set target velocity to zero"
 objTargetVelocity.raw = 0

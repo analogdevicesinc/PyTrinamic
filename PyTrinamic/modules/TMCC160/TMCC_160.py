@@ -17,7 +17,7 @@ class TMCC_160():
 
     @staticmethod
     def edsFile():
-        return __file__.replace("TMCC_160.py", "TMCC_160_Hw1.0_Fw3.14.eds")
+        return __file__.replace("TMCC_160.py", "TMCC160-CANopen_Hw1.00_Fw3.00.eds")
 
     def showChipInfo(self):
         ("The TMCC160 is desinged for evaluating all features of the TMCC160-LC motionCookie. Voltage supply: 7 - 24");
