@@ -65,7 +65,7 @@ while (module.digitalInput(0) == 1):
 
 module.rotate(-500)
 print("\nCurrent direction: rotate backwards")
-print("Press 'input_1' to stop the digital_input_test (waiting for input_1)")
+print("Press 'input_1' to stop the motor (waiting for input_1)")
 
 " wait for input_1 "
 while (module.digitalInput(1) == 1):

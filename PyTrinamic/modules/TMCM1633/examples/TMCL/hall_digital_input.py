@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 '''
-Created on 30.12.2018
+Created on 31.01.2020
 
-@author: ED
+@author: JM, ED
 '''
 
 if __name__ == '__main__':
@@ -10,17 +10,19 @@ if __name__ == '__main__':
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1640.TMCM_1640 import TMCM_1640
+from PyTrinamic.modules.TMCM1633.TMCM_1633 import TMCM_1633
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager()
+" please select your CAN adapter "
+#connectionManager = ConnectionManager("--interface pcan_tmcl")
+connectionManager = ConnectionManager("--interface kvaser_tmcl")
 myInterface = connectionManager.connect()
 
-module = TMCM_1640(myInterface)
+module = TMCM_1633(myInterface)
 
 """
-    Define motor configuration for the TMCM-1640.
+    Define motor configuration for the TMCM-1633.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -59,9 +61,9 @@ print("\nCurrent direction: rotate forward")
 print("Press 'input_0' to swap the direction (waiting for input_0)")
 
 " wait for input_0 "
-while (module.digitalInput(0) == 0):
-#    print("actual position: " + str(module.actualPosition())) # Activated this line if you want constantly actualPosition updates
-#    time.sleep(0.2)
+while (module.digitalInput(0) == 1):
+#     print("actual position: " + str(module.actualPosition()))
+#     time.sleep(0.2)
     pass
 
 module.rotate(-500)
@@ -69,9 +71,9 @@ print("\nCurrent direction: rotate backwards")
 print("Press 'input_1' to stop the motor (waiting for input_1)")
 
 " wait for input_1 "
-while (module.digitalInput(1) == 0):
-#    print("actual position: " + str(module.actualPosition())) # Activated this line if you want constantly actualPosition updates
-#    time.sleep(0.2)
+while (module.digitalInput(1) == 1):
+#     print("actual position: " + str(module.actualPosition()))
+#     time.sleep(0.2)
     pass
 
 " stop motor"

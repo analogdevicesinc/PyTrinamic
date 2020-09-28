@@ -8,9 +8,10 @@ Created on 31.01.2020
 if __name__ == '__main__':
     pass
 
+import time
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1630.TMCM_1630 import TMCM_1630
+from PyTrinamic.modules.TMCM1633.TMCM_1633 import TMCM_1633
 
 PyTrinamic.showInfo()
 
@@ -19,10 +20,10 @@ PyTrinamic.showInfo()
 connectionManager = ConnectionManager("--interface kvaser_tmcl")
 myInterface = connectionManager.connect()
 
-module = TMCM_1630(myInterface)
+module = TMCM_1633(myInterface)
 
 """
-    Define motor configuration for the TMCM-1630.
+    Define motor configuration for the TMCM-1633.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -37,9 +38,16 @@ module.showMotorConfiguration()
 module.setHallInvert(0)
 module.showHallConfiguration()
 
+" encoder configuration "
+module.setOpenLoopTorque(1500)
+module.setEncoderResolution(4096)
+module.setEncoderDirection(0)
+module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_0)
+module.showEncoderConfiguration()
+
 " motion settings "
-module.setMaxVelocity(1000)
-module.setAcceleration(2000)
+module.setMaxVelocity(2048)
+module.setAcceleration(10000)
 module.setRampEnabled(1)
 module.setTargetReachedVelocity(500)
 module.setTargetReachedDistance(5)
@@ -49,35 +57,20 @@ module.showMotionConfiguration()
 module.setTorquePParameter(600)
 module.setTorqueIParameter(600)
 module.setVelocityPParameter(800)
-module.setVelocityIParameter(500)
+module.setVelocityIParameter(600)
 module.setPositionPParameter(300)
 module.showPIConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
+module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
 
-module.rotate(500)
-print("\nCurrent direction: rotate forward")
-print("Press 'input_0' to swap the direction (waiting for input_0)")
-
-" wait for input_0 "
-while (module.digitalInput(0) == 1):
-#     print("actual position: " + str(module.actualPosition()))
-#     time.sleep(0.2)
-    pass
-
-module.rotate(-500)
-print("\nCurrent direction: rotate backwards")
-print("Press 'input_1' to stop the motor (waiting for input_1)")
-
-" wait for input_1 "
-while (module.digitalInput(1) == 1):
-#     print("actual position: " + str(module.actualPosition()))
-#     time.sleep(0.2)
-    pass
-
-" stop motor"
-module.rotate(0)
+" read adc value and compute new target velocity "
+while True:
+    adcValue = module.analogInput(0)
+    targetVelocity = (adcValue - 1024) * 2
+    module.rotate(targetVelocity)
+    print("adc value: " + str(adcValue) + " target velocity: " + str(targetVelocity) + " actual velocity: " + str(module.actualVelocity()))
+    time.sleep(0.2)
 
 myInterface.close()
 print("Ready.")
