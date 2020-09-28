@@ -2,53 +2,59 @@
 '''
 Created on 04.02.2020
 
-@author: JM
+@author: JM, ED
 '''
 
 if __name__ == '__main__':
     pass
 
-import time
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1617.TMCM_1617 import TMCM_1617
+import time
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+
+" please select your CAN adapter "
+#connectionManager = ConnectionManager("--interface pcan_tmcl")
+connectionManager = ConnectionManager("--interface kvaser_tmcl")
 myInterface = connectionManager.connect()
 
 module = TMCM_1617(myInterface)
 
 """
-    Define all motor configurations for the the TMCM-1617.
+    Define motor configuration for the TMCM-1617.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
 " motor configuration "
-module.setMotorPoles(4)
+module.setMotorPolePairs(4)
 module.setMaxTorque(2000)
-module.setMotorType(3)
+module.setMotorType(module.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC)
 module.showMotorConfiguration()
 
 " hall configuration "
-#module.setHallInvert(0)
+module.setAxisParameter(module.APs.HallSensorDirection, 0)
+module.setAxisParameter(module.APs.HallSensorInvert, 1)
+module.setAxisParameter(module.APs.HallSensorOffset, 0)
+module.setAxisParameter(module.APs.HallInterpolation, 1)
 module.showHallConfiguration()
 
 " motion settings "
-module.setMaxVelocity(400)
-module.setAcceleration(200)
+module.setMaxVelocity(2000)
+module.setAcceleration(1000)
 module.setRampEnabled(1)
 module.setTargetReachedVelocity(500)
 module.setTargetReachedDistance(5)
-module.setPositionScalerM(2048)
+module.setPositionScaler(6*module.motorPolePairs())
 module.showMotionConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(600)
+module.setTorquePParameter(300)
 module.setTorqueIParameter(600)
-module.setVelocityPParameter(800)
+module.setVelocityPParameter(600)
 module.setVelocityIParameter(500)
 module.setPositionPParameter(300)
 module.showPIConfiguration()
@@ -63,33 +69,20 @@ module.setActualPosition(0)
 module.moveToPosition(0)
 
 print("starting positioning")
+module.moveToPosition(4000)
 
-module.moveToPosition(300000)
-
-print("Motor move to new target position")
+" wait for position reached "
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.6)
+    time.sleep(0.2)
 
-    if(module.actualPosition() > 299800): # <------ Hall cant reach the exactly targetPosition
-        break
-
-print()
-print("Motor reached new target position")
-time.sleep(5)
-
+" move back to zero"
 module.moveToPosition(0)
 
-print()
-print("Motor return to old target position")
+" wait for position reached "
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.6)
+    time.sleep(0.2)
 
-print()
-print("Motor reached old target position")
-time.sleep(1)
-
-print()
-print("Ready.")
 myInterface.close()
+print("Ready.")

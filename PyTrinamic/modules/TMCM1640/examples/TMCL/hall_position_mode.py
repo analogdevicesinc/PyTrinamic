@@ -20,7 +20,7 @@ myInterface = connectionManager.connect()
 module = TMCM_1640(myInterface)
 
 """
-    Define all motor configurations for the TMCM-1640.
+    Define motor configuration for the TMCM-1640.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -61,7 +61,6 @@ module.setActualPosition(0)
 module.moveToPosition(0)
 
 print("starting positioning")
-
 module.moveToPosition(4000)
 
 " wait for position reached "
@@ -69,6 +68,7 @@ while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
 
+" move back to zero "
 module.moveToPosition(0)
 
 " wait for position reached "
@@ -76,5 +76,5 @@ while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
 
-print("Ready.")
 myInterface.close()
+print("Ready.")

@@ -4,16 +4,16 @@ Created on 04.02.2020
 @author: JM
 '''
 
-class TMCM_1617():
-    MOTORS = 1
+from PyTrinamic.helpers import TMC_helpers
 
+class TMCM_1617():
     def __init__(self, connection):
-        
+        self.connection = connection
+                
         self.GPs   = _GPs
         self.APs   = _APs
         self.ENUMs = _ENUMs
 
-        self.connection = connection
         self.motor = 0
 
     @staticmethod
@@ -45,7 +45,7 @@ class TMCM_1617():
         return self.axisParameter(self.APs.TargetPosition)
 
     def actualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
+        return TMC_helpers.toSigned32(self.axisParameter(self.APs.ActualPosition))
 
     def setActualPosition(self, position):
         return self.setAxisParameter(self.APs.ActualPosition, position)
@@ -54,7 +54,7 @@ class TMCM_1617():
         self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
     def actualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
+        return TMC_helpers.toSigned32(self.axisParameter(self.APs.ActualVelocity))
 
     " helpful functions "
 
@@ -94,8 +94,8 @@ class TMCM_1617():
     def setTargetReachedDistance(self, distance):
         self.setAxisParameter(self.APs.TargetReachedDistance, distance)
 
-    def setPositionScalerM(self, ScaleV):
-        self.setAxisParameter(self.APs.PositionScalerM, ScaleV)
+    def setPositionScaler(self, ScaleV):
+        self.setAxisParameter(self.APs.PositionScaler, ScaleV)
 
     def motorHaltedVelocity(self):
         return self.axisParameter(self.APs.MotorHaltedVelocity)
@@ -142,11 +142,11 @@ class TMCM_1617():
     def setPositionPParameter(self, pValue):
         self.setAxisParameter(self.APs.PositionP, pValue)
 
-    def motorPoles(self):
-        return self.axisParameter(self.APs.MotorPoles)
+    def motorPolePairs(self):
+        return self.axisParameter(self.APs.MotorPolePairs)
 
-    def setMotorPoles(self, poles):
-        self.setAxisParameter(self.APs.MotorPoles, poles)
+    def setMotorPolePairs(self, poles):
+        self.setAxisParameter(self.APs.MotorPolePairs, poles)
 
     def motorType(self):
         return self.axisParameter(self.APs.MotorType)
@@ -207,9 +207,9 @@ class TMCM_1617():
 
     def showMotorConfiguration(self):
         print("Motor configuration:")
-        print("\tMotor poles: " + str(self.motorPoles()))
-        print("\tMax torque:  " + str(self.maxTorque()) + " mA")
-        print("\tMotor type:  " + str(self.motorType()))
+        print("\tPole pairs: " + str(self.motorPolePairs()))
+        print("\tMax torque: " + str(self.maxTorque()) + " mA")
+        print("\tMotor type: " + str(self.motorType()))
 
     def showHallConfiguration(self):
         print("Hall configuration:")
@@ -253,7 +253,7 @@ class _APs():
     AdcOffsetPhaseA                = 5
     AdcOffsetPhaseB                = 6
     dualShuntFactor                = 7
-    MotorPoles                     = 10
+    MotorPolePairs                 = 10
     MaxTorque                      = 11
     StartCurrent                   = 12
     MotorType                      = 14
@@ -277,7 +277,7 @@ class _APs():
     TargetReachedDistance          = 53
     TargetReachedVelocity          = 54
     PositionReachedFlag            = 55
-    PositionScalerM                = 56
+    PositionScaler                 = 56
     TorqueP                        = 70
     TorqueI                        = 71
     VelocityP                      = 72

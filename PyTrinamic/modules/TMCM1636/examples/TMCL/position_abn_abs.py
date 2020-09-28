@@ -41,7 +41,7 @@ module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_ABN);
 module.setAxisParameter(module.APs.PositionSensorSelection, module.ENUMs.POS_MODE_ABS);
 time.sleep(1);
 
-#testdrive
+" test drive "
 module.setAxisParameter(module.APs.ActualPosition, 0);
 module.setAxisParameter(module.APs.MaxVelocity, 1000);
 module.setAxisParameter(module.APs.Acceleration, 250);

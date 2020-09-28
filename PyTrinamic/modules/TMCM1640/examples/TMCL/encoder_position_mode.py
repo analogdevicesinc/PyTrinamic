@@ -61,16 +61,13 @@ module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
 " set position counter to zero"
 module.setActualPosition(0)
 
-" move to zero position"
-module.moveToPosition(0)
-
-print("starting positioning")
-
+" set target position "
 module.moveToPosition(300000)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
 
+" move back to zero position "
 module.moveToPosition(0)
 while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
