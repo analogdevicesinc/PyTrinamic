@@ -3,6 +3,7 @@ Created on 07.02.2020
 
 @author: JM
 '''
+from PyTrinamic.helpers import TMC_helpers
 
 class TMC_603():
     def __init__(self, connection):
@@ -39,7 +40,7 @@ class TMC_603():
         return self.axisParameter(self.APs.TargetPosition)
 
     def actualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
+        return TMC_helpers.toSigned32(self.axisParameter(self.APs.ActualPosition))    
 
     def setActualPosition(self, position):
         return self.setAxisParameter(self.APs.ActualPosition, position)
@@ -48,7 +49,7 @@ class TMC_603():
         self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
     def actualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
+        return TMC_helpers.toSigned32(self.axisParameter(self.APs.ActualVelocity))    
 
     " helpful functions "
 
