@@ -76,5 +76,5 @@ while not module.positionReached():
     print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
     time.sleep(0.2)
 
-print("Ready.")
 myInterface.close()
+print("Ready.")

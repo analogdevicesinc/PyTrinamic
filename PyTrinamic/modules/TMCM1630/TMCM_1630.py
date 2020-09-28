@@ -1,8 +1,9 @@
 '''
 Created on 31.01.2020
 
-@author: JM
+@author: JM, ED
 '''
+from PyTrinamic.helpers import TMC_helpers
 
 class TMCM_1630():
     def __init__(self, connection):
@@ -39,7 +40,7 @@ class TMCM_1630():
         return self.axisParameter(self.APs.TargetPosition)
 
     def actualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
+        return TMC_helpers.toSigned32(self.axisParameter(self.APs.ActualPosition))    
 
     def setActualPosition(self, position):
         return self.setAxisParameter(self.APs.ActualPosition, position)
@@ -48,7 +49,7 @@ class TMCM_1630():
         self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
     def actualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
+        return TMC_helpers.toSigned32(self.axisParameter(self.APs.ActualVelocity))
 
     def setTargetTorque(self, torque):
         self.setAxisParameter(self.APs.TargetTorque, torque)

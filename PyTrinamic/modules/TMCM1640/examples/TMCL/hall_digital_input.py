@@ -13,13 +13,14 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1640.TMCM_1640 import TMCM_1640
 
 PyTrinamic.showInfo()
+
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
 module = TMCM_1640(myInterface)
 
 """
-    Define all motor configurations for the TMCM-1640.
+    Define motor configuration for the TMCM-1640.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -54,9 +55,7 @@ module.showPIConfiguration()
 module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
 
 module.rotate(500)
-
-print()
-print("Current direction: rotate forward")
+print("\nCurrent direction: rotate forward")
 print("Press 'input_0' to swap the direction (waiting for input_0)")
 
 " wait for input_0 "
@@ -64,10 +63,9 @@ while (module.digitalInput(0) == 0):
 #    print("actual position: " + str(module.actualPosition())) # Activated this line if you want constantly actualPosition updates
 #    time.sleep(0.2)
     pass
-module.rotate(-500)
 
-print()
-print("Current direction: rotate backwards")
+module.rotate(-500)
+print("\nCurrent direction: rotate backwards")
 print("Press 'input_1' to stop the digital_input_test (waiting for input_1)")
 
 " wait for input_1 "
@@ -75,8 +73,9 @@ while (module.digitalInput(1) == 0):
 #    print("actual position: " + str(module.actualPosition())) # Activated this line if you want constantly actualPosition updates
 #    time.sleep(0.2)
     pass
+
+" stop motor"
 module.rotate(0)
 
-print()
-print("Ready.")
 myInterface.close()
+print("Ready.")

@@ -2,7 +2,7 @@
 '''
 Created on 31.01.2020
 
-@author: JM
+@author: JM, ED
 '''
 
 if __name__ == '__main__':
@@ -14,20 +14,23 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1630.TMCM_1630 import TMCM_1630
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+
+" please select your CAN adapter "
+#connectionManager = ConnectionManager("--interface pcan_tmcl")
+connectionManager = ConnectionManager("--interface kvaser_tmcl")
 myInterface = connectionManager.connect()
 
 module = TMCM_1630(myInterface)
 
 """
-    Define all motor configurations for the the TMCM-1630.
+    Define motor configuration for the TMCM-1630.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
 " motor configuration "
-module.setMotorPoles(4)
+module.setMotorPoles(8)
 module.setMaxTorque(2000)
 module.showMotorConfiguration()
 
@@ -37,7 +40,7 @@ module.showHallConfiguration()
 
 " encoder configuration "
 module.setOpenLoopTorque(1500)
-module.setEncoderResolution(4000)
+module.setEncoderResolution(4096)
 module.setEncoderDirection(0)
 module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_0)
 module.showEncoderConfiguration()
@@ -69,5 +72,5 @@ while True:
     print("adc value: " + str(adcValue) + " target velocity: " + str(targetVelocity) + " actual velocity: " + str(module.actualVelocity()))
     time.sleep(0.2)
 
-print("Ready.")
 myInterface.close()
+print("Ready.")
