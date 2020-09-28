@@ -2,7 +2,7 @@
 '''
 Created on 04.02.2020
 
-@author: JM
+@author: JM, ED
 '''
 
 if __name__ == '__main__':
@@ -14,6 +14,8 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCC160.TMCC_160 import TMCC_160
 
 PyTrinamic.showInfo()
+
+" please select your CAN adapter "
 #connectionManager = ConnectionManager("--interface pcan_tmcl")
 connectionManager = ConnectionManager("--interface kvaser_tmcl")
 myInterface = connectionManager.connect()
@@ -21,7 +23,7 @@ myInterface = connectionManager.connect()
 module = TMCC_160(myInterface)
 
 """
-    Define all motor configurations for the TMCC160.
+    Define motor configurations for the TMCC160-EVAL.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -39,7 +41,7 @@ module.showHallConfiguration()
 " encoder settings "
 module.setOpenLoopTorque(1000)
 module.setEncoderResolution(4096)
-module.setEncoderDirection(0)
+module.setEncoderDirection(1)
 module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_1)
 module.showEncoderConfiguration()
 
@@ -51,15 +53,11 @@ module.setTargetReachedVelocity(500)
 module.setTargetReachedDistance(5)
 module.showMotionConfiguration()
 
-" current PID values "
+" PI configuration "
 module.setTorquePParameter(500)
 module.setTorqueIParameter(500)
-
-" velocity PID values "
 module.setVelocityPParameter(1000)
 module.setVelocityIParameter(1000)
-
-" position PID values "
 module.setPositionPParameter(300)
 module.showPIConfiguration()
 
@@ -76,7 +74,7 @@ while not module.positionReached():
     time.sleep(0.1)
 
 print("Motor reached first target position")
-time.sleep(3)
+time.sleep(1)
 
 print("\nMotor move to second target position")
 module.moveToPosition(81920)
@@ -85,7 +83,7 @@ while not module.positionReached():
     time.sleep(0.1)
 
 print("Motor reached second target position")
-time.sleep(3)
+time.sleep(1)
 
 print("\nReturn to zero position")
 module.moveToPosition(0)
@@ -94,5 +92,6 @@ while not module.positionReached():
     time.sleep(0.1)
 
 print("Motor reached zero position")
-print("\nReady.")
+
 myInterface.close()
+print("Ready.")
