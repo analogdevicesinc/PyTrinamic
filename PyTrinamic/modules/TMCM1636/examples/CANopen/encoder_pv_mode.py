@@ -1,5 +1,5 @@
 '''
-Move a motor in PV mode for with CANopen using the TMCM1636 module
+Move a motor in PV mode with CANopen using the TMCM-1636 module
 
 Created on 15.05.2020
 
@@ -17,6 +17,7 @@ import time
 PyTrinamic.showInfo()
 
 " choose the right bustype before starting the script "
+#connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType = "CANopen")
 connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType = "CANopen")
 network = connectionManager.connect()
 
@@ -30,13 +31,14 @@ node.setup_402_state_machine()
 objManufacturerDeviceName       = module.sdo[0x1008]
 objManufacturerHardwareVersion  = module.sdo[0x1009]
 
-print()
-print("Module name:        %s" % objManufacturerDeviceName.raw)
-print("Hardware version:   %s" % objManufacturerHardwareVersion.raw)
+print("\nModule name:      %s" % objManufacturerDeviceName.raw)
+print("Hardware version: %s" % objManufacturerHardwareVersion.raw)
 
 " manufacturer specific area "
 objMaximumCurrent             = module.sdo[0x2003]
+objOpenloopCurrent            = module.sdo[0x2004]
 objSwitchParameter            = module.sdo[0x2005]
+objMotorType                  = module.sdo[0x2050]
 objCommutationMode            = module.sdo[0x2055]
 objMotorPolePairs             = module.sdo[0x2056]
 
@@ -58,16 +60,20 @@ objDesiredVelocity          = module.sdo[0x60FF]
 objVelocityActualValue      = module.sdo[0x606C]
 
 """
-    Define all motor configurations for the TMCM-1636.
+    Define motor configuration for the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
-objMotorPolePairs.raw              = 4
-objMaximumCurrent.raw              = 1500
-objCommutationMode.raw             = 3
-objEncoderSteps.raw                = 4096
-objEncoderDirection.raw            = 1
+objMotorPolePairs.raw   = 4
+objMotorType.raw        = 3 # three phase BLDC
+objMaximumCurrent.raw   = 1500
+objOpenloopCurrent.raw  = 1500
+objEncoderSteps.raw     = 4096
+objEncoderDirection.raw = 1
+objEncoderInitMode.raw  = 0
+objCommutationMode.raw  = 3 # ABN encoder
+objAcceleration.raw     = 500
 
 print("MotorPoles:               %d" % objMotorPolePairs.raw)
 print("CommutationMode:          %d" % objCommutationMode.raw)
@@ -121,9 +127,8 @@ def velocityReached():
 
 startPV()
 
-" configuration for using PV mode "
+" set target velocity "
 objDesiredVelocity.raw = 2000
-objAcceleration.raw = 500
 
 while not velocityReached():
     print("DesiredVelocity: " + str(objDesiredVelocity.raw) + " ActualVelocity: " + str(objActualVelocity.raw))
@@ -132,6 +137,7 @@ while not velocityReached():
 print("\nHold desired velocity for three seconds\n")
 time.sleep(3)
 
+" set target velocity to zero"
 objDesiredVelocity.raw = 0
 print("DesiredVelocity: %d" % objDesiredVelocity.raw)
 
