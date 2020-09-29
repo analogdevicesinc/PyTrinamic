@@ -19,23 +19,22 @@ class TMCM_1240():
     def showChipInfo(self):
         ("The TMCM-1240 is a single axis controller/driver module. Voltage supply: 24V");
 
-    # Axis parameter access
+    " axis parameter access "
     def getAxisParameter(self, apType, signed=False):
         return self.connection.axisParameter(apType, self.__default_motor, self.MODULE_ID, signed)
 
     def setAxisParameter(self, apType, value):
         self.connection.setAxisParameter(apType, self.__default_motor, value, self.MODULE_ID)
 
-    # Global parameter access
+    " global parameter access "
     def getGlobalParameter(self, gpType, bank):
         return self.connection.globalParameter(gpType, bank, self.MODULE_ID)
 
     def setGlobalParameter(self, gpType, bank, value):
         self.connection.setGlobalParameter(gpType, bank, value, self.MODULE_ID)
 
-    # Motion Control functions
+    " motion Control functions "
     def rotate(self, velocity):
-
         self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
     def stop(self):
@@ -53,7 +52,7 @@ class TMCM_1240():
 
         return self.connection.moveBy(self.__default_motor, difference, self.MODULE_ID)
 
-    # Current control functions
+    " current control functions "
     def setMotorRunCurrent(self, current):
         self.setMaxCurrent(current)
 
@@ -66,7 +65,7 @@ class TMCM_1240():
     def setMaxCurrent(self, current):
         self.setAxisParameter(self.APs.MaxCurrent, current)
 
-    # StallGuard2 Functions
+    " StallGuard2 functions "
     def setStallguard2Filter(self, enableFilter):
         self.setAxisParameter(self.APs.SG2FilterEnable, enableFilter)
 
@@ -76,7 +75,7 @@ class TMCM_1240():
     def setStopOnStallVelocity(self, velocity):
         self.setAxisParameter(self.APs.SmartEnergyStallVelocity, velocity)
 
-    # Motion parameter functions
+    " motion parameter functions "
     def getTargetPosition(self):
         return self.getAxisParameter(self.APs.TargetPosition, signed=True)
 
@@ -113,7 +112,7 @@ class TMCM_1240():
     def setMicrostepResolution(self, microstepResolution):
         self.setAxisParameter(self.APs.MicrostepResolution, microstepResolution)
 
-    # Status functions
+    " status functions "
     def getStatusFlags(self):
         return self.getAxisParameter(self.APs.DrvStatusFlags)
 
@@ -123,7 +122,7 @@ class TMCM_1240():
     def positionReached(self):
         return self.getAxisParameter(self.APs.PositionReachedFlag)
 
-    # IO pin functions
+    " IO pin functions "
     def analogInput(self, x):
         return self.connection.analogInput(x, self.MODULE_ID)
 
