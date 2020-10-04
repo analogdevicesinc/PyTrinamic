@@ -247,3 +247,36 @@ class tmcl_interface():
 
     def clearDigitalOutput(self, x, moduleID=None):
         self.send(TMCL_Command.SIO, x, 2, 0, moduleID).value
+
+    " testing new interface usage (ED) => "
+    # axis parameter access functions
+    def axisParameterRaw(self, moduleID, axis, commandType):
+        return self.send(TMCL_Command.GAP, commandType, axis, 0, moduleID).value
+    
+    def setAxisParameterRaw(self, moduleID, axis, commandType,  value):
+        return self.send(TMCL_Command.SAP, commandType, axis, value, moduleID)
+
+    # global parameter access functions
+    def globalParameterRaw(self, moduleID, bank, commandType):
+        return self.send(TMCL_Command.GGP, commandType, bank, 0, moduleID).value
+
+    def setGlobalParameterRaw(self, moduleID, bank, commandType, value):
+        return self.send(TMCL_Command.SGP, commandType, bank, value, moduleID)
+
+    # IO pin functions
+    def analogInputRaw(self, moduleID, x):
+        return self.send(TMCL_Command.GIO, x, 1, 0, moduleID).value
+
+    def digitalInputRaw(self, moduleID, x):
+        return self.send(TMCL_Command.GIO, x, 0, 0, moduleID).value
+
+    def digitalOutputRaw(self, moduleID, x):
+        return self.send(TMCL_Command.GIO, x, 2, 0, moduleID).value
+
+    def setDigitalOutputRaw(self, moduleID, x):
+        self.send(TMCL_Command.SIO, x, 2, 1, moduleID).value
+
+    def clearDigitalOutputRaw(self, moduleID, x):
+        self.send(TMCL_Command.SIO, x, 2, 0, moduleID).value
+
+    " <= testing new interface usage (ED) "
