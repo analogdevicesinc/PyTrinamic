@@ -11,7 +11,6 @@ if __name__ == '__main__':
 
 import time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1670.TMCM_1670 import TMCM_1670
 
 """
     Choose the right bustype before starting the script
@@ -20,7 +19,7 @@ from PyTrinamic.modules.TMCM1670.TMCM_1670 import TMCM_1670
 connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType = "CANopen")
 network = connectionManager.connect()
 
-node = network.addDs402Node(TMCM_1670.getEdsFile(), 1)
+node = network.addDs402Node("TMCM_1670_Hw1.2_Fw2.00.eds", 1)
 module = node
 
 #Digital Outputs
