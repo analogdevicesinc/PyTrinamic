@@ -21,7 +21,7 @@ PyTrinamic.showInfo()
 connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType = "CANopen")
 network = connectionManager.connect()
 
-node = network.addDs402Node(TMCM_1617.getEdsFile(), 1)
+node = network.addDs402Node("TMCM_1617_Hw1.2_Fw1.06.eds", 1)
 module = node
 
 " this function initializes the DS402 state machine "

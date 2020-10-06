@@ -27,7 +27,7 @@ motor = module.motor(0)
 """
 
 " motor configuration "
-motor.setMotorPoles(8)
+motor.setMotorPolePairs(4)
 motor.setMaxTorque(2000)
 motor.showConfiguration()
 
@@ -41,7 +41,6 @@ motor.linearRamp.setAcceleration(2000)
 motor.linearRamp.setRampEnabled(1)
 motor.linearRamp.setTargetReachedDistance(5)
 motor.linearRamp.setTargetReachedVelocity(500)
-motor.linearRamp.setTargetReachedDistance(5)
 motor.linearRamp.showConfiguration()
  
 " PI configuration "
@@ -58,7 +57,7 @@ motor.commutationSelection.showConfiguration()
 motor.setActualPosition(0)
 
 print("move to first position")
-motor.moveToPosition(motor.motorPoles() * 3 * 50)
+motor.moveToPosition(motor.motorPolePairs() * 6 * 50)
 
 " wait for position reached "
 while not motor.positionReachedFlag():

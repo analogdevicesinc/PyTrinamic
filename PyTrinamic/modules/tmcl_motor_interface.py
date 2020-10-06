@@ -4,7 +4,7 @@ Created on 29.09.2020
 @author: ED
 '''
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from PyTrinamic.helpers import TMC_helpers
 
 class tmcl_motor_interface(ABC):
@@ -41,12 +41,23 @@ class tmcl_motor_interface(ABC):
     def axisParameter(self, apType):
         return self._moduleInterface.axisParameter(self._axisId, apType)
 
-    " motor poles "  
-    def setMotorPoles(self, poles):
-        self.setAxisParameter(self.AP.MotorPoles, poles)
-        
-    def motorPoles(self):
-        return self.axisParameter(self.AP.MotorPoles)
+    " motor type "
+    @abstractmethod
+    def setMotorType(self, motorType):
+        pass
+    
+    @abstractmethod
+    def motorType(self):
+        pass
+    
+    " motor pole pairs "
+    @abstractmethod
+    def setMotorPolePairs(self, polePairs):
+        pass
+
+    @abstractmethod 
+    def motorPolePairs(self):
+        pass
 
     " max torque "
     def setMaxTorque(self, maxTorque):
@@ -60,8 +71,9 @@ class tmcl_motor_interface(ABC):
 
     def showConfiguration(self):
         print("Motor configuration:")
-        print("\tMotor poles: " + str(self.motorPoles()))
-        print("\tMax torque:  " + str(self.maxTorque()) + " mA")
+        print("\tMotor type: %d" % self.motorType())
+        print("\tPole pairs: %d" % self.motorPolePairs())
+        print("\tMax torque: %d mA" % self.maxTorque())
 
     " motion control functions "
     

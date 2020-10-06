@@ -105,7 +105,7 @@ class _APs():
     PositionPiError                 = 81
     HallSensorPolarity              = 90
     HallSensorDirection             = 91
-    HallInterpolation               = 92
+    HallSensorInterpolation         = 92
     HallSensorOffset                = 93
     HallSensorInputs                = 94
     EncoderSteps                    = 100

@@ -3,13 +3,13 @@ Created on 29.09.2020
 
 @author: ED
 '''
-
 from abc import ABC
 
 class linear_ramp_ap_feature(ABC):
  
     def __init__(self, parent):
         self._motorInterface = parent
+        self._hasMotorHaltedVelocity = True
             
     def maxVelocity(self):
         return self._motorInterface.axisParameter(self._motorInterface.AP.MaxVelocity)
@@ -40,12 +40,16 @@ class linear_ramp_ap_feature(ABC):
 
     def setTargetReachedDistance(self, distance):
         self._motorInterface.setAxisParameter(self._motorInterface.AP.TargetReachedDistance, distance)
- 
-    def motorHaltedVelocity(self):
-        return self._motorInterface.axisParameter(self._motorInterface.AP.MotorHaltedVelocity)
+
+    def disableMotorHaltedVelocity(self):
+        self._hasMotorHaltedVelocity = False 
 
     def setMotorHaltedVelocity(self, velocity):
-        self._motorInterface.setAxisParameter(self._motorInterface.AP.MotorHaltedVelocity, velocity)
+        if self._hasMotorHaltedVelocity:
+            self._motorInterface.setAxisParameter(self._motorInterface.AP.MotorHaltedVelocity, velocity)
+ 
+    def motorHaltedVelocity(self):
+        return (self._motorInterface.axisParameter(self._motorInterface.AP.MotorHaltedVelocity) if (self._hasMotorHaltedVelocity==True) else 50)
 
     def showConfiguration(self):
         print("LinearRamp configuration:")
