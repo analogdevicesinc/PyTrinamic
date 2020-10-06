@@ -148,6 +148,10 @@ class TMCL_Reply(object):
         self.value = reply_struct[4]
         self.checksum = reply_struct[5]
 
+    def toBuffer(self):
+        return struct.pack(_PACKAGE_STRUCTURE, self.reply_address, self.module_address,
+                           self.status, self.command, self.value, self.checksum)
+
     def dump(self):
         print("TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
             .format(
