@@ -4,7 +4,7 @@ Created on 27.05.2019
 @author: LH
 '''
 
-from PyTrinamic.TMCL import TMCL_Request, TMCL_Command, TMCL_Reply
+from PyTrinamic.TMCL import TMCL, TMCL_Request, TMCL_Command, TMCL_Reply
 
 from PyTrinamic.helpers import TMC_helpers
 
@@ -51,14 +51,9 @@ class tmcl_interface():
                 current state of debug mode - subclasses may read it to print
                 further debug output.
         """
-        if not(type(hostID) == type(defaultModuleID) == int):
-            raise TypeError
 
-        if not(0 <= hostID < 256):
-            raise ValueError("Incorrect Host ID value")
-
-        if not(0 <= defaultModuleID < 256):
-            raise ValueError("Incorrect defaultModule ID value")
+        TMCL.validate_host_id(hostID)
+        TMCL.validate_module_id(defaultModuleID)
 
         if not type(debug) == bool:
             raise TypeError
@@ -252,7 +247,7 @@ class tmcl_interface():
     # axis parameter access functions
     def axisParameterRaw(self, moduleID, axis, commandType):
         return self.send(TMCL_Command.GAP, commandType, axis, 0, moduleID).value
-    
+
     def setAxisParameterRaw(self, moduleID, axis, commandType,  value):
         return self.send(TMCL_Command.SAP, commandType, axis, value, moduleID)
 
