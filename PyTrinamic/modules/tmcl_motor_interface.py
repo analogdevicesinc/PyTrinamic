@@ -58,7 +58,7 @@ class tmcl_motor_interface(ABC):
     def statusFlags(self):
         return self.axisParameter(self.AP.StatusFlags)
 
-    def showMotorConfiguration(self):
+    def showConfiguration(self):
         print("Motor configuration:")
         print("\tMotor poles: " + str(self.motorPoles()))
         print("\tMax torque:  " + str(self.maxTorque()) + " mA")

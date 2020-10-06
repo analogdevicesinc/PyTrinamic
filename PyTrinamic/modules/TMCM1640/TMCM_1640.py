@@ -22,7 +22,7 @@ class TMCM_1640(tmcl_module_interface):
     def __init__(self, connection, moduleID=1):
         tmcl_module_interface.__init__(self, connection, moduleID)
         self.GP = _GP
-        
+
         " add the motor with available features "
         self._motors.append(TMCM_1640_motor_interface(self, 0, PyTrinamic.MotorTypes.BLDC, _AP_MOTOR_0, _ENUM_MOTOR_0)) 
 

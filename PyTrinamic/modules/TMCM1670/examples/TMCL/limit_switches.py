@@ -8,60 +8,59 @@ Created on 24.06.2019
 if __name__ == '__main__':
     pass
 
-import time
-import PyTrinamic
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1670.TMCM_1670 import TMCM_1670
 
 PyTrinamic.showInfo()
 
 " please select your CAN adapter "
-connectionManager = ConnectionManager("--interface kvaser_tmcl") 
-myInterface = connectionManager.connect()
+#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 module = TMCM_1670(myInterface)
+module.showModuleInfo()
+motor = module.motor(0)
 
 " motor configuration "
-module.setMaxTorque(2000)
-module.showMotorConfiguration()
+motor.setMaxTorque(2000)
+motor.showConfiguration()
 
 " encoder configuration "
-module.showEncoderConfiguration()
+motor.spiEncoder.showConfiguration()
 
 " motion control settings "
-module.setMaxVelocity(4000)
-module.setAcceleration(4000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(10)
-module.setMotorHaltedVelocity(5)
-module.showMotionConfiguration()
+motor.linearRamp.setMaxVelocity(4000)
+motor.linearRamp.setAcceleration(4000)
+motor.linearRamp.setRampEnabled(1)
+motor.linearRamp.setTargetReachedVelocity(500)
+motor.linearRamp.setTargetReachedDistance(10)
+motor.linearRamp.setMotorHaltedVelocity(5)
+motor.linearRamp.showConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(1000)
-module.setTorqueIParameter(1000)
-module.setVelocityPParameter(2000)
-module.setVelocityIParameter(1000)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+motor.pid.setTorquePIParameter(1000, 1000)
+motor.pid.setVelocityPIParameter(2000, 1000)
+motor.pid.setPositionPParameter(300)
+motor.pid.showConfiguration()
 
 " use out_0 output for enable input (directly shortened) "
 module.setDigitalOutput(0);
 
 " rotate motor in right direction " 
-module.rotate(1000)
+motor.setTargetVelocity(1000)
 while module.digitalInput(0):
     print("waiting for right switch...")
     time.sleep(0.2)
 
 " rotate motor in left direction "
-module.rotate(-1000)
+motor.setTargetVelocity(-1000)
 while module.digitalInput(1):
     print("waiting for left switch...")
     time.sleep(0.2)
 
 " stop motor "
-module.rotate(0)
+motor.setTargetVelocity(0)
 
-print("Ready.")
 myInterface.close()
+print("\nReady.")

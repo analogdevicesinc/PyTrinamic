@@ -16,9 +16,9 @@ PyTrinamic.showInfo()
 
 " please select your CAN adapter "
 #myInterface = ConnectionManager("--interface pcan_tmcl").connect()
-myInterface = ConnectionManager("--interface kvaser_tmcl").connect() 
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
-module = TMCM_1670(myInterface, 1)
+module = TMCM_1670(myInterface)
 module.showModuleInfo()
 motor = module.motor(0)
 
@@ -29,9 +29,9 @@ motor.showConfiguration()
 " encoder configuration "
 motor.spiEncoder.showConfiguration()
 
-" motion control settings "
-motor.linearRamp.setMaxVelocity(4000)
-motor.linearRamp.setAcceleration(4000)
+" motion control settings"
+motor.linearRamp.setMaxVelocity(6000)
+motor.linearRamp.setAcceleration(2000)
 motor.linearRamp.setRampEnabled(1)
 motor.linearRamp.setTargetReachedVelocity(500)
 motor.linearRamp.setTargetReachedDistance(10)
@@ -39,32 +39,38 @@ motor.linearRamp.setMotorHaltedVelocity(5)
 motor.linearRamp.showConfiguration()
 
 " PI configuration "
-motor.pid.setTorquePParameter(1000)
-motor.pid.setTorqueIParameter(1000)
-motor.pid.setVelocityPParameter(2000)
-motor.pid.setVelocityIParameter(1000)
+motor.pid.setTorquePIParameter(500, 500)
+motor.pid.setVelocityPIParameter(1000, 1000)
 motor.pid.setPositionPParameter(300)
 motor.pid.showConfiguration()
 
 " use out_0 output for enable input (directly shortened) "
 module.setDigitalOutput(0);
 
-" sync actual position with encoder N-Channel " 
+" clear actual position counter "
 motor.setActualPosition(0)
-motor.setTargetVelocity(200)
-time.sleep(0.5)
-motor.spiEncoder.clearOnceOnNChannel()
-time.sleep(0.5)
- 
-" move to zero position "
-motor.moveToPosition(0)
+
+" move to first position "
+motor.moveToPosition(1000000)
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
+    time.sleep(0.2)
+
+time.sleep(1.0)
+
+" move to second position "
+motor.moveToPosition(2000000)
 while not motor.positionReachedFlag():
     print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
  
-" the actual position of 0 is now located at the N-Channel "
 time.sleep(1.0)
-print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
+
+" move back to start position " 
+motor.moveToPosition(0)
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
+    time.sleep(0.2)
 
 myInterface.close()
 print("\nReady.")

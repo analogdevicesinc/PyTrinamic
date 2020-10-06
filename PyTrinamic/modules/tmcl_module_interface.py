@@ -60,7 +60,7 @@ class tmcl_module_interface(ABC):
 
     " write outputs "
     def setDigitalOutput(self, x):
-        return self.connection.setDigitalOutputRaw(self.moduleID, x, 1)
+        return self.connection.setDigitalOutputRaw(self.moduleID, x)
 
     def clearDigitalOutput(self, x):
-        return self.connection.setDigitalOutputRaw(self.moduleID, x, 0)
+        return self.connection.setDigitalOutputRaw(self.moduleID, x,)

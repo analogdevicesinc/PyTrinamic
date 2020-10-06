@@ -29,7 +29,7 @@ motor = module.motor(0)
 " motor configuration "
 motor.setMotorPoles(8)
 motor.setMaxTorque(2000)
-motor.showMotorConfiguration()
+motor.showConfiguration()
 
 " open loop configuration "
 motor.openLoop.setOpenLoopTorque(1000)
