@@ -8,7 +8,22 @@ import struct
 
 _PACKAGE_STRUCTURE = ">BBBBIB"
 
-class TMCL_Command:
+class TMCL(object):
+    @staticmethod
+    def validate_host_id(host_id):
+        if(not(type(host_id) == int)):
+            raise TypeError
+        if(not(0 <= host_id < 256)):
+            raise ValueError("Incorrect Host ID value. Must be between 0 and 255 inclusively.")
+
+    @staticmethod
+    def validate_module_id(module_id):
+        if(not(type(module_id) == int)):
+            raise TypeError
+        if(not(0 <= module_id < 256)):
+            raise ValueError("Incorrect Module ID value. Must be between 0 and 255 inclusively.")
+
+class TMCL_Command(object):
     ROR                         = 1
     ROL                         = 2
     MST                         = 3
@@ -74,7 +89,7 @@ class TMCL_Command:
     BOOT_WRITE_LENGTH           = 208
     BOOT                        = 242
 
-class TMCL_Status (object):
+class TMCL_Status(object):
     SUCCESS               = 100
     COMMAND_LOADED        = 101
     WRONG_CHECKSUM        = 1
@@ -101,7 +116,7 @@ class TMCL_Request(object):
         self.motorBank     = motorBank   & 0xFF
         self.value         = value       & 0xFFFFFFFF
         self.checksum      = 0
-        
+
         checksum_struct = self.toBuffer()
         for s in checksum_struct:
             self.checksum += s
