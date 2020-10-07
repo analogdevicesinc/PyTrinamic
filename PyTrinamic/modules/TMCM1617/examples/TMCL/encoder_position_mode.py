@@ -8,19 +8,19 @@ Created on 04.02.2020
 if __name__ == '__main__':
     pass
 
-import time
-import PyTrinamic
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1617.TMCM_1617 import TMCM_1617
 
 PyTrinamic.showInfo()
 
 " please select your CAN adapter "
-#connectionManager = ConnectionManager("--interface pcan_tmcl")
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-myInterface = connectionManager.connect()
+#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 module = TMCM_1617(myInterface)
+module.showModuleInfo()
+motor = module.motor(0)
 
 """
     Define motor configuration for the TMCM-1617.
@@ -30,52 +30,53 @@ module = TMCM_1617(myInterface)
 """
 
 " motor configuration "
-module.setMotorPolePairs(4)
-module.setMaxTorque(2000)
-module.setMotorType(module.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC)
-module.showMotorConfiguration()
+motor.setMotorType(motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC)
+motor.setMotorPolePairs(4)
+motor.setMaxTorque(2000)
+motor.showConfiguration()
 
 " encoder configuration "
-module.setOpenLoopTorque(1000)
-module.setEncoderResolution(4096)
-module.setEncoderDirection(0)
-module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_0)
-module.showEncoderConfiguration()
+motor.openLoop.setOpenLoopTorque(1000)
+motor.abnEncoder.setResolution(4096)
+motor.abnEncoder.setDirection(1)
+motor.abnEncoder.setInitMode(motor.ENUM.ENCODER_INIT_MODE_0)
+motor.showConfiguration()
 
 " motion settings "
-module.setMaxVelocity(2000)
-module.setAcceleration(1000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(5)
-module.setPositionScaler(4096)
-module.showMotionConfiguration()
+motor.linearRamp.setMaxVelocity(2000)
+motor.linearRamp.setAcceleration(1000)
+motor.linearRamp.setRampEnabled(1)
+motor.linearRamp.setTargetReachedVelocity(500)
+motor.linearRamp.setTargetReachedDistance(5)
+motor.setAxisParameter(motor.AP.PositionScaler, motor.abnEncoder.resolution())
+motor.linearRamp.showConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(500)
-module.setTorqueIParameter(500)
-module.setVelocityPParameter(1000)
-module.setVelocityIParameter(1000)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+motor.pid.setTorquePIParameter(500, 500)
+motor.pid.setVelocityPIParameter(1000, 1000)
+motor.pid.setPositionPParameter(300)
+motor.pid.showConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
+motor.commutationSelection.setMode(motor.ENUM.COMM_MODE_ABN_ENCODER)
+motor.commutationSelection.showConfiguration()
 
-" set position counter to zero "
-module.setActualPosition(0)
+time.sleep(1.0)
+
+" clear actual position "
+motor.setActualPosition(0)
 
 " set target position "
-module.moveToPosition(300000)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+motor.moveToPosition(motor.abnEncoder.resolution() * 50)
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
 
 " move back to zero position "
-module.moveToPosition(0)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+motor.moveToPosition(0)
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
 
 myInterface.close()
-print("Ready.")
+print("\nReady.")

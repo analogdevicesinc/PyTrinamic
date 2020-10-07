@@ -145,3 +145,17 @@ class TMCM_1640_motor_interface(tmcl_motor_interface):
 
         self.commutationSelection = commutation_selection_ap_feature(self)
         self.feature.update({"commutation_selection" : self.commutationSelection})
+
+    " motor type (BLDC only) "
+    def setMotorType(self, motorType):
+        pass
+    
+    def motorType(self):
+        return PyTrinamic.MotorTypes.BLDC
+
+    " motor pole pairs "
+    def setMotorPolePairs(self, polePairs):
+        self.setAxisParameter(self.AP.MotorPoles, polePairs*2)
+ 
+    def motorPolePairs(self):
+        return int(self.axisParameter(self.AP.MotorPoles)/2)

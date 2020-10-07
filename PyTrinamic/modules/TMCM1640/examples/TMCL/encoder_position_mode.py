@@ -27,7 +27,7 @@ motor = module.motor(0)
 """
 
 " motor configuration "
-motor.setMotorPoles(8)
+motor.setMotorPolePairs(4)
 motor.setMaxTorque(2000)
 motor.showConfiguration()
 

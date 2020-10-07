@@ -21,7 +21,7 @@ class TMCM_1670(tmcl_module_interface):
     
     def __init__(self, connection, moduleID=1):
         tmcl_module_interface.__init__(self, connection, moduleID)
-        self.GPs   = _GPs
+        self.GPs = _GPs
 
         " add the motor with available features "
         self._motors.append(TMCM_1670_motor_interface(self, 0, PyTrinamic.MotorTypes.BLDC, _AP_MOTOR_0, _ENUM_MOTOR_0)) 
@@ -158,3 +158,17 @@ class TMCM_1670_motor_interface(tmcl_motor_interface):
 
         self.commutationSelection = commutation_selection_ap_feature(self)
         self.feature.update({"commutation_selection" : self.commutationSelection})
+
+    " motor type (BLDC only) "
+    def setMotorType(self, motorType):
+        pass
+    
+    def motorType(self):
+        return PyTrinamic.MotorTypes.BLDC
+
+    " motor pole pairs "
+    def setMotorPolePairs(self, polePairs):
+        self.setAxisParameter(self.AP.MotorPoles, polePairs*2)
+ 
+    def motorPolePairs(self):
+        return int(self.axisParameter(self.AP.MotorPoles)/2)

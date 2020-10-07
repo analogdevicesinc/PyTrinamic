@@ -8,19 +8,19 @@ Created on 04.02.2020
 if __name__ == '__main__':
     pass
 
-import PyTrinamic
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1617.TMCM_1617 import TMCM_1617
-import time
 
 PyTrinamic.showInfo()
 
 " please select your CAN adapter "
-#connectionManager = ConnectionManager("--interface pcan_tmcl")
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-myInterface = connectionManager.connect()
+#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 module = TMCM_1617(myInterface)
+module.showModuleInfo()
+motor = module.motor(0)
 
 """
     Define motor configuration for the TMCM-1617.
@@ -30,59 +30,58 @@ module = TMCM_1617(myInterface)
 """
 
 " motor configuration "
-module.setMotorPolePairs(4)
-module.setMaxTorque(2000)
-module.setMotorType(module.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC)
-module.showMotorConfiguration()
+motor.setMotorType(motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC)
+motor.setMotorPolePairs(4)
+motor.setMaxTorque(2000)
+motor.showConfiguration()
 
 " hall configuration "
-module.setAxisParameter(module.APs.HallSensorDirection, 0)
-module.setAxisParameter(module.APs.HallSensorInvert, 1)
-module.setAxisParameter(module.APs.HallSensorOffset, 0)
-module.setAxisParameter(module.APs.HallInterpolation, 1)
-module.showHallConfiguration()
+motor.digitalHall.setDirection(0)
+motor.digitalHall.setPolarity(1)
+motor.digitalHall.setOffset(0)
+motor.digitalHall.setInterpolation(1)
+motor.digitalHall.showConfiguration()
 
 " motion settings "
-module.setMaxVelocity(2000)
-module.setAcceleration(1000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(5)
-module.setPositionScaler(6*module.motorPolePairs())
-module.showMotionConfiguration()
+motor.linearRamp.setMaxVelocity(2000)
+motor.linearRamp.setAcceleration(1000)
+motor.linearRamp.setRampEnabled(1)
+motor.linearRamp.setTargetReachedDistance(5)
+motor.linearRamp.setTargetReachedVelocity(500)
+motor.setAxisParameter(motor.AP.PositionScaler, 6*motor.motorPolePairs())
+motor.linearRamp.showConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(300)
-module.setTorqueIParameter(600)
-module.setVelocityPParameter(600)
-module.setVelocityIParameter(500)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+motor.pid.setTorquePIParameter(300, 600)
+motor.pid.setVelocityPIParameter(600, 500)
+motor.pid.setPositionPParameter(300)
+motor.pid.showConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
+motor.commutationSelection.setMode(motor.ENUM.COMM_MODE_DIGITAL_HALL)
+motor.commutationSelection.showConfiguration()
 
 " set position counter to zero"
-module.setActualPosition(0)
+motor.setActualPosition(0)
 
 " move to zero position"
-module.moveToPosition(0)
+motor.moveToPosition(0)
 
 print("starting positioning")
-module.moveToPosition(4000)
+motor.moveToPosition(4000)
 
 " wait for position reached "
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
 
 " move back to zero"
-module.moveToPosition(0)
+motor.moveToPosition(0)
 
 " wait for position reached "
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
 
 myInterface.close()
-print("Ready.")
+print("\nReady.")
