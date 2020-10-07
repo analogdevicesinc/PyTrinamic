@@ -145,7 +145,7 @@ class TMCL_Request(TMCL):
                            self.commandType, self.motorBank, self.value, self.checksum)
 
     def dump(self):
-        print("TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
+        d = "TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
             .format(
                 self.moduleAddress,
                 self.command,
@@ -154,7 +154,8 @@ class TMCL_Request(TMCL):
                 self.value,
                 self.checksum
             )
-        )
+        print(d)
+        return d
 
 class TMCL_Reply(TMCL):
     def __init__(self, reply_data=None, reply_address=None, module_address=None, status=None, command=None, value=None, checksum=None, special=False):
@@ -181,7 +182,7 @@ class TMCL_Reply(TMCL):
                            self.status, self.command, self.value, self.checksum)
 
     def dump(self):
-        print("TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
+        d = "TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}"
             .format(
                 self.reply_address,
                 self.module_address,
@@ -190,7 +191,8 @@ class TMCL_Reply(TMCL):
                 self.value,
                 self.checksum
             )
-        )
+        print(d)
+        return d
 
     def value(self):
         return self.value
