@@ -23,6 +23,14 @@ class TMCL(object):
         if(not(0 <= module_id < 256)):
             raise ValueError("Incorrect Module ID value. Must be between 0 and 255 inclusively.")
 
+    @staticmethod
+    def calculate_checksum(data):
+        checksum = 0
+        for d in data:
+            checksum += d
+        checksum %= 256
+        return checksum
+
 class TMCL_Command(object):
     ROR                         = 1
     ROL                         = 2
@@ -89,6 +97,11 @@ class TMCL_Command(object):
     BOOT_WRITE_LENGTH           = 208
     BOOT                        = 242
 
+class TMCL_Version_Format(object):
+    ASCII = 0
+    BINARY = 1
+    BUILD = 5
+
 class TMCL_Status(object):
     SUCCESS               = 100
     COMMAND_LOADED        = 101
@@ -108,19 +121,24 @@ class TMCL_Status(object):
         6: "Command not Available"
     }
 
-class TMCL_Request(object):
-    def __init__(self, address, command, commandType, motorBank, value):
-        self.moduleAddress = address     & 0xFF
-        self.command       = command     & 0xFF
-        self.commandType   = commandType & 0xFF
-        self.motorBank     = motorBank   & 0xFF
-        self.value         = value       & 0xFFFFFFFF
-        self.checksum      = 0
+class TMCL_Request(TMCL):
+    def __init__(self, address=None, command=None, commandType=None, motorBank=None, value=None, checksum=None, request_data=None):
+        request_struct = None
+        if(request_data):
+            request_struct = struct.unpack(_PACKAGE_STRUCTURE, request_data)
 
-        checksum_struct = self.toBuffer()
-        for s in checksum_struct:
-            self.checksum += s
-        self.checksum %= 256
+        self.moduleAddress = (address if address else (request_struct[0] if request_struct else 0)) & 0xFF
+        self.command       = (command if command else (request_struct[1] if request_struct else 0)) & 0xFF
+        self.commandType   = (commandType if commandType else (request_struct[2] if request_struct else 0)) & 0xFF
+        self.motorBank     = (motorBank if motorBank else (request_struct[3] if request_struct else 0)) & 0xFF
+        self.value         = (value if value else (request_struct[4] if request_struct else 0)) & 0xFFFFFFFF
+        self.checksum      = (checksum if checksum else (request_struct[5] if request_struct else 0))
+
+        if(not(checksum) and(not(request_struct))):
+            self.checksum = TMCL.calculate_checksum(self.toBuffer())
+
+    def calculate_checksum(self):
+        self.checksum = TMCL.calculate_checksum(self.toBuffer())
 
     def toBuffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.moduleAddress, self.command,
@@ -138,15 +156,25 @@ class TMCL_Request(object):
             )
         )
 
-class TMCL_Reply(object):
-    def __init__(self, reply_data):
-        reply_struct = struct.unpack(_PACKAGE_STRUCTURE, reply_data)
-        self.reply_address = reply_struct[0]
-        self.module_address = reply_struct[1]
-        self.status = reply_struct[2]
-        self.command = reply_struct[3]
-        self.value = reply_struct[4]
-        self.checksum = reply_struct[5]
+class TMCL_Reply(TMCL):
+    def __init__(self, reply_data=None, reply_address=None, module_address=None, status=None, command=None, value=None, checksum=None, special=False):
+        reply_struct = None
+        if(reply_data):
+            reply_struct = struct.unpack(_PACKAGE_STRUCTURE, reply_data)
+
+        self.reply_address = (reply_struct[0] if reply_struct else (reply_address if reply_address else 0)) & 0xFF
+        self.module_address = (reply_struct[1] if reply_struct else (module_address if module_address else 0)) & 0xFF
+        self.status = (reply_struct[2] if reply_struct else (status if status else 0)) & 0xFF
+        self.command = (reply_struct[3] if reply_struct else (command if command else 0)) & 0xFF
+        self.value = (reply_struct[4] if reply_struct else (value if value else 0)) & 0xFFFFFFFF
+        self.checksum = (reply_struct[5] if reply_struct else (checksum if checksum else 0))
+        self.special = special
+
+        if(not(checksum) and(not(reply_struct))):
+            self.checksum = TMCL.calculate_checksum(self.toBuffer())
+
+    def calculate_checksum(self):
+        self.checksum = TMCL.calculate_checksum(self.toBuffer())
 
     def toBuffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.reply_address, self.module_address,
