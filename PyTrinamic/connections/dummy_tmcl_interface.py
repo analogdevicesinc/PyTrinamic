@@ -42,7 +42,7 @@ class dummy_tmcl_interface(tmcl_interface):
         if self._debug:
             print("Closed dummy TMCL interface")
 
-    def _send(self, hostID, moduleID, data):
+    def send(self, hostID, moduleID, data):
         """
             Send the bytearray parameter [data].
 
@@ -52,7 +52,7 @@ class dummy_tmcl_interface(tmcl_interface):
         del hostID, moduleID, data
         pass
 
-    def _recv(self, hostID, moduleID):
+    def receive(self, hostID, moduleID):
         """
             Read 9 bytes and return them as a bytearray.
 

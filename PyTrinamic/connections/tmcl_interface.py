@@ -21,8 +21,8 @@ class tmcl_interface():
     bus.
 
     A subclass is required to override the following functions:
-        _send(self, hostID, moduleID, data)
-        _recv(self, hostID, moduleID)
+        send(self, hostID, moduleID, data)
+        receive(self, hostID, moduleID)
 
     A subclass may use the boolean _debug attribute to toggle printing further
     debug output.
@@ -62,22 +62,22 @@ class tmcl_interface():
         self._MODULE_ID  = defaultModuleID
         self._debug      = debug
 
-    def _send(self, hostID, moduleID, data):
+    def send(self, hostID, moduleID, data):
         """
         Send the bytearray [data] representing a TMCL command. The length of
         [data] is 9. The hostID and moduleID parameters may be used for extended
         addressing options available on the implemented communication interface.
         """
-        raise NotImplementedError("The TMCL interface requires an implementation of the _send() function")
+        raise NotImplementedError("The TMCL interface requires an implementation of the send() function")
 
-    def _recv(self, hostID, moduleID):
+    def receive(self, hostID, moduleID):
         """
         Receive a TMCL reply and return it as a bytearray. The length of the
         returned byte array is 9. The hostID and moduleID parameters may be used
         for extended addressing options available on the implemented
         communication interface.
         """
-        raise NotImplementedError("The TMCL interface requires an implementation of the _recv() function")
+        raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
 
     def enableDebug(self, enable):
         """
@@ -111,10 +111,10 @@ class tmcl_interface():
             request.dump()
 
         # Send the request
-        self._send(self._HOST_ID, moduleID, request.toBuffer())
+        self.send(self._HOST_ID, moduleID, request.toBuffer())
 
         # Read out the reply
-        reply = TMCL_Reply(self._recv(self._HOST_ID, moduleID))
+        reply = TMCL_Reply(self.receive(self._HOST_ID, moduleID))
 
         if self._debug:
             reply.dump()
@@ -136,7 +136,7 @@ class tmcl_interface():
             request.dump()
 
         # Send the request
-        self._send(self._HOST_ID, moduleID, request.toBuffer())
+        self.send(self._HOST_ID, moduleID, request.toBuffer())
 
     def getVersionString(self, moduleID=None):
         """
