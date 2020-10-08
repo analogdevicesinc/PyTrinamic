@@ -21,11 +21,11 @@ class slcan_tmcl_interface(tmcl_interface):
     def __init__(self, comPort, datarate=1000000, hostID=2, moduleID=1, debug=True, SerialBaudrate=115200):
         if type(comPort) != str:
             raise TypeError
-        
+
         tmcl_interface.__init__(self, hostID, moduleID, debug)
 
         self.__debug    = debug
-        self.__bitrate  = datarate        
+        self.__bitrate  = datarate
         self.__Port  = comPort
         self.__serialBaudrate  = SerialBaudrate
 
@@ -69,7 +69,7 @@ class slcan_tmcl_interface(tmcl_interface):
         msg = can.Message(arbitration_id=moduleID, is_extended_id=False, data=data[1:])
 
         try:
-            self.__connection.send(msg)
+            self.__connection.send_receive(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 

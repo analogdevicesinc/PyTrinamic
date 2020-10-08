@@ -88,10 +88,10 @@ class uart_ic_interface(connection_interface):
 
     " direct register access "
     def writeRegister(self, registerAddress, value):
-        return self.send(registerAddress | 0x80, value)
+        return self.send_receive(registerAddress | 0x80, value)
 
     def readRegister(self, registerAddress):
-        return self.send(registerAddress, 0).value
+        return self.send_receive(registerAddress, 0).value
 
     def writeRegisterField(self, registerAddress, value, mask, shift):
         return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
