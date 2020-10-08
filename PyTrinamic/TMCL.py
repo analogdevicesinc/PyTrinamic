@@ -135,10 +135,10 @@ class TMCL_Request(TMCL):
         self.checksum      = (checksum if checksum else (request_struct[5] if request_struct else 0))
 
         if(not(checksum) and(not(request_struct))):
-            self.checksum = TMCL.calculate_checksum(self.toBuffer())
+            self.calculate_checksum()
 
     def calculate_checksum(self):
-        self.checksum = TMCL.calculate_checksum(self.toBuffer())
+        self.checksum = TMCL.calculate_checksum(self.toBuffer()[:-1])
 
     def toBuffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.moduleAddress, self.command,
@@ -171,10 +171,10 @@ class TMCL_Reply(TMCL):
         self.special = special
 
         if(not(checksum) and(not(reply_struct))):
-            self.checksum = TMCL.calculate_checksum(self.toBuffer())
+            self.calculate_checksum()
 
     def calculate_checksum(self):
-        self.checksum = TMCL.calculate_checksum(self.toBuffer())
+        self.checksum = TMCL.calculate_checksum(self.toBuffer()[:-1])
 
     def toBuffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.reply_address, self.module_address,
