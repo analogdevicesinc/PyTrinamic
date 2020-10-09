@@ -222,6 +222,7 @@ class _APs():
     LastReferenceSwitchPosition    = 196
     BoostCurrent                   = 200
     FullstepResolution             = 202
+    FreewheelingMode               = 204
     LoadValue                      = 206
     ExtendedErrorFlags             = 207
     DriverErrorFlags               = 208
