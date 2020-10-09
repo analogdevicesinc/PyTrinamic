@@ -125,7 +125,7 @@ class tmcl_interface():
         self.send(self._HOST_ID, moduleID, request.toBuffer())
 
         # Read out the reply
-        reply = TMCL_Reply(self.receive(self._HOST_ID, moduleID))
+        reply = TMCL_Reply.from_buffer(self.receive(self._HOST_ID, moduleID))
 
         if self._debug:
             reply.dump()

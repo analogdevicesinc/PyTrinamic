@@ -122,19 +122,19 @@ class TMCL_Status(object):
     }
 
 class TMCL_Request(TMCL):
-    def __init__(self, address=None, command=None, commandType=None, motorBank=None, value=None, checksum=None, request_data=None):
-        request_struct = None
-        if(request_data):
-            request_struct = struct.unpack(_PACKAGE_STRUCTURE, request_data)
+    @staticmethod
+    def from_buffer(data):
+        request_struct = struct.unpack(_PACKAGE_STRUCTURE, data)
+        return TMCL_Request(request_struct[0], request_struct[1], request_struct[2], request_struct[3], request_struct[4], request_struct[5])
+    def __init__(self, address, command, commandType, motorBank, value, checksum=None):
+        self.moduleAddress = address & 0xFF
+        self.command       = command 0xFF
+        self.commandType   = commandType & 0xFF
+        self.motorBank     = motorBank & 0xFF
+        self.value         = value & 0xFFFFFFFF
+        self.checksum      = checksum
 
-        self.moduleAddress = (address if address else (request_struct[0] if request_struct else 0)) & 0xFF
-        self.command       = (command if command else (request_struct[1] if request_struct else 0)) & 0xFF
-        self.commandType   = (commandType if commandType else (request_struct[2] if request_struct else 0)) & 0xFF
-        self.motorBank     = (motorBank if motorBank else (request_struct[3] if request_struct else 0)) & 0xFF
-        self.value         = (value if value else (request_struct[4] if request_struct else 0)) & 0xFFFFFFFF
-        self.checksum      = (checksum if checksum else (request_struct[5] if request_struct else 0))
-
-        if(not(checksum) and(not(request_struct))):
+        if(checksum is None):
             self.calculate_checksum()
 
     def calculate_checksum(self):
@@ -144,33 +144,34 @@ class TMCL_Request(TMCL):
         return struct.pack(_PACKAGE_STRUCTURE, self.moduleAddress, self.command,
                            self.commandType, self.motorBank, self.value, self.checksum)
 
+    def __str__(self):
+        return "TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}".format(
+            self.moduleAddress,
+            self.command,
+            self.commandType,
+            self.motorBank,
+            self.value,
+            self.checksum
+        )
+
     def dump(self):
-        d = "TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}".format(
-                self.moduleAddress,
-                self.command,
-                self.commandType,
-                self.motorBank,
-                self.value,
-                self.checksum
-            )
-        print(d)
-        return d
+        print(str(self))
 
 class TMCL_Reply(TMCL):
-    def __init__(self, reply_data=None, reply_address=None, module_address=None, status=None, command=None, value=None, checksum=None, special=False):
-        reply_struct = None
-        if(reply_data):
-            reply_struct = struct.unpack(_PACKAGE_STRUCTURE, reply_data)
-
-        self.reply_address = (reply_struct[0] if reply_struct else (reply_address if reply_address else 0)) & 0xFF
-        self.module_address = (reply_struct[1] if reply_struct else (module_address if module_address else 0)) & 0xFF
-        self.status = (reply_struct[2] if reply_struct else (status if status else 0)) & 0xFF
-        self.command = (reply_struct[3] if reply_struct else (command if command else 0)) & 0xFF
-        self.value = (reply_struct[4] if reply_struct else (value if value else 0)) & 0xFFFFFFFF
-        self.checksum = (reply_struct[5] if reply_struct else (checksum if checksum else 0))
+    @staticmethod
+    def from_buffer(data):
+        reply_struct = struct.unpack(_PACKAGE_STRUCTURE, data)
+        return TMCL_Reply(reply_struct[0], reply_struct[1], reply_struct[2], reply_struct[3], reply_struct[4], reply_struct[5])
+    def __init__(self, reply_address, module_address, status, command, value, checksum=None, special=False):
+        self.reply_address = reply_address & 0xFF
+        self.module_address = module_address & 0xFF
+        self.status = status 0xFF
+        self.command = command & 0xFF
+        self.value = value 0xFFFFFFFF
+        self.checksum = checksum
         self.special = special
 
-        if(not(checksum) and(not(reply_struct))):
+        if(checksum is None):
             self.calculate_checksum()
 
     def calculate_checksum(self):
@@ -180,17 +181,18 @@ class TMCL_Reply(TMCL):
         return struct.pack(_PACKAGE_STRUCTURE, self.reply_address, self.module_address,
                            self.status, self.command, self.value, self.checksum)
 
+    def __str__(self):
+        return "TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}".format(
+            self.reply_address,
+            self.module_address,
+            self.status,
+            self.command,
+            self.value,
+            self.checksum
+        )
+
     def dump(self):
-        d = "TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}".format(
-                self.reply_address,
-                self.module_address,
-                self.status,
-                self.command,
-                self.value,
-                self.checksum
-            )
-        print(d)
-        return d
+        print(str(self))
 
     def value(self):
         return self.value
