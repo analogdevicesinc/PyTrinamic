@@ -74,7 +74,7 @@ class kvaser_tmcl_interface(tmcl_interface):
         msg = can.Message(arbitration_id=moduleID, is_extended_id=False, data=data[1:])
 
         try:
-            self.__connection.send_receive(msg)
+            self.__connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
