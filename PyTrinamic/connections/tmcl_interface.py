@@ -99,7 +99,12 @@ class tmcl_interface():
 
         self._debug = enable
 
-    def send_request_only(self, request, moduleID=None):
+    def send_request(self, request, moduleID=None):
+        """
+        Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
+        the reply has been received.
+        """
+        
         if not moduleID:
             moduleID = self._MODULE_ID
 
@@ -107,11 +112,6 @@ class tmcl_interface():
             request.dump()
 
         self._send(self._HOST_ID, moduleID, request.toBuffer())
-
-    def recv_reply_only(self, moduleID=None):
-        if not moduleID:
-            moduleID = self._MODULE_ID
-
         reply = TMCL_Reply.from_buffer(self._recv(self._HOST_ID, moduleID))
 
         if self._debug:
@@ -119,29 +119,10 @@ class tmcl_interface():
 
         return reply
 
-    def send_request(self, request, moduleID=None):
-        if not moduleID:
-            moduleID = self._MODULE_ID
-
-        self.send_request_only(request, moduleID)
-
-        reply = recv_reply_only(moduleID)
-
-        return reply
-
-    def send_only(self, opcode, opType, motor, value, moduleID=None):
-        if not(type(opcode) == type(opType) == type(motor) == type(value) == int):
-            raise TypeError("Expected integer values")
-
-        if not moduleID:
-            moduleID = self._MODULE_ID
-
-        self.send_request_only(TMCL_Request(moduleID, opcode, opType, motor, value))
-
     def send(self, opcode, opType, motor, value, moduleID=None):
         """
         Send a TMCL datagram and read back a reply. This function blocks until
-        the reply has been received
+        the reply has been received.
         """
 
         if not(type(opcode) == type(opType) == type(motor) == type(value) == int):
@@ -151,7 +132,18 @@ class tmcl_interface():
         if not moduleID:
             moduleID = self._MODULE_ID
 
-        return self.send_request(TMCL_Request(moduleID, opcode, opType, motor, value))
+        request = TMCL_Request(moduleID, opcode, opType, motor, value)
+
+        if self._debug:
+            request.dump()
+
+        self._send(self._HOST_ID, moduleID, request.toBuffer())
+        reply = TMCL_Reply.from_buffer(self._recv(self._HOST_ID, moduleID))
+
+        if self._debug:
+            reply.dump()
+
+        return reply
 
     def sendBoot(self, moduleID=None):
         """
