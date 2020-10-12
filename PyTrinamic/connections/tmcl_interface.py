@@ -24,9 +24,6 @@ class tmcl_interface():
         _send(self, hostID, moduleID, data)
         _recv(self, hostID, moduleID)
 
-    A subclass may override the following functions:
-        data_available(self, hostID, moduleID)
-
     A subclass may use the boolean _debug attribute to toggle printing further
     debug output.
 
@@ -81,14 +78,6 @@ class tmcl_interface():
         communication interface.
         """
         raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
-
-    def data_available(self, hostID, moduleID):
-        """
-        Indicate if and how much data is available to read on the interface.
-        This shall return a boolean (if data is available) or an int (how much data is available) depending on the interface.
-        Implementation is generally optional, but required if non-blocking loops are required.
-        """
-        raise NotImplementedError("data_available() function is not implemented for this TMCL interface.")
 
     def enableDebug(self, enable):
         """
