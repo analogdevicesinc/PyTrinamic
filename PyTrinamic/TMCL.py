@@ -97,11 +97,6 @@ class TMCL_Command(object):
     BOOT_WRITE_LENGTH           = 208
     BOOT                        = 242
 
-class TMCL_Version_Format(object):
-    ASCII = 0
-    BINARY = 1
-    BUILD = 5
-
 class TMCL_Status(object):
     SUCCESS               = 100
     COMMAND_LOADED        = 101
