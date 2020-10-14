@@ -16,6 +16,13 @@ class TMCM_Python(object):
     def showChipInfo(self):
         print("The TMCM-Python is the MicroPython TMCL Master/Slave interface.")
 
+    # Global parameter access
+    def get_global_parameter(self, gpType, bank):
+        return self.connection.globalParameter(gpType, bank)
+
+    def set_global_parameter(self, gpType, bank, value):
+        self.connection.setGlobalParameter(gpType, bank, value)
+
     class APs:
         pass
 
