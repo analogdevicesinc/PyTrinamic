@@ -32,3 +32,4 @@ class TMCM_Python(object):
     class GPs:
         controlHost = 0
         controlModule = 1
+        loggingEnabled = 2
