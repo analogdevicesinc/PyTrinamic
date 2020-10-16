@@ -57,7 +57,7 @@ class slcan_tmcl_interface(tmcl_interface):
 
         self.__connection.shutdown()
 
-    def send(self, hostID, moduleID, data):
+    def _send(self, hostID, moduleID, data):
         """
             Send the bytearray parameter [data].
 
@@ -74,7 +74,7 @@ class slcan_tmcl_interface(tmcl_interface):
             raise ConnectionError("Failed to send a TMCL message") from e
 
 
-    def receive(self, hostID, moduleID):
+    def _recv(self, hostID, moduleID):
         """
             Read 9 bytes and return them as a bytearray.
 
