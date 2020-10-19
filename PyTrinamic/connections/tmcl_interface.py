@@ -93,7 +93,7 @@ class tmcl_interface():
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
         """
-        
+
         if not moduleID:
             moduleID = self._MODULE_ID
 
@@ -149,7 +149,7 @@ class tmcl_interface():
             request.dump()
 
         # Send the request
-        self.send(self._HOST_ID, moduleID, request.toBuffer())
+        self._send(self._HOST_ID, moduleID, request.toBuffer())
 
     def getVersionString(self, moduleID=None):
         """
