@@ -7,17 +7,6 @@ Created on 28.05.2019
 import sys
 import argparse
 
-from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
-from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
-from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
-from PyTrinamic.connections.kvaser_tmcl_interface import kvaser_tmcl_interface
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
-from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
-from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
-from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmcl_interface
-from PyTrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_interface
-
 class ConnectionManager():
     """
     This class provides a centralized way of extracting connection-specific
@@ -82,36 +71,28 @@ class ConnectionManager():
             Default value: 1
     """
 
-    # All available interfaces
-    # The tuples consist of (string representation, class type, default datarate)
-    _INTERFACES = [
-        ("dummy_tmcl",      dummy_tmcl_interface,       0),
-        ("pcan_tmcl",       pcan_tmcl_interface,        1000000),
-        ("socketcan_tmcl",  socketcan_tmcl_interface,   1000000),
-        ("kvaser_tmcl",     kvaser_tmcl_interface,      1000000),
-        ("slcan_tmcl",      slcan_tmcl_interface,       1000000),
-        ("serial_tmcl",     serial_tmcl_interface,      9600),
-        ("uart_ic",         uart_ic_interface,          9600),
-        ("usb_tmcl",        usb_tmcl_interface,         115200),
-        ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
-        ("kvaser_CANopen",  kvaser_CANopen_interface,   1000000)
-    ]
+    _DEFAULT_INTERFACE = "usb_tmcl"
+    _DEFAULT_PORT = "any"
+    _DEFAULT_NO_PORT = []
+    _DEFAULT_DATA_RATE = 115200
+    _DEFAULT_HOST_ID = 2
+    _DEFAULT_MODULE_ID = 1
 
     def __init__(self, argList=None, connectionType="any", debug=False):
         # Attributes
         self.__debug = debug
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in self._INTERFACES], default=['usb_tmcl'],
+        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in self._get_available_interfaces()], default=[self._DEFAULT_INTERFACE],
                             help='Connection interface (default: %(default)s)')
-        parser.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
+        parser.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=[self._DEFAULT_PORT],
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
-        parser.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
+        parser.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=self._DEFAULT_NO_PORT,
                             help='Exclude ports')
-        parser.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
+        parser.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int, default=[self._DEFAULT_DATA_RATE],
                             help='Connection data-rate (default: %(default)s)')
-        parser.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
+        parser.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[self._DEFAULT_HOST_ID],
                             help='TMCL host-id (default: %(default)s)')
-        parser.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
+        parser.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[self._DEFAULT_MODULE_ID],
                             help='TMCL module-id (default: %(default)s)')
 
         if(not argList):
@@ -126,24 +107,6 @@ class ConnectionManager():
 
         args = parser.parse_known_args(argList)[0]
 
-        # Argument storage - default parameters are set here
-        if connectionType == "CANopen":
-            self.__interface  = pcan_CANopen_interface
-            self.__port       = "any"
-            self.__no_port    = []
-            self.__data_rate  = 1000000
-
-            # Not used by CANopen
-            self.__host_id    = 0
-            self.__module_id  = 0
-        else:
-            self.__interface  = usb_tmcl_interface
-            self.__port       = "any"
-            self.__no_port    = []
-            self.__data_rate  = 115200
-            self.__host_id    = 2
-            self.__module_id  = 1
-
         # Parse the command line
         if self.__debug:
             print("Commandline argument list: {0:s}".format(str(argList)))
@@ -152,7 +115,7 @@ class ConnectionManager():
 
         ### Interpret given arguments
         # Interface
-        for interface in self._INTERFACES:
+        for interface in self._get_available_interfaces():
             if connectionType == "tmcl" and not(interface[1].supportsTMCL()):
                 continue
 
@@ -175,6 +138,7 @@ class ConnectionManager():
         for port in args.exclude:
             if port in ["any", "interactive"]:
                 raise ValueError("Port blacklist (no-port) cannot use the special port: " + port)
+        self.__no_port = args.exclude
 
         # Data rate
         try:
@@ -281,6 +245,33 @@ class ConnectionManager():
 
         return self.__connection
 
+    @staticmethod
+    def _get_available_interfaces():
+        from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
+        from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
+        from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
+        from PyTrinamic.connections.kvaser_tmcl_interface import kvaser_tmcl_interface
+        from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+        from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
+        from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+        from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
+        from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmcl_interface
+        from PyTrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_interface
+        # All available interfaces
+        # The tuples consist of (string representation, class type, default datarate)
+        return [
+            ("dummy_tmcl",      dummy_tmcl_interface,       0),
+            ("pcan_tmcl",       pcan_tmcl_interface,        1000000),
+            ("socketcan_tmcl",  socketcan_tmcl_interface,   1000000),
+            ("kvaser_tmcl",     kvaser_tmcl_interface,      1000000),
+            ("slcan_tmcl",      slcan_tmcl_interface,       1000000),
+            ("serial_tmcl",     serial_tmcl_interface,      9600),
+            ("uart_ic",         uart_ic_interface,          9600),
+            ("usb_tmcl",        usb_tmcl_interface,         115200),
+            ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
+            ("kvaser_CANopen",  kvaser_CANopen_interface,   1000000)
+        ]
+
     def disconnect(self):
         self.__connection.close()
 
@@ -326,13 +317,13 @@ class ConnectionManager():
 
     @staticmethod
     def listInterfaces():
-        return [x[0] for x in ConnectionManager._INTERFACES]
+        return [x[0] for x in ConnectionManager._get_available_interfaces()]
 
 if __name__ == "__main__":
     # Test if everything is working correctly
 
     print("Verifying interfaces list...\n")
-    for interface in ConnectionManager._INTERFACES:
+    for interface in ConnectionManager._get_available_interfaces():
         if not hasattr(interface[1], "supportsTMCL"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the supportsTMCL() function")
         if not hasattr(interface[1], "supportsCANopen"):
