@@ -92,6 +92,11 @@ class ConnectionManager():
             Default value: 1
     """
 
+    class InteractiveReturn(object):
+        pass
+    class InteractiveAbort(InteractiveReturn):
+        pass
+
     @staticmethod
     def from_args(args=None):
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
@@ -194,10 +199,55 @@ class ConnectionManager():
         return portList
 
     @staticmethod
-    def __interactive
+    def __interactive_interface(params):
+        while(True):
+            print("Available interfaces:")
+            available = ConnectionManager.get_available_interfaces().keys()
+            for i in range(0, len(available)):
+                print("\t[{}] {}".format(i, available[i]))
+            print("Options:")
+            print("\t0 .. {}: Select the n-th interface.".format(len(available)))
+            print("\tr: Refresh list.")
+            print("\tx: Abort selection.")
+            selection = input(": ")
+            if(selection == "r"):
+                continue
+            elif(selection == "x"):
+                return InteractiveAbort
+            params["interface"].append(available[int(selection)])
+            return params
+
+    @staticmethod
+    def __interactive_port():
+        while(True):
+            print("Available ports for interface:")
+            available = ConnectionManager.get_available_interfaces().keys()
+            for i in range(0, len(available)):
+                print("\t[{}] {}".format(i, available[i]))
+            print("Options:")
+            print("\t0 .. {}: Select the n-th interface.".format(len(available)))
+            print("\tr: Refresh list.")
+            print("\tx: Abort selection.")
+            selection = input(": ")
+            if(selection == "r"):
+                continue
+            elif(selection == "x"):
+                return InteractiveAbort
+            return available[int(selection)]
 
     @staticmethod
     def interactive(params):
+        while(True):
+            params = ConnectionManager.__interactive_interface(params)
+            if(ret == InteractiveAbort):
+                break
+            else:
+                params["interfaces"].append(interface)
+            port = ConnectionManager.__interactive_port()
+            if(port == InteractiveAbort):
+                break
+            else:
+                params["ports"].append(port)
         while True:
             print("Available interfaces:")
             available = ConnectionManager.get_available_interfaces().keys()
@@ -208,10 +258,6 @@ class ConnectionManager():
             print("\t<interface_name>: Select the interface with the name <interface_name>.")
             print("\tr: Refresh list.")
             print("\tx: Abort selection.")
-            selection = input(": ")
-            if(selection == "r"):
-                continue
-            if(selection)
 
     def __interactivePortSelection(self):
         while True:
