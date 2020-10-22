@@ -92,17 +92,14 @@ class ConnectionManager():
             Default value: 1
     """
 
-    def __init__(self, argList=None, connectionType="any", debug=False):
-        # Attributes
-        self.__debug = debug
-        available = self._get_available_interfaces()
-
+    @staticmethod
+    def from_args(args=None):
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs="*", type=str, choices=available.keys(), default=["any"],
+        parser.add_argument('--interface', dest='interface', action='store', nargs="*", type=str, choices=ConnectionManager._get_available_interfaces().keys(), default=[],
                             help='Connection interface (default: %(default)s)')
-        parser.add_argument('--port', dest='port', action='store', nargs="*", type=str, default=["any"],
+        parser.add_argument('--port', dest='port', action='store', nargs="*", type=str, default=[],
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
-        parser.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
+        parser.add_argument('--exclude', dest='exclude', action='append', nargs='*', type=str, default=[],
                             help='Exclude ports')
         parser.add_argument('--data-rate', dest='data_rate', action='store', nargs="*", type=str, default=[],
                             help='Connection data-rate (default: %(default)s)')
@@ -112,128 +109,34 @@ class ConnectionManager():
                             help='TMCL module-id (default: %(default)s)')
         parser.add_argument('--check-getversion', dest='check_getversion', action='store_true',
                             help='Check availability using GET_FIRMWARE_VERSION TMCL command.')
+        parsed = parser.parse_known_args(args)[0]
 
-        connectionType = connectionType.lower()
+        return ConnectionManager(parsed.interface, parsed.port, parsed.data_rate, parsed.exclude, parsed.host_id, parsed.module_id)
 
-        if(not argList):
-            if self.__debug:
-                print("Using arguments from the command line")
-            argList = sys.argv
 
-        if type(argList) == str:
-            argList = argList.split()
-            if self.__debug:
-                print("Splitting string:", argList)
-
-        args = parser.parse_known_args(argList)[0]
-
-        # Parse the command line
-        if self.__debug:
-            print("Commandline argument list: {0:s}".format(str(argList)))
-            print("Parsed commandline arguments: {0:s}".format(str(args)))
-            print()
-
-        ### Interpret given arguments
-        # Interfaces
-        if(("any" in args.interface) and (len(args.interface) > 1)):
-            raise ValueError("Interface selection 'any' must be used exclusively.")
-        self.__interfaces = []
-        if(args.interface[0] == "any"):
-            self.__interfaces = available.values()
-        else:
-            self.__interfaces = [available[interface_arg] for interface_arg in args.interface]
-
-        # Data rates
-        self.__data_rates = args.data_rate
-        for data_rate in self.__data_rates:
-            if((data_rate == "d") or (data_rate == "any")):
-                continue
-            try:
-                int(data_rate)
-            except ValueError:
-                raise ValueError("Invalid data rate {}.".format(data_rate))
-
-        # Ports
-        # Any port string is valid.
-        if((("any" in args.port) or ("interactive" in args.port)) and (len(args.port) > 1)):
-            raise ValueError("Port selections 'any' and 'interactive' must be used exclusively.")
-        self.__ports = set(args.port)
-
-        # No-Port
-        for port in args.exclude:
-            if port in ["any", "interactive"]:
-                raise ValueError("Port blacklist (no-port) cannot use the special port: " + port)
-        self.__no_port = set(args.exclude)
-
-        # Host ID
-        self.__host_ids = args.host_id
-        for host_id in self.__host_ids:
-            if(host_id == "d"):
-                continue
-            try:
-                int(host_id)
-            except ValueError:
-                raise ValueError("Invalid host id {}.".format(host_id))
-
-        # Module ID
-        self.__module_ids = args.module_id
-        for module_id in self.__module_ids:
-            if(module_id == "d"):
-                continue
-            try:
-                int(module_id)
-            except ValueError:
-                raise ValueError("Invalid module id {}.".format(module_id))
-
-        # Construct all configs
-        self.__configs = []
-        for interface in self.__interfaces:
-            # Get all available ports for interface
-            ports = interface.available_ports()
-            # If selected ports does matter
-            if(not("any" in self.__ports)):
-                # Filter for selected ports
-                ports = ports.intersection(self.__ports)
-            # Filter for non-excluded ports
-            ports = ports.difference(self.__no_port)
-            for port in ports:
-                self.__configs.append({ "interface": interface, "port": port })
-        for i in range(0, len(self.__data_rates)):
-            if(self.__data_rates[i] != "d"):
-                self.__configs[i]["data_rate"] = self.__data_rates[i]
-        for i in range(0, len(self.__module_ids)):
-            if(self.__module_ids[i] != "d"):
-                self.__configs[i]["module_id"] = self.__module_ids[i]
-        for i in range(0, len(self.__host_ids)):
-            if(self.__host_ids[i] != "d"):
-                self.__configs[i]["host_id"] = self.__host_ids[i]
-
-        if self.__debug:
-            print("Configurations:")
-            for config in self.__configs:
-                print(config)
+    def __init__(self, interfaces=[], ports=[], data_rates=[], exclude=[], host_ids=[], module_ids=[], debug=False):
+        available = self._get_available_interfaces()
+        # Filter for selected interface types
+        interfaces = {available[key] for key in interfaces} if interfaces else set(available.values())
+        ports = set(ports)
+        self.configs = [{"interface": interface, "port": port} for interface in interfaces for port in (ports.intersection(interface.available_ports()).difference(exclude) if ports else interface.available_ports().difference(exclude))]
+        for i in range(0, max(len(data_rates), len(host_ids), len(module_ids))):
+            if(i >= len(self.configs)):
+                break
+            if(i < len(data_rates)):
+                if(data_rates[i] != "d"):
+                    self.configs[i]["data_rate"] = data_rates[i]
+            if(i < len(host_ids)):
+                if(host_ids[i] != "d"):
+                    self.configs[i]["host_id"] = host_ids[i]
+            if(i < len(module_ids)):
+                if(module_ids[i] != "d"):
+                    self.configs[i]["module_id"] = module_ids[i]
 
     def connect(self, debug_interface=None):
-        """
-        Attempt to connect to a module with the stored connection parameters.
-
-        Returns a connection instance of a class based on the tmcl_interface.
-        Which class type gets returned depends on the interface used.
-
-        If no connections are available or a connection attempt fails, a
-        ConnectionError exception is raised
-
-        Parameters:
-            debug_interface:
-                Type: bool, optional, default value: None
-                Control whether the connection should be created in
-                debug mode. A boolean value will enable or disable the debug mode,
-                a None value will set the connections debug mode according to the
-                ConnectionManagers debug mode.
-        """
 
         connections = set()
-        for config in self.__configs:
+        for config in self.configs:
             try:
                 connections.add(config.pop("interface")(**config))
             except ConnectionError as e:
