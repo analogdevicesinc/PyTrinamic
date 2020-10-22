@@ -10,9 +10,9 @@ import can
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 from can import CanError
 
-_CHANNELS = [
+_CHANNELS = {
      "0",  "1",  "2",
-     ]
+}
 
 class kvaser_tmcl_interface(tmcl_interface):
     """
@@ -20,18 +20,22 @@ class kvaser_tmcl_interface(tmcl_interface):
     Try 0 as default channel.
     """
 
-    def __init__(self, port = 0, datarate=1000000, hostID=2, moduleID=1, debug=False):
+    DEFAULT_DATA_RATE = 1000000
+    DEFAULT_HOST_ID = 2
+    DEFAULT_MODULE_ID = 1
+
+    def __init__(self, port, data_rate=None, host_id=None, module_id=None, debug=False):
         if type(port) != str:
             raise TypeError
 
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        super().__init__(port, data_rate, host_id, module_id, debug)
 
         self.__debug    = debug
-        self.__channel  = port
-        self.__bitrate  = datarate
+        self.__channel  = self._PORT
+        self.__bitrate  = self._DATA_RATE
 
         try:
             if self.__debug:
@@ -122,9 +126,9 @@ class kvaser_tmcl_interface(tmcl_interface):
         return False
 
     @staticmethod
-    def list():
+    def available_ports():
         """
-            Return a list of available connection ports as a list of strings.
+            Return a set of available connection ports as a list of strings.
 
             This function is required for using this interface with the
             connection manager.

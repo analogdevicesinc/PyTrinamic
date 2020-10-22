@@ -18,14 +18,18 @@ class slcan_tmcl_interface(tmcl_interface):
     Maybe SerialBaudrate has to be changed based on Adapter.
     """
 
-    def __init__(self, comPort, datarate=1000000, hostID=2, moduleID=1, debug=True, SerialBaudrate=115200):
+    DEFAULT_DATA_RATE = 1000000
+    DEFAULT_HOST_ID = 2
+    DEFAULT_MODULE_ID = 1
+
+    def __init__(self, port, data_rate=None, host_id=None, module_id=None, debug=True, SerialBaudrate=115200):
         if type(comPort) != str:
             raise TypeError
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        super().__init__(port, data_rate, host_id, module_id, debug)
 
         self.__debug    = debug
-        self.__bitrate  = datarate
+        self.__bitrate  = self._DATA_RATE
         self.__Port  = comPort
         self.__serialBaudrate  = SerialBaudrate
 
@@ -114,15 +118,12 @@ class slcan_tmcl_interface(tmcl_interface):
         return False
 
     @staticmethod
-    def list():
+    def available_ports():
         """
-            Return a list of available connection ports as a list of strings.
+            Return a set of available connection ports as a list of strings.
 
             This function is required for using this interface with the
             connection manager.
         """
-        connected = []
-        for element in sorted(comports()):
-            connected.append(element.device)
 
-        return connected
+        return { port.device for port in sorted(comports()) }

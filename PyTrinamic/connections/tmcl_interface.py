@@ -30,7 +30,10 @@ class tmcl_interface():
     A subclass may read the _HOST_ID and _MODULE_ID parameters.
     """
 
-    def __init__(self, hostID=2, defaultModuleID=1, debug=False):
+    DEFAULT_HOST_ID = 2
+    DEFAULT_MODULE_ID = 1
+
+    def __init__(self, port, data_rate=None, host_id=None, module_id=None, debug=False):
         """
         Parameters:
             hostID:
@@ -52,15 +55,14 @@ class tmcl_interface():
                 further debug output.
         """
 
-        TMCL.validate_host_id(hostID)
-        TMCL.validate_module_id(defaultModuleID)
-
         if not type(debug) == bool:
             raise TypeError
 
-        self._HOST_ID    = hostID
-        self._MODULE_ID  = defaultModuleID
-        self._debug      = debug
+        self._PORT = port
+        self._DATA_RATE = data_rate if data_rate else self.DEFAULT_DATA_RATE
+        self._HOST_ID = host_id if host_id else self.DEFAULT_HOST_ID
+        self._MODULE_ID = module_id if module_id else self.DEFAULT_MODULE_ID
+        self._debug = debug
 
     def _send(self, hostID, moduleID, data):
         """
