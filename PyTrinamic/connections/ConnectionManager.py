@@ -95,7 +95,7 @@ class ConnectionManager():
     @staticmethod
     def from_args(args=None):
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs="*", type=str, choices=ConnectionManager._get_available_interfaces().keys(), default=[],
+        parser.add_argument('--interface', dest='interface', action='store', nargs="*", type=str, choices=ConnectionManager.get_available_interfaces().keys(), default=[],
                             help='Connection interface (default: %(default)s)')
         parser.add_argument('--port', dest='port', action='store', nargs="*", type=str, default=[],
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
@@ -107,15 +107,27 @@ class ConnectionManager():
                             help='TMCL host-id (default: %(default)s)')
         parser.add_argument('--module-id', dest='module_id', action='store', nargs="*", type=str, default=[],
                             help='TMCL module-id (default: %(default)s)')
-        parser.add_argument('--check-getversion', dest='check_getversion', action='store_true',
-                            help='Check availability using GET_FIRMWARE_VERSION TMCL command.')
+        parser.add_argument('--interactive', dest='interactive', action='store_true',
+                            help='TMCL module-id (default: %(default)s)')
         parsed = parser.parse_known_args(args)[0]
 
-        return ConnectionManager(parsed.interface, parsed.port, parsed.data_rate, parsed.exclude, parsed.host_id, parsed.module_id)
+        params = {
+            "interfaces": parsed.interface,
+            "ports": parsed.port,
+            "data_rates": parsed.data_rate,
+            "exclude": parsed.exclude,
+            "host_ids": parsed.host_id,
+            "module_ids": parsed.module_id
+        }
+
+        if(parsed.interactive):
+            params = ConnectionManager.interactive(params)
+
+        return ConnectionManager(**params)
 
 
     def __init__(self, interfaces=[], ports=[], data_rates=[], exclude=[], host_ids=[], module_ids=[], debug=False):
-        available = self._get_available_interfaces()
+        available = self.get_available_interfaces()
         # Filter for selected interface types
         interfaces = {available[key] for key in interfaces} if interfaces else set(available.values())
         ports = set(ports)
@@ -133,7 +145,7 @@ class ConnectionManager():
                 if(module_ids[i] != "d"):
                     self.configs[i]["module_id"] = module_ids[i]
 
-    def connect(self, debug_interface=None):
+    def connect(self):
 
         connections = set()
         for config in self.configs:
@@ -144,7 +156,7 @@ class ConnectionManager():
         return connections
 
     @staticmethod
-    def _get_available_interfaces():
+    def get_available_interfaces():
         from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
         from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
         from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
@@ -181,6 +193,26 @@ class ConnectionManager():
 
         return portList
 
+    @staticmethod
+    def __interactive
+
+    @staticmethod
+    def interactive(params):
+        while True:
+            print("Available interfaces:")
+            available = ConnectionManager.get_available_interfaces().keys()
+            for i in range(0, len(available)):
+                print("\t[{}] {}".format(i, available[i]))
+            print("Options:")
+            print("\t0 .. {}: Select the n-th interface.".format(len(available)))
+            print("\t<interface_name>: Select the interface with the name <interface_name>.")
+            print("\tr: Refresh list.")
+            print("\tx: Abort selection.")
+            selection = input(": ")
+            if(selection == "r"):
+                continue
+            if(selection)
+
     def __interactivePortSelection(self):
         while True:
             # Get all available ports
@@ -211,10 +243,6 @@ class ConnectionManager():
                         return portList[selection-1]
                     except ValueError:
                         continue;
-
-    @staticmethod
-    def listInterfaces():
-        return [x[0] for x in ConnectionManager._get_available_interfaces()]
 
 if __name__ == "__main__":
     # Test if everything is working correctly
