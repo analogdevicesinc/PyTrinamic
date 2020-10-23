@@ -10,7 +10,7 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.modules.TMCM3110.TMCM_3110 import TMCM_3110
 
 DEFAULT_MOTOR = 0 # Axis: [0;2]
@@ -21,8 +21,7 @@ DEFAULT_MOTOR = 0 # Axis: [0;2]
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType="CANopen")
-network = connectionManager.connect()
+network = ConnectionManagerPC(interfaces=["kvaser_CANopen"]).connect()[0]
 
 node = network.addDs402Node(TMCM_3110.getEdsFile(), 1, TMCM_3110.MOTORS)
 module = node
@@ -130,4 +129,3 @@ while not velocityReached():
 
 network.close()
 print("disconnected.")
-

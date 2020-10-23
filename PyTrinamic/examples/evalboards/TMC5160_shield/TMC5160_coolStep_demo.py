@@ -62,9 +62,8 @@ logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
 logger.debug(f"Maximum current: {args.current[0]}")
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 
 shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
 

@@ -15,9 +15,8 @@ from PyTrinamic.evalboards.TMC2224_eval import TMC2224_eval
 
 PyTrinamic.showInfo()
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 TMC2224 = TMC2224_eval(myInterface)
 
 print("GCONF:       0x{0:08X}".format(TMC2224.readRegister(TMC2224.registers.GCONF)))

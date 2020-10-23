@@ -10,13 +10,12 @@ Created on 07.11.2019
 @author: JM
 '''
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC4361_eval import TMC4361_eval
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 TMC4361 = TMC4361_eval(myInterface)
 
 print("GENERAL_CONF:                             0x{0:08X}".format(TMC4361.readRegister(TMC4361.registers.GENERAL_CONF)))

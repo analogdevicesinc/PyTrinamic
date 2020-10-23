@@ -10,13 +10,12 @@ Created on 04.11.2019
 @author: JM
 '''
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 TMC4671 = TMC4671_eval(myInterface)
 
 print("CHIPINFO_DATA:                     0x{0:08X}".format(TMC4671.readRegister(TMC4671.registers.CHIPINFO_DATA)))

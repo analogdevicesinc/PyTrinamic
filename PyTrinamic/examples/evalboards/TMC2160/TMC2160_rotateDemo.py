@@ -9,12 +9,10 @@ Created on 23.10.2019
 
 import time
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC2160_eval import TMC2160_eval
 
-
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 
 PyTrinamic.showInfo()
 
@@ -35,7 +33,7 @@ time.sleep(1);
 
 print("Moving back to 0")
 TMC2160.moveTo(DEFAULT_MOTOR, 0, 10000)
- 
+
 # Wait until position 0 is reached
 while TMC2160.getAxisParameter(TMC2160.APs.ActualPosition, DEFAULT_MOTOR) != 0:
     pass
