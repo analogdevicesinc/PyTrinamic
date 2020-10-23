@@ -7,7 +7,6 @@ Created on 28.05.2019
 import sys
 import argparse
 
-
 class ConnectionManager():
 
     class InteractiveReturn(object):
@@ -79,32 +78,6 @@ class ConnectionManager():
             except ConnectionError as e:
                 raise ConnectionError("Connection to config {} failed.".format(config)) from e
         return connections
-
-    @staticmethod
-    def get_available_interfaces():
-        from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
-        from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
-        from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
-        from PyTrinamic.connections.kvaser_tmcl_interface import kvaser_tmcl_interface
-        from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
-        from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
-        from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
-        from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
-        from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmcl_interface
-        from PyTrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_interface
-        # All available interfaces
-        return {
-            "dummy_tmcl": dummy_tmcl_interface,
-            "pcan_tmcl": pcan_tmcl_interface,
-            "socketcan_tmcl": socketcan_tmcl_interface,
-            "kvaser_tmcl": kvaser_tmcl_interface,
-            "slcan_tmcl": slcan_tmcl_interface,
-            "serial_tmcl": serial_tmcl_interface,
-            "uart_ic": uart_ic_interface,
-            "usb_tmcl": usb_tmcl_interface,
-            "pcan_CANopen": pcan_CANopen_interface,
-            "kvaser_CANopen": kvaser_CANopen_interface
-        }
 
     def disconnect(self):
         self.__connection.close()
