@@ -15,9 +15,9 @@ class ConnectionManager():
         pass
 
     @staticmethod
-    def from_args(args=None):
+    def from_args(actual_manager, args=None):
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs="*", type=str, choices=ConnectionManager.get_available_interfaces().keys(), default=[],
+        parser.add_argument('--interface', dest='interface', action='store', nargs="*", type=str, choices=actual_manager.get_available_interfaces().keys(), default=[],
                             help='Connection interface (default: %(default)s)')
         parser.add_argument('--port', dest='port', action='store', nargs="*", type=str, default=[],
                             help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
@@ -42,12 +42,10 @@ class ConnectionManager():
             "module_ids": parsed.module_id
         }
 
-        print(parsed.interactive)
-
         if(parsed.interactive):
-            params = ConnectionManager.interactive(params)
+            params = ConnectionManager.interactive(actual_manager, params)
 
-        return ConnectionManager(**params)
+        return actual_manager(**params)
 
 
     def __init__(self, interfaces=[], ports=[], data_rates=[], exclude=[], host_ids=[], module_ids=[], debug=False):
@@ -92,10 +90,10 @@ class ConnectionManager():
         return portList
 
     @staticmethod
-    def __interactive_interface():
+    def __interactive_interface(actual_manager):
         while(True):
             print("Available interfaces:")
-            available = list(ConnectionManager.get_available_interfaces().keys())
+            available = list(actual_manager.get_available_interfaces().keys())
             for i in range(0, len(available)):
                 print("\t[{}] {}".format(i, available[i]))
             print("Options:")
@@ -173,10 +171,10 @@ class ConnectionManager():
             return int(selection)
 
     @staticmethod
-    def interactive(params):
+    def interactive(actual_manager, params):
         while(True):
-            available = ConnectionManager.get_available_interfaces()
-            interface = ConnectionManager.__interactive_interface()
+            available = actual_manager.get_available_interfaces()
+            interface = ConnectionManager.__interactive_interface(actual_manager)
             if(interface == ConnectionManager.InteractiveAbort):
                 break
             else:

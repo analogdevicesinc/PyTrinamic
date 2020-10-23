@@ -13,16 +13,16 @@ _CHANNELS = {
 
 class kvaser_CANopen_interface(CANopen_interface):
 
-    DEFAULT_DATA_RATE = 0
+    DEFAULT_DATA_RATE = 1000000
 
-    def __init__(self, port, data_rate=None, debug=False):
+    def __init__(self, port, data_rate=1000000, debug=False):
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
         super().__init__("kvaser", int(port), data_rate, debug=debug)
 
         self.__channel = str(port)
-        self.__bitrate = self._DATA_RATE
+        self.__bitrate = data_rate
 
     def printInfo(self):
         print("Connection: type=kvaser_CANopen_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))

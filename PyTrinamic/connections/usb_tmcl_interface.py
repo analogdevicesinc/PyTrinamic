@@ -50,7 +50,7 @@ class usb_tmcl_interface(serial_tmcl_interface):
         }
     ]
 
-    def __init__(self, port, data_rate=None, host_id=None, module_id=None, debug=False):
+    def __init__(self, port, data_rate=115200, host_id=2, module_id=1, debug=False):
         super().__init__(port, data_rate, host_id, module_id, debug)
 
     def printInfo(self):
