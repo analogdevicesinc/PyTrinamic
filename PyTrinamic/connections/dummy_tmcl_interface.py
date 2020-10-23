@@ -10,7 +10,7 @@ class dummy_tmcl_interface(tmcl_interface):
 
     DEFAULT_DATA_RATE = 115200
 
-    def __init__(self, port, data_rate=None, host_id=None, module_id=None, debug=True):
+    def __init__(self, port, data_rate=115200, host_id=2, module_id=1, debug=True):
         """
         Opens a dummy TMCL connection
         """
@@ -19,13 +19,13 @@ class dummy_tmcl_interface(tmcl_interface):
 
         del debug
 
-        super().__init__(port, data_rate, host_id, module_id, debug=True)
+        super().__init__(host_id, module_id, debug=True)
 
         if self._debug:
-            print("Opened dummy TMCL interface on port '" + self._PORT + "'")
-            print("\tData rate:  " + str(self._DATA_RATE))
-            print("\tHost ID:    " + str(self._HOST_ID))
-            print("\tModule ID:  " + str(self._MODULE_ID))
+            print("Opened dummy TMCL interface on port '" + port + "'")
+            print("\tData rate:  " + str(data_rate))
+            print("\tHost ID:    " + str(host_id))
+            print("\tModule ID:  " + str(module_id))
 
     def __enter__(self):
         return self

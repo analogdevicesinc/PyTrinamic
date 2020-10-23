@@ -22,21 +22,21 @@ class slcan_tmcl_interface(tmcl_interface):
     DEFAULT_HOST_ID = 2
     DEFAULT_MODULE_ID = 1
 
-    def __init__(self, port, data_rate=None, host_id=None, module_id=None, debug=True, SerialBaudrate=115200):
+    def __init__(self, port, data_rate=1000000, host_id=2, module_id=1, debug=True, SerialBaudrate=115200):
         if type(comPort) != str:
             raise TypeError
 
-        super().__init__(port, data_rate, host_id, module_id, debug)
+        super().__init__(host_id, module_id, debug)
 
         self.__debug    = debug
-        self.__bitrate  = self._DATA_RATE
-        self.__Port  = comPort
+        self.__bitrate  = data_rate
+        self.__Port  = port
         self.__serialBaudrate  = SerialBaudrate
 
 
         try:
-            self.__connection = can.Bus(interface='slcan', channel=self.__Port, bitrate=self.__bitrate,ttyBaudrate=self.__serialBaudrate)
-            self.__connection.set_filters([{ "can_id": hostID, "can_mask": 0x7F }])
+            self.__connection = can.Bus(interface='slcan', channel=self.__Port, bitrate=self.__bitrate, ttyBaudrate=self.__serialBaudrate)
+            self.__connection.set_filters([{ "can_id": host_id, "can_mask": 0x7F }])
 
         except CanError as e:
             self.__connection = None

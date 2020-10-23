@@ -12,9 +12,9 @@ _CHANNELS = {
 
 class pcan_CANopen_interface(CANopen_interface):
 
-    DEFAULT_DATA_RATE = 0
+    DEFAULT_DATA_RATE = 1000000
 
-    def __init__(self, port, data_rate=None, debug=False):
+    def __init__(self, port, data_rate=1000000, debug=False):
         if type(port) != str:
             raise TypeError
 
@@ -24,7 +24,7 @@ class pcan_CANopen_interface(CANopen_interface):
         super().__init__("pcan", port, data_rate, debug=debug)
 
         self.__channel = port
-        self.__bitrate = self._DATA_RATE
+        self.__bitrate = data_rate
 
     def printInfo(self):
         print("Connection: type=pcan_CANopen_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
