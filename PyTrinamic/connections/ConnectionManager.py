@@ -7,90 +7,8 @@ Created on 28.05.2019
 import sys
 import argparse
 
-class interface_config(object):
-
-    def __init__(self, interface=None, port=None, data_rate=None):
-        self.interface = interface
-        self.port = port
-        self.data_rate = data_rate
-
-class interface_config_tmcl(interface_config):
-
-    def __init__(self, interface=None, port=None, data_rate=None, host_id=None, module_id=None):
-        super().__init__(interface, port, data_rate)
-        self.host_id = host_id
-        self.module_id = module_id
-
-class interface_config_canopen(interface_config):
-    def __str__(self):
-        return "interface_config_canopen(\n\tinterface={}, \n\tport={}, \n\tdata_rate={}\n)".format(
-            self.interface, self.port, self.data_rate
-        )
-
 
 class ConnectionManager():
-    """
-    This class provides a centralized way of extracting connection-specific
-    arguments out of a scripts command line arguments and using these to
-    initiate connections.
-
-    The constructor takes a string similar to command line arguments or a list
-    of strings represeting each commandline argument. This allows to directly
-    pass the sys.argv parameter list. If nothing is passed sys.argv is used as
-    default.
-
-    The resulting filters for connections are stored in the instance of this
-    class which allows repeated connect() and disconnect() calls.
-
-    Supported commandline arguments:
-        --interface <interface>
-            Select an interface to use for connections. The possible values for
-            this can be retrieved using the static function
-                ConnectionManager.showInterfaces()
-            which returns a list of interface strings.
-
-            Default value: usb_tmcl
-
-        --port <port>
-            The port to use for connecting. The <port> value can be:
-            - A number:
-                Uses the n-th available port. Starts from 0, supports negative
-                values to start counting from the end of the list of ports.
-            - "any":
-                Use any available port (the first one). Equivalent to using the
-                number 0.
-            - "interactive":
-                Shows an interactive dialoge for selecting the port to use.
-            - Any other string:
-                Attempt to use the provided string to connect with the selected
-                interface directly. E.g. for a serial connection you can use
-                "COM3" on windows or "/dev/tty3" on linux.
-
-            Default value: "any"
-
-        --no-port <no-port>
-            Ports to exclude when choosing a connection. This parameter can be
-            added multiple times. E.g. "COM1" prevents the connection manager to
-            select the port "COM1" for connections when using "any",
-            "interactive" or a number as the --port argument.
-
-        --data-rate <data-rate>
-            The data rate to use for the connection. How this value is
-            interpreted depends on the interface used. E.g. the serial
-            connection uses this value as the baud rate.
-
-            Default value: 115200
-
-        --host-id <host-id>
-            The host id to use with a TMCL connection.
-
-            Default value: 2
-
-        --module-id <module-id>
-            The module id to use with a TMCL connection.
-
-            Default value: 1
-    """
 
     class InteractiveReturn(object):
         pass
@@ -124,6 +42,8 @@ class ConnectionManager():
             "host_ids": parsed.host_id,
             "module_ids": parsed.module_id
         }
+
+        print(parsed.interactive)
 
         if(parsed.interactive):
             params = ConnectionManager.interactive(params)
@@ -199,123 +119,121 @@ class ConnectionManager():
         return portList
 
     @staticmethod
-    def __interactive_interface(params):
+    def __interactive_interface():
         while(True):
             print("Available interfaces:")
-            available = ConnectionManager.get_available_interfaces().keys()
+            available = list(ConnectionManager.get_available_interfaces().keys())
             for i in range(0, len(available)):
                 print("\t[{}] {}".format(i, available[i]))
             print("Options:")
-            print("\t0 .. {}: Select the n-th interface.".format(len(available)))
+            print("\t0 .. {}: Select the n-th interface.".format(max(len(available) - 1, 0)))
             print("\tr: Refresh list.")
             print("\tx: Abort selection.")
             selection = input(": ")
             if(selection == "r"):
                 continue
             elif(selection == "x"):
-                return InteractiveAbort
-            params["interface"].append(available[int(selection)])
-            return params
+                return ConnectionManager.InteractiveAbort
+            return available[int(selection)]
 
     @staticmethod
-    def __interactive_port():
+    def __interactive_port(interface):
         while(True):
             print("Available ports for interface:")
-            available = ConnectionManager.get_available_interfaces().keys()
-            for i in range(0, len(available)):
-                print("\t[{}] {}".format(i, available[i]))
+            ports = list(interface.available_ports())
+            for i in range(0, len(ports)):
+                print("\t[{}] {}".format(i, ports[i]))
             print("Options:")
-            print("\t0 .. {}: Select the n-th interface.".format(len(available)))
+            print("\t0 .. {}: Select the n-th port.".format(max(len(ports) - 1, 0)))
             print("\tr: Refresh list.")
             print("\tx: Abort selection.")
             selection = input(": ")
             if(selection == "r"):
                 continue
             elif(selection == "x"):
-                return InteractiveAbort
-            return available[int(selection)]
+                return ConnectionManager.InteractiveAbort
+            return ports[int(selection)]
+
+    @staticmethod
+    def __interactive_data_rate(interface):
+        while(True):
+            print("Enter the data rate to be used with this connection. Default: {}.".format(interface.DEFAULT_DATA_RATE))
+            print("Options:")
+            print("\tn: Choose n as default data rate.")
+            print("\td: Go with the defaults of this connection interface.")
+            print("\tx: Abort selection.")
+            selection = input(": ")
+            if(selection == "d"):
+                return None
+            elif(selection == "x"):
+                return ConnectionManager.InteractiveAbort
+            return int(selection)
+
+    @staticmethod
+    def __interactive_host_id(interface):
+        while(True):
+            print("Enter the default Host ID to be used with this connection. Default: {}.".format(interface.DEFAULT_HOST_ID))
+            print("Options:")
+            print("\tn: Choose n as default Host ID.")
+            print("\td: Go with the defaults of this connection interface.")
+            print("\tx: Abort selection.")
+            selection = input(": ")
+            if(selection == "d"):
+                return None
+            elif(selection == "x"):
+                return ConnectionManager.InteractiveAbort
+            return int(selection)
+
+    @staticmethod
+    def __interactive_module_id(interface):
+        while(True):
+            print("Enter the default Module ID to be used with this connection. Default: {}.".format(interface.DEFAULT_MODULE_ID))
+            print("Options:")
+            print("\tn: Choose n as default Module ID.")
+            print("\td: Go with the defaults of this connection interface.")
+            print("\tx: Abort selection.")
+            selection = input(": ")
+            if(selection == "d"):
+                return None
+            elif(selection == "x"):
+                return ConnectionManager.InteractiveAbort
+            return int(selection)
 
     @staticmethod
     def interactive(params):
         while(True):
-            params = ConnectionManager.__interactive_interface(params)
-            if(ret == InteractiveAbort):
+            available = ConnectionManager.get_available_interfaces()
+            interface = ConnectionManager.__interactive_interface()
+            if(interface == ConnectionManager.InteractiveAbort):
                 break
             else:
                 params["interfaces"].append(interface)
-            port = ConnectionManager.__interactive_port()
-            if(port == InteractiveAbort):
+            interface = available[interface]
+            port = ConnectionManager.__interactive_port(interface)
+            if(port == ConnectionManager.InteractiveAbort):
                 break
             else:
                 params["ports"].append(port)
-        while True:
-            print("Available interfaces:")
-            available = ConnectionManager.get_available_interfaces().keys()
-            for i in range(0, len(available)):
-                print("\t[{}] {}".format(i, available[i]))
-            print("Options:")
-            print("\t0 .. {}: Select the n-th interface.".format(len(available)))
-            print("\t<interface_name>: Select the interface with the name <interface_name>.")
-            print("\tr: Refresh list.")
-            print("\tx: Abort selection.")
+            data_rate = ConnectionManager.__interactive_data_rate(interface)
+            if(data_rate == ConnectionManager.InteractiveAbort):
+                break
+            elif(type(data_rate) == int):
+                params["data_rates"].append(data_rate)
+            host_id = ConnectionManager.__interactive_host_id(interface)
+            if(host_id == ConnectionManager.InteractiveAbort):
+                break
+            elif(type(host_id) == int):
+                params["host_ids"].append(host_id)
+            module_id = ConnectionManager.__interactive_module_id(interface)
+            if(module_id == ConnectionManager.InteractiveAbort):
+                break
+            elif(type(module_id) == int):
+                params["module_ids"].append(module_id)
 
-    def __interactivePortSelection(self):
-        while True:
-            # Get all available ports
-            portList = self.listConnections()
+            print("Connection parameters: \n{}".format(params))
 
-            print("Available options:")
-            for i, entry in enumerate(portList, 1):
-                print("\t{0:2d}: {1:s}".format(i, entry))
+            another = input("Do you want to add another connection (y/N): ")
+            if(another.lower() != "y"):
+                break
 
-            print("\t x: Abort selection")
-            print("\t r: Refresh list")
-
-            while True:
-                selection = input("Enter your selection: ")
-                print()
-
-                if selection == "r":
-                    # Break out of the inner while True loop
-                    break
-                elif selection == "x":
-                    raise ConnectionError("Port selection aborted by user")
-                else:
-                    try:
-                        selection = int(selection)
-                        if not (1 <= selection <= len(portList)):
-                            raise ValueError
-
-                        return portList[selection-1]
-                    except ValueError:
-                        continue;
-
-if __name__ == "__main__":
-    # Test if everything is working correctly
-
-    print("Verifying interfaces list...\n")
-    for interface in ConnectionManager._get_available_interfaces():
-        if not hasattr(interface[1], "supportsTMCL"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the supportsTMCL() function")
-        if not hasattr(interface[1], "supportsCANopen"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the supportsCANopen() function")
-        if not hasattr(interface[1], "close"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
-        if not hasattr(interface[1], "__enter__"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the __enter__() function")
-        if not hasattr(interface[1], "__exit__"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the __exit__() function")
-        if not hasattr(interface[1], "list"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
-
-    print("List of interfaces: " + str(ConnectionManager.listInterfaces()) + "\n")
-
-    print("Performing test run...\n")
-    connectionManager = ConnectionManager()
-    try:
-        connection = connectionManager.connect()
-        connectionManager.disconnect()
-    except ConnectionError:
-        print("Error: No connections available")
-
-    print("Test run complete")
+        return params
