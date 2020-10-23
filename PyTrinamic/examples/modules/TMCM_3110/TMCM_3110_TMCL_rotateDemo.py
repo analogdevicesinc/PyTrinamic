@@ -8,14 +8,13 @@ Created on 05.06.2020
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.modules.TMCM3110.TMCM_3110 import TMCM_3110
 import time
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 Module_3110 = TMCM_3110(myInterface)
 
 motor = 1

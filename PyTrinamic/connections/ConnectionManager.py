@@ -71,10 +71,10 @@ class ConnectionManager():
 
     def connect(self):
 
-        connections = set()
+        connections = []
         for config in self.configs:
             try:
-                connections.add(config.pop("interface")(**config))
+                connections.append(config.pop("interface")(**config))
             except ConnectionError as e:
                 raise ConnectionError("Connection to config {} failed.".format(config)) from e
         return connections

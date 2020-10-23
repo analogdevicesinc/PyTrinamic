@@ -8,14 +8,13 @@ Created on 03.12.2019
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
 import time
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["pcan_tmcl"]).connect()[0]
 Module_1270 = TMCM_1270(myInterface)
 
 DEFAULT_MOTOR = 0
@@ -31,7 +30,7 @@ time.sleep(5);
 print("Stopping")
 Module_1270.stop()
 
-print("ActualPostion") 
+print("ActualPostion")
 print(Module_1270.getActualPosition())
 time.sleep(5);
 

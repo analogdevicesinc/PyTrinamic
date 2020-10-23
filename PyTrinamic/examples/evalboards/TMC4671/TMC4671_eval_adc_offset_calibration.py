@@ -11,12 +11,11 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
 from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671 as TMC4671_IC
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 
 if myInterface.supportsTMCL():
     # Create an TMC4671-Eval class which communicates over the Landungsbruecke via TMCL
@@ -74,15 +73,15 @@ TMC4671.writeRegister(TMC4671.registers.ADC_RAW_ADDR, 0)
 while ((time.time() - startTime) <= measurementTime):
     measurements += 1
 
-    " read adc values "    
+    " read adc values "
     adc_i0 = TMC4671.readRegisterField(TMC4671.fields.ADC_I0_RAW)
     adc_i1 = TMC4671.readRegisterField(TMC4671.fields.ADC_I1_RAW)
     #print("ADC_I0_Value: %d" % adc_i0)
     #print("ADC_I1_Value: %d" % adc_i1)
     lAdcI0Raw.append(adc_i0)
     lAdcI1Raw.append(adc_i1)
-    
-    " filter offsets " 
+
+    " filter offsets "
     adcI0Mean = np.mean(lAdcI0Raw)
     lAdcI0Filt.append(adcI0Mean)
     adcI1Mean = np.mean(lAdcI1Raw)
@@ -91,7 +90,7 @@ while ((time.time() - startTime) <= measurementTime):
     " update offsets "
     TMC4671.writeRegisterField(TMC4671.fields.ADC_I0_OFFSET, int(adcI0Mean))
     TMC4671.writeRegisterField(TMC4671.fields.ADC_I1_OFFSET, int(adcI1Mean))
-    
+
     " read offsets "
     lAdcI0Offset.append(TMC4671.readRegisterField(TMC4671.fields.ADC_I0_OFFSET))
     lAdcI1Offset.append(TMC4671.readRegisterField(TMC4671.fields.ADC_I1_OFFSET))
