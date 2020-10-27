@@ -51,7 +51,7 @@ class ConnectionManager():
     def __init__(self, interfaces=[], ports=[], data_rates=[], exclude=[], host_ids=[], module_ids=[], debug=False):
         available = self.get_available_interfaces()
         # Filter for selected interface types
-        interfaces = {available[key] for key in interfaces} if interfaces else set(available.values())
+        interfaces = {available[key.lower()] for key in interfaces} if interfaces else set(available.values())
         ports = set(ports)
         self.configs = [{"interface": interface, "port": port} for interface in interfaces for port in (ports.intersection(interface.available_ports()).difference(exclude) if ports else interface.available_ports().difference(exclude))]
         for i in range(0, max(len(data_rates), len(host_ids), len(module_ids))):
