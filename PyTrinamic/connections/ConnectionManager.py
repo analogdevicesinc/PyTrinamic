@@ -71,10 +71,7 @@ class ConnectionManager():
 
         connections = []
         for config in self.configs:
-            try:
-                connections.append(config.pop("interface")(**config))
-            except ConnectionError as e:
-                raise ConnectionError("Connection to config {} failed.".format(config)) from e
+            connections.append(config.pop("interface")(**config))
         return connections
 
     def disconnect(self):
@@ -127,6 +124,8 @@ class ConnectionManager():
 
     @staticmethod
     def __interactive_data_rate(interface):
+        if(not(hasattr(interface, "DEFAULT_DATA_RATE"))):
+            return None
         while(True):
             print("Enter the data rate to be used with this connection. Default: {}.".format(interface.DEFAULT_DATA_RATE))
             print("Options:")
@@ -142,6 +141,8 @@ class ConnectionManager():
 
     @staticmethod
     def __interactive_host_id(interface):
+        if(not(hasattr(interface, "DEFAULT_HOST_ID"))):
+            return None
         while(True):
             print("Enter the default Host ID to be used with this connection. Default: {}.".format(interface.DEFAULT_HOST_ID))
             print("Options:")
@@ -157,6 +158,8 @@ class ConnectionManager():
 
     @staticmethod
     def __interactive_module_id(interface):
+        if(not(hasattr(interface, "DEFAULT_MODULE_ID"))):
+            return None
         while(True):
             print("Enter the default Module ID to be used with this connection. Default: {}.".format(interface.DEFAULT_MODULE_ID))
             print("Options:")
