@@ -8,17 +8,16 @@ Created on 07.02.2020
 if __name__ == '__main__':
     pass
 
-import time
-import PyTrinamic
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMC603.TMC_603 import TMC_603
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
 
+myInterface = ConnectionManager().connect()
 module = TMC_603(myInterface)
-
+module.showModuleInfo()
+motor = module.motor(0)
 """
     Define motor configuration for the TMC603-EVAL.
 
@@ -27,53 +26,56 @@ module = TMC_603(myInterface)
 """
 
 " motor configuration "
-module.setMotorPoles(8)
-module.setMaxTorque(2000)
-module.showMotorConfiguration()
+motor.setMotorPolePairs(4)
+motor.setMaxTorque(2000)
+motor.showConfiguration()
+
+" open loop configuration "
+motor.openLoop.setOpenLoopTorque(1000)
 
 " encoder configuration "
-module.setOpenLoopTorque(1000)
-module.setEncoderResolution(4096)
-module.setEncoderDirection(0)
-module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_0)
-module.showEncoderConfiguration()
+motor.abnEncoder.setResolution(4096)
+#motor.abnEncoder.setResolution(16384)
+motor.abnEncoder.setDirection(0)
+motor.abnEncoder.setInitMode(motor.ENUM.ENCODER_INIT_MODE_0)
+motor.abnEncoder.showConfiguration()
 
 " motion settings "
-module.setMaxVelocity(4000)
-module.setAcceleration(2000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(5)
-module.showMotionConfiguration()
+motor.linearRamp.setMaxVelocity(1000)
+motor.linearRamp.setAcceleration(2000)
+motor.linearRamp.setRampEnabled(1)
+motor.linearRamp.setTargetReachedVelocity(500)
+motor.linearRamp.setTargetReachedDistance(5)
+motor.linearRamp.showConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(500)
-module.setTorqueIParameter(500)
-module.setVelocityPParameter(1000)
-module.setVelocityIParameter(1000)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+motor.pid.setTorquePIParameter(600, 600)
+motor.pid.setVelocityPIParameter(800, 500)
+motor.pid.setPositionPParameter(300)
+motor.pid.showConfiguration()
 
-" set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
+" set commutation mode to FOC based on encoder feedback "
+motor.commutationSelection.setMode(motor.ENUM.COMM_MODE_FOC_ENCODER)
+motor.commutationSelection.showConfiguration()
 
-" set position counter to zero"
-module.setActualPosition(0)
+" clear actual position "
+motor.setActualPosition(0)
 
-" move to zero position"
-module.moveToPosition(0)
+print("move to first position")
+motor.moveToPosition(motor.abnEncoder.resolution() * 50)
 
-print("starting positioning")
-
-module.moveToPosition(1000000)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+" wait for position reached "
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
 
-module.moveToPosition(0)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
+print("move back to zero")
+motor.moveToPosition(0)
+
+" wait for position reached "
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
     time.sleep(0.2)
 
 myInterface.close()
-print("Ready.")
+print("\nReady.")
