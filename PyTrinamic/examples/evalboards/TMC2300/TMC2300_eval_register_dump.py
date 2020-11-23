@@ -15,8 +15,9 @@ from PyTrinamic.evalboards.TMC2300_eval import TMC2300_eval
 
 PyTrinamic.showInfo()
 
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
-myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMC2300 = TMC2300_eval(myInterface)
 
 print("DRVSTATUS_MSTEP:       0x{0:08X}".format(TMC2300.readRegister(TMC2300.registers.DRVSTATUS_MSTEP)))

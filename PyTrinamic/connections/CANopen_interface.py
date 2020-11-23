@@ -8,11 +8,11 @@ import canopen
 
 class CANopen_interface():
 
-    def __init__(self, bustype, channel, data_rate, debug=False):
+    def __init__(self, bustype, channel, bitrate, debug=False):
         self._debug = debug
 
         self.__network = canopen.Network()
-        self.__network.connect(bustype=bustype, channel=channel, bitrate=data_rate)
+        self.__network.connect(bustype=bustype, channel=channel, bitrate=bitrate)
 
         if self._debug:
             print("Opened Channel " + channel)

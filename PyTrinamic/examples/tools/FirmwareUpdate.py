@@ -12,7 +12,7 @@ import re
 import struct
 
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.TMCL import TMCL_Command
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
@@ -33,7 +33,7 @@ except FileNotFoundError:
     print("Error: Hex file not found")
     exit(1)
 
-connectionManager = ConnectionManagerPC(sys.argv)
+connectionManager = ConnectionManager(sys.argv)
 
 ############################### Hex file parsing ###############################
 print("Parsing hex file")
@@ -150,7 +150,7 @@ print()
 ############################## Bootloader entry ################################
 # Connect to the evaluation board
 print("Connecting")
-myInterface = connectionManager.connect()[0]
+myInterface = connectionManager.connect()
 
 # Send the boot command
 print("Switching to bootloader mode")

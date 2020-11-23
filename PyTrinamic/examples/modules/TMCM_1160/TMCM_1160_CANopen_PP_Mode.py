@@ -10,7 +10,7 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1160.TMCM_1160 import TMCM_1160
 
 """
@@ -19,7 +19,8 @@ from PyTrinamic.modules.TMCM1160.TMCM_1160 import TMCM_1160
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-network = ConnectionManagerPC(interfaces=["pcan_CANopen"]).connect()[0]
+connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType ="CANopen")
+network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_1160.getEdsFile(), 1)
 module = node
@@ -34,7 +35,7 @@ objTargetPosition     = module.sdo[0x607A]
 objAcceleration       = module.sdo[0x6083]
 
 if node.is_faulted():
-    node.reset_from_fault() # Reset node from fault and set it to Operation Enable state
+    node.reset_from_fault() # Reset node from fault and set it to Operation Enable state 
 
 def startPP():
 

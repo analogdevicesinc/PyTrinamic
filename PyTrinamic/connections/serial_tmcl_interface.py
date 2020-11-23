@@ -10,24 +10,19 @@ import serial.tools.list_ports;
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
 
 class serial_tmcl_interface(tmcl_interface):
-
-    DEFAULT_DATA_RATE = 115200
-    DEFAULT_HOST_ID = 2
-    DEFAULT_MODULE_ID = 1
-
     """
     Opens a serial TMCL connection
     """
-    def __init__(self, port, data_rate=115200, host_id=2, module_id=1, debug=False):
-        if type(port) != str:
+    def __init__(self, comPort, datarate=115200, hostID=2, moduleID=1, debug=False):
+        if type(comPort) != str:
             raise TypeError;
 
-        super().__init__(host_id, module_id, debug)
+        super().__init__(hostID, moduleID, debug)
 
-        self._baudrate = data_rate
+        self._baudrate = datarate
 
         try:
-            self._serial = Serial(port, self._baudrate)
+            self._serial = Serial(comPort, self._baudrate)
         except SerialException as e:
             raise ConnectionError from e
 
@@ -88,12 +83,15 @@ class serial_tmcl_interface(tmcl_interface):
         return False
 
     @staticmethod
-    def available_ports():
+    def list():
         """
-            Return a set of available connection ports as a list of strings.
+            Return a list of available connection ports as a list of strings.
 
             This function is required for using this interface with the
             connection manager.
         """
+        connected = []
+        for element in sorted(serial.tools.list_ports.comports()):
+            connected.append(element.device)
 
-        return { port.device for port in sorted(serial.tools.list_ports.comports()) }
+        return connected

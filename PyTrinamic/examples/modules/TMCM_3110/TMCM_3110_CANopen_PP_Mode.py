@@ -10,20 +10,21 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM3110.TMCM_3110 import TMCM_3110
 
 DEFAULT_MOTOR = 0 # Axis: [0;2]
 
-"""
+""" 
     Choose the right bustype before starting the script.
     If no connection type is given the default connection type for this script is usb_tmcl.
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-network = ConnectionManagerPC(interfaces=["kvaser_CANopen"]).connect()[0]
+connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType ="CANopen")
+network = connectionManager.connect()
 
-node = network.addDs402Node(TMCM_3110.getEdsFile(), 1, TMCM_3110.MOTORS)
+node = network.addDs402Node(TMCM_3110.getEdsFile(), 1, TMCM_3110.MOTORS)  
 module = node
 
 objMicrostepResolution = []
@@ -112,7 +113,7 @@ def startPP():
 
     if objModesOfOperation[DEFAULT_MOTOR].raw != 1:
         objModesOfOperation[DEFAULT_MOTOR].raw = 1
-        time.sleep(0.1)
+        time.sleep(0.1)    
     print("MODE OF OPERATION SET TO: %d" % objModesOfOperation[DEFAULT_MOTOR].raw)
 
     timeout = time.time() + 15

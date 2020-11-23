@@ -6,12 +6,13 @@ Created on 26.02.2019
 '''
 
 import time
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
 from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671 as TMC4671_IC
 from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
 
-myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 
 if isinstance(myInterface, uart_ic_interface):
     # Create an TMC4671 IC class which communicates directly over UART

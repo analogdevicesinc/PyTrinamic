@@ -8,13 +8,14 @@ Created on 28.02.2019
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM6212.TMCM_6212 import TMCM_6212
 import time
 
 PyTrinamic.showInfo()
 
-myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
+connectionManager = ConnectionManager() # If no Interface is selected , the default interface is usb_tmcl
+myInterface = connectionManager.connect()
 Module_6212 = TMCM_6212(myInterface)
 
 DEFAULT_MOTOR = 0
@@ -30,7 +31,7 @@ time.sleep(5);
 print("Stopping")
 Module_6212.stop()
 
-print("ActualPostion")
+print("ActualPostion") 
 print(Module_6212.getActualPosition())
 time.sleep(5);
 

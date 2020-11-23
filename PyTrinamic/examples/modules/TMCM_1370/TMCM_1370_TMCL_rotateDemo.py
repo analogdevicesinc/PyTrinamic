@@ -8,13 +8,14 @@ Created on 08.07.2020
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1370.TMCM_1370 import TMCM_1370
 import time
 
 PyTrinamic.showInfo()
 
-myInterface = ConnectionManagerPC(interfaces=["serial_tmcl"]).connect()[0]
+connectionManager = ConnectionManager("--interface serial_tmcl")
+myInterface = connectionManager.connect()
 Module_1370 = TMCM_1370(myInterface)
 
 DEFAULT_MOTOR = 0

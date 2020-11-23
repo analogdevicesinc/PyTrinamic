@@ -10,7 +10,7 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM6212.TMCM_6212 import TMCM_6212
 
 DEFAULT_MOTOR = 1 # Axis: [0;5]
@@ -21,7 +21,8 @@ DEFAULT_MOTOR = 1 # Axis: [0;5]
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-network = ConnectionManagerPC(interfaces=["pcan_CANopen"]).connect()[0]
+connectionManager = ConnectionManager("--interface pcan_CANopen", connectionType="CANopen")
+network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_6212.getEdsFile(), 1, TMCM_6212.MOTORS)
 module = node

@@ -15,8 +15,9 @@ from PyTrinamic.evalboards.TMC2660_eval import TMC2660_eval
 
 PyTrinamic.showInfo()
 
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
-myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMC2660 = TMC2660_eval(myInterface)
 
 print("DRVSTATUS_MSTEP:       0x{0:08X}".format(TMC2660.readRegister(TMC2660.registers.DRVSTATUS_MSTEP)))

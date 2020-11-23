@@ -10,12 +10,13 @@ Created on 20.09.2019
 @author: JM
 '''
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC5072_eval import TMC5072_eval
 
 PyTrinamic.showInfo()
 
-myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMC5072 = TMC5072_eval(myInterface)
 
 print("GCONF:          0x{0:08X}".format(TMC5072.readRegister(TMC5072.registers.GCONF)))

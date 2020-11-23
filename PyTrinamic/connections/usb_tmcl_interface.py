@@ -18,10 +18,6 @@ class usb_tmcl_interface(serial_tmcl_interface):
     USB ones.
     """
 
-    DEFAULT_DATA_RATE = 115200
-    DEFAULT_HOST_ID = 2
-    DEFAULT_MODULE_ID = 1
-
     # USB Vendor and Product IDs
     __USB_IDS = [
         { # Landungsbrücke
@@ -50,8 +46,8 @@ class usb_tmcl_interface(serial_tmcl_interface):
         }
     ]
 
-    def __init__(self, port, data_rate=115200, host_id=2, module_id=1, debug=False):
-        super().__init__(port, data_rate, host_id, module_id, debug)
+    def __init__(self, comPort, datarate=115200, hostID=2, moduleID=1, debug=False):
+        super().__init__(comPort, datarate, hostID, moduleID, debug)
 
     def printInfo(self):
         print("Connection: type=usb_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
@@ -61,18 +57,17 @@ class usb_tmcl_interface(serial_tmcl_interface):
         return True
 
     @staticmethod
-    def available_ports():
+    def list():
         """
-            Return a set of available connection ports as a list of strings.
+            Return a list of available connection ports as a list of strings.
 
             This function is required for using this interface with the
             connection manager.
         """
-
-        connected = set()
+        connected = []
         for element in sorted(serial.tools.list_ports.comports()):
             for entry in usb_tmcl_interface.__USB_IDS:
                 if entry["VID"] == element.vid and entry["PID"] == element.pid:
-                    connected.add(element.device)
+                    connected.append(element.device)
 
         return connected

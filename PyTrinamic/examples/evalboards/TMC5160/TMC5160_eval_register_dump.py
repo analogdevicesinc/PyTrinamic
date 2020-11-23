@@ -15,8 +15,9 @@ from PyTrinamic.evalboards.TMC5160_eval import TMC5160_eval
 
 PyTrinamic.showInfo()
 
-from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
-myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
+connectionManager = ConnectionManager()
+myInterface = connectionManager.connect()
 TMC5160 = TMC5160_eval(myInterface)
 
 print("GCONF:         0x{0:08X}".format(TMC5160.readRegister(TMC5160.registers.GCONF)))
