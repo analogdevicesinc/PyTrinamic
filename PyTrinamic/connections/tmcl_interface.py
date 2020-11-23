@@ -30,14 +30,17 @@ class tmcl_interface():
     A subclass may read the _HOST_ID and _MODULE_ID parameters.
     """
 
-    def __init__(self, hostID=2, defaultModuleID=1, debug=False):
+    DEFAULT_HOST_ID = 2
+    DEFAULT_MODULE_ID = 1
+
+    def __init__(self, host_id=None, module_id=None, debug=False):
         """
         Parameters:
-            hostID:
+            host_id:
                 Type: int, optional, default value: 2
                 The ID of the TMCL host. This ID is the same for each module
                 when communicating with multiple modules.
-            defaultModuleID:
+            module_id:
                 Type: int, optional, default value: 1
                 The default module ID to use when no ID is given to any of the
                 tmcl_interface functions. When only communicating with one
@@ -52,15 +55,12 @@ class tmcl_interface():
                 further debug output.
         """
 
-        TMCL.validate_host_id(hostID)
-        TMCL.validate_module_id(defaultModuleID)
-
         if not type(debug) == bool:
             raise TypeError
 
-        self._HOST_ID    = hostID
-        self._MODULE_ID  = defaultModuleID
-        self._debug      = debug
+        self._HOST_ID = host_id if host_id else tmcl_interface.DEFAULT_HOST_ID
+        self._MODULE_ID = module_id if module_id else tmcl_interface.DEFAULT_MODULE_ID
+        self._debug = debug
 
     def _send(self, hostID, moduleID, data):
         """
@@ -88,27 +88,30 @@ class tmcl_interface():
 
         self._debug = enable
 
-    def send_request(self, request, moduleID=None):
+    def send_request(self, request, host_id=None, module_id=None):
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
         """
 
-        if not moduleID:
-            moduleID = self._MODULE_ID
+        if not host_id:
+            host_id = self._HOST_ID
+
+        if not module_id:
+            module_id = self._MODULE_ID
 
         if self._debug:
             request.dump()
 
-        self._send(self._HOST_ID, moduleID, request.toBuffer())
-        reply = TMCL_Reply.from_buffer(self._recv(self._HOST_ID, moduleID))
+        self._send(host_id, module_id, request.toBuffer())
+        reply = TMCL_Reply.from_buffer(self._recv(host_id, module_id))
 
         if self._debug:
             reply.dump()
 
         return reply
 
-    def send(self, opcode, opType, motor, value, moduleID=None):
+    def send(self, opcode, opType, motor, value, host_id=None, module_id=None):
         """
         Send a TMCL datagram and read back a reply. This function blocks until
         the reply has been received.
@@ -117,39 +120,48 @@ class tmcl_interface():
         if not(type(opcode) == type(opType) == type(motor) == type(value) == int):
             raise TypeError("Expected integer values")
 
-        # If no module ID is given, use the default one
-        if not moduleID:
-            moduleID = self._MODULE_ID
+        # If no host ID is given, use the default one
+        if not host_id:
+            host_id = self._HOST_ID
 
-        request = TMCL_Request(moduleID, opcode, opType, motor, value)
+        # If no module ID is given, use the default one
+        if not module_id:
+            module_id = self._MODULE_ID
+
+        request = TMCL_Request(module_id, opcode, opType, motor, value)
 
         if self._debug:
             request.dump()
 
-        self._send(self._HOST_ID, moduleID, request.toBuffer())
-        reply = TMCL_Reply.from_buffer(self._recv(self._HOST_ID, moduleID))
+        self._send(host_id, module_id, request.toBuffer())
+        reply = TMCL_Reply.from_buffer(self._recv(host_id, module_id))
 
         if self._debug:
             reply.dump()
 
         return reply
 
-    def sendBoot(self, moduleID=None):
+    def sendBoot(self, host_id=None, module_id=None):
         """
         Send the command for entering bootloader mode. This TMCL command does
         result in a reply.
         """
-        # If no module ID is given, use the default one
-        if not moduleID:
-            moduleID = self._MODULE_ID
 
-        request = TMCL_Request(moduleID, TMCL_Command.BOOT, 0x81, 0x92, 0xA3B4C5D6)
+        # If no host ID is given, use the default one
+        if not host_id:
+            host_id = self._HOST_ID
+
+        # If no module ID is given, use the default one
+        if not module_id:
+            module_id = self._MODULE_ID
+
+        request = TMCL_Request(module_id, TMCL_Command.BOOT, 0x81, 0x92, 0xA3B4C5D6)
 
         if self._debug:
             request.dump()
 
         # Send the request
-        self._send(self._HOST_ID, moduleID, request.toBuffer())
+        self._send(host_id, module_id, request.toBuffer())
 
     def getVersionString(self, moduleID=None):
         """

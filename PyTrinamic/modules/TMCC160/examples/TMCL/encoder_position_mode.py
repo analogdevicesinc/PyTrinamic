@@ -8,19 +8,19 @@ Created on 04.02.2020
 if __name__ == '__main__':
     pass
 
-import time
-import PyTrinamic
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCC160.TMCC_160 import TMCC_160
 
 PyTrinamic.showInfo()
 
 " please select your CAN adapter "
-#connectionManager = ConnectionManager("--interface pcan_tmcl")
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-myInterface = connectionManager.connect()
+#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 module = TMCC_160(myInterface)
+module.showModuleInfo()
+motor = module.motor(0)
 
 """
     Define motor configurations for the TMCC160-EVAL.
@@ -29,69 +29,57 @@ module = TMCC_160(myInterface)
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
-" motor/module settings "
-module.setMotorPoles(8)
-module.setMaxTorque(2000)
-module.showMotorConfiguration()
+" motor configuration "
+motor.setMotorPolePairs(4)
+motor.setMaxTorque(2000)
+motor.showConfiguration()
 
-" hall configuration "
-module.setHallInvert(0)
-module.showHallConfiguration()
+" open loop configuration "
+motor.openLoop.setOpenLoopTorque(1000)
 
-" encoder settings "
-module.setOpenLoopTorque(1000)
-module.setEncoderResolution(4096)
-module.setEncoderDirection(1)
-module.setEncoderInitMode(module.ENUMs.ENCODER_INIT_MODE_1)
-module.showEncoderConfiguration()
+" encoder configuration "
+motor.abnEncoder.setResolution(4096)
+#motor.abnEncoder.setResolution(16384)
+motor.abnEncoder.setDirection(0)
+motor.abnEncoder.setInitMode(motor.ENUM.ENCODER_INIT_MODE_0)
+motor.abnEncoder.showConfiguration()
 
 " motion settings "
-module.setMaxVelocity(4000)
-module.setAcceleration(2000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(5)
-module.showMotionConfiguration()
+motor.linearRamp.setMaxVelocity(1000)
+motor.linearRamp.setAcceleration(2000)
+motor.linearRamp.setRampEnabled(1)
+motor.linearRamp.setTargetReachedVelocity(500)
+motor.linearRamp.setTargetReachedDistance(5)
+motor.linearRamp.showConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(500)
-module.setTorqueIParameter(500)
-module.setVelocityPParameter(1000)
-module.setVelocityIParameter(1000)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+motor.pid.setTorquePIParameter(600, 600)
+motor.pid.setVelocityPIParameter(800, 500)
+motor.pid.setPositionPParameter(300)
+motor.pid.showConfiguration()
 
-" set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_ENCODER)
+" set commutation mode to FOC based on encoder feedback "
+motor.commutationSelection.setMode(motor.ENUM.COMM_MODE_FOC_ENCODER)
+motor.commutationSelection.showConfiguration()
 
-" set position counter to zero"
-module.setActualPosition(0)
+" clear actual position "
+motor.setActualPosition(0)
 
-print("\nMotor move to first target position")
-module.moveToPosition(40960)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.1)
+print("move to first position")
+motor.moveToPosition(motor.abnEncoder.resolution() * 50)
 
-print("Motor reached first target position")
-time.sleep(1)
+" wait for position reached "
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
+    time.sleep(0.2)
 
-print("\nMotor move to second target position")
-module.moveToPosition(81920)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.1)
+print("move back to zero")
+motor.moveToPosition(0)
 
-print("Motor reached second target position")
-time.sleep(1)
-
-print("\nReturn to zero position")
-module.moveToPosition(0)
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.1)
-
-print("Motor reached zero position")
+" wait for position reached "
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
+    time.sleep(0.2)
 
 myInterface.close()
-print("Ready.")
+print("\nReady.")

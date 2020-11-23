@@ -8,18 +8,19 @@ Created on 04.02.2020
 if __name__ == '__main__':
     pass
 
-import PyTrinamic
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCC160.TMCC_160 import TMCC_160
 
 PyTrinamic.showInfo()
 
 " please select your CAN adapter "
-#connectionManager = ConnectionManager("--interface pcan_tmcl")
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-myInterface = connectionManager.connect()
+#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 module = TMCC_160(myInterface)
+module.showModuleInfo()
+motor = module.motor(0)
 
 """
     Define motor configurations for the TMCC160-EVAL.
@@ -28,38 +29,37 @@ module = TMCC_160(myInterface)
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
-" motor/module settings "
-module.setMotorPoles(8)
-module.setMaxTorque(2000)
-module.showMotorConfiguration()
+" motor configuration "
+motor.setMotorPolePairs(4)
+motor.setMaxTorque(2000)
+motor.showConfiguration()
 
 " hall configuration "
-module.setHallInvert(0)
-module.showHallConfiguration()
+motor.digitalHall.setHallInvert(0)
+motor.digitalHall.showConfiguration()
 
 " motion settings "
-module.setMaxVelocity(4000)
-module.setAcceleration(2000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(5)
-module.showMotionConfiguration()
+motor.linearRamp.setMaxVelocity(4000)
+motor.linearRamp.setAcceleration(2000)
+motor.linearRamp.setRampEnabled(1)
+motor.linearRamp.setTargetReachedVelocity(500)
+motor.linearRamp.setTargetReachedDistance(5)
+motor.linearRamp.showConfiguration()
 
 " PI configuration "
-module.setTorquePParameter(600)
-module.setTorqueIParameter(600)
-module.setVelocityPParameter(800)
-module.setVelocityIParameter(500)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+motor.pid.setTorquePIParameter(600, 600)
+motor.pid.setVelocityPIParameter(800, 500)
+motor.pid.setPositionPParameter(300)
+motor.pid.showConfiguration()
 
 " set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
+motor.commutationSelection.setMode(motor.ENUM.COMM_MODE_FOC_HALL)
+motor.commutationSelection.showConfiguration()
 
-" set position counter to zero"
-module.setActualPosition(0)
+" clear actual position "
+motor.setActualPosition(0)
 
-module.rotate(500)
+motor.rotate(500)
 print("\nCurrent direction: rotate forward")
 print("Press 'input_0' to swap the direction (waiting for input_0)")
 
@@ -68,7 +68,7 @@ while (module.digitalInput(0) == 1):
     pass
 
 " rotate motor in other direction"
-module.rotate(-500)
+motor.rotate(-500)
 print("\nCurrent direction: rotate backwards")
 print("Press 'input_1' to stop the motor (waiting for input_1)")
 
@@ -77,7 +77,7 @@ while (module.digitalInput(1) == 1):
     pass
 
 " stop motor "
-module.rotate(0)
+motor.rotate(0)
 
 myInterface.close()
 print("\nReady.")

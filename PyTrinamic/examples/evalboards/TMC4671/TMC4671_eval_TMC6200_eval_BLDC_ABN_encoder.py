@@ -9,15 +9,14 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
 from PyTrinamic.evalboards.TMC6200_eval import TMC6200_eval
 from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671 as TMC4671_IC
 from PyTrinamic.ic.TMC6200.TMC6200 import TMC6200 as TMC6200_IC
 from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 
 if isinstance(myInterface, uart_ic_interface):
     # Create an TMC4671 IC class which communicates directly over UART

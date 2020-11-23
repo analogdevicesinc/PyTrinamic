@@ -3,218 +3,41 @@ Created on 04.02.2020
 
 @author: JM
 '''
+import PyTrinamic
 
-class TMCC_160():
+" interfaces "
+from PyTrinamic.modules.tmcl_module_interface import tmcl_module_interface
+from PyTrinamic.modules.tmcl_motor_interface import tmcl_motor_interface
 
-    def __init__(self, connection):
-        self.connection = connection
+" features "
+from PyTrinamic.modules.features.open_loop_ap_feature import open_loop_ap_feature
+from PyTrinamic.modules.features.digital_hall_ap_feature import digital_hall_ap_feature
+from PyTrinamic.modules.features.abn_encoder_ap_feature import abn_encoder_ap_feature
+from PyTrinamic.modules.features.linear_ramp_ap_feature import linear_ramp_ap_feature
+from PyTrinamic.modules.features.pid_ap_feature import pid_ap_feature
+from PyTrinamic.modules.features.commutation_selection_ap_feature import commutation_selection_ap_feature
 
-        self.GPs   = _GPs
-        self.APs   = _APs
-        self.ENUMs = _ENUMs
+class TMCC_160(tmcl_module_interface):
+    
+    def __init__(self, connection, moduleID=1):
+        tmcl_module_interface.__init__(self, connection, moduleID)
+        self.GP = _GP
 
-        self.motor = 0
-
+        " add the motor with available features "
+        self._motors.append(TMCC_160_motor_interface(self, 0, PyTrinamic.MotorTypes.BLDC, _AP_MOTOR_0, _ENUM_MOTOR_0)) 
+    
     @staticmethod
     def edsFile():
         return __file__.replace("TMCC_160.py", "TMCC160-CANopen_Hw1.00_Fw3.00.eds")
+    
+    def moduleName(self):
+        return "TMCC-160"
+        
+    def moduleDescription(self):
+        return "The TMCC160 is desinged for evaluating all features of the TMCC160-LC motionCookie. Voltage supply: 7 - 24"
 
-    def showChipInfo(self):
-        ("The TMCC160 is desinged for evaluating all features of the TMCC160-LC motionCookie. Voltage supply: 7 - 24");
 
-    " axis parameter access "
-    def axisParameter(self, apType):
-        return self.connection.axisParameter(apType, self.motor)
-
-    def setAxisParameter(self, apType, value):
-        self.connection.setAxisParameter(apType, self.motor, value)
-
-    " global parameter access "
-    def globalParameter(self, gpType):
-        return self.connection.globalParameter(gpType, self.motor)
-
-    def setGlobalParameter(self, gpType, value):
-        self.connection.setGlobalParameter(gpType, self.motor, value)
-
-    " standard functions "
-    def moveToPosition(self, position):
-        self.setAxisParameter(self.APs.TargetPosition, position)
-
-    def targetPosition(self):
-        return self.axisParameter(self.APs.TargetPosition)
-
-    def actualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
-
-    def setActualPosition(self, position):
-        return self.setAxisParameter(self.APs.ActualPosition, position)
-
-    def rotate(self, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, velocity)
-
-    def actualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
-
-    " helpful functions "
-
-    def maxVelocity(self):
-        return self.axisParameter(self.APs.MaxVelocity)
-
-    def setMaxVelocity(self, maxVelocity):
-        self.setAxisParameter(self.APs.MaxVelocity, maxVelocity)
-
-    def maxTorque(self):
-        return self.axisParameter(self.APs.MaxTorque)
-
-    def setMaxTorque(self, maxTorque):
-        self.setAxisParameter(self.APs.MaxTorque, maxTorque)
-
-    def openLoopTorque(self):
-        return self.axisParameter(self.APs.StartCurrent)
-
-    def setOpenLoopTorque(self, torque):
-        self.setAxisParameter(self.APs.StartCurrent, torque)
-
-    def acceleration(self):
-        return self.axisParameter(self.APs.Acceleration)
-
-    def setAcceleration(self, acceleration):
-        self.setAxisParameter(self.APs.Acceleration, acceleration)
-
-    def targetReachedVelocity(self):
-        return self.axisParameter(self.APs.TargetReachedVelocity)
-
-    def setTargetReachedVelocity(self, velocity):
-        self.setAxisParameter(self.APs.TargetReachedVelocity, velocity)
-
-    def targetReachedDistance(self):
-        return self.axisParameter(self.APs.TargetReachedDistance)
-
-    def setTargetReachedDistance(self, distance):
-        self.setAxisParameter(self.APs.TargetReachedDistance, distance)
-
-    def motorHaltedVelocity(self):
-        return self.axisParameter(self.APs.MotorHaltedVelocity)
-
-    def setMotorHaltedVelocity(self, velocity):
-        self.setAxisParameter(self.APs.MotorHaltedVelocity, velocity)
-
-    def positionReached(self):
-        return ((self.statusFlags() & self.ENUMs.FLAG_POSITION_END) != 0)
-
-    def rampEnabled(self):
-        return self.axisParameter(self.APs.EnableRamp)
-
-    def setRampEnabled(self, enable):
-        self.setAxisParameter(self.APs.EnableRamp, enable)
-
-    def torquePParameter(self):
-        return self.axisParameter(self.APs.TorqueP)
-
-    def setTorquePParameter(self, pValue):
-        self.setAxisParameter(self.APs.TorqueP, pValue)
-
-    def torqueIParameter(self):
-        return self.axisParameter(self.APs.TorqueI)
-
-    def setTorqueIParameter(self, pValue):
-        self.setAxisParameter(self.APs.TorqueI, pValue)
-
-    def velocityPParameter(self):
-        return self.axisParameter(self.APs.VelocityP)
-
-    def setVelocityPParameter(self, pValue):
-        self.setAxisParameter(self.APs.VelocityP, pValue)
-
-    def velocityIParameter(self):
-        return self.axisParameter(self.APs.VelocityI)
-
-    def setVelocityIParameter(self, pValue):
-        self.setAxisParameter(self.APs.VelocityI, pValue)
-
-    def positionPParameter(self):
-        return self.axisParameter(self.APs.PositionP)
-
-    def setPositionPParameter(self, pValue):
-        self.setAxisParameter(self.APs.PositionP, pValue)
-
-    def motorPoles(self):
-        return self.axisParameter(self.APs.MotorPoles)
-
-    def setMotorPoles(self, poles):
-        self.setAxisParameter(self.APs.MotorPoles, poles)
-
-    def hallInvert(self):
-        return self.axisParameter(self.APs.HallSensorInvert)
-
-    def setHallInvert(self, invert):
-        self.setAxisParameter(self.APs.HallSensorInvert, invert)
-
-    def encoderInitMode(self):
-        return self.axisParameter(self.APs.EncoderInitMode)
-
-    def setEncoderInitMode(self, mode):
-        self.setAxisParameter(self.APs.EncoderInitMode, mode)
-
-    def encoderResolution(self):
-        return self.axisParameter(self.APs.EncoderSteps)
-
-    def setEncoderResolution(self, steps):
-        self.setAxisParameter(self.APs.EncoderSteps, steps)
-
-    def encoderDirection(self):
-        return self.axisParameter(self.APs.EncoderDirection)
-
-    def setEncoderDirection(self, direction):
-        self.setAxisParameter(self.APs.EncoderDirection, direction)
-
-    def commutationMode(self):
-        return self.axisParameter(self.APs.CommutationMode)
-
-    def setCommutationMode(self, mode):
-        self.setAxisParameter(self.APs.CommutationMode, mode)
-
-    def statusFlags(self):
-        return self.axisParameter(self.APs.StatusFlags)
-
-    def analogInput(self, x):
-        return self.connection.analogInput(x)
-
-    def digitalInput(self, x):
-        return self.connection.digitalInput(x)
-
-    def showMotorConfiguration(self):
-        print("Motor configuration:")
-        print("\tMotor poles: " + str(self.motorPoles()))
-        print("\tMax torque:  " + str(self.maxTorque()) + " mA")
-
-    def showHallConfiguration(self):
-        print("Hall configuration:")
-        print("\tHall invert: " + str(self.hallInvert()))
-
-    def showEncoderConfiguration(self):
-        print("Encoder configuration:")
-        print("\tOpen loop torque:   " + str(self.openLoopTorque()) + " mA")
-        print("\tEncoder resolution: " + str(self.encoderResolution()))
-        print("\tEncoder direction:  " + str(self.encoderDirection()))
-        print("\tEncoder init mode:  " + str(self.encoderInitMode()))
-
-    def showMotionConfiguration(self):
-        print("Motion configuration:")
-        print("\tMax velocity: " + str(self.maxVelocity()))
-        print("\tAcceleration: " + str(self.acceleration()))
-        print("\tRamp enabled: " + ("disabled" if (self.rampEnabled()==0) else "enabled"))
-        print("\tMotor halted velocity:   " + str(self.motorHaltedVelocity()))
-        print("\tTarget reached velocity: " + str(self.targetReachedVelocity()))
-        print("\tTarget reached distance: " + str(self.targetReachedDistance()))
-
-    def showPIConfiguration(self):
-        print("PI configuration:")
-        print("\tTorque   P: " + str(self.torquePParameter()) + " I: " + str(self.torqueIParameter()))
-        print("\tVelocity P: " + str(self.velocityPParameter()) + " I: " + str(self.velocityIParameter()))
-        print("\tPosition P: " + str(self.positionPParameter()))
-
-class _APs():
+class _AP_MOTOR_0():
     TargetPosition                 = 0
     ActualPosition                 = 1
     TargetVelocity                 = 2
@@ -296,7 +119,7 @@ class _APs():
     HallSensorInvert               = 254
     DriverEnabled                  = 255
 
-class _ENUMs():
+class _ENUM_MOTOR_0():
     COMM_MODE_BLOCK_HALL            = 0
     COMM_MODE_FOC_HALL              = 6
     COMM_MODE_FOC_ENCODER           = 7
@@ -308,7 +131,7 @@ class _ENUMs():
 
     FLAG_POSITION_END               = 0x00004000
 
-class _GPs():
+class _GP():
     serialBaudRate                 = 65
     serialAddress                  = 66
     CANBitRate                     = 69
@@ -322,3 +145,43 @@ class _GPs():
     applicationStatus              = 128
     programCounter                 = 130
     tickTimer                      = 132
+    
+
+class TMCC_160_motor_interface(tmcl_motor_interface):
+    
+    def __init__(self, parent, axisID, motorType, axisParameter, constants):
+        tmcl_motor_interface.__init__(self, parent, axisID, motorType, axisParameter, constants)
+        
+        " add features "
+        
+        self.openLoop = open_loop_ap_feature(self)
+        self.feature.update({"open_loop" : self.openLoop})
+
+        self.digitalHall = digital_hall_ap_feature(self)
+        self.feature.update({"digital_hall" : self.digitalHall})
+
+        self.abnEncoder = abn_encoder_ap_feature(self)
+        self.feature.update({"abn_encoder" : self.abnEncoder})
+
+        self.linearRamp = linear_ramp_ap_feature(self)
+        self.feature.update({"linear_ramp" : self.linearRamp})
+        
+        self.pid = pid_ap_feature(self)
+        self.feature.update({"pid" : self.pid})
+
+        self.commutationSelection = commutation_selection_ap_feature(self)
+        self.feature.update({"commutation_selection" : self.commutationSelection})
+
+    " motor type (BLDC only) "
+    def setMotorType(self, motorType):
+        pass
+    
+    def motorType(self):
+        return PyTrinamic.MotorTypes.BLDC
+
+    " motor pole pairs "
+    def setMotorPolePairs(self, polePairs):
+        self.setAxisParameter(self.AP.MotorPoles, polePairs*2)
+ 
+    def motorPolePairs(self):
+        return int(self.axisParameter(self.AP.MotorPoles)/2)

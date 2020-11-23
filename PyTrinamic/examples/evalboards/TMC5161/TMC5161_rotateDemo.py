@@ -9,12 +9,10 @@ Created on 30.01.2020
 
 import time
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC5161_eval import TMC5161_eval
 
-connectionManager = ConnectionManager()
-
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 
 PyTrinamic.showInfo()
 

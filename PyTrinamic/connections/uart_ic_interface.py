@@ -108,15 +108,15 @@ class uart_ic_interface(connection_interface):
         return False
 
     @staticmethod
-    def list():
+    def available_ports():
         """
-            Return a list of available connection ports as a list of strings.
+            Return a set of available connection ports as a list of strings.
 
             This function is required for using this interface with the
             connection manager.
         """
-        connected = []
+        connected = set()
         for element in sorted(serial.tools.list_ports.comports()):
-            connected.append(element.device)
+            connected.add(element.device)
 
         return connected

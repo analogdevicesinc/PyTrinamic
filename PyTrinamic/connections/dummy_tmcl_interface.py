@@ -8,7 +8,9 @@ from PyTrinamic.connections.tmcl_interface import tmcl_interface
 
 class dummy_tmcl_interface(tmcl_interface):
 
-    def __init__(self, port, datarate=115200, hostID=2, moduleID=1, debug=True):
+    DEFAULT_DATA_RATE = 115200
+
+    def __init__(self, port, data_rate=115200, host_id=2, module_id=1, debug=True):
         """
         Opens a dummy TMCL connection
         """
@@ -17,13 +19,13 @@ class dummy_tmcl_interface(tmcl_interface):
 
         del debug
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug=True)
+        super().__init__(host_id, module_id, debug=True)
 
         if self._debug:
             print("Opened dummy TMCL interface on port '" + port + "'")
-            print("\tData rate:  " + str(datarate))
-            print("\tHost ID:    " + str(hostID))
-            print("\tModule ID:  " + str(moduleID))
+            print("\tData rate:  " + str(data_rate))
+            print("\tHost ID:    " + str(host_id))
+            print("\tModule ID:  " + str(module_id))
 
     def __enter__(self):
         return self
@@ -75,14 +77,8 @@ class dummy_tmcl_interface(tmcl_interface):
         return False
 
     @staticmethod
-    def list():
-        """
-            Return a list of available connection ports as a list of strings.
-
-            This function is required for using this interface with the
-            connection manager.
-        """
-        return ["dummy"]
+    def available_ports():
+        return { "dummy" }
 
 if __name__ == "__main__":
     interface = dummy_tmcl_interface("dummy")

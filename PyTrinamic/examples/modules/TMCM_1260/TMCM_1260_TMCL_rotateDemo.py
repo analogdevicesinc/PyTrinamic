@@ -8,14 +8,13 @@ Created on 07.07.2020
 '''
 
 import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.modules.TMCM1260.TMCM_1260 import TMCM_1260
 import time
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 Module_1260 = TMCM_1260(myInterface)
 
 print("Preparing parameters")

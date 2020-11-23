@@ -10,19 +10,18 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.modules.TMCM6212.TMCM_6212 import TMCM_6212
 
 DEFAULT_MOTOR = 0 # Axis: [0;5]
 
-""" 
+"""
     Choose the right bustype before starting the script.
     If no connection type is given the default connection type for this script is usb_tmcl.
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType ="CANopen")
-network = connectionManager.connect()
+network = ConnectionManagerPC(interfaces=["pcan_CANopen"]).connect()[0]
 
 node = network.addDs402Node(TMCM_6212.getEdsFile(), 1, TMCM_6212.MOTORS)
 module = node
@@ -39,12 +38,12 @@ for i in range(TMCM_6212.MOTORS):
     objActualPositions.append  (module.sdo[0x6064 + i*0x0800])
     objTargetPositions.append  (module.sdo[0x607A + i*0x0800])
     objAccelerations.append    (module.sdo[0x6083 + i*0x0800])
-    
+
 print("state dump 0:")
 for i in range(6):
     print(i, node.states[i])
 print()
-    
+
 print("state dump 1:")
 for i in range(6):
     print(i, node.states[i])
@@ -63,14 +62,14 @@ print("state dump 2:")
 for i in range(6):
     print(i, node.states[i])
 print()
-    
+
 node.states[DEFAULT_MOTOR] = 'SWITCH ON DISABLED'
 
 print("state dump 3:")
 for i in range(6):
     print(i, node.states[i])
 print()
-    
+
 
 def startPP():
 
@@ -80,7 +79,7 @@ def startPP():
     for i in range(6):
         print(node.states[i])
     print()
-    
+
 
     timeout = time.time() + 15
     node.states[DEFAULT_MOTOR] = 'READY TO SWITCH ON'
@@ -93,7 +92,7 @@ def startPP():
     for i in range(6):
         print(node.states[i])
     print()
-        
+
 
     print(node.states[DEFAULT_MOTOR])
 
@@ -108,7 +107,7 @@ def startPP():
 
     if objModesOfOperation[DEFAULT_MOTOR].raw != 1:
         objModesOfOperation[DEFAULT_MOTOR].raw = 1
-        time.sleep(0.1)    
+        time.sleep(0.1)
     print("MODE OF OPERATION SET TO: %d" % objModesOfOperation[DEFAULT_MOTOR].raw)
 
     timeout = time.time() + 15

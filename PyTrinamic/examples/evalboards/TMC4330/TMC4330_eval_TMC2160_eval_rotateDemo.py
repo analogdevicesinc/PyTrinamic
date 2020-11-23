@@ -9,12 +9,11 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.connections.ConnectionManagerPC import ConnectionManagerPC
 from PyTrinamic.evalboards.TMC4330_eval import TMC4330_eval
 from PyTrinamic.evalboards.TMC2160_eval import TMC2160_eval
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManagerPC(interfaces=["usb_tmcl"]).connect()[0]
 
 # Create an TMC4330-Eval class which communicates over the Landungsbruecke via TMCL
 TMC4330 = TMC4330_eval(myInterface)
@@ -51,11 +50,11 @@ time.sleep(3);
 
 print("Moving back to 0")
 TMC4330.moveTo(DEFAULT_MOTOR, 0, 30*25600)
- 
+
 # Wait until position 0 is reached
 while TMC4330.getAxisParameter(TMC4330.APs.ActualPosition, DEFAULT_MOTOR) != 0:
     pass
 
-print("Reached Position 0") 
+print("Reached Position 0")
 
 myInterface.close()
