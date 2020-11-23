@@ -76,11 +76,9 @@ class socket_tmcl_interface(tmcl_interface):
         self.socket.sendall(data)        
 
     def _recv(self, hostID, moduleID):
-        data = self.socket.recv(9)
-        print(data)
+        del hostID, moduleID
+        return self.socket.recv(9)
         
-        return data
-
     def printInfo(self):
         print("Connection: type=socket_tmcl_interface ip=" + self.socket_ip + " port=" + str(self.socket_port))
 
