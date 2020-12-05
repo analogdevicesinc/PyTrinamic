@@ -3,38 +3,20 @@ Created on 22.02.2019
 
 @author: ed
 '''
-import abc
 
-class ic_interface(abc.ABC):
+class ic_interface(object):
 
-    @abc.abstractmethod
-    def register(self):
-        pass
-
-    @abc.abstractmethod
-    def variants(self):
-        pass
-
-    @abc.abstractmethod
-    def maskShift(self):
-        pass
-
-    @abc.abstractmethod
     def showChipInfo(self):
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
-    def writeRegister(self, registerAddress, value):
-        pass
+    def readRegister(self, address):
+        raise NotImplementedError
 
-    @abc.abstractmethod
-    def readRegister(self, registerAddress):
-        pass
+    def writeRegister(self, address, value):
+        raise NotImplementedError
 
-    @abc.abstractmethod
-    def writeRegisterField(self, registerAddress, value, mask, shift):
-        pass
+    def writeRegisterField(self, registerAddress, field, value):
+        return self.writeRegister(field[0], TMC_helpers.field_set(self.readRegister(field[0]), field[1], field[2], value))
 
-    @abc.abstractmethod
-    def readRegisterField(self, registerAddress, mask, shift):
-        pass
+    def readRegisterField(self, registerAddress, field):
+        return TMC_helpers.field_get(self.readRegister(field[0]), field[1], field[2])
