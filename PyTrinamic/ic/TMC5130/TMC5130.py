@@ -129,6 +129,20 @@ class TMC5130(ic_interface):
         else:
             self.writeRegister(self.registers.AMAX, acceleration)
             self.writeRegister(self.registers.A1, acceleration)
+            self.writeRegister(self.registers.DMAX, acceleration)
+            self.writeRegister(self.registers.D1, acceleration)
+
+    def velocity(self, motor, velocity=None):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        if(velocity is None):
+            return self.readRegister(self.registers.VMAX, signed=False)
+        else:
+            self.writeRegister(self.registers.VMAX, velocity)
+            self.writeRegister(self.registers.VSTART, velocity)
+            self.writeRegister(self.registers.V1, velocity)
+            self.writeRegister(self.registers.VSTOP, velocity)
 
     def get_pin_state(self):
         pass
