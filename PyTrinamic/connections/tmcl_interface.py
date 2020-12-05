@@ -88,6 +88,42 @@ class tmcl_interface():
 
         self._debug = enable
 
+    def receive_reply(self, host_id=None, module_id=None):
+        """
+        Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
+        the reply has been received.
+        """
+
+        if not host_id:
+            host_id = self._HOST_ID
+
+        if not module_id:
+            module_id = self._MODULE_ID
+
+        reply = TMCL_Reply.from_buffer(self._recv(host_id, module_id))
+
+        if self._debug:
+            reply.dump()
+
+        return reply
+
+    def send_request_only(self, request, host_id=None, module_id=None):
+        """
+        Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
+        the reply has been received.
+        """
+
+        if not host_id:
+            host_id = self._HOST_ID
+
+        if not module_id:
+            module_id = self._MODULE_ID
+
+        if self._debug:
+            request.dump()
+
+        self._send(host_id, module_id, request.toBuffer())
+
     def send_request(self, request, host_id=None, module_id=None):
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
