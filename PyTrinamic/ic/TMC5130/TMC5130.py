@@ -62,17 +62,19 @@ class TMC5130(ic_interface):
             buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address | self.__WRITE_BIT, value))
         self.__connection.send(buf)
 
-    def readRegister(self, address):
+    def readRegister(self, address, signed=False):
+        value = 0
         if(self.__comm == self.COMM_UART):
             buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_READ, self.__UART_SYNC, self.__slave, address, 0))
             TMC5130.crc(buf)
             self.__connection.send(buf)
             buf = self.__connection.recv(8)
-            return struct.unpack(self.__STRUCT_REGISTER_UART_WRITE, buf)[3]
+            value = struct.unpack(self.__STRUCT_REGISTER_UART_WRITE, buf)[3]
         elif(self.__comm == self.COMM_SPI):
             buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address, 0))
             self.__connection.send_recv(buf, buf)
-            return struct.unpack(self.__STRUCT_REGISTER_SPI, buf)[1]
+            value = struct.unpack(self.__STRUCT_REGISTER_SPI, buf)[1]
+        return TMC_helpers.toSigned32(value) if signed else value
 
     # Motion Control functions
     def rotate(self, motor, value):
@@ -111,6 +113,22 @@ class TMC5130(ic_interface):
         self.moveTo(motor, position + distance, velocity)
 
         return position + distance
+
+    def position(self, motor):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        return self.readRegister(self.registers.XACTUAL, signed=True)
+
+    def acceleration(self, motor, acceleration=None):
+        if not(0 <= motor < self.MOTORS):
+            raise ValueError
+
+        if(acceleration is None):
+            return self.readRegister(self.registers.AMAX, signed=False)
+        else:
+            self.writeRegister(self.registers.AMAX, acceleration)
+            self.writeRegister(self.registers.A1, acceleration)
 
     def get_pin_state(self):
         pass
