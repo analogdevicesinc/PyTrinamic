@@ -2,6 +2,8 @@
 /build/
 /PyTrinamic.egg-info/
 
+*.mpy
+
 *__pycache__*
 
 .metadata/

@@ -7,7 +7,7 @@ Created on 02.01.2019
 from PyTrinamic.ic.ic_interface import ic_interface
 from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
 from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
-from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
+#from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
 from PyTrinamic.helpers import TMC_helpers
 import struct
 
@@ -30,7 +30,7 @@ class TMC5130(ic_interface):
         super().__init__()
 
         self.registers  = TMC5130_register
-        self.fields     = TMC5130_fields
+        #self.fields     = TMC5130_fields
         self.variants   = TMC5130_register_variant
         self.__connection = connection
         self.__comm = comm if (comm is not None) else TMC5130.COMM_SPI
@@ -77,72 +77,37 @@ class TMC5130(ic_interface):
         return TMC_helpers.toSigned32(value) if signed else value
 
     # Motion Control functions
-    def rotate(self, motor, value):
+    def rotate(self, motor, velocity):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        self.writeRegister(self.registers.AMAX, 1000)
-
-        if value >= 0:
-            self.writeRegister(self.registers.VMAX, value)
+        if velocity >= 0:
+            self.writeRegister(self.registers.VMAX, velocity)
             self.writeRegister(self.registers.RAMPMODE, 1)
         else:
-            self.writeRegister(self.registers.VMAX, -value)
+            self.writeRegister(self.registers.VMAX, -velocity)
             self.writeRegister(self.registers.RAMPMODE, 2)
 
     def stop(self, motor):
         self.rotate(motor, 0)
 
-    def moveTo(self, motor, position, velocity):
+    def moveTo(self, motor, position):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
         self.writeRegister(self.registers.RAMPMODE, 0)
 
-        if velocity != 0:
-            self.writeRegister(self.registers.VMAX, velocity)
-
         self.writeRegister(self.registers.XTARGET, position)
 
-    def moveBy(self, motor, distance, velocity):
+    def moveBy(self, motor, distance):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
         position = self.readRegister(self.registers.XACTUAL, signed=True)
 
-        self.moveTo(motor, position + distance, velocity)
+        self.moveTo(motor, position + distance)
 
         return position + distance
-
-    def position(self, motor):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        return self.readRegister(self.registers.XACTUAL, signed=True)
-
-    def acceleration(self, motor, acceleration=None):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        if(acceleration is None):
-            return self.readRegister(self.registers.AMAX, signed=False)
-        else:
-            self.writeRegister(self.registers.AMAX, acceleration)
-            self.writeRegister(self.registers.A1, acceleration)
-            self.writeRegister(self.registers.DMAX, acceleration)
-            self.writeRegister(self.registers.D1, acceleration)
-
-    def velocity(self, motor, velocity=None):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        if(velocity is None):
-            return self.readRegister(self.registers.VMAX, signed=False)
-        else:
-            self.writeRegister(self.registers.VMAX, velocity)
-            self.writeRegister(self.registers.VSTART, velocity)
-            self.writeRegister(self.registers.V1, velocity)
-            self.writeRegister(self.registers.VSTOP, velocity)
 
     def get_pin_state(self):
         pass
