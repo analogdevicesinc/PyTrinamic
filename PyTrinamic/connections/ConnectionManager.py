@@ -100,19 +100,9 @@ class ConnectionManager():
     def __init__(self, argList=None, connectionType="any", debug=False):
         # Attributes
         self.__debug = debug
+
         parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        parser.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in self._INTERFACES], default=['usb_tmcl'],
-                            help='Connection interface (default: %(default)s)')
-        parser.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
-                            help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
-        parser.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
-                            help='Exclude ports')
-        parser.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
-                            help='Connection data-rate (default: %(default)s)')
-        parser.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
-                            help='TMCL host-id (default: %(default)s)')
-        parser.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
-                            help='TMCL module-id (default: %(default)s)')
+        ConnectionManager.argparse(parser)
 
         if(not argList):
             if self.__debug:
@@ -325,6 +315,34 @@ class ConnectionManager():
                         continue;
 
     @staticmethod
+    def argparse(parser):
+        """
+        Add ConnectionManager arguments to a argparse commandline parser
+
+        When using the argparse package to create a command line interface in a
+        script, this function adds the arguments of the ConnectionManager to the
+        argparse parser.
+        """
+        group = parser.add_argument_group("ConnectionManager options")
+        group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in ConnectionManager._INTERFACES], default=['usb_tmcl'],
+                            help='Connection interface (default: %(default)s)')
+        group.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
+                            help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
+        group.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
+                            help='Exclude ports')
+        group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
+                            help='Connection data-rate (default: %(default)s)')
+
+        group = parser.add_argument_group("ConnectionManager TMCL options")
+
+        group.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
+                            help='TMCL host-id (default: %(default)s)')
+        group.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
+                            help='TMCL module-id (default: %(default)s)')
+
+        return parser
+
+    @staticmethod
     def listInterfaces():
         return [x[0] for x in ConnectionManager._INTERFACES]
 
@@ -348,6 +366,7 @@ if __name__ == "__main__":
 
     print("List of interfaces: " + str(ConnectionManager.listInterfaces()) + "\n")
 
+    print("---------------------------------------------------")
     print("Performing test run...\n")
     connectionManager = ConnectionManager()
     try:
@@ -357,3 +376,8 @@ if __name__ == "__main__":
         print("Error: No connections available")
 
     print("Test run complete")
+    print("---------------------------------------------------")
+    print("Showing help...")
+    parser = argparse.ArgumentParser()
+    ConnectionManager.argparse(parser)
+    parser.print_help()
