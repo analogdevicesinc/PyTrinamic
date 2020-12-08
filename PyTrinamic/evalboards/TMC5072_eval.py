@@ -59,6 +59,13 @@ class TMC5072_eval(TMC5072):
 
         self.__connection.move(0, motor, position)
 
+    def moveBy(self, motor, distance, velocity=None):
+        if velocity and velocity != 0:
+            # Set maximum positioning velocity
+            self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
+
+        self.__connection.move(1, motor, distance)
+
 class _APs():
     TargetPosition                 = 0
     ActualPosition                 = 1
