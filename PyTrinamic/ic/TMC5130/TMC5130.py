@@ -4,14 +4,14 @@ Created on 02.01.2019
 @author: ed
 '''
 
-from PyTrinamic.ic.ic_interface import ic_interface
+from PyTrinamic.ic.tmc_ic import tmc_ic
 from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
 from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
 #from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
 from PyTrinamic.helpers import TMC_helpers
 import struct
 
-class TMC5130(ic_interface):
+class TMC5130(tmc_ic):
 
     COMM_UART = 0
     COMM_SPI = 1

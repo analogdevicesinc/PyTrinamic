@@ -4,7 +4,7 @@ Created on 22.02.2019
 @author: ed
 '''
 
-class ic_interface(object):
+class tmc_ic(object):
 
     def showChipInfo(self):
         raise NotImplementedError
