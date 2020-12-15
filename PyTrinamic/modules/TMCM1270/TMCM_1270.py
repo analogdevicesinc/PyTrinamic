@@ -23,10 +23,10 @@ class TMCM_1270():
         ("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V");
 
     # Axis parameter access
-    def getAxisParameter(self, apType):
+    def getAxisParameter(self, apType, axis):
         return self.connection.axisParameter(apType, self.__default_motor)
 
-    def setAxisParameter(self, apType, value):
+    def setAxisParameter(self, apType, axis, value):
         self.connection.setAxisParameter(apType, self.__default_motor, value)
 
     # Global parameter access

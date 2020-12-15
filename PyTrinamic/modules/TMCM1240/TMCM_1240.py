@@ -20,10 +20,10 @@ class TMCM_1240():
         ("The TMCM-1240 is a single axis controller/driver module. Voltage supply: 24V");
 
     " axis parameter access "
-    def getAxisParameter(self, apType, signed=False):
+    def getAxisParameter(self, apType, axis, signed=False):
         return self.connection.axisParameter(apType, self.__default_motor, self.MODULE_ID, signed)
 
-    def setAxisParameter(self, apType, value):
+    def setAxisParameter(self, apType, axis, value):
         self.connection.setAxisParameter(apType, self.__default_motor, value, self.MODULE_ID)
 
     " global parameter access "
@@ -230,21 +230,21 @@ class _GPs():
     input_3                        = 42
     serialBaudRate                 = 65
     serialAddress                  = 66
-    ASCIIMode                      = 67           
+    ASCIIMode                      = 67
     serialHeartbeat                = 68
     telegramPauseTime              = 75
     serialHostAddress              = 76
     autoStartMode                  = 77
-    limitSwitchPolarity            = 79             
+    limitSwitchPolarity            = 79
     protectionMode                 = 81
     eepromCoordinateStore          = 84
     zeroUserVariables              = 85
     serialSecondaryAddress         = 87
-    reverseShaftDirection          = 90            
+    reverseShaftDirection          = 90
     applicationStatus              = 128
     downloadMode                   = 129
     programCounter                 = 130
-    lastTmclError                  = 131        
+    lastTmclError                  = 131
     tickTimer                      = 132
     randomNumber                   = 133
     Intpol                         = 255
