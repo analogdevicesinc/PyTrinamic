@@ -73,14 +73,14 @@ class TMCM_3110():
         self.setAxisParameter(self.APs.MaxCurrent, motor, current)
 
     # StallGuard2 Functions
-    def setStallguard2Filter(self, enableFilter):
-        self.setAxisParameter(self.APs.SG2FilterEnable, enableFilter)
+    def setStallguard2Filter(self, motor, enableFilter):
+        self.setAxisParameter(self.APs.SG2FilterEnable, motor, enableFilter)
 
-    def setStallguard2Threshold(self, threshold):
-        self.setAxisParameter(self.APs.SG2Threshold, threshold)
+    def setStallguard2Threshold(self, motor, threshold):
+        self.setAxisParameter(self.APs.SG2Threshold, motor, threshold)
 
-    def setStopOnStallVelocity(self, velocity):
-        self.setAxisParameter(self.APs.SmartEnergyStallVelocity, velocity)
+    def setStopOnStallVelocity(self, motor, velocity):
+        self.setAxisParameter(self.APs.smartEnergyStallVelocity, motor, velocity)
 
     # Motion parameter functions
     def getTargetPosition(self, motor):
