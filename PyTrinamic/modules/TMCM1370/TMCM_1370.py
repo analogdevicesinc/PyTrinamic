@@ -74,7 +74,7 @@ class TMCM_1370():
         self.setAxisParameter(self.APs.SG2Threshold, threshold)
 
     def setStopOnStallVelocity(self, velocity):
-        self.setAxisParameter(self.APs.SmartEnergyStallVelocity, velocity)
+        self.setAxisParameter(self.APs.smartEnergyStallVelocity, velocity)
 
     # Motion parameter functions
     def getTargetPosition(self):
