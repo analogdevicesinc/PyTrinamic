@@ -43,7 +43,7 @@ class ConnectionManager():
         }
 
         if(parsed.interactive):
-            params = ConnectionManager.interactive(actual_manager, params)
+            params = ConnectionManager._interactive(actual_manager, params)
 
         return actual_manager(**params)
 
@@ -174,7 +174,7 @@ class ConnectionManager():
             return int(selection)
 
     @staticmethod
-    def interactive(actual_manager, params):
+    def _interactive(actual_manager, params):
         while(True):
             available = actual_manager.get_available_interfaces()
             interface = ConnectionManager.__interactive_interface(actual_manager)

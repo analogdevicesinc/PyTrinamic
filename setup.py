@@ -26,6 +26,8 @@ setuptools.setup(
         "pyserial>=3"
     ],
     scripts=[
+        "PyTrinamic/tests/performance/latency.py",
+        "PyTrinamic/tests/performance/throughput.py",
         "PyTrinamic/examples/evalboards/TMC2041/TMC2041_eval_register_dump.py",
         "PyTrinamic/examples/evalboards/TMC2041/TMC2041_rotateDemo.py",
         "PyTrinamic/examples/evalboards/TMC2100/TMC2100_eval_register_dump.py",
