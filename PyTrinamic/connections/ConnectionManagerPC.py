@@ -19,6 +19,19 @@ from PyTrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_inter
 class ConnectionManagerPC(ConnectionManager):
 
     @staticmethod
+    def interactive():
+        params = {
+            "interfaces": [],
+            "ports": [],
+            "data_rates": [],
+            "exclude": [],
+            "host_ids": [],
+            "module_ids": []
+        }
+
+        return ConnectionManagerPC(**ConnectionManager._interactive(ConnectionManagerPC, params))
+
+    @staticmethod
     def from_args(args=None):
         return ConnectionManager.from_args(ConnectionManagerPC, args)
 
