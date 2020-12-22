@@ -37,20 +37,20 @@ class TMCM_1270():
         self.connection.setGlobalParameter(gpType, bank, value)
 
     # Motion Control functions
-    def rotate(self, velocity):
+    def rotate(self, axis, velocity):
         self.setTargetVelocity(velocity)
 
-    def stop(self):
+    def stop(self, axis):
         self.rotate(0)
 
-    def moveTo(self, position, velocity=None):
+    def moveTo(self, axis, position, velocity=None):
         if velocity:
             self.setMaxVelocity(velocity)
 
         self.connection.move(0, self.__default_motor, position)
         self.setTargetPosition(position)
 
-    def moveBy(self, difference, velocity=None):
+    def moveBy(self, axis, difference, velocity=None):
         position = difference + self.getActualPosition()
 
         self.moveTo(position, velocity)
@@ -58,54 +58,54 @@ class TMCM_1270():
         return position
 
     # Current control functions
-    def setMotorRunCurrent(self, current):
+    def setMotorRunCurrent(self, axis, current):
         self.setMaxCurrent(current)
 
-    def setMotorStandbyCurrent(self, current):
+    def setMotorStandbyCurrent(self, axis, current):
         self.setAxisParameter(self.APs.StandbyCurrent, current)
 
-    def getMaxCurrent(self):
+    def getMaxCurrent(self, axis):
         return self.getAxisParameter(self.APs.MaxCurrent)
 
-    def setMaxCurrent(self, current):
+    def setMaxCurrent(self, axis, current):
         self.setAxisParameter(self.APs.MaxCurrent, current)
 
     # StallGuard2 Functions
-    def setStallguard2Filter(self, enableFilter):
+    def setStallguard2Filter(self, axis, enableFilter):
         self.setAxisParameter(self.APs.StallGuard2FilterEnable, enableFilter)
 
-    def setStallguard2Threshold(self, threshold):
+    def setStallguard2Threshold(self, axis, threshold):
         self.setAxisParameter(self.APs.StallGuard2Threshold, threshold)
 
-    def setStopOnStallVelocity(self, velocity):
+    def setStopOnStallVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.StopOnStall, velocity)
 
     # Motion parameter functions
-    def getTargetPosition(self):
+    def getTargetPosition(self, axis):
         return self.getAxisParameter(self.APs.TargetPosition)
 
-    def setTargetPosition(self, position):
+    def setTargetPosition(self, axis, position):
         self.setAxisParameter(self.APs.TargetPosition, position)
 
-    def getActualPosition(self):
+    def getActualPosition(self, axis):
         return self.getAxisParameter(self.APs.ActualPosition)
 
-    def setActualPosition(self, position):
+    def setActualPosition(self, axis, position):
         return self.setAxisParameter(self.APs.ActualPosition, position)
 
-    def getTargetVelocity(self):
+    def getTargetVelocity(self, axis):
         return self.getAxisParameter(self.APs.TargetVelocity)
 
-    def setTargetVelocity(self, velocity):
+    def setTargetVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.TargetVelocity, velocity)
 
-    def getActualVelocity(self):
+    def getActualVelocity(self, axis):
         return self.getAxisParameter(self.APs.ActualVelocity)
 
-    def getMaxVelocity(self):
+    def getMaxVelocity(self, axis):
         return self.getAxisParameter(self.APs.MaxVelocity)
 
-    def setMaxVelocity(self, velocity):
+    def setMaxVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.MaxVelocity, velocity)
 
     def getMaxAcceleration(self):
