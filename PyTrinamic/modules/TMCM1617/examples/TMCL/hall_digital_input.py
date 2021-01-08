@@ -35,7 +35,7 @@ motor.setMotorPolePairs(4)
 motor.setMaxTorque(2000)
 motor.showConfiguration()
 
-" hall configuration "
+" hall sensor configuration "
 motor.digitalHall.setDirection(0)
 motor.digitalHall.setPolarity(1)
 motor.digitalHall.setOffset(0)

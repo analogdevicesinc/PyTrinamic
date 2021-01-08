@@ -10,6 +10,8 @@ class linear_ramp_ap_feature(ABC):
     def __init__(self, parent):
         self._motorInterface = parent
         self._hasMotorHaltedVelocity = True
+        self._hasTargetReachedVelocity = True
+        self._hasTargetReachedDistance = True
             
     def maxVelocity(self):
         return self._motorInterface.axisParameter(self._motorInterface.AP.MaxVelocity)
@@ -29,33 +31,44 @@ class linear_ramp_ap_feature(ABC):
     def setRampEnabled(self, enable):
         self._motorInterface.setAxisParameter(self._motorInterface.AP.EnableRamp, enable)
 
+    def disableTargetReachedVelocity(self):
+        self._hasTargetReachedVelocity = False 
+        
     def targetReachedVelocity(self):
-        return self._motorInterface.axisParameter(self._motorInterface.AP.TargetReachedVelocity)
- 
+        return (self._motorInterface.axisParameter(self._motorInterface.AP.TargetReachedVelocity) if (self._hasTargetReachedVelocity==True) else 500)
+    
     def setTargetReachedVelocity(self, velocity):
-        self._motorInterface.setAxisParameter(self._motorInterface.AP.TargetReachedVelocity, velocity)
+        if self._hasTargetReachedVelocity:
+            self._motorInterface.setAxisParameter(self._motorInterface.AP.TargetReachedVelocity, velocity)
  
+    def disableTargetReachedDistance(self):
+        self._hasTargetReachedDistance = False
+        
     def targetReachedDistance(self):
-        return self._motorInterface.axisParameter(self._motorInterface.AP.TargetReachedDistance)
+        return (self._motorInterface.axisParameter(self._motorInterface.AP.TargetReachedDistance) if (self._hasTargetReachedDistance==True) else 5)
 
     def setTargetReachedDistance(self, distance):
-        self._motorInterface.setAxisParameter(self._motorInterface.AP.TargetReachedDistance, distance)
+        if self._hasTargetReachedDistance:
+            self._motorInterface.setAxisParameter(self._motorInterface.AP.TargetReachedDistance, distance)
 
     def disableMotorHaltedVelocity(self):
         self._hasMotorHaltedVelocity = False 
+
+    def motorHaltedVelocity(self):
+        return (self._motorInterface.axisParameter(self._motorInterface.AP.MotorHaltedVelocity) if (self._hasMotorHaltedVelocity==True) else 50)
 
     def setMotorHaltedVelocity(self, velocity):
         if self._hasMotorHaltedVelocity:
             self._motorInterface.setAxisParameter(self._motorInterface.AP.MotorHaltedVelocity, velocity)
  
-    def motorHaltedVelocity(self):
-        return (self._motorInterface.axisParameter(self._motorInterface.AP.MotorHaltedVelocity) if (self._hasMotorHaltedVelocity==True) else 50)
-
     def showConfiguration(self):
         print("LinearRamp configuration:")
         print("\tMax velocity: " + str(self.maxVelocity()))
         print("\tAcceleration: " + str(self.acceleration()))
         print("\tRamp enabled: " + ("disabled" if (self.rampEnabled()==0) else "enabled"))
-        print("\tMotor halted velocity:   " + str(self.motorHaltedVelocity()))
-        print("\tTarget reached velocity: " + str(self.targetReachedVelocity()))
-        print("\tTarget reached distance: " + str(self.targetReachedDistance()))
+        if self._hasMotorHaltedVelocity:
+            print("\tMotor halted velocity:   " + str(self.motorHaltedVelocity()))
+        if self._hasTargetReachedVelocity:
+            print("\tTarget reached velocity: " + str(self.targetReachedVelocity()))
+        if self._hasTargetReachedDistance:
+            print("\tTarget reached distance: " + str(self.targetReachedDistance()))
