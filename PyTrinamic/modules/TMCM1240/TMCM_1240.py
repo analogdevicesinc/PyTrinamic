@@ -35,20 +35,20 @@ class TMCM_1240():
 
     " motion Control functions "
     def rotate(self, axis, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, axis,  velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
 
     def stop(self, axis):
         self.rotate(axis, 0)
 
     def moveTo(self, axis, position, velocity=None):
         if velocity:
-            self.setMaxVelocity(velocity)
+            self.setMaxVelocity(axis, velocity)
 
         return self.connection.moveTo(axis, position, self.MODULE_ID)
 
     def moveBy(self, axis, difference, velocity=None):
         if velocity:
-            self.setMaxVelocity(velocity)
+            self.setMaxVelocity(axis, velocity)
 
         return self.connection.moveBy(axis, difference, self.MODULE_ID)
 

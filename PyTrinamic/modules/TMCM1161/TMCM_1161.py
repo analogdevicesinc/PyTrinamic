@@ -5,8 +5,9 @@ Created on 21.05.2019
 '''
 
 class TMCM_1161():
-    def __init__(self, connection):
+    def __init__(self, connection, module_id=1):
         self.connection = connection
+        self.MODULE_ID = module_id
 
         self.GPs   = _GPs
         self.APs   = _APs
@@ -20,121 +21,121 @@ class TMCM_1161():
 
     # Axis parameter access
     def getAxisParameter(self, apType, axis, signed=False):
-        return self.connection.axisParameter(apType, self.__default_motor, signed=signed)
+        return self.connection.axisParameter(apType, axis, self.MODULE_ID, signed=signed)
 
     def setAxisParameter(self, apType, axis, value):
-        self.connection.setAxisParameter(apType, self.__default_motor, value)
+        self.connection.setAxisParameter(apType, axis, self.MODULE_ID, value)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
-        return self.connection.globalParameter(gpType, bank)
+        return self.connection.globalParameter(gpType, bank, self.MODULE_ID)
 
     def setGlobalParameter(self, gpType, bank, value):
-        self.connection.setGlobalParameter(gpType, bank, value)
+        self.connection.setGlobalParameter(gpType, bank, value, self.MODULE_ID)
 
     # Motion Control functions
-    def rotate(self, velocity):
-        self.setRampMode(2)
+    def rotate(self, axis, velocity):
+        self.setRampMode(axis, 2)
 
-        self.setAxisParameter(self.APs.TargetVelocity, self.__default_motor, velocity)
+        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
 
-    def stop(self):
-        self.rotate(0)
+    def stop(self, axis):
+        self.rotate(axis, 0)
 
-    def moveTo(self, position, velocity=None):
+    def moveTo(self, axis, position, velocity=None):
         if velocity:
-            self.setMaxVelocity(velocity)
+            self.setMaxVelocity(axis, velocity)
 
-        self.setTargetPosition(position)
+        self.setTargetPosition(axis, position)
 
-        self.setRampMode(0)
+        self.setRampMode(axis, 0)
 
-    def moveBy(self, difference, velocity=None):
-        position = difference + self.getActualPosition()
+    def moveBy(self, axis, difference, velocity=None):
+        position = difference + self.getActualPosition(axis)
 
-        self.moveTo(position, velocity)
+        self.moveTo(axis, position, velocity)
 
         return position
 
     # Current control functions
-    def setMotorRunCurrent(self, current):
-        self.setMaxCurrent(current)
+    def setMotorRunCurrent(self, axis, current):
+        self.setMaxCurrent(axis, current)
 
-    def setMotorStandbyCurrent(self, current):
-        self.setAxisParameter(self.APs.StandbyCurrent, self.__default_motor, current)
+    def setMotorStandbyCurrent(self, axis, current):
+        self.setAxisParameter(self.APs.StandbyCurrent, axis, current)
 
-    def getMaxCurrent(self):
-        return self.getAxisParameter(self.APs.MaxCurrent, self.__default_motor)
+    def getMaxCurrent(self, axis):
+        return self.getAxisParameter(self.APs.MaxCurrent, axis)
 
-    def setMaxCurrent(self, current):
-        self.setAxisParameter(self.APs.MaxCurrent, self.__default_motor,  current)
+    def setMaxCurrent(self, axis, current):
+        self.setAxisParameter(self.APs.MaxCurrent, axis,  current)
 
     # StallGuard2 Functions
-    def setStallguard2Filter(self, enableFilter):
-        self.setAxisParameter(self.APs.SG2FilterEnable, self.__default_motor, enableFilter)
+    def setStallguard2Filter(self, axis, enableFilter):
+        self.setAxisParameter(self.APs.SG2FilterEnable, axis, enableFilter)
 
-    def setStallguard2Threshold(self, threshold):
-        self.setAxisParameter(self.APs.SG2Threshold, self.__default_motor, threshold)
+    def setStallguard2Threshold(self, axis, threshold):
+        self.setAxisParameter(self.APs.SG2Threshold, axis, threshold)
 
-    def setStopOnStallVelocity(self, velocity):
-        self.setAxisParameter(self.APs.SmartEnergyStallVelocity, self.__default_motor, velocity)
+    def setStopOnStallVelocity(self, axis, velocity):
+        self.setAxisParameter(self.APs.SmartEnergyStallVelocity, axis, velocity)
 
     # Motion parameter functions
-    def getTargetPosition(self):
-        return self.getAxisParameter(self.APs.TargetPosition, self.__default_motor, signed=True)
+    def getTargetPosition(self, axis):
+        return self.getAxisParameter(self.APs.TargetPosition, axis, signed=True)
 
-    def setTargetPosition(self, position):
-        self.setAxisParameter(self.APs.TargetPosition, self.__default_motor, position)
+    def setTargetPosition(self, axis, position):
+        self.setAxisParameter(self.APs.TargetPosition, axis, position)
 
-    def getActualPosition(self):
-        return self.getAxisParameter(self.APs.ActualPosition, self.__default_motor, signed=True)
+    def getActualPosition(self, axis):
+        return self.getAxisParameter(self.APs.ActualPosition, axis, signed=True)
 
-    def setActualPosition(self, position):
-        return self.setAxisParameter(self.APs.ActualPosition, self.__default_motor, position)
+    def setActualPosition(self, axis, position):
+        return self.setAxisParameter(self.APs.ActualPosition, axis, position)
 
-    def getTargetVelocity(self):
-        return self.getAxisParameter(self.APs.TargetVelocity, self.__default_motor, signed=True)
+    def getTargetVelocity(self, axis):
+        return self.getAxisParameter(self.APs.TargetVelocity, axis, signed=True)
 
-    def setTargetVelocity(self, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, self.__default_motor, velocity)
+    def setTargetVelocity(self, axis, velocity):
+        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
 
-    def getActualVelocity(self):
-        return self.getAxisParameter(self.APs.ActualVelocity, self.__default_motor, signed=True)
+    def getActualVelocity(self, axis):
+        return self.getAxisParameter(self.APs.ActualVelocity, axis, signed=True)
 
-    def getMaxVelocity(self):
-        return self.getAxisParameter(self.APs.MaxVelocity, self.__default_motor)
+    def getMaxVelocity(self, axis):
+        return self.getAxisParameter(self.APs.MaxVelocity, axis)
 
-    def setMaxVelocity(self, velocity):
-        self.setAxisParameter(self.APs.MaxVelocity, self.__default_motor, velocity)
+    def setMaxVelocity(self, axis, velocity):
+        self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
 
-    def getMaxAcceleration(self):
-        return self.getAxisParameter(self.APs.MaxAcceleration, self.__default_motor)
+    def getMaxAcceleration(self, axis):
+        return self.getAxisParameter(self.APs.MaxAcceleration, axis)
 
-    def setMaxAcceleration(self, acceleration):
-        self.setAxisParameter(self.APs.MaxAcceleration, self.__default_motor, acceleration)
+    def setMaxAcceleration(self, axis, acceleration):
+        self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
 
-    def getRampMode(self):
-        return self.getAxisParameter(self.APs.RampMode, self.__default_motor)
+    def getRampMode(self, axis):
+        return self.getAxisParameter(self.APs.RampMode, axis)
 
-    def setRampMode(self, mode):
-        return self.setAxisParameter(self.APs.RampMode, self.__default_motor, mode)
+    def setRampMode(self, axis, mode):
+        return self.setAxisParameter(self.APs.RampMode, axis, mode)
 
     # Status functions
-    def getStatusFlags(self):
-        return self.getAxisParameter(self.APs.DrvStatusFlags, self.__default_motor)
+    def getStatusFlags(self, axis):
+        return self.getAxisParameter(self.APs.DrvStatusFlags, axis)
 
-    def getErrorFlags(self):
-        return self.getAxisParameter(self.APs.ExtendedErrorFlags, self.__default_motor)
+    def getErrorFlags(self, axis):
+        return self.getAxisParameter(self.APs.ExtendedErrorFlags, axis)
 
     def positionReached(self):
-        return self.getAxisParameter(self.APs.PositionReachedFlag, self.__default_motor)
+        return self.getAxisParameter(self.APs.PositionReachedFlag, axis)
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x)
+        return self.connection.analogInput(x, self.MODULE_ID)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x)
+        return self.connection.digitalInput(x, self.MODULE_ID)
 
 class _APs():
     TargetPosition                 = 0
