@@ -51,6 +51,10 @@ class usb_tmcl_interface(serial_tmcl_interface):
         { # TMC_EvalShield
             "VID": 0x0483,
             "PID": 0x374B
+        },
+        { # TMCM0960
+            "VID": 0xF055,
+            "PID": 0x9800
         }
     ]
 
