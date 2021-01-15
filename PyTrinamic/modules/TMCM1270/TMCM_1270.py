@@ -5,7 +5,7 @@ Created on 03.12.2019
 '''
 
 class TMCM_1270():
-    def __init__(self, connection):
+    def __init__(self, connection, module_id=1):
         self.connection = connection
 
         self.GPs   = _GPs
@@ -13,6 +13,7 @@ class TMCM_1270():
         self.ENUMs = _ENUMs
 
         self.MOTORS = 1
+        self.MODULE_ID = module_id
         self.__default_motor = 0
 
     @staticmethod
@@ -24,17 +25,17 @@ class TMCM_1270():
 
     # Axis parameter access
     def getAxisParameter(self, apType, axis):
-        return self.connection.axisParameter(apType, axis)
+        return self.connection.axisParameter(apType, axis, self.MODULE_ID)
 
     def setAxisParameter(self, apType, axis, value):
-        self.connection.setAxisParameter(apType, axis, value)
+        self.connection.setAxisParameter(apType, axis, value, self.MODULE_ID)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
-        return self.connection.globalParameter(gpType, bank)
+        return self.connection.globalParameter(gpType, bank, self.MODULE_ID)
 
     def setGlobalParameter(self, gpType, bank, value):
-        self.connection.setGlobalParameter(gpType, bank, value)
+        self.connection.setGlobalParameter(gpType, bank, value, self.MODULE_ID)
 
     # Motion Control functions
     def rotate(self, axis, velocity):
@@ -47,7 +48,7 @@ class TMCM_1270():
         if velocity:
             self.setMaxVelocity(axis, velocity)
 
-        self.connection.move(0, axis, position)
+        self.connection.move(0, axis, position, self.MODULE_ID)
         self.setTargetPosition(axis, position)
 
     def moveBy(self, axis, difference, velocity=None):
@@ -132,10 +133,10 @@ class TMCM_1270():
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x)
+        return self.connection.analogInput(x, self.MODULE_ID)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x)
+        return self.connection.digitalInput(x, self.MODULE_ID)
 
     def showMotionConfiguration(self):
         print("Motion configuration:")

@@ -24,7 +24,7 @@ class TMCM_1161():
         return self.connection.axisParameter(apType, axis, self.MODULE_ID, signed=signed)
 
     def setAxisParameter(self, apType, axis, value):
-        self.connection.setAxisParameter(apType, axis, self.MODULE_ID, value)
+        self.connection.setAxisParameter(apType, axis, value, self.MODULE_ID)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
