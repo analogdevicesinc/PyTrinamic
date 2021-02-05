@@ -23,15 +23,33 @@ class TMC5130(tmc_ic):
     __WRITE_BIT = 0x80
     __CRC_POLY = 0b100000111
 
+    __REGISTERS = {
+        "VMAX": 0,
+        "RAMPMODE": 0,
+        "XTARGET": 0,
+        "XACTUAL": 0
+    }
+
     """
     Class for the TMC5130 IC
     """
-    def __init__(self, connection=None, comm=None, slave=0):
+    def __init__(self, connection=None, comm=None, slave=0, registers=True, variants=True, fields=True):
         super().__init__()
 
-        self.registers  = TMC5130_register
-        #self.fields     = TMC5130_fields
-        self.variants   = TMC5130_register_variant
+        if(registers):
+            from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_registers
+            self.registers = TMC5130_registers
+        else:
+            self.registers = type("tmc5130_registers", tuple(), self.__REGISTERS)
+
+        if(variants):
+            from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variants
+            self.variants   = TMC5130_register_variants
+
+        if(fields):
+            from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
+            self.fields     = TMC5130_fields
+        
         self.__connection = connection
         self.__comm = comm if (comm is not None) else TMC5130.COMM_SPI
         self.__slave = slave

@@ -4,7 +4,7 @@ Created on 09.01.2019
 @author: LK
 '''
 
-class TMC5130_register:
+class TMC5130_registers:
     """
     Define all registers of the TMC5130.
 
