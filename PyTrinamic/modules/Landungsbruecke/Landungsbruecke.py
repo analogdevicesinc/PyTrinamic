@@ -4,7 +4,7 @@ Created on 24.07.2019
 @author: LK
 '''
 
-from PyTrinamic.TMCL import TMCL_Command
+from PyTrinamic.TMCL import TMCL
 from PyTrinamic.helpers import EEPROM
 
 class _GPs():
@@ -52,7 +52,7 @@ class Landungsbruecke():
         Start an IDDetection and read out the IDs of the detected boards.
         '''
 
-        while not self.__connection.send(TMCL_Command.ASSIGNMENT, 0, 0, 0).isValid():
+        while not self.__connection.send(TMCL.COMMANDS["ASSIGNMENT"], 0, 0, 0).isValid():
             pass
 
         return self.getBoardIDs()
@@ -73,7 +73,7 @@ class Landungsbruecke():
         return (mcName, drvName)
 
     def _readMcEeprom(self, address):
-        reply = self.__connection.send(TMCL_Command.TMCL_UF1, 1, 0, address)
+        reply = self.__connection.send(TMCL.COMMANDS["TMCL_UF1"], 1, 0, address)
 
         if not reply.isValid():
             raise RuntimeError("Failed to read driver ID EEPROM")
@@ -81,10 +81,10 @@ class Landungsbruecke():
         return reply.value
 
     def _writeMcEeprom(self, address, value):
-        self.__connection.send(TMCL_Command.TMCL_UF2, 1, value, address)
+        self.__connection.send(TMCL.COMMANDS["TMCL_UF2"], 1, value, address)
 
     def _readDrvEeprom(self, address):
-        reply = self.__connection.send(TMCL_Command.TMCL_UF1, 2, 0, address)
+        reply = self.__connection.send(TMCL.COMMANDS["TMCL_UF1"], 2, 0, address)
 
         if not reply.isValid():
             raise RuntimeError("Failed to read driver ID EEPROM")
@@ -92,7 +92,7 @@ class Landungsbruecke():
         return reply.value
 
     def _writeDrvEeprom(self, address, value):
-        self.__connection.send(TMCL_Command.TMCL_UF2, 2, value & 0xFF, address)
+        self.__connection.send(TMCL.COMMANDS["TMCL_UF2"], 2, value & 0xFF, address)
 
     mcIdNames = {
         0  : "None",

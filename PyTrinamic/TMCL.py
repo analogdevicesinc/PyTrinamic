@@ -9,6 +9,74 @@ import struct
 _PACKAGE_STRUCTURE = ">BBBBIB"
 
 class TMCL(object):
+
+    COMMANDS = {
+        "ROR": 1,
+        "ROL": 2,
+        "MST": 3,
+        "MVP": 4,
+        "SAP": 5,
+        "GAP": 6,
+        "STAP": 7,
+        "RSAP": 8,
+        "SGP": 9,
+        "GGP": 10,
+        "STGP": 11,
+        "RSGP": 12,
+        "RFS": 13,
+        "SIO": 14,
+        "GIO": 15,
+        "CALC": 19,
+        "COMP": 20,
+        "JC": 21,
+        "JA": 22,
+        "CSUB": 23,
+        "RSUB": 24,
+        "WAIT": 27,
+        "STOP": 28,
+        "SAC": 29,
+        "SCO": 30,
+        "GCO": 31,
+        "CCO": 32,
+        "CALCX": 33,
+        "AAP": 34,
+        "AGP": 35,
+        "CLE": 36,
+        "TMCL_UF0": 64,
+        "TMCL_UF1": 65,
+        "TMCL_UF2": 66,
+        "TMCL_UF3": 67,
+        "TMCL_UF4": 68,
+        "TMCL_UF5": 69,
+        "TMCL_UF6": 70,
+        "TMCL_UF7": 71,
+        "STOP_APPLICATION": 128,
+        "RUN_APPLICATION": 129,
+        "STEP_APPLICATION": 130,
+        "RESET_APPLICATION": 131,
+        "START_DOWNLOAD_MODE": 132,
+        "QUIT_DOWNLOAD_MODE": 133,
+        "READ_TMCL_MEMORY": 134,
+        "GET_APPLICATION_STATUS": 135,
+        "GET_FIRMWARE_VERSION": 136,
+        "RESTORE_FACTORY_SETTINGS": 137,
+        "REQUEST_TARGET_REACHED": 138,
+        "ASSIGNMENT": 143,
+        "WRITE_MC": 146,
+        "WRITE_DRV": 147,
+        "READ_MC": 148,
+        "READ_DRV": 149,
+        "BOOT_ERASE_ALL": 200,
+        "BOOT_WRITE_BUFFER": 201,
+        "BOOT_WRITE_PAGE": 202,
+        "BOOT_GET_CHECKSUM": 203,
+        "BOOT_READ_MEMORY": 204,
+        "BOOT_START_APPL": 205,
+        "BOOT_GET_INFO": 206,
+        "BOOT_WRITE_LENGTH": 208,
+        "BOOT": 242
+    }
+
     @staticmethod
     def validate_host_id(host_id):
         if(not(type(host_id) == int)):
@@ -30,72 +98,6 @@ class TMCL(object):
             checksum += d
         checksum %= 256
         return checksum
-
-class TMCL_Command(object):
-    ROR                         = 1
-    ROL                         = 2
-    MST                         = 3
-    MVP                         = 4
-    SAP                         = 5
-    GAP                         = 6
-    STAP                        = 7
-    RSAP                        = 8
-    SGP                         = 9
-    GGP                         = 10
-    STGP                        = 11
-    RSGP                        = 12
-    RFS                         = 13
-    SIO                         = 14
-    GIO                         = 15
-    CALC                        = 19
-    COMP                        = 20
-    JC                          = 21
-    JA                          = 22
-    CSUB                        = 23
-    RSUB                        = 24
-    WAIT                        = 27
-    STOP                        = 28
-    SAC                         = 29
-    SCO                         = 30
-    GCO                         = 31
-    CCO                         = 32
-    CALCX                       = 33
-    AAP                         = 34
-    AGP                         = 35
-    CLE                         = 36
-    TMCL_UF0                    = 64
-    TMCL_UF1                    = 65
-    TMCL_UF2                    = 66
-    TMCL_UF3                    = 67
-    TMCL_UF4                    = 68
-    TMCL_UF5                    = 69
-    TMCL_UF6                    = 70
-    TMCL_UF7                    = 71
-    STOP_APPLICATION            = 128
-    RUN_APPLICATION             = 129
-    STEP_APPLICATION            = 130
-    RESET_APPLICATION           = 131
-    START_DOWNLOAD_MODE         = 132
-    QUIT_DOWNLOAD_MODE          = 133
-    READ_TMCL_MEMORY            = 134
-    GET_APPLICATION_STATUS      = 135
-    GET_FIRMWARE_VERSION        = 136
-    RESTORE_FACTORY_SETTINGS    = 137
-    ASSIGNMENT                  = 143
-    WRITE_MC                    = 146
-    WRITE_DRV                   = 147
-    READ_MC                     = 148
-    READ_DRV                    = 149
-
-    BOOT_ERASE_ALL              = 200
-    BOOT_WRITE_BUFFER           = 201
-    BOOT_WRITE_PAGE             = 202
-    BOOT_GET_CHECKSUM           = 203
-    BOOT_READ_MEMORY            = 204
-    BOOT_START_APPL             = 205
-    BOOT_GET_INFO               = 206
-    BOOT_WRITE_LENGTH           = 208
-    BOOT                        = 242
 
 class TMCL_Status(object):
     SUCCESS               = 100
@@ -153,6 +155,16 @@ class TMCL_Request(TMCL):
     def dump(self):
         print(self)
 
+    def disassemble(self):
+        # <instr> <type>, <motor>, <value>, <module>
+        return "{} {}, {}, {}, {}".format(
+            [mn for mn,no in self.COMMANDS.items() if no == self.command][0],
+            self.commandType,
+            self.motorBank,
+            self.value,
+            self.moduleAddress
+        )
+
 class TMCL_Reply(TMCL):
     def __init__(self, reply_address, module_address, status, command, value, checksum=None, special=False):
         self.reply_address  = reply_address  & 0xFF
@@ -179,7 +191,7 @@ class TMCL_Reply(TMCL):
                            self.status, self.command, self.value, self.checksum)
 
     def __str__(self):
-        return "TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}".format(
+        return "TMCL_Reply: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}".format(
             self.reply_address,
             self.module_address,
             self.status,
@@ -190,6 +202,11 @@ class TMCL_Reply(TMCL):
 
     def dump(self):
         print(self)
+
+    def disassemble(self):
+        # This is the string representation after a sent request.
+        # Therefore only the actual value and module id are required (for multi-module busses).
+        return "TMCL_Reply: Module {}, Value {}".format(self.module_address, self.value)
 
     def value(self):
         return self.value
