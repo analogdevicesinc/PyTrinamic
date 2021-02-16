@@ -26,6 +26,8 @@ class serial_tmcl_interface(tmcl_interface):
         except SerialException as e:
             raise ConnectionError from e
 
+        self._serial.timeout = 5
+
         if self._debug:
             print("Open port: " + self._serial.portstr)
 
@@ -66,7 +68,18 @@ class serial_tmcl_interface(tmcl_interface):
         """
         del hostID, moduleID
 
-        return self._serial.read(9)
+        data = self._serial.read(9)
+
+        if len(data) != 9:
+            raise RuntimeError("TMCL datagram timed out")
+
+        return data
+
+    def set_timeout(self, timeout):
+        self._serial.timeout = timeout if timeout != 0 else None
+
+    def get_timeout(self):
+        return self._serial.timeout
 
     def printInfo(self):
         print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
