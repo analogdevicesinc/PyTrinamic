@@ -23,13 +23,6 @@ class TMC5130(tmc_ic):
     __WRITE_BIT = 0x80
     __CRC_POLY = 0b100000111
 
-    __REGISTERS = {
-        "VMAX": 0,
-        "RAMPMODE": 0,
-        "XTARGET": 0,
-        "XACTUAL": 0
-    }
-
     """
     Class for the TMC5130 IC
     """
@@ -39,8 +32,6 @@ class TMC5130(tmc_ic):
         if(registers):
             from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_registers
             self.registers = TMC5130_registers
-        else:
-            self.registers = type("tmc5130_registers", tuple(), self.__REGISTERS)
 
         if(variants):
             from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variants
@@ -49,7 +40,7 @@ class TMC5130(tmc_ic):
         if(fields):
             from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
             self.fields     = TMC5130_fields
-        
+
         self.__connection = connection
         self.__comm = comm if (comm is not None) else TMC5130.COMM_SPI
         self.__slave = slave
@@ -59,7 +50,7 @@ class TMC5130(tmc_ic):
     @staticmethod
     def crc(buf):
         for b in buf[:-1]:
-            current = b#TMC5130.__reverse_byte(b)
+            current = b
             for i in range(0, 8):
                 if((buf[-1] >> 7) ^ (current & 0x01)):
                     buf[-1] = (buf[-1] << 1) ^ 0x07

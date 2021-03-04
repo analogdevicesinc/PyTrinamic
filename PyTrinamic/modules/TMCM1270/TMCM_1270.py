@@ -109,26 +109,20 @@ class TMCM_1270():
     def setMaxVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
 
-    def getMaxAcceleration(self):
+    def getMaxAcceleration(self, axis):
         return self.getAxisParameter(self.APs.MaxAcceleration, axis)
 
-    def setMaxAcceleration(self, acceleration):
+    def setMaxAcceleration(self, axis, acceleration):
         self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
 
-    def getRampMode(self):
-        return self.getAxisParameter(self.APs.RampMode, axis)
-
-    def setRampMode(self, mode):
-        return self.setAxisParameter(self.APs.RampMode, axis, mode)
-
     # Status functions
-    def getStatusFlags(self):
+    def getStatusFlags(self, axis):
         return self.getAxisParameter(self.APs.TMC262ErrorFlags, axis)
 
-    def getErrorFlags(self):
+    def getErrorFlags(self, axis):
         return self.getAxisParameter(self.APs.ExtendedErrorFlags, axis)
 
-    def positionReached(self):
+    def positionReached(self, axis):
         return self.getAxisParameter(self.APs.PositionReachedFlag, axis)
 
     # IO pin functions
@@ -142,7 +136,6 @@ class TMCM_1270():
         print("Motion configuration:")
         print("\tMax velocity: " + str(self.getMaxVelocity(axis)))
         print("\tAcceleration: " + str(self.getMaxAcceleration(axis)))
-        print("\tRamp mode: " + ("position" if (self.getRampMode(axis)==0) else "velocity"))
 
 class _APs():
     TargetPosition                 = 0
