@@ -62,7 +62,8 @@ class TMC5130(tmc_ic):
     def showChipInfo(self):
         print("TMC5130 chip info: The TMC5130/A is a high-performance stepper motor controller and driver IC with serial communication interfaces. Voltage supply: 4,75 - 46V")
 
-    def writeRegister(self, address, value):
+    def writeRegister(self, axis, address, value):
+        del axis
         buf = bytearray(0)
         if(self.__comm == self.COMM_UART):
             buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_WRITE, self.__UART_SYNC, self.__slave, address | self.__WRITE_BIT, value, 0))
@@ -71,7 +72,8 @@ class TMC5130(tmc_ic):
             buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address | self.__WRITE_BIT, value))
         self.__connection.send(buf)
 
-    def readRegister(self, address, signed=False):
+    def readRegister(self, axis, address, signed=False):
+        del axis
         value = 0
         if(self.__comm == self.COMM_UART):
             buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_READ, self.__UART_SYNC, self.__slave, address, 0))
@@ -91,11 +93,11 @@ class TMC5130(tmc_ic):
             raise ValueError
 
         if velocity >= 0:
-            self.writeRegister(self.registers.VMAX, velocity)
-            self.writeRegister(self.registers.RAMPMODE, 1)
+            self.writeRegister(0, self.registers.VMAX, velocity)
+            self.writeRegister(0, self.registers.RAMPMODE, 1)
         else:
-            self.writeRegister(self.registers.VMAX, -velocity)
-            self.writeRegister(self.registers.RAMPMODE, 2)
+            self.writeRegister(0, self.registers.VMAX, -velocity)
+            self.writeRegister(0, self.registers.RAMPMODE, 2)
 
     def stop(self, motor):
         self.rotate(motor, 0)
@@ -104,15 +106,15 @@ class TMC5130(tmc_ic):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        self.writeRegister(self.registers.RAMPMODE, 0)
+        self.writeRegister(0, self.registers.RAMPMODE, 0)
 
-        self.writeRegister(self.registers.XTARGET, position)
+        self.writeRegister(0, self.registers.XTARGET, position)
 
     def moveBy(self, motor, distance):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        position = self.readRegister(self.registers.XACTUAL, signed=True)
+        position = self.readRegister(0, self.registers.XACTUAL, signed=True)
 
         self.moveTo(motor, position + distance)
 

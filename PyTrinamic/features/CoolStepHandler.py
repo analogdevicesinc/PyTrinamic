@@ -6,10 +6,10 @@ import logging
 import time
 
 import PyTrinamic
-from PyTrinamic.features.Feature import Feature
+from PyTrinamic.features.FeatureHandler import FeatureHandler
 from PyTrinamic.features.StallGuard import StallGuard
 
-class CoolStep(Feature):
+class CoolStepHandler(FeatureHandler):
 
     def __init__(self, module, argList=None, logger=logging.getLogger(__name__)):
         super().__init__(module)
@@ -62,7 +62,7 @@ class CoolStep(Feature):
         self._module.setAxisParameter(self._module.APs.smartEnergyThresholdSpeed, 0, args.velocity[0] + 1)
 
     def calibrate(self):
-        StallGuard(self._module, self.__arglist, self.__logger).calibrate_middle()
+        StallGuardHandler(self._module, self.__arglist, self.__logger).calibrate_middle()
 
         if(self.__interactive):
             print("Now, apply some load to the motor, at which you want the current to increase automatically.")

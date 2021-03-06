@@ -4,7 +4,12 @@ Created on 03.12.2019
 @author: JM
 '''
 
-class TMCM_1270():
+from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
+from PyTrinamic.motor import motor
+
+class TMCM_1270(StallGuard2Module):
+
     def __init__(self, connection, module_id=1):
         self.connection = connection
 
@@ -12,7 +17,10 @@ class TMCM_1270():
         self.APs   = _APs
         self.ENUMs = _ENUMs
 
-        self.MOTORS = 1
+        self.MOTORS = [
+            motor(0, self, features=[StallGuard2Motor])
+        ]
+
         self.MODULE_ID = module_id
         self.__default_motor = 0
 
@@ -70,16 +78,6 @@ class TMCM_1270():
 
     def setMaxCurrent(self, axis, current):
         self.setAxisParameter(self.APs.MaxCurrent, axis, current)
-
-    # StallGuard2 Functions
-    def setStallguard2Filter(self, axis, enableFilter):
-        self.setAxisParameter(self.APs.StallGuard2FilterEnable, axis, enableFilter)
-
-    def setStallguard2Threshold(self, axis, threshold):
-        self.setAxisParameter(self.APs.StallGuard2Threshold, axis, threshold)
-
-    def setStopOnStallVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.StopOnStall, axis, velocity)
 
     # Motion parameter functions
     def getTargetPosition(self, axis):
@@ -179,16 +177,16 @@ class _APs():
     TOff                           = 167
     SEIMIN                         = 168
     SECDS                          = 169
-    smartEnergyHysteresis          = 170
+    SmartEnergyHysteresis          = 170
     SECUS                          = 171
-    smartEnergyHysteresisStart     = 172
+    SmartEnergyHysteresisStart     = 172
     SG2FilterEnable                = 173
     SG2Threshold                   = 174
     ShortToGroundProtection        = 177
     VSense                         = 179
-    smartEnergyActualCurrent       = 180
-    smartEnergyStallVelocity       = 181
-    smartEnergyThresholdSpeed      = 182
+    SmartEnergyActualCurrent       = 180
+    SmartEnergyStallVelocity       = 181
+    SmartEnergyThresholdSpeed      = 182
     RandomTOffMode                 = 184
     ChopperSynchronization         = 185
     PWMThresholdSpeed              = 186
