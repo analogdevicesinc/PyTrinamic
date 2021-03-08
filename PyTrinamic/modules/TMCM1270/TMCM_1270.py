@@ -9,9 +9,11 @@ from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.LinearRampMotor import LinearRampMotor
+from PyTrinamic.features.MotorControl import MotorControl
+from PyTrinamic.features.MotorControlMotor import MotorControlMotor
 from PyTrinamic.MotorManager import MotorManager
 
-class TMCM_1270(tmcl_module, LinearRampModule, StallGuard2Module):
+class TMCM_1270(tmcl_module, LinearRampModule, MotorControl, StallGuard2Module):
 
     def __init__(self, connection, module_id=1):
         tmcl_module.__init__(self, connection, module_id)
@@ -21,7 +23,7 @@ class TMCM_1270(tmcl_module, LinearRampModule, StallGuard2Module):
         self.ENUMs = _ENUMs
 
         self.MOTORS = [
-            MotorManager.motor(0, self, features=[LinearRampMotor, StallGuard2Motor])
+            MotorManager.motor(0, self, features=[LinearRampMotor, MotorControlMotor, StallGuard2Motor])
         ]
 
     @staticmethod
