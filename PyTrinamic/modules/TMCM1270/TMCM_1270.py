@@ -7,9 +7,11 @@ Created on 03.12.2019
 from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
+from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.LinearRampMotor import LinearRampMotor
 from PyTrinamic.MotorManager import MotorManager
 
-class TMCM_1270(tmcl_module, StallGuard2Module):
+class TMCM_1270(tmcl_module, LinearRampModule, StallGuard2Module):
 
     def __init__(self, connection, module_id=1):
         tmcl_module.__init__(self, connection, module_id)
@@ -19,7 +21,7 @@ class TMCM_1270(tmcl_module, StallGuard2Module):
         self.ENUMs = _ENUMs
 
         self.MOTORS = [
-            MotorManager.motor(0, self, features=[StallGuard2Motor])
+            MotorManager.motor(0, self, features=[LinearRampMotor, StallGuard2Motor])
         ]
 
     @staticmethod
@@ -62,40 +64,6 @@ class TMCM_1270(tmcl_module, StallGuard2Module):
 
     def setMaxCurrent(self, axis, current):
         self.setAxisParameter(self.APs.MaxCurrent, axis, current)
-
-    # Motion parameter functions
-    def getTargetPosition(self, axis):
-        return self.axisParameter(self.APs.TargetPosition, axis)
-
-    def setTargetPosition(self, axis, position):
-        self.setAxisParameter(self.APs.TargetPosition, axis, position)
-
-    def getActualPosition(self, axis):
-        return self.axisParameter(self.APs.ActualPosition, axis)
-
-    def setActualPosition(self, axis, position):
-        return self.setAxisParameter(self.APs.ActualPosition, axis, position)
-
-    def getTargetVelocity(self, axis):
-        return self.axisParameter(self.APs.TargetVelocity, axis)
-
-    def setTargetVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
-
-    def getActualVelocity(self, axis):
-        return self.axisParameter(self.APs.ActualVelocity, axis)
-
-    def getMaxVelocity(self, axis):
-        return self.axisParameter(self.APs.MaxVelocity, axis)
-
-    def setMaxVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
-
-    def getMaxAcceleration(self, axis):
-        return self.axisParameter(self.APs.MaxAcceleration, axis)
-
-    def setMaxAcceleration(self, axis, acceleration):
-        self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
 
     # Status functions
     def getStatusFlags(self, axis):
