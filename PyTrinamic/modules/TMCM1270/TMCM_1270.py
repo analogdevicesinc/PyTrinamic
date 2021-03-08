@@ -4,25 +4,23 @@ Created on 03.12.2019
 @author: JM
 '''
 
+from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
-from PyTrinamic.motor import motor
+from PyTrinamic.MotorManager import MotorManager
 
-class TMCM_1270(StallGuard2Module):
+class TMCM_1270(tmcl_module, StallGuard2Module):
 
     def __init__(self, connection, module_id=1):
-        self.connection = connection
+        tmcl_module.__init__(self, connection, module_id)
 
         self.GPs   = _GPs
         self.APs   = _APs
         self.ENUMs = _ENUMs
 
         self.MOTORS = [
-            motor(0, self, features=[StallGuard2Motor])
+            MotorManager.motor(0, self, features=[StallGuard2Motor])
         ]
-
-        self.MODULE_ID = module_id
-        self.__default_motor = 0
 
     @staticmethod
     def getEdsFile():
@@ -30,20 +28,6 @@ class TMCM_1270(StallGuard2Module):
 
     def showChipInfo(self):
         ("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V");
-
-    # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        return self.connection.axisParameter(apType, axis, self.MODULE_ID)
-
-    def setAxisParameter(self, apType, axis, value):
-        self.connection.setAxisParameter(apType, axis, value, self.MODULE_ID)
-
-    # Global parameter access
-    def getGlobalParameter(self, gpType, bank):
-        return self.connection.globalParameter(gpType, bank, self.MODULE_ID)
-
-    def setGlobalParameter(self, gpType, bank, value):
-        self.connection.setGlobalParameter(gpType, bank, value, self.MODULE_ID)
 
     # Motion Control functions
     def rotate(self, axis, velocity):
@@ -74,54 +58,54 @@ class TMCM_1270(StallGuard2Module):
         self.setAxisParameter(self.APs.StandbyCurrent, axis, current)
 
     def getMaxCurrent(self, axis):
-        return self.getAxisParameter(self.APs.MaxCurrent, axis)
+        return self.axisParameter(self.APs.MaxCurrent, axis)
 
     def setMaxCurrent(self, axis, current):
         self.setAxisParameter(self.APs.MaxCurrent, axis, current)
 
     # Motion parameter functions
     def getTargetPosition(self, axis):
-        return self.getAxisParameter(self.APs.TargetPosition, axis)
+        return self.axisParameter(self.APs.TargetPosition, axis)
 
     def setTargetPosition(self, axis, position):
         self.setAxisParameter(self.APs.TargetPosition, axis, position)
 
     def getActualPosition(self, axis):
-        return self.getAxisParameter(self.APs.ActualPosition, axis)
+        return self.axisParameter(self.APs.ActualPosition, axis)
 
     def setActualPosition(self, axis, position):
         return self.setAxisParameter(self.APs.ActualPosition, axis, position)
 
     def getTargetVelocity(self, axis):
-        return self.getAxisParameter(self.APs.TargetVelocity, axis)
+        return self.axisParameter(self.APs.TargetVelocity, axis)
 
     def setTargetVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
 
     def getActualVelocity(self, axis):
-        return self.getAxisParameter(self.APs.ActualVelocity, axis)
+        return self.axisParameter(self.APs.ActualVelocity, axis)
 
     def getMaxVelocity(self, axis):
-        return self.getAxisParameter(self.APs.MaxVelocity, axis)
+        return self.axisParameter(self.APs.MaxVelocity, axis)
 
     def setMaxVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
 
     def getMaxAcceleration(self, axis):
-        return self.getAxisParameter(self.APs.MaxAcceleration, axis)
+        return self.axisParameter(self.APs.MaxAcceleration, axis)
 
     def setMaxAcceleration(self, axis, acceleration):
         self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
 
     # Status functions
     def getStatusFlags(self, axis):
-        return self.getAxisParameter(self.APs.TMC262ErrorFlags, axis)
+        return self.axisParameter(self.APs.TMC262ErrorFlags, axis)
 
     def getErrorFlags(self, axis):
-        return self.getAxisParameter(self.APs.ExtendedErrorFlags, axis)
+        return self.axisParameter(self.APs.ExtendedErrorFlags, axis)
 
     def positionReached(self, axis):
-        return self.getAxisParameter(self.APs.PositionReachedFlag, axis)
+        return self.axisParameter(self.APs.PositionReachedFlag, axis)
 
     # IO pin functions
     def analogInput(self, x):

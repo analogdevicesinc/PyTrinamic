@@ -8,7 +8,7 @@ class StallGuard2Module(StallGuard2):
     def setAxisParameter(self, axis, parameter, value):
         raise NotImplementedError()
 
-    def getAxisParameter(self, axis, parameter):
+    def axisParameter(self, axis, parameter):
         raise NotImplementedError()
 
     def setStallguard2Filter(self, axis, filter):
@@ -21,10 +21,10 @@ class StallGuard2Module(StallGuard2):
         self.setAxisParameter(self.APs.SmartEnergyStallVelocity, axis, velocity)
 
     def getStallguard2Filter(self, axis):
-        return self.getAxisParameter(self.APs.SG2FilterEnable, axis)
+        return self.axisParameter(self.APs.SG2FilterEnable, axis)
 
     def getStallguard2Threshold(self, axis):
-        return self.getAxisParameter(self.APs.SG2Threshold, axis)
+        return self.axisParameter(self.APs.SG2Threshold, axis)
 
     def getStopOnStallVelocity(self, axis):
-        return self.getAxisParameter(self.APs.SmartEnergyStallVelocity, axis)
+        return self.axisParameter(self.APs.SmartEnergyStallVelocity, axis)
