@@ -23,7 +23,7 @@ class TMCM_1270(tmcl_module, LinearRampModule, MotorControl, StallGuard2Module):
         self.ENUMs = _ENUMs
 
         self.MOTORS = [
-            MotorManager.motor(0, self, features=[LinearRampMotor, MotorControlMotor, StallGuard2Motor])
+            MotorManager.motor(0, [self], features=[LinearRampMotor, MotorControlMotor, StallGuard2Motor])
         ]
 
     @staticmethod

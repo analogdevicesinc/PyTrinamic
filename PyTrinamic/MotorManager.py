@@ -7,14 +7,15 @@ Created on 09.01.2019
 class MotorManager(object):
 
     @staticmethod
-    def motor(axis, handler, features):
+    def motor(axis, handlers, features, handler=None):
 
         class Motor(*features):
-            def __init__(self, axis, handler):
+            def __init__(self, axis, handlers, handler=None):
                 self.axis = axis
-                self.handler = handler
+                self.handlers = handlers
+                self.handler = handler if handler else handlers[0]
 
-        return Motor(axis, handler)
+        return Motor(axis, handlers, handler)
 
     @staticmethod
     def motors(*modules):

@@ -5,13 +5,16 @@ Created on 02.01.2019
 '''
 
 from PyTrinamic.ic.tmc_ic import tmc_ic
-from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
-from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
+#from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
+#from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
 #from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
+from PyTrinamic.features.StallGuard2IC import StallGuard2IC
+from PyTrinamic.features.LinearRampIC import LinearRampIC
+from PyTrinamic.features.MotorControl import MotorControl
 from PyTrinamic.helpers import TMC_helpers
 import struct
 
-class TMC5130(tmc_ic):
+class TMC5130(tmc_ic, StallGuard2IC, LinearRampIC, MotorControl):
 
     COMM_UART = 0
     COMM_SPI = 1
@@ -26,8 +29,8 @@ class TMC5130(tmc_ic):
     """
     Class for the TMC5130 IC
     """
-    def __init__(self, connection=None, comm=None, slave=0, registers=True, variants=True, fields=True):
-        super().__init__()
+    def __init__(self, module=None, registers=True, variants=True, fields=True):
+        tmc_ic.__init__(self, module)
 
         if(registers):
             from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_registers
@@ -41,11 +44,7 @@ class TMC5130(tmc_ic):
             from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
             self.fields     = TMC5130_fields
 
-        self.__connection = connection
-        self.__comm = comm if (comm is not None) else TMC5130.COMM_SPI
-        self.__slave = slave
-
-        self.MOTORS     = 2
+        self.MOTORS = 1
 
     @staticmethod
     def crc(buf):
@@ -63,29 +62,35 @@ class TMC5130(tmc_ic):
         print("TMC5130 chip info: The TMC5130/A is a high-performance stepper motor controller and driver IC with serial communication interfaces. Voltage supply: 4,75 - 46V")
 
     def writeRegister(self, axis, address, value):
-        del axis
-        buf = bytearray(0)
-        if(self.__comm == self.COMM_UART):
-            buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_WRITE, self.__UART_SYNC, self.__slave, address | self.__WRITE_BIT, value, 0))
-            TMC5130.crc(buf)
-        elif(self.__comm == self.COMM_SPI):
-            buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address | self.__WRITE_BIT, value))
-        self.__connection.send(buf)
+        self._module.writeRegister(axis, address, value)
 
     def readRegister(self, axis, address, signed=False):
-        del axis
-        value = 0
-        if(self.__comm == self.COMM_UART):
-            buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_READ, self.__UART_SYNC, self.__slave, address, 0))
-            TMC5130.crc(buf)
-            self.__connection.send(buf)
-            buf = self.__connection.recv(8)
-            value = struct.unpack(self.__STRUCT_REGISTER_UART_WRITE, buf)[3]
-        elif(self.__comm == self.COMM_SPI):
-            buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address, 0))
-            self.__connection.send_recv(buf, buf)
-            value = struct.unpack(self.__STRUCT_REGISTER_SPI, buf)[1]
-        return TMC_helpers.toSigned32(value) if signed else value
+        return self._module.readRegister(axis, address, signed)
+
+    # def writeRegister(self, axis, address, value):
+    #     del axis
+    #     buf = bytearray(0)
+    #     if(self.__comm == self.COMM_UART):
+    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_WRITE, self.__UART_SYNC, self.__slave, address | self.__WRITE_BIT, value, 0))
+    #         TMC5130.crc(buf)
+    #     elif(self.__comm == self.COMM_SPI):
+    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address | self.__WRITE_BIT, value))
+    #     self.__connection.send(buf)
+    #
+    # def readRegister(self, axis, address, signed=False):
+    #     del axis
+    #     value = 0
+    #     if(self.__comm == self.COMM_UART):
+    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_READ, self.__UART_SYNC, self.__slave, address, 0))
+    #         TMC5130.crc(buf)
+    #         self.__connection.send(buf)
+    #         buf = self.__connection.recv(8)
+    #         value = struct.unpack(self.__STRUCT_REGISTER_UART_WRITE, buf)[3]
+    #     elif(self.__comm == self.COMM_SPI):
+    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address, 0))
+    #         self.__connection.send_recv(buf, buf)
+    #         value = struct.unpack(self.__STRUCT_REGISTER_SPI, buf)[1]
+    #     return TMC_helpers.toSigned32(value) if signed else value
 
     # Motion Control functions
     def rotate(self, motor, velocity):
