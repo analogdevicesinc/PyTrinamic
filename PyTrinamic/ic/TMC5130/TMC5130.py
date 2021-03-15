@@ -5,9 +5,6 @@ Created on 02.01.2019
 '''
 
 from PyTrinamic.ic.tmc_ic import tmc_ic
-#from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
-#from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
-#from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
 from PyTrinamic.features.StallGuard2IC import StallGuard2IC
 from PyTrinamic.features.LinearRampIC import LinearRampIC
 from PyTrinamic.features.MotorControl import MotorControl
@@ -29,8 +26,8 @@ class TMC5130(tmc_ic, StallGuard2IC, LinearRampIC, MotorControl):
     """
     Class for the TMC5130 IC
     """
-    def __init__(self, module=None, registers=True, variants=True, fields=True):
-        tmc_ic.__init__(self, module)
+    def __init__(self, module=None, channel=0, registers=True, variants=True, fields=True):
+        tmc_ic.__init__(self, module, channel)
 
         if(registers):
             from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_registers
@@ -61,48 +58,17 @@ class TMC5130(tmc_ic, StallGuard2IC, LinearRampIC, MotorControl):
     def showChipInfo(self):
         print("TMC5130 chip info: The TMC5130/A is a high-performance stepper motor controller and driver IC with serial communication interfaces. Voltage supply: 4,75 - 46V")
 
-    def writeRegister(self, axis, address, value):
-        self._module.writeRegister(axis, address, value)
-
-    def readRegister(self, axis, address, signed=False):
-        return self._module.readRegister(axis, address, signed)
-
-    # def writeRegister(self, axis, address, value):
-    #     del axis
-    #     buf = bytearray(0)
-    #     if(self.__comm == self.COMM_UART):
-    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_WRITE, self.__UART_SYNC, self.__slave, address | self.__WRITE_BIT, value, 0))
-    #         TMC5130.crc(buf)
-    #     elif(self.__comm == self.COMM_SPI):
-    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address | self.__WRITE_BIT, value))
-    #     self.__connection.send(buf)
-    #
-    # def readRegister(self, axis, address, signed=False):
-    #     del axis
-    #     value = 0
-    #     if(self.__comm == self.COMM_UART):
-    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_UART_READ, self.__UART_SYNC, self.__slave, address, 0))
-    #         TMC5130.crc(buf)
-    #         self.__connection.send(buf)
-    #         buf = self.__connection.recv(8)
-    #         value = struct.unpack(self.__STRUCT_REGISTER_UART_WRITE, buf)[3]
-    #     elif(self.__comm == self.COMM_SPI):
-    #         buf = bytearray(struct.pack(self.__STRUCT_REGISTER_SPI, address, 0))
-    #         self.__connection.send_recv(buf, buf)
-    #         value = struct.unpack(self.__STRUCT_REGISTER_SPI, buf)[1]
-    #     return TMC_helpers.toSigned32(value) if signed else value
-
     # Motion Control functions
     def rotate(self, motor, velocity):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
         if velocity >= 0:
-            self.writeRegister(0, self.registers.VMAX, velocity)
-            self.writeRegister(0, self.registers.RAMPMODE, 1)
+            self.writeRegister(self.registers.VMAX, velocity)
+            self.writeRegister(self.registers.RAMPMODE, 1)
         else:
-            self.writeRegister(0, self.registers.VMAX, -velocity)
-            self.writeRegister(0, self.registers.RAMPMODE, 2)
+            self.writeRegister(self.registers.VMAX, -velocity)
+            self.writeRegister(self.registers.RAMPMODE, 2)
 
     def stop(self, motor):
         self.rotate(motor, 0)
@@ -111,15 +77,15 @@ class TMC5130(tmc_ic, StallGuard2IC, LinearRampIC, MotorControl):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        self.writeRegister(0, self.registers.RAMPMODE, 0)
+        self.writeRegister(self.registers.RAMPMODE, 0)
 
-        self.writeRegister(0, self.registers.XTARGET, position)
+        self.writeRegister(self.registers.XTARGET, position)
 
     def moveBy(self, motor, distance):
         if not(0 <= motor < self.MOTORS):
             raise ValueError
 
-        position = self.readRegister(0, self.registers.XACTUAL, signed=True)
+        position = self.readRegister(self.registers.XACTUAL, signed=True)
 
         self.moveTo(motor, position + distance)
 

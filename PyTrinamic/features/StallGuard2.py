@@ -1,7 +1,9 @@
 # Created on: 04.03.2021
 # Author: LK
 
-class StallGuard2(object):
+from PyTrinamic.features.Feature import Feature
+
+class StallGuard2(Feature):
 
     def setStallguard2Filter(self, axis, filter):
         raise NotImplementedError()

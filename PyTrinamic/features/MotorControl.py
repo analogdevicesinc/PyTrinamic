@@ -1,7 +1,9 @@
 # Created on: 04.03.2021
 # Author: LK
 
-class MotorControl(object):
+from PyTrinamic.features.Feature import Feature
+
+class MotorControl(Feature):
 
     def rotate(self, axis, velocity):
         raise NotImplementedError()

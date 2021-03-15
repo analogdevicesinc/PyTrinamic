@@ -1,7 +1,9 @@
 # Created on: 04.03.2021
 # Author: LK
 
-class LinearRamp(object):
+from PyTrinamic.features.Feature import Feature
+
+class LinearRamp(Feature):
 
     def getTargetPosition(self, axis):
         raise NotImplementedError()

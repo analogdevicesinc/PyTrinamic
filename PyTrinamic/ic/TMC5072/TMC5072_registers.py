@@ -4,7 +4,7 @@ Created on 20.09.2019
 @author: JM
 '''
 
-class TMC5072_register:
+class TMC5072_registers:
     """
     Define all registers of the TMC5072.
 
@@ -12,6 +12,7 @@ class TMC5072_register:
     Each integer represents a register address. Tuples of addresses are used to
     represent a register that exists multiple times for multiple motors.
     """
+
     GCONF           = 0x00
     GSTAT           = 0x01
     IFCNT           = 0x02

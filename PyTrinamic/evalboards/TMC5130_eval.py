@@ -9,8 +9,11 @@ from PyTrinamic.evalboards.tmc_eval import tmc_eval
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.MotorControl import MotorControl
+from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
+from PyTrinamic.features.LinearRampMotor import LinearRampMotor
+from PyTrinamic.features.MotorControlMotor import MotorControlMotor
 
-class TMC5130_eval(tmc_eval, ):
+class TMC5130_eval(tmc_eval, StallGuard2Module, LinearRampModule, MotorControl):
     """
     This class represents a TMC5130 Evaluation board.
 
@@ -21,7 +24,7 @@ class TMC5130_eval(tmc_eval, ):
     """
 
     class APs:
-        RampType = 30
+        RampMode = 30
 
     __PIN_MAP = [
         # (pin_ic, pin_board)
@@ -40,10 +43,8 @@ class TMC5130_eval(tmc_eval, ):
         (28, 28)
     ]
 
-    def __init__(self, connection, module_id):
-        super().__init__(connection, module_id)
-
-        self.APs =
+    def __init__(self, connection, module_id=1):
+        tmc_eval.__init__(self, connection, module_id)
 
         self.ics = [TMC5130(self)]
         self.MOTORS = [
@@ -51,12 +52,12 @@ class TMC5130_eval(tmc_eval, ):
         ]
 
     # Use the motion controller functions for register access
-    def writeRegister(self, axis, address, value):
-        del axis
+    def writeRegister(self, channel, address, value):
+        del channel
         return self.connection.writeMC(address, value, self.module_id)
 
-    def readRegister(self, axis, address, signed=False):
-        del axis
+    def readRegister(self, channel, address, signed=False):
+        del channel
         return self.connection.readMC(address, self.module_id, signed)
 
     # Motion Control functions

@@ -5,26 +5,26 @@ from PyTrinamic.features.StallGuard2 import StallGuard2
 
 class StallGuard2IC(StallGuard2):
 
-    def writeRegisterField(self, axis, field, value):
+    def writeRegisterField(self, field, value, axis=0):
         raise NotImplementedError()
 
-    def readRegisterField(self, axis, field, signed=False):
+    def readRegisterField(self, field, signed=False, axis=0):
         raise NotImplementedError()
 
     def setStallguard2Filter(self, axis, filter):
-        self.writeRegisterField(axis, self.fields.SFILT, filter)
+        self.writeRegisterField(self.fields.SFILT, filter, axis=axis)
 
     def setStallguard2Threshold(self, axis, threshold):
-        self.writeRegisterField(axis, self.fields.SGT, filter)
+        self.writeRegisterField(self.fields.SGT, filter, axis=axis)
 
     def setStopOnStallVelocity(self, axis, velocity):
-        self.writeRegisterField(axis, self.fields.TCOOLTHRS, velocity)
+        self.writeRegisterField(self.fields.TCOOLTHRS, velocity, axis=axis)
 
     def getStallguard2Filter(self, axis):
-        return self.readRegisterField(axis, self.fields.SFILT)
+        return self.readRegisterField(self.fields.SFILT, axis=axis)
 
     def getStallguard2Threshold(self, axis):
-        return self.readRegisterField(axis, self.fields.SGT)
+        return self.readRegisterField(self.fields.SGT, axis=axis)
 
     def getStopOnStallVelocity(self, axis):
-        return self.readRegisterField(axis, self.fields.TCOOLTHRS)
+        return self.readRegisterField(self.fields.TCOOLTHRS, axis=axis)
