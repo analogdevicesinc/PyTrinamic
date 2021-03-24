@@ -165,7 +165,7 @@ class TMCM_1260(tmcl_module):
         self.setAxisParameter(self.APs.StandbyCurrent, axis, current)
 
     def getMaxCurrent(self, axis):
-        return self.getAxisParameter(self.APs.MaxCurrent, axis)
+        return self.axisParameter(self.APs.MaxCurrent, axis)
 
     def setMaxCurrent(self, axis, current):
         self.setAxisParameter(self.APs.MaxCurrent, axis, current)
@@ -182,34 +182,34 @@ class TMCM_1260(tmcl_module):
 
     # Motion parameter functions
     def getTargetPosition(self, axis):
-        return self.getAxisParameter(self.APs.TargetPosition, axis, signed=True)
+        return self.axisParameter(self.APs.TargetPosition, axis, signed=True)
 
     def setTargetPosition(self, axis, position):
         self.setAxisParameter(self.APs.TargetPosition, axis, position)
 
     def getActualPosition(self, axis):
-        return self.getAxisParameter(self.APs.ActualPosition, axis, signed=True)
+        return self.axisParameter(self.APs.ActualPosition, axis, signed=True)
 
     def setActualPosition(self, axis, position):
         return self.setAxisParameter(self.APs.ActualPosition, axis, position)
 
     def getTargetVelocity(self, axis):
-        return self.getAxisParameter(self.APs.TargetVelocity, axis, signed=True)
+        return self.axisParameter(self.APs.TargetVelocity, axis, signed=True)
 
     def setTargetVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
 
     def getActualVelocity(self, axis):
-        return self.getAxisParameter(self.APs.ActualVelocity, axis, signed=True)
+        return self.axisParameter(self.APs.ActualVelocity, axis, signed=True)
 
     def getMaxVelocity(self, axis):
-        return self.getAxisParameter(self.APs.MaxVelocity, axis)
+        return self.axisParameter(self.APs.MaxVelocity, axis)
 
     def setMaxVelocity(self, axis, velocity):
         self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
 
     def getMaxAcceleration(self, axis):
-        return self.getAxisParameter(self.APs.MaxAcceleration, axis)
+        return self.axisParameter(self.APs.MaxAcceleration, axis)
 
     def setMaxAcceleration(self, axis, acceleration):
         self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
@@ -219,13 +219,13 @@ class TMCM_1260(tmcl_module):
 
     # Status functions
     def getStatusFlags(self, axis):
-        return self.getAxisParameter(self.APs.DrvStatusFlags, axis)
+        return self.axisParameter(self.APs.DrvStatusFlags, axis)
 
     def getErrorFlags(self, axis):
-        return self.getAxisParameter(self.APs.ExtendedErrorFlags, axis)
+        return self.axisParameter(self.APs.ExtendedErrorFlags, axis)
 
     def positionReached(self, axis):
-        return self.getAxisParameter(self.APs.PositionReachedFlag, axis)
+        return self.axisParameter(self.APs.PositionReachedFlag, axis)
 
     # IO pin functions
     def analogInput(self, x):
