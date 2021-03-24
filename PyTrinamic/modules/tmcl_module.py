@@ -7,7 +7,7 @@ Created on 24.03.2021
 class tmcl_module(object):
 
     def __init__(self, connection, module_id):
-        self.MOTORS = []
+        self.MOTORS = 0
         self.connection = connection
         self.module_id = module_id
         self.name = ""
