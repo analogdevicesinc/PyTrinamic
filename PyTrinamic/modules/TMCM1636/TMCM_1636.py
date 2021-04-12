@@ -1,60 +1,39 @@
 '''
-Created on 04.05.2020
+Created on 12.04.2021
 
-@author: JM, ED
+@author: ED
 '''
+import PyTrinamic
 
-class TMCM_1636():
-    def __init__(self, connection):
-        self.connection = connection
+" interfaces "
+from PyTrinamic.modules.tmcl_module_interface import tmcl_module_interface
+from PyTrinamic.modules.tmcl_motor_interface import tmcl_motor_interface
 
-        self.GPs   = _GPs
-        self.APs   = _APs        
-        self.ENUMs = _ENUMs
-    
-        self.motor = 0
+" features "
+from PyTrinamic.modules.features.open_loop_ap_feature import open_loop_ap_feature
+from PyTrinamic.modules.features.digital_hall_weasel_ap_feature import digital_hall_weasel_ap_feature
+from PyTrinamic.modules.features.abn_encoder_ap_feature import abn_encoder_ap_feature
+from PyTrinamic.modules.features.linear_ramp_ap_feature import linear_ramp_ap_feature
+from PyTrinamic.modules.features.pid_ap_feature import pid_ap_feature
+from PyTrinamic.modules.features.commutation_selection_ap_feature import commutation_selection_ap_feature
 
-    @staticmethod
-    def getEdsFile():
-        return __file__.replace("TMCM_1636.py", "TMCM-1636-CANopen_Hw1.1_Fw1.12.eds")
+class TMCM_1636(tmcl_module_interface):
 
-    def showChipInfo(self):
-        ("The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V");
+    def __init__(self, connection, moduleID=1):
+        tmcl_module_interface.__init__(self, connection, moduleID)
+        self.GP = _GP
+        self.IO = _IO
 
-    " axis parameter access "
-    def axisParameter(self, apType):
-        return self.connection.axisParameter(apType, self.motor)
+        " add the motor with available features "
+        self._motors.append(TMCM_1636_motor_interface(self, 0, PyTrinamic.MotorTypes.BLDC, _AP_MOTOR_0, _ENUM_MOTOR_0)) 
 
-    def setAxisParameter(self, apType, value):
-        self.connection.setAxisParameter(apType, self.motor, value)
+    def moduleName(self):
+        return "TMCM-1636"
 
-    " global parameter access "
-    def globalParameter(self, gpType):
-        return self.connection.globalParameter(gpType, self.motor)
+    def moduleDescription(self):
+        return "The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Supply voltage is 8-48V."
 
-    def setGlobalParameter(self, gpType, value):
-        self.connection.setGlobalParameter(gpType, self.motor, value)
-
-    " standard functions "
-    def moveToPosition(self, position):
-        self.setAxisParameter(self.APs.TargetPosition, position)
-
-    def targetPosition(self):
-        return self.axisParameter(self.APs.TargetPosition)
-
-    def actualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
-
-    def setActualPosition(self, position):
-        return self.setAxisParameter(self.APs.ActualPosition, position)
-
-    def rotate(self, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, velocity)
-
-    def actualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
-
-class _APs():
+class _AP_MOTOR_0():
     AdcPhaseA                       = 0
     AdcPhaseB                       = 1
     CurrentPhaseA                   = 2
@@ -63,8 +42,8 @@ class _APs():
     AdcOffsetPhaseA                 = 5
     AdcOffsetPhaseB                 = 6
     MotorPolePairs                  = 10
-    MaxCurrent                      = 11
-    OpenLoopCurrent                 = 12
+    MaxTorque                       = 11
+    StartCurrent                    = 12
     MotorDirection                  = 13
     MotorType                       = 14
     CommutationMode                 = 15
@@ -96,13 +75,13 @@ class _APs():
     VelocityP                       = 72
     VelocityI                       = 73
     PositionP                       = 74
-    CurrentPiErrorSum               = 75
-    FluxPiErrorSum                  = 76
-    VelocityPiErrorSum              = 77
-    TorquePiError                   = 78
-    FluxPiError                     = 79
-    VelocityPiError                 = 80
-    PositionPiError                 = 81
+    CurrentPIDErrorSum              = 75
+    FluxPIDErrorSum                 = 76
+    VelocityPIDErrorSum             = 77
+    TorquePIDError                  = 78
+    FluxPIDError                    = 79
+    VelocityPIDError                = 80
+    PositionPIDError                = 81
     HallSensorPolarity              = 90
     HallSensorDirection             = 91
     HallSensorInterpolation         = 92
@@ -157,34 +136,88 @@ class _APs():
     DebugValue7                     = 247
     DebugValue8                     = 248
     DebugValue9                     = 249
-    DriverEnabled                   = 255
+    EnableDriver                    = 255
 
-class _ENUMs():
-    COMM_MODE_DISABLED  = 0
-    COMM_MODE_OPENLOOP  = 1
-    COMM_MODE_HALL      = 2
-    COMM_MODE_ABN       = 3
-    COMM_MODE_ABS       = 4
+class _ENUM_MOTOR_0():
+    COMM_MODE_DISABLED              = 0
+    COMM_MODE_OPENLOOP              = 1
+    COMM_MODE_DIGITAL_HALL          = 2
+    COMM_MODE_ABN_ENCODER           = 3
+    COMM_MODE_ABS_ENCODER           = 4
 
-    POS_SELECTION_SAME  = 0
-    POS_SELECTION_ABN   = 1
-    POS_SELECTION_ABS   = 2
+    ENCODER_INIT_MODE_0             = 0
+    ENCODER_INIT_MODE_1             = 1
+    ENCODER_INIT_MODE_2             = 2
 
-    VEL_SELECTION_SAME  = 0
-    VEL_SELECTION_ABN   = 1
-    VEL_SELECTION_ABS   = 2
+    POS_SELECTION_SAME              = 0
+    POS_SELECTION_ABN               = 1
+    POS_SELECTION_ABS               = 2
 
-    FLAG_POSITION_END   = 0x00004000
+    VEL_SELECTION_SAME              = 0
+    VEL_SELECTION_ABN               = 1
+    VEL_SELECTION_ABS               = 2
 
-class _GPs():
-    serialBaudRate      = 65
-    serialAddress       = 66
-    CANBitRate          = 69
-    CANsendID           = 70
-    CANreceiveID        = 71
-    telegramPauseTime   = 75
-    serialHostAddress   = 76
-    autoStartMode       = 77
-    applicationStatus   = 128
-    programCounter      = 130
-    tickTimer           = 132
+    FLAG_POSITION_END               = 0x00004000
+
+    MOTOR_TYPE_NO_MOTOR             = 0
+    MOTOR_TYPE_SINGLE_PHASE_DC      = 1
+    MOTOR_TYPE_THREE_PHASE_BLDC     = 3
+
+class _GP():
+    serialBaudRate                  = 65
+    serialAddress                   = 66
+    CANBitRate                      = 69
+    CANsendID                       = 70
+    CANreceiveID                    = 71
+    telegramPauseTime               = 75
+    serialHostAddress               = 76
+    autoStartMode                   = 77
+    applicationStatus               = 128
+    programCounter                  = 130
+    tickTimer                       = 132
+
+class _IO():
+    GPI_0   = 0
+    GPI_1   = 1
+    GPI_2   = 2
+    GPI_3   = 3
+
+class TMCM_1636_motor_interface(tmcl_motor_interface):
+    
+    def __init__(self, parent, axisID, motorType, axisParameter, constants):
+        tmcl_motor_interface.__init__(self, parent, axisID, motorType, axisParameter, constants)
+        
+        " add features "
+        
+        self.openLoop = open_loop_ap_feature(self)
+        self.feature.update({"open_loop" : self.openLoop})
+
+        self.digitalHall = digital_hall_weasel_ap_feature(self)
+        self.feature.update({"digital_hall" : self.digitalHall})
+
+        self.abnEncoder = abn_encoder_ap_feature(self)
+        self.feature.update({"abn_encoder" : self.abnEncoder})
+
+        self.linearRamp = linear_ramp_ap_feature(self)
+        self.linearRamp.disableMotorHaltedVelocity()
+        self.feature.update({"linear_ramp" : self.linearRamp})
+        
+        self.pid = pid_ap_feature(self)
+        self.feature.update({"pid" : self.pid})
+
+        self.commutationSelection = commutation_selection_ap_feature(self)
+        self.feature.update({"commutation_selection" : self.commutationSelection})
+
+    " motor type "
+    def setMotorType(self, motorType):
+        self.setAxisParameter(self.AP.MotorType, motorType)
+    
+    def motorType(self):
+        return self.axisParameter(self.AP.MotorType)
+
+    " motor pole pairs "
+    def setMotorPolePairs(self, polePairs):
+        self.setAxisParameter(self.AP.MotorPolePairs, polePairs)
+ 
+    def motorPolePairs(self):
+        return self.axisParameter(self.AP.MotorPolePairs)
