@@ -42,12 +42,21 @@ class tmcl_module_interface(ABC):
         return self.connection.axisParameterRaw(self.moduleID, axis, apType)
    
     " global parameter access "
+    def globalParameter(self, bank, gpType):
+        return self.connection.globalParameterRaw(self.moduleID, bank, gpType)
+    
     def setGlobalParameter(self, bank, gpType, value):
         self.connection.setGlobalParameterRaw(self.moduleID, bank, gpType, value)
 
-    def globalParameter(self, bank, gpType):
-        return self.connection.globalParameterRaw(self.moduleID, bank, gpType)
+    def storeGlobalParameter(self, bank, gpType):
+        self.connection.storeGlobalParameterRaw(self.moduleID, bank, gpType)
 
+    def setAndStoreGlobalParameter(self, bank, gpType, value):
+        self.connection.setAndStoreGlobalParameterRaw(self.moduleID, bank, gpType, value)
+
+    def restoreGlobalParameter(self, bank, gpType):
+        self.connection.restoreGlobalParameterRaw(self.moduleID, bank, gpType)
+        
     " read inputs " 
     def analogInput(self, x):
         return self.connection.analogInputRaw(self.moduleID, x)

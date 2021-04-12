@@ -276,6 +276,16 @@ class tmcl_interface():
     def setGlobalParameterRaw(self, moduleID, bank, commandType, value):
         return self.send(TMCL_Command.SGP, commandType, bank, value, moduleID)
 
+    def storeGlobalParameterRaw(self, moduleID, bank, commandType):
+        return self.send(TMCL_Command.STGP, commandType, bank, 0, moduleID)
+
+    def setAndStoreGlobalParameterRaw(self, moduleID, bank, commandType, value):
+        self.send(TMCL_Command.SGP, commandType, bank, value, moduleID)
+        return self.send(TMCL_Command.STGP, commandType, bank, 0, moduleID)       
+
+    def restoreGlobalParameterRaw(self, moduleID, bank, commandType):
+        return self.send(TMCL_Command.RSGP, commandType, bank, 0, moduleID)
+
     # IO pin functions
     def analogInputRaw(self, moduleID, x):
         return self.send(TMCL_Command.GIO, x, 1, 0, moduleID).value
