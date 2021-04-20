@@ -6,9 +6,9 @@ import logging
 import time
 
 import PyTrinamic
-from PyTrinamic.features.Feature import Feature
+from PyTrinamic.features.FeatureHandler import FeatureHandler
 
-class StallGuard(Feature):
+class StallGuardHandler(FeatureHandler):
 
     def __init__(self, module, argList=None, logger=logging.getLogger(__name__)):
         super().__init__(module)

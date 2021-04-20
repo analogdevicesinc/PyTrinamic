@@ -35,7 +35,7 @@ class TMCM_1240():
 
     " motion Control functions "
     def rotate(self, axis, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
+        self.setTargetVelocity(axis, velocity)
 
     def stop(self, axis):
         self.rotate(axis, 0)

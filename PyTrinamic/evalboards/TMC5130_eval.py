@@ -5,8 +5,15 @@ Created on 09.01.2019
 '''
 
 from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
+from PyTrinamic.evalboards.tmc_eval import tmc_eval
+from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.MotorControl import MotorControl
+from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
+from PyTrinamic.features.LinearRampMotor import LinearRampMotor
+from PyTrinamic.features.MotorControlMotor import MotorControlMotor
 
-class TMC5130_eval(TMC5130):
+class TMC5130_eval(tmc_eval, StallGuard2Module, LinearRampModule, MotorControl):
     """
     This class represents a TMC5130 Evaluation board.
 
@@ -15,6 +22,9 @@ class TMC5130_eval(TMC5130):
     are provided properly. See __init__ for details on the function
     requirements.
     """
+
+    class APs:
+        RampMode = 30
 
     __PIN_MAP = [
         # (pin_ic, pin_board)
@@ -33,29 +43,46 @@ class TMC5130_eval(TMC5130):
         (28, 28)
     ]
 
-    def __init__(self, connection, moduleID=1):
-        """
-        Parameters:
-            connection:
-                Type: class
-                A class that provides the neccessary functions for communicating
-                with a TMC5130. The required functions are
-                    connection.writeMC(registerAddress, value, moduleID)
-                    connection.readMC(registerAddress, moduleID, signed)
-                for writing/reading to registers of the TMC5130.
-            moduleID:
-                Type: int, optional, default value: 1
-                The TMCL module ID of the TMC5130. This ID is used as a
-                parameter for the writeMC and readMC functions.
-        """
-        TMC5130.__init__(self, connection)
+    def __init__(self, connection, module_id=1):
+        tmc_eval.__init__(self, connection, module_id)
 
-        self.__connection = connection
-        self._MODULE_ID = moduleID
+        self.ics = [TMC5130(self)]
+        self.MOTORS = [
+            MotorManager.motor(0, [self, self.ics[0]], features=[LinearRampMotor, MotorControlMotor, StallGuard2Motor])
+        ]
 
     # Use the motion controller functions for register access
-    def writeRegister(self, registerAddress, value):
-        return self.__connection.writeMC(registerAddress, value, self._MODULE_ID)
+    def writeRegister(self, channel, address, value):
+        del channel
+        return self.connection.writeMC(address, value, self.module_id)
 
-    def readRegister(self, registerAddress, signed=False):
-        return self.__connection.readMC(registerAddress, self._MODULE_ID, signed)
+    def readRegister(self, channel, address, signed=False):
+        del channel
+        return self.connection.readMC(address, self.module_id, signed)
+
+    # Motion Control functions
+    def rotate(self, axis, velocity):
+        if velocity >= 0:
+            self.setTargetVelocity(axis, velocity)
+            self.setAxisParameter(self.APs.RampMode, axis, 1)
+        else:
+            self.setTargetVelocity(axis, -velocity)
+            self.setAxisParameter(self.APs.RampMode, axis, 2)
+
+    def stop(self, axis):
+        self.rotate(0, axis)
+
+    def moveTo(self, axis, position, velocity=None):
+        if velocity:
+            self.setMaxVelocity(axis, velocity)
+
+        self.setAxisParameter(self.APs.RampMode, axis, 0)
+        self.connection.move(0, axis, position, self.MODULE_ID)
+        self.setTargetPosition(axis, position)
+
+    def moveBy(self, axis, difference, velocity=None):
+        position = difference + self.getActualPosition(axis)
+
+        self.moveTo(axis, position, velocity)
+
+        return position
