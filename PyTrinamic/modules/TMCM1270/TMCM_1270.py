@@ -7,6 +7,7 @@ Created on 03.12.2019
 from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.LinearRampMotor import LinearRampMotor
 from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
+from PyTrinamic.features.MotorControl import MotorControl
 
 class TMCM_1270(tmcl_module):
 
@@ -29,7 +30,7 @@ class TMCM_1270(tmcl_module):
         tickTimer                     = 132
         randomNumber                  = 133
 
-    class MOTOR_0(tmcl_module.motor, LinearRampMotor, StallGuard2Motor):
+    class MOTOR_0(tmcl_module.motor, LinearRampMotor, StallGuard2Motor, MotorControl):
 
         class APs():
             TargetPosition                 = 0
@@ -139,6 +140,18 @@ class TMCM_1270(tmcl_module):
 
         def positionReached(self, axis):
             return self.axisParameter(self.APs.PositionReachedFlag)
+
+        def rotate(self, velocity):
+            self.module.rotate(velocity)
+
+        def stop(self):
+            self.module.stop()
+
+        def moveTo(self, position, velocity=None):
+            self.module.moveTo(position, velocity)
+
+        def moveBy(self, difference, velocity=None):
+            self.module.moveBy(difference, velocity)
 
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
