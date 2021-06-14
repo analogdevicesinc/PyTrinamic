@@ -8,7 +8,7 @@ class StallGuard2Motor(StallGuard2):
     def setAxisParameter(self, parameter, value):
         raise NotImplementedError()
 
-    def axisParameter(self, parameter):
+    def axisParameter(self, parameter, signed=False):
         raise NotImplementedError()
 
     def setStallguard2Filter(self, filter):

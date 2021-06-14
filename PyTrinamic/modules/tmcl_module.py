@@ -6,6 +6,18 @@ Created on 24.03.2021
 
 class tmcl_module(object):
 
+    class motor(object):
+
+        def __init__(self, module, axis):
+            self.module = module
+            self.axis = axis
+
+        def setAxisParameter(self, type, value):
+            self.module.setAxisParameter(type, self.axis, value)
+
+        def axisParameter(self, type, signed=False):
+            return self.module.axisParameter(type, self.axis, signed)
+
     def __init__(self, connection, module_id):
         self.MOTORS = 0
         self.connection = connection

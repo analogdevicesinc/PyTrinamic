@@ -8,7 +8,7 @@ class LinearRampMotor(LinearRamp):
     def setAxisParameter(self, parameter, value):
         raise NotImplementedError()
 
-    def axisParameter(self, parameter):
+    def axisParameter(self, parameter, signed=False):
         raise NotImplementedError()
 
     def getTargetPosition(self):
