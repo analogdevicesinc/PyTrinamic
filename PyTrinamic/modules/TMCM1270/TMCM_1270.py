@@ -111,6 +111,11 @@ class TMCM_1270(tmcl_module):
             PowerDownDelay                 = 214
             UnitMode                       = 255
 
+        def __init__(self, module, axis):
+            tmcl_module.motor.__init__(self, module, axis)
+            LinearRampMotor.__init__(self)
+            StallGuard2Motor.__init__(self)
+
         # Current control functions
         def setMotorRunCurrent(self, axis, current):
             self.setMaxCurrent(axis, current)
@@ -156,7 +161,7 @@ class TMCM_1270(tmcl_module):
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
 
-        self.MOTORS = [MOTOR_0(self, 0)]
+        self.MOTORS = [self.MOTOR_0(self, 0)]
 
     @staticmethod
     def getEdsFile():

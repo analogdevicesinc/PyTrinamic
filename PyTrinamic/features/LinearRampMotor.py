@@ -5,6 +5,47 @@ from PyTrinamic.features.LinearRamp import LinearRamp
 
 class LinearRampMotor(LinearRamp):
 
+    class __GROUPING:
+
+        def __init__(self, parent):
+            self.parent = parent
+
+        def getTargetPosition(self):
+            return self.parent.getTargetPosition()
+
+        def setTargetPosition(self, position):
+            self.parent.setTargetPosition(position)
+
+        def getActualPosition(self):
+            return self.parent.getActualPosition()
+
+        def setActualPosition(self, position):
+            self.parent.setActualPosition(position)
+
+        def getTargetVelocity(self):
+            return self.parent.getTargetVelocity()
+
+        def setTargetVelocity(self, velocity):
+            self.parent.setTargetVelocity(velocity)
+
+        def getActualVelocity(self):
+            return self.parent.getActualVelocity()
+
+        def getMaxVelocity(self):
+            return self.parent.getMaxVelocity()
+
+        def setMaxVelocity(self, velocity):
+            self.parent.setMaxVelocity(velocity)
+
+        def getMaxAcceleration(self):
+            return self.parent.getMaxAcceleration()
+
+        def setMaxAcceleration(self, acceleration):
+            self.parent.setMaxAcceleration(acceleration)
+
+    def __init__(self):
+        self.LinearRamp = self.__GROUPING(self)
+
     def setAxisParameter(self, parameter, value):
         raise NotImplementedError()
 
