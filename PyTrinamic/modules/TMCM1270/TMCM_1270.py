@@ -30,7 +30,7 @@ class TMCM_1270(tmcl_module):
         tickTimer                     = 132
         randomNumber                  = 133
 
-    class MOTOR_0(tmcl_module.Motor, MotorControl):
+    class MOTOR_0(tmcl_module.Motor, LinearRampMotor, StallGuard2Motor, MotorControl):
 
         class APs():
             TargetPosition                 = 0
@@ -113,8 +113,8 @@ class TMCM_1270(tmcl_module):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
-            self.LinearRamp = LinearRampMotor(self)
-            self.StallGuard2 = StallGuard2Motor(self)
+            LinearRampMotor.__init__(self)
+            StallGuard2Motor.__init__(self)
 
         # Current control functions
         def set_motor_run_current(self, current):
@@ -130,21 +130,21 @@ class TMCM_1270(tmcl_module):
             self.set_axis_parameter(self.APs.MaxCurrent, current)
 
         # Ramp mode
-        def getRampMode(self):
-            return self.axisParameter(self.APs.RampMode)
+        def get_ramp_mode(self):
+            return self.get_axis_parameter(self.APs.RampMode)
 
-        def setRampMode(self, mode):
-            return self.setAxisParameter(self.APs.RampMode, mode)
+        def set_ramp_mode(self, mode):
+            return self.set_axis_parameter(self.APs.RampMode, mode)
 
         # Status functions
-        def getStatusFlags(self):
-            return self.axisParameter(self.APs.TMC262ErrorFlags)
+        def get_status_flags(self):
+            return self.get_axis_parameter(self.APs.TMC262ErrorFlags)
 
-        def getErrorFlags(self):
-            return self.axisParameter(self.APs.ExtendedErrorFlags)
+        def get_error_flags(self):
+            return self.get_axis_parameter(self.APs.ExtendedErrorFlags)
 
-        def positionReached(self):
-            return self.axisParameter(self.APs.PositionReachedFlag)
+        def get_position_reached(self):
+            return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
         def rotate(self, velocity):
             self.module.rotate(velocity)
