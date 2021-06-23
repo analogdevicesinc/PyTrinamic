@@ -5,8 +5,11 @@ from PyTrinamic.features.LinearRamp import LinearRamp
 
 class LinearRampMotor(LinearRamp):
 
+    # Feature initialization
     def __init__(self, motor):
         self.motor = motor
+
+    # Setters and getters for feature parameters
 
     def get_target_position(self):
         return self.motor.get_axis_parameter(self.motor.APs.TargetPosition)
@@ -40,3 +43,11 @@ class LinearRampMotor(LinearRamp):
 
     def set_max_acceleration(self, acceleration):
         self.motor.set_axis_parameter(self.motor.APs.MaxAcceleration, acceleration)
+
+    # Properties
+    target_position = property(get_target_position, set_target_position)
+    actual_position = property(get_actual_position, set_actual_position)
+    target_velocity = property(get_target_velocity, set_target_velocity)
+    actual_velocity = property(get_actual_velocity)
+    max_velocity = property(get_max_velocity, set_max_velocity)
+    max_acceleration = property(get_max_acceleration, set_max_acceleration)
