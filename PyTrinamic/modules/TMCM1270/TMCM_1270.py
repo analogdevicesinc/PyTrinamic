@@ -117,33 +117,33 @@ class TMCM_1270(tmcl_module):
             self.StallGuard2 = StallGuard2Motor(self)
 
         # Current control functions
-        def setMotorRunCurrent(self, axis, current):
-            self.setMaxCurrent(axis, current)
+        def set_motor_run_current(self, current):
+            self.set_max_current(current)
 
-        def setMotorStandbyCurrent(self, axis, current):
-            self.setAxisParameter(self.APs.StandbyCurrent, current)
+        def set_motor_standby_current(self, current):
+            self.set_axis_parameter(self.APs.StandbyCurrent, current)
 
-        def getMaxCurrent(self, axis):
-            return self.axisParameter(self.APs.MaxCurrent)
+        def get_max_current(self):
+            return self.get_axis_parameter(self.APs.MaxCurrent)
 
-        def setMaxCurrent(self, axis, current):
-            self.setAxisParameter(self.APs.MaxCurrent, current)
+        def set_max_current(self, current):
+            self.set_axis_parameter(self.APs.MaxCurrent, current)
 
         # Ramp mode
-        def getRampMode(self, axis):
+        def getRampMode(self):
             return self.axisParameter(self.APs.RampMode)
 
-        def setRampMode(self, axis, mode):
+        def setRampMode(self, mode):
             return self.setAxisParameter(self.APs.RampMode, mode)
 
         # Status functions
-        def getStatusFlags(self, axis):
+        def getStatusFlags(self):
             return self.axisParameter(self.APs.TMC262ErrorFlags)
 
-        def getErrorFlags(self, axis):
+        def getErrorFlags(self):
             return self.axisParameter(self.APs.ExtendedErrorFlags)
 
-        def positionReached(self, axis):
+        def positionReached(self):
             return self.axisParameter(self.APs.PositionReachedFlag)
 
         def rotate(self, velocity):
