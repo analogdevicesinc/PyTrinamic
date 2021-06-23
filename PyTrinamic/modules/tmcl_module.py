@@ -6,17 +6,17 @@ Created on 24.03.2021
 
 class tmcl_module(object):
 
-    class motor(object):
+    class Motor(object):
 
         def __init__(self, module, axis):
             self.module = module
             self.axis = axis
 
-        def setAxisParameter(self, type, value):
-            self.module.setAxisParameter(type, self.axis, value)
+        def set_axis_parameter(self, type, value):
+            self.module.set_axis_parameter(type, self.axis, value)
 
-        def axisParameter(self, type, signed=False):
-            return self.module.axisParameter(type, self.axis, signed)
+        def get_axis_parameter(self, type, signed=False):
+            return self.module.get_axis_parameter(type, self.axis, signed)
 
     def __init__(self, connection, module_id):
         self.MOTORS = 0
@@ -32,10 +32,10 @@ class tmcl_module(object):
         print(self)
 
     " multi axis parameter access "
-    def setAxisParameter(self, type, axis, value):
+    def set_axis_parameter(self, type, axis, value):
         self.connection.setAxisParameter(type, axis, value, self.module_id)
 
-    def axisParameter(self, type, axis, signed=False):
+    def get_axis_parameter(self, type, axis, signed=False):
         return self.connection.axisParameter(type, axis, self.module_id, signed=signed)
 
     " global parameter access "

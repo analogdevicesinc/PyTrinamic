@@ -30,7 +30,7 @@ class TMCM_1270(tmcl_module):
         tickTimer                     = 132
         randomNumber                  = 133
 
-    class MOTOR_0(tmcl_module.motor, LinearRampMotor, StallGuard2Motor, MotorControl):
+    class MOTOR_0(tmcl_module.Motor, MotorControl):
 
         class APs():
             TargetPosition                 = 0
@@ -112,9 +112,9 @@ class TMCM_1270(tmcl_module):
             UnitMode                       = 255
 
         def __init__(self, module, axis):
-            tmcl_module.motor.__init__(self, module, axis)
-            LinearRampMotor.__init__(self)
-            StallGuard2Motor.__init__(self)
+            tmcl_module.Motor.__init__(self, module, axis)
+            self.LinearRamp = LinearRampMotor(self)
+            self.StallGuard2 = StallGuard2Motor(self)
 
         # Current control functions
         def setMotorRunCurrent(self, axis, current):
@@ -172,17 +172,17 @@ class TMCM_1270(tmcl_module):
 
     # Motion Control functions
     def rotate(self, axis, velocity):
-        self.setTargetVelocity(axis, velocity)
+        self.set_target_velocity(axis, velocity)
 
     def stop(self, axis):
         self.rotate(axis, 0)
 
     def moveTo(self, axis, position, velocity=None):
         if velocity:
-            self.setMaxVelocity(axis, velocity)
+            self.set_max_velocity(axis, velocity)
 
         self.connection.move(0, self.__default_motor, position)
-        self.setTargetPosition(axis, position)
+        self.set_target_position(axis, position)
 
     def moveBy(self, axis, difference, velocity=None):
         position = difference + self.getActualPosition(axis)
