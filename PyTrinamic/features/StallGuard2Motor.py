@@ -5,52 +5,23 @@ from PyTrinamic.features.StallGuard2 import StallGuard2
 
 class StallGuard2Motor(StallGuard2):
 
-    class __GROUPING:
+    def __init__(self, motor):
+        self.motor = motor
 
-        def __init__(self, parent):
-            self.parent = parent
+    def set_filter(self, filter):
+        self.motor.set_axis_parameter(self.motor.APs.SG2FilterEnable, filter)
 
-        def setStallguard2Filter(self, filter):
-            self.parent.setStallguard2Filter(filter)
+    def set_threshold(self, threshold):
+        self.motor.set_axis_parameter(self.motor.APs.SG2Threshold, threshold)
 
-        def setStallguard2Threshold(self, threshold):
-            self.parent.setStallguard2Threshold(threshold)
+    def set_stop_velocity(self, velocity):
+        self.motor.set_axis_parameter(self.motor.APs.SmartEnergyStallVelocity, velocity)
 
-        def setStopOnStallVelocity(self, velocity):
-            self.parent.setStopOnStallVelocity(velocity)
+    def get_filter(self):
+        return self.motor.get_axis_parameter(self.motor.APs.SG2FilterEnable)
 
-        def getStallguard2Filter(self):
-            return self.parent.getStallguard2Filter()
+    def get_threshold(self):
+        return self.motor.get_axis_parameter(self.motor.APs.SG2Threshold)
 
-        def getStallguard2Threshold(self):
-            return self.parent.getStallguard2Threshold()
-
-        def getStopOnStallVelocity(self):
-            return self.parent.getStopOnStallVelocity()
-
-    def __init__(self):
-        self.StallGuard2 = self.__GROUPING(self)
-
-    def setAxisParameter(self, parameter, value):
-        raise NotImplementedError()
-
-    def axisParameter(self, parameter, signed=False):
-        raise NotImplementedError()
-
-    def setStallguard2Filter(self, filter):
-        self.setAxisParameter(self.APs.SG2FilterEnable, filter)
-
-    def setStallguard2Threshold(self, threshold):
-        self.setAxisParameter(self.APs.SG2Threshold, threshold)
-
-    def setStopOnStallVelocity(self, velocity):
-        self.setAxisParameter(self.APs.SmartEnergyStallVelocity, velocity)
-
-    def getStallguard2Filter(self):
-        return self.axisParameter(self.APs.SG2FilterEnable)
-
-    def getStallguard2Threshold(self):
-        return self.axisParameter(self.APs.SG2Threshold)
-
-    def getStopOnStallVelocity(self):
-        return self.axisParameter(self.APs.SmartEnergyStallVelocity)
+    def get_stop_velocity(self):
+        return self.motor.get_axis_parameter(self.motor.APs.SmartEnergyStallVelocity)

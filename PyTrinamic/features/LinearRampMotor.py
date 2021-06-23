@@ -5,82 +5,38 @@ from PyTrinamic.features.LinearRamp import LinearRamp
 
 class LinearRampMotor(LinearRamp):
 
-    class __GROUPING:
+    def __init__(self, motor):
+        self.motor = motor
 
-        def __init__(self, parent):
-            self.parent = parent
+    def get_target_position(self):
+        return self.motor.get_axis_parameter(self.motor.APs.TargetPosition)
 
-        def getTargetPosition(self):
-            return self.parent.getTargetPosition()
+    def set_target_position(self, position):
+        self.motor.set_axis_parameter(self.motor.APs.TargetPosition, position)
 
-        def setTargetPosition(self, position):
-            self.parent.setTargetPosition(position)
+    def get_actual_position(self):
+        return self.motor.get_axis_parameter(self.motor.APs.ActualPosition)
 
-        def getActualPosition(self):
-            return self.parent.getActualPosition()
+    def set_actual_position(self, position):
+        self.motor.set_axis_parameter(self.motor.APs.ActualPosition, position)
 
-        def setActualPosition(self, position):
-            self.parent.setActualPosition(position)
+    def get_target_velocity(self):
+        return self.motor.get_axis_parameter(self.motor.APs.TargetVelocity)
 
-        def getTargetVelocity(self):
-            return self.parent.getTargetVelocity()
+    def set_target_velocity(self, velocity):
+        self.motor.set_axis_parameter(self.motor.APs.TargetVelocity, velocity)
 
-        def setTargetVelocity(self, velocity):
-            self.parent.setTargetVelocity(velocity)
+    def get_actual_velocity(self):
+        return self.motor.get_axis_parameter(self.motor.APs.ActualVelocity)
 
-        def getActualVelocity(self):
-            return self.parent.getActualVelocity()
+    def get_max_velocity(self):
+        return self.motor.get_axis_parameter(self.motor.APs.MaxVelocity)
 
-        def getMaxVelocity(self):
-            return self.parent.getMaxVelocity()
+    def set_max_velocity(self, velocity):
+        self.motor.set_axis_parameter(self.motor.APs.MaxVelocity, velocity)
 
-        def setMaxVelocity(self, velocity):
-            self.parent.setMaxVelocity(velocity)
+    def get_max_acceleration(self):
+        return self.motor.get_axis_parameter(self.motor.APs.MaxAcceleration)
 
-        def getMaxAcceleration(self):
-            return self.parent.getMaxAcceleration()
-
-        def setMaxAcceleration(self, acceleration):
-            self.parent.setMaxAcceleration(acceleration)
-
-    def __init__(self):
-        self.LinearRamp = self.__GROUPING(self)
-
-    def setAxisParameter(self, parameter, value):
-        raise NotImplementedError()
-
-    def axisParameter(self, parameter, signed=False):
-        raise NotImplementedError()
-
-    def getTargetPosition(self):
-        return self.axisParameter(self.APs.TargetPosition)
-
-    def setTargetPosition(self, position):
-        self.setAxisParameter(self.APs.TargetPosition, position)
-
-    def getActualPosition(self):
-        return self.axisParameter(self.APs.ActualPosition)
-
-    def setActualPosition(self, position):
-        self.setAxisParameter(self.APs.ActualPosition, position)
-
-    def getTargetVelocity(self):
-        return self.axisParameter(self.APs.TargetVelocity)
-
-    def setTargetVelocity(self, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, velocity)
-
-    def getActualVelocity(self):
-        return self.axisParameter(self.APs.ActualVelocity)
-
-    def getMaxVelocity(self):
-        return self.axisParameter(self.APs.MaxVelocity)
-
-    def setMaxVelocity(self, velocity):
-        self.setAxisParameter(self.APs.MaxVelocity, velocity)
-
-    def getMaxAcceleration(self):
-        return self.axisParameter(self.APs.MaxAcceleration)
-
-    def setMaxAcceleration(self, acceleration):
-        self.setAxisParameter(self.APs.MaxAcceleration, acceleration)
+    def set_max_acceleration(self, acceleration):
+        self.motor.set_axis_parameter(self.motor.APs.MaxAcceleration, acceleration)

@@ -5,20 +5,20 @@ from PyTrinamic.features.Feature import Feature
 
 class StallGuard2(Feature):
 
-    def setStallguard2Filter(self, axis, filter):
+    def set_filter(self, axis, filter):
         raise NotImplementedError()
 
-    def setStallguard2Threshold(self, axis, threshold):
+    def set_threshold(self, axis, threshold):
         raise NotImplementedError()
 
-    def setStopOnStallVelocity(self, axis, velocity):
+    def set_stop_velocity(self, axis, velocity):
         raise NotImplementedError()
 
-    def getStallguard2Filter(self, axis):
+    def get_filter(self, axis):
         raise NotImplementedError()
 
-    def getStallguard2Threshold(self, axis):
+    def get_threshold(self, axis):
         raise NotImplementedError()
 
-    def getStopOnStallVelocity(self, axis):
+    def get_stop_velocity(self, axis):
         raise NotImplementedError()
