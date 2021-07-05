@@ -11,26 +11,76 @@ from PyTrinamic.features.MotorControl import MotorControl
 
 class TMCM_1270(tmcl_module):
 
-    class ENUMs():
-        pass
+    def __init__(self, connection, module_id=1):
+        super().__init__(connection, module_id)
 
-    class GPs():
+        self.MOTORS = [self.MOTOR_0(self, 0)]
 
-        CANBitrate                    = 69
-        CANSendId                     = 70
-        CANReceiveId                  = 71
-        CANSecondaryId                = 72
-        autoStartMode                 = 77
-        protectionMode                = 81
-        eepromCoordinateStore         = 84
-        zeroUserVariables             = 85
-        applicationStatus             = 128
-        programCounter                = 130
-        lastTmclError                 = 131
-        tickTimer                     = 132
-        randomNumber                  = 133
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_1270.py", "TMCM_1270_V3.22.eds")
+
+    def showChipInfo(self):
+        print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
+
+    # IO pin functions
+    def analogInput(self, x):
+        return self.connection.analogInput(x)
+
+    def digitalInput(self, x):
+        return self.connection.digitalInput(x)
 
     class MOTOR_0(tmcl_module.Motor, LinearRampMotor, StallGuard2Motor, MotorControl):
+
+        def __init__(self, module, axis):
+            tmcl_module.Motor.__init__(self, module, axis)
+            LinearRampMotor.__init__(self)
+            StallGuard2Motor.__init__(self)
+
+        # Current control functions
+        def set_motor_run_current(self, current):
+            self.set_max_current(current)
+
+        def set_motor_standby_current(self, current):
+            self.set_axis_parameter(self.APs.StandbyCurrent, current)
+
+        def get_max_current(self):
+            return self.get_axis_parameter(self.APs.MaxCurrent)
+
+        def set_max_current(self, current):
+            self.set_axis_parameter(self.APs.MaxCurrent, current)
+
+        # Ramp mode
+        def get_ramp_mode(self):
+            return self.get_axis_parameter(self.APs.RampMode)
+
+        def set_ramp_mode(self, mode):
+            return self.set_axis_parameter(self.APs.RampMode, mode)
+
+        # Status functions
+        def get_status_flags(self):
+            return self.get_axis_parameter(self.APs.TMC262ErrorFlags)
+
+        def get_error_flags(self):
+            return self.get_axis_parameter(self.APs.ExtendedErrorFlags)
+
+        def get_position_reached(self):
+            return self.get_axis_parameter(self.APs.PositionReachedFlag)
+
+        def rotate(self, velocity):
+            self.target_velocity = velocity
+
+        def stop(self):
+            self.target_velocity = 0
+
+        def move_to(self, position, velocity=None):
+            if velocity:
+                self.set_max_velocity(velocity)
+            self.target_position = position
+
+        def move_by(self, difference, velocity=None):
+            position = difference + self.actual_position
+            self.move_to(position,velocity)
 
         class APs():
             TargetPosition                 = 0
@@ -111,74 +161,21 @@ class TMCM_1270(tmcl_module):
             PowerDownDelay                 = 214
             UnitMode                       = 255
 
-        def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
-            LinearRampMotor.__init__(self)
-            StallGuard2Motor.__init__(self)
+    class ENUMs():
+        pass
 
-        # Current control functions
-        def set_motor_run_current(self, current):
-            self.set_max_current(current)
+    class GPs():
 
-        def set_motor_standby_current(self, current):
-            self.set_axis_parameter(self.APs.StandbyCurrent, current)
-
-        def get_max_current(self):
-            return self.get_axis_parameter(self.APs.MaxCurrent)
-
-        def set_max_current(self, current):
-            self.set_axis_parameter(self.APs.MaxCurrent, current)
-
-        # Ramp mode
-        def get_ramp_mode(self):
-            return self.get_axis_parameter(self.APs.RampMode)
-
-        def set_ramp_mode(self, mode):
-            return self.set_axis_parameter(self.APs.RampMode, mode)
-
-        # Status functions
-        def get_status_flags(self):
-            return self.get_axis_parameter(self.APs.TMC262ErrorFlags)
-
-        def get_error_flags(self):
-            return self.get_axis_parameter(self.APs.ExtendedErrorFlags)
-
-        def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
-
-        def rotate(self, velocity):
-            self.target_velocity = velocity
-
-        def stop(self):
-            self.target_velocity = 0
-            self.module.stop()
-
-        def move_to(self, position, velocity=None):
-            if velocity:
-                self.set_max_velocity(velocity)
-            self.target_position = position
-
-        def move_by(self, difference, velocity=None):
-            position = difference+self.actual_position
-            self.move_to(position,velocity)
-
-    def __init__(self, connection, module_id=1):
-        super().__init__(connection, module_id)
-
-        self.MOTORS = [self.MOTOR_0(self, 0)]
-
-    @staticmethod
-    def getEdsFile():
-        return __file__.replace("TMCM_1270.py", "TMCM_1270_V3.22.eds")
-
-    def showChipInfo(self):
-        print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
-
-    
-    
-    # IO pin functions
-    def analogInput(self, x):
-        return self.connection.analogInput(x)
-
-    def digitalInput(self, x):
-        return self.connection.digitalInput(x)
+        CANBitrate                    = 69
+        CANSendId                     = 70
+        CANReceiveId                  = 71
+        CANSecondaryId                = 72
+        autoStartMode                 = 77
+        protectionMode                = 81
+        eepromCoordinateStore         = 84
+        zeroUserVariables             = 85
+        applicationStatus             = 128
+        programCounter                = 130
+        lastTmclError                 = 131
+        tickTimer                     = 132
+        randomNumber                  = 133
