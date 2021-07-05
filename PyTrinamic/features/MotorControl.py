@@ -5,14 +5,14 @@ from PyTrinamic.features.Feature import Feature
 
 class MotorControl(Feature):
 
-    def rotate(self, axis, velocity):
-        raise NotImplementedError()
+    def rotate(self, velocity):
+        self.module.rotate(self.axis, velocity)
 
-    def stop(self, axis):
-        raise NotImplementedError()
+    def stop(self):
+        self.module.stop(self.axis)
 
-    def moveTo(self, axis, position, velocity=None):
-        raise NotImplementedError()
+    def move_to(self, position, velocity=None):
+        self.module.move_to(self.axis, position, velocity)
 
-    def moveBy(self, axis, difference, velocity=None):
-        raise NotImplementedError()
+    def move_by(self, difference, velocity=None):
+        self.module.move_by(self.axis, difference, velocity)

@@ -20,10 +20,10 @@ module = TMCM_1270(myInterface)
 motor = module.MOTORS[0]
 
 print("Preparing parameters")
-motor.max_acceleration = 9000
+motor.max_acceleration = 20000
 
 print("Rotating")
-motor.rotate(40000)
+motor.rotate(50000)
 
 time.sleep(5)
 

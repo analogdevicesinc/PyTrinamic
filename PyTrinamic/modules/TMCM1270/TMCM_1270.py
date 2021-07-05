@@ -23,6 +23,22 @@ class TMCM_1270(tmcl_module):
     def showChipInfo(self):
         print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
 
+    def rotate(self, axis, velocity):
+        self.connection.rotate(axis, velocity, self.module_id)
+
+    def stop(self, axis):
+        self.connection.stop(axis, self.module_id)
+
+    def move_to(self, axis, position, velocity=None):
+        if velocity:
+            self.max_velocity = velocity
+        self.connection.moveTo(axis, position, self.module_id)
+
+    def move_by(self, axis, difference, velocity=None):
+        if velocity:
+            self.max_velocity = velocity
+        self.connection.moveBy(axis, difference, self.module_id)
+
     # IO pin functions
     def analogInput(self, x):
         return self.connection.analogInput(x)
@@ -66,21 +82,6 @@ class TMCM_1270(tmcl_module):
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
-
-        def rotate(self, velocity):
-            self.target_velocity = velocity
-
-        def stop(self):
-            self.target_velocity = 0
-
-        def move_to(self, position, velocity=None):
-            if velocity:
-                self.set_max_velocity(velocity)
-            self.target_position = position
-
-        def move_by(self, difference, velocity=None):
-            position = difference + self.actual_position
-            self.move_to(position,velocity)
 
         class APs():
             TargetPosition                 = 0
