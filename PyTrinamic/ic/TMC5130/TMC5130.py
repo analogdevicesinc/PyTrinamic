@@ -11,6 +11,7 @@ from PyTrinamic.ic.TMC5130.TMC5130_Fields import TMC5130_Fields
 from PyTrinamic.features.MotorControlIC import MotorControlIC
 from PyTrinamic.features.LinearRampIC import LinearRampIC
 from PyTrinamic.features.CurrentIC import CurrentIC
+from PyTrinamic.features.StallGuard2IC import StallGuard2IC
 
 class TMC5130(TMC_IC):
     # Constant registers, variants, fields
@@ -62,9 +63,10 @@ class TMC5130(TMC_IC):
 
         return position + distance
 
-    class MOTOR_0(TMC_IC.Motor, LinearRampIC, CurrentIC, MotorControlIC):
+    class MOTOR_0(TMC_IC.Motor, LinearRampIC, CurrentIC, StallGuard2IC, MotorControlIC):
 
         def __init__(self, ic, axis):
             TMC_IC.Motor.__init__(self, ic, axis)
             LinearRampIC.__init__(self)
             CurrentIC.__init__(self)
+            StallGuard2IC.__init__(self)
