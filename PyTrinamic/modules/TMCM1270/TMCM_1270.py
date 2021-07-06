@@ -55,13 +55,6 @@ class TMCM_1270(tmcl_module):
             StallGuard2Motor.__init__(self)
             CurrentModule.__init__(self)
 
-        # Status functions
-        def get_status_flags(self):
-            return self.get_axis_parameter(self.APs.TMC262ErrorFlags)
-
-        def get_error_flags(self):
-            return self.get_axis_parameter(self.APs.ExtendedErrorFlags)
-
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
@@ -136,8 +129,8 @@ class TMCM_1270(tmcl_module):
             pwmSymmetric                   = 203
             FreewheelingMode               = 204
             LoadValue                      = 206
-            extendedErrorFlags             = 207
-            DrvStatusFlags                 = 208
+            ErrorFlags                     = 207
+            StatusFlags                    = 208
             EncoderPosition                = 209
             EncoderResolution              = 210
             max_EncoderDeviation           = 212
