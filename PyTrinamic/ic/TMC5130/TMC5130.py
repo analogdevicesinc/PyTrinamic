@@ -1,79 +1,75 @@
-'''
-Created on 02.01.2019
+# Created on: 06.07.2021
+# Author: LK
 
-@author: ed
-'''
+# General imports
+from PyTrinamic.ic.TMC_IC import TMC_IC
+from PyTrinamic.ic.TMC5130.TMC5130_Registers import TMC5130_Registers
+from PyTrinamic.ic.TMC5130.TMC5130_Register_Variants import TMC5130_Register_Variants
+from PyTrinamic.ic.TMC5130.TMC5130_Fields import TMC5130_Fields
 
-from PyTrinamic.ic.TMC5130.TMC5130_register import TMC5130_register
-from PyTrinamic.ic.TMC5130.TMC5130_register_variant import TMC5130_register_variant
-from PyTrinamic.ic.TMC5130.TMC5130_fields import TMC5130_fields
-from PyTrinamic.helpers import TMC_helpers
+# Feature imports
+from PyTrinamic.features.MotorControlIC import MotorControlIC
+from PyTrinamic.features.LinearRampIC import LinearRampIC
 
-class TMC5130():
-    """
-    Class for the TMC5130 IC
-    """
-    def __init__(self, channel):
-        self.__channel  = channel
+class TMC5130(TMC_IC):
+    # Constant registers, variants, fields
+    REGISTERS = TMC5130_Registers
+    VARIANTS = TMC5130_Register_Variants
+    FIELDS = TMC5130_Fields
 
-        self.registers  = TMC5130_register
-        self.fields     = TMC5130_fields
-        self.variants   = TMC5130_register_variant
+    def __init__(self, handler, channel):
+        super().__init__(handler, channel)
+        self.MOTORS = [self.MOTOR_0(self, 0)]
 
-        self.MOTORS     = 2
+    # write and read wrappers for field access with respect to axis.
+    # These are used in feature implementations for the motors.
+    # Base field is used to identify what to access. With given axis the
+    # actual field to be accessed can be resolved in this wrapper function
+    # for multi-axis ICs.
+    # TMC5130 has one axis only, so it can just be handled as a normal field access.
+
+    def write_axis_field(self, axis, field, value):
+        del axis
+        return self.write_register_field(field, value)
+
+    def read_axis_field(self, axis, field):
+        del axis
+        return self.read_register_field(field)
 
     def showChipInfo(self):
         print("TMC5130 chip info: The TMC5130/A is a high-performance stepper motor controller and driver IC with serial communication interfaces. Voltage supply: 4,75 - 46V")
 
-    def writeRegister(self, registerAddress, value, channel):
-        raise NotImplementedError
-
-    def readRegister(self, registerAddress, channel):
-        raise NotImplementedError
-
-    def writeRegisterField(self, field, value):
-        return self.writeRegister(field[0], TMC_helpers.field_set(self.readRegister(field[0], self.__channel), field[1], field[2], value), self.__channel)
-
-    def readRegisterField(self, field):
-        return TMC_helpers.field_get(self.readRegister(field[0], self.__channel), field[1], field[2])
-
     # Motion Control functions
-    def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.writeRegister(self.registers.AMAX, 1000, self.__channel)
+    def rotate(self, axis, value):
+        self.write_register(self.REGISTERS.AMAX, 1000)
 
         if value >= 0:
-            self.writeRegister(self.registers.VMAX, value, self.__channel)
-            self.writeRegister(self.registers.RAMPMODE, 1, self.__channel)
+            self.write_register(self.REGISTERS.VMAX, value)
+            self.write_register(self.REGISTERS.RAMPMODE, 1)
         else:
-            self.writeRegister(self.registers.VMAX, -value, self.__channel)
-            self.writeRegister(self.registers.RAMPMODE, 2, self.__channel)
+            self.write_register(self.REGISTERS.VMAX, -value)
+            self.write_register(self.REGISTERS.RAMPMODE, 2)
 
-    def stop(self, motor):
-        self.rotate(motor, 0)
+    def stop(self, axis):
+        self.rotate(axis, 0)
 
-    def moveTo(self, motor, position, velocity):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.writeRegister(self.registers.RAMPMODE, 0, self.__channel)
+    def move_to(self, axis, position, velocity):
+        self.write_register(self.REGISTERS.RAMPMODE, 0)
 
         if velocity != 0:
-            self.writeRegister(self.registers.VMAX, velocity, self.__channel)
+            self.write_register(self.REGISTERS.VMAX, velocity)
 
-        self.writeRegister(self.registers.XTARGET, position, self.__channel)
+        self.write_register(self.REGISTERS.XTARGET, position)
 
-    def moveBy(self, motor, distance, velocity):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
+    def move_by(self, axis, distance, velocity):
+        position = self.read_register(self.REGISTERS.XACTUAL, signed=True)
 
-        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
-
-        self.moveTo(motor, position + distance, velocity)
+        self.move_to(motor, position + distance, velocity)
 
         return position + distance
 
-    def get_pin_state(self):
-        pass
+    class MOTOR_0(TMC_IC.Motor, LinearRampIC, MotorControlIC):
+
+        def __init__(self, ic, axis):
+            TMC_IC.Motor.__init__(self, ic, axis)
+            LinearRampIC.__init__(self)

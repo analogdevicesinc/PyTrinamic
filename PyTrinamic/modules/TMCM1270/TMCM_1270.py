@@ -8,7 +8,7 @@ from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
-from PyTrinamic.features.MotorControl import MotorControl
+from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 class TMCM_1270(tmcl_module):
 
@@ -40,7 +40,7 @@ class TMCM_1270(tmcl_module):
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControl):
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
