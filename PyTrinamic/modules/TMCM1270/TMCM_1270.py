@@ -66,13 +66,6 @@ class TMCM_1270(tmcl_module):
         def set_max_current(self, current):
             self.set_axis_parameter(self.APs.MaxCurrent, current)
 
-        # Ramp mode
-        def get_ramp_mode(self):
-            return self.get_axis_parameter(self.APs.RampMode)
-
-        def set_ramp_mode(self, mode):
-            return self.set_axis_parameter(self.APs.RampMode, mode)
-
         # Status functions
         def get_status_flags(self):
             return self.get_axis_parameter(self.APs.TMC262ErrorFlags)
