@@ -21,11 +21,11 @@ class Current(Feature):
         return "{} {}".format(
             "Current",
             {
-                "current_run": self.current_run,
-                "current_standby": self.current_standby
+                "run": self.run,
+                "standby": self.standby
             }
         )
 
     # Properties
-    current_run = property(get_current_run, set_current_run)
-    current_standby = property(get_current_standby, set_current_standby)
+    run = property(get_current_run, set_current_run)
+    standby = property(get_current_standby, set_current_standby)

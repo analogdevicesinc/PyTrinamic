@@ -10,6 +10,7 @@ from PyTrinamic.ic.TMC5130.TMC5130_Fields import TMC5130_Fields
 # Feature imports
 from PyTrinamic.features.MotorControlIC import MotorControlIC
 from PyTrinamic.features.LinearRampIC import LinearRampIC
+from PyTrinamic.features.CurrentIC import CurrentIC
 
 class TMC5130(TMC_IC):
     # Constant registers, variants, fields
@@ -20,13 +21,6 @@ class TMC5130(TMC_IC):
     def __init__(self, handler, channel):
         super().__init__(handler, channel)
         self.MOTORS = [self.MOTOR_0(self, 0)]
-
-    # write and read wrappers for field access with respect to axis.
-    # These are used in feature implementations for the motors.
-    # Base field is used to identify what to access. With given axis the
-    # actual field to be accessed can be resolved in this wrapper function
-    # for multi-axis ICs.
-    # TMC5130 has one axis only, so it can just be handled as a normal field access.
 
     def write_axis_field(self, axis, field, value):
         del axis
@@ -68,8 +62,9 @@ class TMC5130(TMC_IC):
 
         return position + distance
 
-    class MOTOR_0(TMC_IC.Motor, LinearRampIC, MotorControlIC):
+    class MOTOR_0(TMC_IC.Motor, LinearRampIC, CurrentIC, MotorControlIC):
 
         def __init__(self, ic, axis):
             TMC_IC.Motor.__init__(self, ic, axis)
             LinearRampIC.__init__(self)
+            CurrentIC.__init__(self)
