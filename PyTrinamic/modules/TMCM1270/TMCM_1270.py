@@ -44,8 +44,8 @@ class TMCM_1270(tmcl_module):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
-            LinearRampMotor.__init__(self)
-            StallGuard2Motor.__init__(self)
+            LinearRampModule.__init__(self)
+            StallGuard2Module.__init__(self)
             CurrentModule.__init__(self)
 
         def get_position_reached(self):

@@ -1,11 +1,12 @@
 # Created on: 14.06.2021
 # Author: LK
 
+from PyTrinamic.features.Feature import Feature
 from PyTrinamic.features.StallGuard2 import StallGuard2
 
 class StallGuard2Module(StallGuard2):
 
-    class __GROUPING:
+    class __GROUPING(StallGuard2):
 
         def __init__(self, parent):
             self.parent = parent
