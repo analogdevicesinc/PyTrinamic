@@ -40,13 +40,6 @@ class TMCM_1270(tmcl_module):
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    # IO pin functions
-    def analogInput(self, x):
-        return self.connection.analogInput(x)
-
-    def digitalInput(self, x):
-        return self.connection.digitalInput(x)
-
     class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControl):
 
         def __init__(self, module, axis):
