@@ -1,12 +1,12 @@
 # Created on: 06.07.2021
 # Author: LK
 
-from PyTrinamic.features.Feature import Feature
+from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.Current import Current
 
-class CurrentModule(Current):
+class CurrentModule(Current, FeatureProvider):
 
-    class __GROUPING(Current):
+    class __GROUPING(Current, FeatureProvider):
 
         def __init__(self, parent):
             self.parent = parent

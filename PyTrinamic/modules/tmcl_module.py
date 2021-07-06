@@ -31,6 +31,12 @@ class tmcl_module(object):
         self.name = ""
         self.desc = ""
 
+    def list_features(self):
+        features = list()
+        for motor in self.MOTORS:
+            features.append(motor.list_features())
+        return features
+
     def __str__(self):
         return "{}\{module_id={}\}".format(self.name, self.module_id)
 
