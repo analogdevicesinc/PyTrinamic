@@ -1,9 +1,10 @@
 # Created on: 04.03.2021
 # Author: LK
 
+from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.MotorControl import MotorControl
 
-class MotorControlIC(MotorControl):
+class MotorControlIC(MotorControl, FeatureProvider):
 
     def rotate(self, velocity):
         self.ic.rotate(self.axis, velocity)
