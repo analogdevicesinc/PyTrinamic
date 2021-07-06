@@ -5,8 +5,8 @@ Created on 03.12.2019
 '''
 
 from PyTrinamic.modules.tmcl_module import tmcl_module
-from PyTrinamic.features.LinearRampMotor import LinearRampMotor
-from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
+from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.MotorControl import MotorControl
 
 class TMCM_1270(tmcl_module):
@@ -46,7 +46,7 @@ class TMCM_1270(tmcl_module):
     def digitalInput(self, x):
         return self.connection.digitalInput(x)
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampMotor, StallGuard2Motor, MotorControl):
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, MotorControl):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)

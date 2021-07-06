@@ -3,7 +3,7 @@
 
 from PyTrinamic.features.LinearRamp import LinearRamp
 
-class LinearRampMotor(LinearRamp):
+class LinearRampModule(LinearRamp):
 
     class __GROUPING:
 
