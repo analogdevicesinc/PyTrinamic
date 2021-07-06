@@ -7,6 +7,7 @@ Created on 03.12.2019
 from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.MotorControl import MotorControl
 
 class TMCM_1270(tmcl_module):
@@ -46,25 +47,13 @@ class TMCM_1270(tmcl_module):
     def digitalInput(self, x):
         return self.connection.digitalInput(x)
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, MotorControl):
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControl):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
             LinearRampMotor.__init__(self)
             StallGuard2Motor.__init__(self)
-
-        # Current control functions
-        def set_motor_run_current(self, current):
-            self.set_max_current(current)
-
-        def set_motor_standby_current(self, current):
-            self.set_axis_parameter(self.APs.StandbyCurrent, current)
-
-        def get_max_current(self):
-            return self.get_axis_parameter(self.APs.MaxCurrent)
-
-        def set_max_current(self, current):
-            self.set_axis_parameter(self.APs.MaxCurrent, current)
+            CurrentModule.__init__(self)
 
         # Status functions
         def get_status_flags(self):
@@ -83,7 +72,7 @@ class TMCM_1270(tmcl_module):
             ActualVelocity                 = 3
             MaxVelocity                    = 4
             MaxAcceleration                = 5
-            MaxCurrent                     = 6
+            RunCurrent                     = 6
             StandbyCurrent                 = 7
             PositionReachedFlag            = 8
             HomeSwitch                     = 9
