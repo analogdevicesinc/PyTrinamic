@@ -8,7 +8,7 @@ The following table summarizes the different parts of this library.
 | --- | --- |
 | `doc` | Project documentation. Folder containing this file. |
 | `PyTrinamic` | Library folder. This should be used in implementation projects. |
-| `PyTrinamic/connections` | Connection interfaces and ConnectionManager. TMCL-compatible interfaces derive from `tmcl\_interface`. Specific implementations are intended to be used with standard computers only. |
+| `PyTrinamic/connections` | Connection interfaces and ConnectionManager. TMCL-compatible interfaces derive from `tmcl_interface`. Specific implementations are intended to be used with standard computers only. |
 | `PyTrinamic/evalboards` | EvalBoard modules. They provide direct register access to the used ICs. |
 | `PyTrinamic/examples` | Example scripts utilizing this library. They are intended to be used with standard computers only. |
 | `PyTrinamic/features` | Implementations for different feature blocks of axes for modules and ICs. |
