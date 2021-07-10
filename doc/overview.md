@@ -35,7 +35,7 @@ but can also be used directly with this library, if the required functions are p
 They can be accessed via specific interface types, such as SPI and UART. As these are highly platform
 dependend, they need to be implemented externally. To use the IC implementations of this library,
 a `handler` is required as constructor parameter, providing `read_register(...)` and `write_register(...)` functions.  
-For more information on how to use the ICs part of this library, take a look into [IC documentation](ic.md).
+For more information on how to use the ICs part of this library, take a look into [ICs documentation](ics.md).
 
 Modules are complete hardware solutions using Trinamic ICs. They provide hardware abstraction
 to the extend that they provide access to the individual axes, while hiding the
@@ -45,7 +45,7 @@ or the motor object.
 Most of Trinamic's modules also support TMCL, the *Trinamic Motion Control Language*.
 TMCL provides access to all of those parameters aswell as motion control (e.g. `ROL` - *Rotate left*, `ROR` - *Rotate right*)
 and control flow.  
-For more details on how to use the module part of this library, take a look into [module documentation](module.md).  
+For more details on how to use the module part of this library, take a look into [modules documentation](modules.md).  
 For more details on TMCL and the module you are using, look into the TMCL firmware documentation of your module.
 It can be downloaded from the [Trinamic website](https://www.trinamic.com/products/modules/).
 
