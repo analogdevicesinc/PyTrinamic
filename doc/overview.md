@@ -55,4 +55,5 @@ This way, the IC can be evaluated directly without embedding it into complex har
 Multiple EvalBoards can be aggregated together on an evaluation platform, like *Landungsbruecke*,
 which provides the required interfaces to the host, which uses this library.
 The ICs within EvalBoards can be accessed as described above, with the corresponding
-EvalBoard being the `handler`, providing the register access via TMCL.
+EvalBoard being the `handler`, providing the register access via TMCL.  
+For more information on how to use the EvalBoards part of this library, take a look into [EvalBoards documentation](evalboards.md).
