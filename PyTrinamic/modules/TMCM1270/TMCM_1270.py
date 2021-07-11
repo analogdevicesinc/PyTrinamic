@@ -137,7 +137,7 @@ class TMCM_1270(tmcl_module, LinearRampModule, MotorControl, StallGuard2Module):
         if velocity:
             self.setMaxVelocity(axis, velocity)
 
-        self.connection.move(0, axis, position, self.MODULE_ID)
+        self.connection.move(0, axis, position, self.module_id)
         self.setTargetPosition(axis, position)
 
     def moveBy(self, axis, difference, velocity=None):
@@ -172,10 +172,10 @@ class TMCM_1270(tmcl_module, LinearRampModule, MotorControl, StallGuard2Module):
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x, self.MODULE_ID)
+        return self.connection.analogInput(x, self.module_id)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x, self.MODULE_ID)
+        return self.connection.digitalInput(x, self.module_id)
 
     def showMotionConfiguration(self):
         print("Motion configuration:")
