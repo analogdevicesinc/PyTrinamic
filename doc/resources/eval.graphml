@@ -228,12 +228,15 @@ write_register_field(...)</y:MethodLabel>
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="97.20000000000002" width="144.0" x="678.1914713822889" y="478.3112311015118"/>
+          <y:Geometry height="146.4267818574514" width="144.0" x="678.1914713822889" y="429.0844492440604"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="21.706016540527344" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="61.81105041503906" x="41.09447479248047" xml:space="preserve" y="3.0">TMC1234<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="false">
-            <y:AttributeLabel xml:space="preserve">MOTORS</y:AttributeLabel>
+            <y:AttributeLabel xml:space="preserve">REGISTERS
+VARIANTS
+FIELDS
+MOTORS</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve">read_axis_field(...)
 write_axis_field(...)</y:MethodLabel>
           </y:UML>
@@ -279,7 +282,6 @@ write_axis_field(...)</y:MethodLabel>
     </node>
     <node id="n14">
       <data key="d4" xml:space="preserve"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
           <y:Geometry height="28.0" width="100.0" x="920.8000000000001" y="551.4000000000001"/>
@@ -291,7 +293,6 @@ write_axis_field(...)</y:MethodLabel>
     </node>
     <node id="n15" yfiles.foldertype="group">
       <data key="d4" xml:space="preserve"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -341,7 +342,6 @@ write_axis_field(...)</y:MethodLabel>
     </node>
     <node id="n16" yfiles.foldertype="group">
       <data key="d4" xml:space="preserve"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -391,7 +391,6 @@ write_axis_field(...)</y:MethodLabel>
     </node>
     <node id="n17">
       <data key="d4" xml:space="preserve"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
           <y:Geometry height="28.0" width="100.0" x="1222.6" y="377.92095032397356"/>
@@ -403,7 +402,6 @@ write_axis_field(...)</y:MethodLabel>
     </node>
     <node id="n18" yfiles.foldertype="group">
       <data key="d4" xml:space="preserve"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
@@ -533,7 +531,7 @@ write_axis_field(...)</y:MethodLabel>
     <edge id="e7" source="n10" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="21.941403887689034" sy="-11.197513498919875" tx="-35.250067494599875" ty="-3.629046976241625"/>
+          <y:Path sx="21.941403887689034" sy="-11.197513498919875" tx="-35.250067494599875" ty="-5.466971912968888"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="diamond" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -543,7 +541,7 @@ write_axis_field(...)</y:MethodLabel>
     <edge id="e8" source="n11" target="n12">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="48.37412257019491" sy="48.563481371490525" tx="0.0" ty="0.0">
+          <y:Path sx="48.37412257019491" sy="73.15837750022274" tx="0.0" ty="0.0">
             <y:Point x="798.5655939524838" y="707.9224622030237"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
@@ -576,10 +574,10 @@ write_axis_field(...)</y:MethodLabel>
     <edge id="e11" source="n8" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="54.35004319654445" sy="0.47469526187956035" tx="28.758571814255447" ty="6.69492710583188"/>
+          <y:Path sx="54.35004319654445" sy="0.47469526187956035" tx="28.758571814255447" ty="10.085562046061552"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="plain"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.344114303588867" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="41.45228576660156" x="-51.30760098076064" xml:space="preserve" y="-102.90328842970553">Access<y:LabelModel><y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/></y:LabelModel><y:ModelParameter><y:SmartEdgeLabelModelParameter angle="6.283185307179586" distance="30.581428051816648" distanceToCenter="true" position="left" ratio="0.22725559360441122" segment="-1"/></y:ModelParameter><y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/></y:EdgeLabel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.344114303588867" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="41.45228576660156" x="-51.30760098076064" xml:space="preserve" y="-102.93063217970553">Access<y:LabelModel><y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/></y:LabelModel><y:ModelParameter><y:SmartEdgeLabelModelParameter angle="6.283185307179586" distance="30.581428051816648" distanceToCenter="true" position="left" ratio="0.22725559360441122" segment="-1"/></y:ModelParameter><y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/></y:EdgeLabel>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
@@ -596,7 +594,6 @@ write_axis_field(...)</y:MethodLabel>
       </data>
     </edge>
     <edge id="e13" source="n13" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-59.21228806695399" ty="30.13533612311045">
@@ -609,7 +606,6 @@ write_axis_field(...)</y:MethodLabel>
       </data>
     </edge>
     <edge id="e14" source="n13" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-50.63734881209564" sy="0.0" tx="-49.34685205183655" ty="7.258588012959109">
@@ -624,10 +620,9 @@ write_axis_field(...)</y:MethodLabel>
       </data>
     </edge>
     <edge id="e15" source="n11" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="51.471314794816976" sy="-17.05021328293708" tx="0.0" ty="0.0">
+          <y:Path sx="51.471314794816976" sy="-25.685266059708308" tx="0.0" ty="0.0">
             <y:Point x="801.6627861771059" y="330.40000000000003"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
@@ -637,10 +632,9 @@ write_axis_field(...)</y:MethodLabel>
       </data>
     </edge>
     <edge id="e16" source="n11" target="n13">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="71.98214767818638" sy="-29.43898218142516" tx="-56.60589632829374" ty="32.27224892008661"/>
+          <y:Path sx="72.02325828360733" sy="-17.14946240777033" tx="-71.97599487040998" ty="19.94837776501572"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -648,7 +642,6 @@ write_axis_field(...)</y:MethodLabel>
       </data>
     </edge>
     <edge id="e17" source="n8" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="72.9331965442766" sy="-1.5900995545352998" tx="-67.73494870410309" ty="17.37462473002182"/>
@@ -660,7 +653,6 @@ write_axis_field(...)</y:MethodLabel>
       </data>
     </edge>
     <edge id="e18" source="n8" target="n13">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="77.06278617710598" sy="-0.5577021463279834" tx="-46.05460313174899" ty="22.98067224622048"/>
