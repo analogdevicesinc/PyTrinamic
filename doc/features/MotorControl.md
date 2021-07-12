@@ -20,7 +20,12 @@ There are no additional feature parameters for this feature.
 ## Feature functions
 
 The MotorControl feature implements the basic functions to rotate and position
-a motor.
+a motor.  
+All of these functions are highly module / IC dependent and thus fully implemented
+in the given module / IC. This is also why no additional parameters are required
+for this feature. However, since these functions are ramp-dependent, the ramp
+has to be configured first using the corresponding ramp feature or by directly
+setting axis parameters / register fields.
 
 ### `rotate(self, velocity)`
 
