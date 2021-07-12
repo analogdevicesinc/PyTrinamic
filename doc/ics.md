@@ -28,7 +28,11 @@ and fully write the entire register back (*read-modify-write*).
 This is done by the `read_register_field(...)` and `write_register_field(...)` functions.
 For this to work, the definition of register fields is a tuple consisting
 of the corresponding register address, the mask of the field, and the shift value
-for the LSB of the field.
+for the LSB of the field.  
+Additionally, ICs implement the `read_axis_field(...)` and `write_axis_field(...)` functions.
+For multi-axis ICs these functions resolve axis-specific fields based on given
+base field and axis number. For single-axis ICs, these functions just wrap
+the normal register field access functions on the given field.
 
 Every IC inherits the general `TMC_IC` class, providing general Trinamic IC functionality,
 such as channel handling and field access as described above. The `channel` of an
