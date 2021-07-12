@@ -32,7 +32,7 @@ in motors within ICs as part of the `FIELDS` class.
 
 The parameters for this feature can be accessed either by using the corresponding
 setter / getter function or by reading from / writing to the property value `property` using
-`motor.LinearRamp.property`.
+`motor.StallGuard2.property`.
 
 | Property identifier | Axis parameter | Register fields |
 | --- | --- | --- |
