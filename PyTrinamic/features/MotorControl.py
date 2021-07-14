@@ -11,8 +11,8 @@ class MotorControl(Feature):
     def stop(self, axis):
         raise NotImplementedError()
 
-    def moveTo(self, axis, position, velocity=None):
+    def move_to(self, axis, position, velocity=None):
         raise NotImplementedError()
 
-    def moveBy(self, axis, difference, velocity=None):
+    def move_by(self, axis, difference, velocity=None):
         raise NotImplementedError()

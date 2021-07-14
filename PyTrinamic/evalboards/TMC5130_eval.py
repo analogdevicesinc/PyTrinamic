@@ -4,9 +4,15 @@ Created on 09.01.2019
 @author: LK, ED, LH
 '''
 
+from PyTrinamic.evalboards.TMC_EvalBoard import TMC_EvalBoard
+from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
+from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.CurrentModule import CurrentModule
+from PyTrinamic.features.MotorControlModule import MotorControlModule
 
-class TMC5130_eval(TMC5130):
+class TMC5130_eval(TMC_EvalBoard):
     """
     This class represents a TMC5130 Evaluation board.
 
@@ -33,37 +39,75 @@ class TMC5130_eval(TMC5130):
         (28, 28)
     ]
 
-    def __init__(self, connection, moduleID=1):
-        """
-        Parameters:
-            connection:
-                Type: class
-                A class that provides the neccessary functions for communicating
-                with a TMC5130. The required functions are
-                    connection.writeMC(registerAddress, value, moduleID)
-                    connection.readMC(registerAddress, moduleID, signed)
-                for writing/reading to registers of the TMC5130.
-            moduleID:
-                Type: int, optional, default value: 1
-                The TMCL module ID of the TMC5130. This ID is used as a
-                parameter for the writeMC and readMC functions.
-        """
-        TMC5130.__init__(self, moduleID)
+    def __init__(self, connection, module_id=1):
+        super().__init__(connection, module_id, TMC5130(self, 0), self.EVAL_TYPES.MOTION_CONTROLLER)
+        self.MOTORS = [self.MOTOR_0(self, 0)]
 
-        self.__connection = connection
-        self._MODULE_ID = moduleID
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
 
-    # Use the motion controller functions for register access
-    def writeRegister(self, registerAddress, value, moduleID=None):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+        def __init__(self, module, axis):
+            tmcl_module.Motor.__init__(self, module, axis)
+            LinearRampModule.__init__(self)
+            StallGuard2Module.__init__(self)
+            CurrentModule.__init__(self)
 
-        return self.__connection.writeMC(registerAddress, value, moduleID)
-
-    def readRegister(self, registerAddress, moduleID=None, signed=False):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
-
-        return self.__connection.readMC(registerAddress, moduleID, signed)
+        class APs():
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxAcceleration                = 5
+            RunCurrent                     = 6
+            StandbyCurrent                 = 7
+            PositionReachedFlag            = 8
+            VREF                           = 9
+            RightEndstop                   = 10
+            LeftEndstop                    = 11
+            AutomaticRightStop             = 12
+            AutomaticLeftStop              = 13
+            SWMode                         = 14
+            A1                             = 15
+            V1                             = 16
+            MaxDeceleration                = 17
+            D1                             = 18
+            StartVelocity                  = 19
+            StopVelocity                   = 20
+            RampWaitTime                   = 21
+            THIGH                          = 23
+            VDCMIN                         = 24
+            HighSpeedChopperMode           = 27
+            HighSpeedFullstepMode          = 28
+            MeasuredSpeed                  = 29
+            RampMode                       = 30
+            IScaleAnalog                   = 33
+            InternalRSense                 = 34
+            MicrostepResolution            = 140
+            ChopperBlankTime               = 162
+            ConstantTOffMode               = 163
+            DisableFastDecayComparator     = 164
+            ChopperHysteresisEnd           = 165
+            ChopperHysteresisStart         = 166
+            TOff                           = 167
+            SEIMIN                         = 168
+            SECDS                          = 169
+            SmartEnergyHysteresis          = 170
+            SECUS                          = 171
+            SmartEnergyHysteresisStart     = 172
+            SG2FilterEnable                = 173
+            SG2Threshold                   = 174
+            VSense                         = 179
+            SmartEnergyActualCurrent       = 180
+            SmartEnergyStallVelocity       = 181
+            SmartEnergyThresholdSpeed      = 182
+            RandomTOffMode                 = 184
+            ChopperSynchronization         = 185
+            PWMThresholdSpeed              = 186
+            PWMGrad                        = 187
+            PWMAmplitude                   = 188
+            PWMFrequency                   = 191
+            PWMAutoscale                   = 192
+            FreewheelingMode               = 204
+            LoadValue                      = 206
+            EncoderPosition                = 209
+            EncoderResolution              = 210

@@ -22,3 +22,18 @@ class StallGuard2(Feature):
 
     def get_stop_velocity(self, axis):
         raise NotImplementedError()
+
+    def __str__(self):
+        return "{} {}".format(
+            "StallGuard2",
+            {
+                "filter": self.filter,
+                "threshold": self.threshold,
+                "stop_velocity": self.stop_velocity
+            }
+        )
+
+    # Properties
+    filter = property(get_filter, set_filter)
+    threshold = property(get_threshold, set_threshold)
+    stop_velocity = property(get_stop_velocity, set_stop_velocity)

@@ -18,12 +18,24 @@ class tmcl_module(object):
         def get_axis_parameter(self, type, signed=False):
             return self.module.get_axis_parameter(type, self.axis, signed)
 
+        def get_status_flags(self):
+            return self.get_axis_parameter(self.APs.StatusFlags)
+
+        def get_error_flags(self):
+            return self.get_axis_parameter(self.APs.ErrorFlags)
+
     def __init__(self, connection, module_id):
         self.MOTORS = 0
         self.connection = connection
         self.module_id = module_id
         self.name = ""
         self.desc = ""
+
+    def list_features(self):
+        features = list()
+        for motor in self.MOTORS:
+            features.append(motor.list_features())
+        return features
 
     def __str__(self):
         return "{}\{module_id={}\}".format(self.name, self.module_id)

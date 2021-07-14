@@ -1,11 +1,12 @@
 # Created on: 14.06.2021
 # Author: LK
 
+from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.LinearRamp import LinearRamp
 
-class LinearRampMotor(LinearRamp):
+class LinearRampModule(LinearRamp, FeatureProvider):
 
-    class __GROUPING:
+    class __GROUPING(LinearRamp, FeatureProvider):
 
         # Grouping parent handling
 

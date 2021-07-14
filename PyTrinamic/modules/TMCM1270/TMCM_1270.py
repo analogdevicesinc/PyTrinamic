@@ -5,32 +5,51 @@ Created on 03.12.2019
 '''
 
 from PyTrinamic.modules.tmcl_module import tmcl_module
-from PyTrinamic.features.LinearRampMotor import LinearRampMotor
-from PyTrinamic.features.StallGuard2Motor import StallGuard2Motor
-from PyTrinamic.features.MotorControl import MotorControl
+from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.CurrentModule import CurrentModule
+from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 class TMCM_1270(tmcl_module):
 
-    class ENUMs():
-        pass
+    def __init__(self, connection, module_id=1):
+        super().__init__(connection, module_id)
 
-    class GPs():
+        self.MOTORS = [self.MOTOR_0(self, 0)]
 
-        CANBitrate                    = 69
-        CANSendId                     = 70
-        CANReceiveId                  = 71
-        CANSecondaryId                = 72
-        autoStartMode                 = 77
-        protectionMode                = 81
-        eepromCoordinateStore         = 84
-        zeroUserVariables             = 85
-        applicationStatus             = 128
-        programCounter                = 130
-        lastTmclError                 = 131
-        tickTimer                     = 132
-        randomNumber                  = 133
+    @staticmethod
+    def getEdsFile():
+        return __file__.replace("TMCM_1270.py", "TMCM_1270_V3.22.eds")
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampMotor, StallGuard2Motor, MotorControl):
+    def showChipInfo(self):
+        print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
+
+    def rotate(self, axis, velocity):
+        self.connection.rotate(axis, velocity, self.module_id)
+
+    def stop(self, axis):
+        self.connection.stop(axis, self.module_id)
+
+    def move_to(self, axis, position, velocity=None):
+        if velocity:
+            self.max_velocity = velocity
+        self.connection.moveTo(axis, position, self.module_id)
+
+    def move_by(self, axis, difference, velocity=None):
+        if velocity:
+            self.max_velocity = velocity
+        self.connection.moveBy(axis, difference, self.module_id)
+
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
+
+        def __init__(self, module, axis):
+            tmcl_module.Motor.__init__(self, module, axis)
+            LinearRampModule.__init__(self)
+            StallGuard2Module.__init__(self)
+            CurrentModule.__init__(self)
+
+        def get_position_reached(self):
+            return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
         class APs():
             TargetPosition                 = 0
@@ -39,7 +58,7 @@ class TMCM_1270(tmcl_module):
             ActualVelocity                 = 3
             MaxVelocity                    = 4
             MaxAcceleration                = 5
-            MaxCurrent                     = 6
+            RunCurrent                     = 6
             StandbyCurrent                 = 7
             PositionReachedFlag            = 8
             HomeSwitch                     = 9
@@ -57,9 +76,9 @@ class TMCM_1270(tmcl_module):
             RampWaitTime                   = 21
             THIGH                          = 22
             VDCMIN                         = 23
-            rightSwitchPolarity            = 24
-            leftSwitchPolarity             = 25
-            softstop                       = 26
+            RightSwitchPolarity            = 24
+            LeftSwitchPolarity             = 25
+            Softstop                       = 26
             HighSpeedChopperMode           = 27
             HighSpeedFullstepMode          = 28
             MeasuredSpeed                  = 29
@@ -74,23 +93,23 @@ class TMCM_1270(tmcl_module):
             TOff                           = 167
             SEIMIN                         = 168
             SECDS                          = 169
-            smartEnergyHysteresis          = 170
+            SmartEnergyHysteresis          = 170
             SECUS                          = 171
-            smartEnergyHysteresisStart     = 172
+            SmartEnergyHysteresisStart     = 172
             SG2FilterEnable                = 173
             SG2Threshold                   = 174
             ShortToGroundProtection        = 177
             VSense                         = 179
-            smartEnergyActualCurrent       = 180
-            smartEnergyStallVelocity       = 181
-            smartEnergyThresholdSpeed      = 182
+            SmartEnergyActualCurrent       = 180
+            SmartEnergyStallVelocity       = 181
+            SmartEnergyThresholdSpeed      = 182
             RandomTOffMode                 = 184
             ChopperSynchronization         = 185
             PWMThresholdSpeed              = 186
             PWMGrad                        = 187
             PWMAmplitude                   = 188
             PWMScale                       = 189
-            pwmMode                        = 190
+            PWMMode                        = 190
             PWMFrequency                   = 191
             PWMAutoscale                   = 192
             ReferenceSearchMode            = 193
@@ -98,87 +117,34 @@ class TMCM_1270(tmcl_module):
             RefSwitchSpeed                 = 195
             RightLimitSwitchPosition       = 196
             LastReferencePosition          = 197
-            encoderMode                    = 201
+            EncoderMode                    = 201
             MotorFullStepResolution        = 202
-            pwmSymmetric                   = 203
+            PWMSymmetric                   = 203
             FreewheelingMode               = 204
             LoadValue                      = 206
-            extendedErrorFlags             = 207
-            DrvStatusFlags                 = 208
+            ErrorFlags                     = 207
+            StatusFlags                    = 208
             EncoderPosition                = 209
             EncoderResolution              = 210
-            max_EncoderDeviation           = 212
+            EncoderDeviationMax            = 212
             PowerDownDelay                 = 214
             UnitMode                       = 255
 
-        def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
-            LinearRampMotor.__init__(self)
-            StallGuard2Motor.__init__(self)
+    class ENUMs():
+        pass
 
-        # Current control functions
-        def set_motor_run_current(self, current):
-            self.set_max_current(current)
+    class GPs():
 
-        def set_motor_standby_current(self, current):
-            self.set_axis_parameter(self.APs.StandbyCurrent, current)
-
-        def get_max_current(self):
-            return self.get_axis_parameter(self.APs.MaxCurrent)
-
-        def set_max_current(self, current):
-            self.set_axis_parameter(self.APs.MaxCurrent, current)
-
-        # Ramp mode
-        def get_ramp_mode(self):
-            return self.get_axis_parameter(self.APs.RampMode)
-
-        def set_ramp_mode(self, mode):
-            return self.set_axis_parameter(self.APs.RampMode, mode)
-
-        # Status functions
-        def get_status_flags(self):
-            return self.get_axis_parameter(self.APs.TMC262ErrorFlags)
-
-        def get_error_flags(self):
-            return self.get_axis_parameter(self.APs.ExtendedErrorFlags)
-
-        def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
-
-        def rotate(self, velocity):
-            self.target_velocity = velocity
-
-        def stop(self):
-            self.target_velocity = 0
-            self.module.stop()
-
-        def move_to(self, position, velocity=None):
-            if velocity:
-                self.set_max_velocity(velocity)
-            self.target_position = position
-
-        def move_by(self, difference, velocity=None):
-            position = difference+self.actual_position
-            self.move_to(position,velocity)
-
-    def __init__(self, connection, module_id=1):
-        super().__init__(connection, module_id)
-
-        self.MOTORS = [self.MOTOR_0(self, 0)]
-
-    @staticmethod
-    def getEdsFile():
-        return __file__.replace("TMCM_1270.py", "TMCM_1270_V3.22.eds")
-
-    def showChipInfo(self):
-        print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
-
-    
-    
-    # IO pin functions
-    def analogInput(self, x):
-        return self.connection.analogInput(x)
-
-    def digitalInput(self, x):
-        return self.connection.digitalInput(x)
+        CANBitrate                    = 69
+        CANSendId                     = 70
+        CANReceiveId                  = 71
+        CANSecondaryId                = 72
+        AutoStartMode                 = 77
+        ProtectionMode                = 81
+        EepromCoordinateStore         = 84
+        ZeroUserVariables             = 85
+        ApplicationStatus             = 128
+        ProgramCounter                = 130
+        LastTmclError                 = 131
+        TickTimer                     = 132
+        RandomNumber                  = 133
