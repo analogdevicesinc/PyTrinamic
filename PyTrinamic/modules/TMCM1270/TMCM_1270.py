@@ -32,7 +32,7 @@ class TMCM_1270(tmcl_module):
 
         Parameters:
         axis: Axis index.
-        velocity: Target velocity to rotate the motor with. Units are module internal.
+        velocity: Target velocity to rotate the motor with. Units are module specific.
 
         Returns: None
         """
@@ -55,8 +55,8 @@ class TMCM_1270(tmcl_module):
 
         Parameters:
         axis: Axis index.
-        position: Target position to move the motor to. Units are module internal.
-        velocity: Maximum position velocity to position the motor. Units are module internal.
+        position: Target position to move the motor to. Units are module specific.
+        velocity: Maximum position velocity to position the motor. Units are module specific.
         If no velocity is given, the previously configured maximum positioning velocity (AP 4)
         will be used.
 
@@ -72,8 +72,8 @@ class TMCM_1270(tmcl_module):
 
         Parameters:
         axis: Axis index.
-        difference: Position difference to move the motor by. Units are module internal.
-        velocity: Maximum position velocity to position the motor. Units are module internal.
+        difference: Position difference to move the motor by. Units are module specific.
+        velocity: Maximum position velocity to position the motor. Units are module specific.
         If no velocity is given, the previously configured maximum positioning velocity (AP 4)
         will be used.
 
