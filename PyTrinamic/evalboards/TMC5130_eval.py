@@ -16,10 +16,7 @@ class TMC5130_eval(TMC_EvalBoard):
     """
     This class represents a TMC5130 Evaluation board.
 
-    Communication is done over the TMCL commands writeMC and readMC. An
-    implementation without TMCL may still use this class if these two functions
-    are provided properly. See __init__ for details on the function
-    requirements.
+    This can be used directly with the Landungsbruecke evaluation platform.
     """
 
     __PIN_MAP = [
@@ -40,10 +37,20 @@ class TMC5130_eval(TMC_EvalBoard):
     ]
 
     def __init__(self, connection, module_id=1):
+        """
+        Constructor for the TMC5130 evalboard instance.
+
+        Parameters:
+        connection: TMCL connection interface instance.
+        module_id: Module ID to identify the evalboard module. This is used to differentiate
+        between different modules on shared busses. Default is set to 1, different
+        values have to be configured with the module first.
+        """
         super().__init__(connection, module_id, TMC5130(self, 0), self.EVAL_TYPES.MOTION_CONTROLLER)
         self.MOTORS = [self.MOTOR_0(self, 0)]
 
     class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
+        "Motor class for the motor on axis 0."
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
@@ -52,6 +59,7 @@ class TMC5130_eval(TMC_EvalBoard):
             CurrentModule.__init__(self)
 
         class APs():
+            "Axis parameter map for this axis."
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2

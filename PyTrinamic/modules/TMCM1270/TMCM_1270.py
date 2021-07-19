@@ -11,6 +11,7 @@ from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 class TMCM_1270(tmcl_module):
+    "TMCM-1270 module implementation"
 
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
@@ -19,28 +20,71 @@ class TMCM_1270(tmcl_module):
 
     @staticmethod
     def getEdsFile():
+        "Returns EDS file with parameters"
         return __file__.replace("TMCM_1270.py", "TMCM_1270_V3.22.eds")
 
     def showChipInfo(self):
         print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
 
     def rotate(self, axis, velocity):
+        """
+        Rotates the motor on the given axis with the given velocity.
+
+        Parameters:
+        axis: Axis index.
+        velocity: Target velocity to rotate the motor with. Units are module specific.
+
+        Returns: None
+        """
         self.connection.rotate(axis, velocity, self.module_id)
 
     def stop(self, axis):
+        """
+        Stops the motor on the given axis.
+
+        Parameters:
+        axis: Axis index.
+
+        Returns: None
+        """
         self.connection.stop(axis, self.module_id)
 
     def move_to(self, axis, position, velocity=None):
+        """
+        Moves the motor on the given axis to the given target position.
+
+        Parameters:
+        axis: Axis index.
+        position: Target position to move the motor to. Units are module specific.
+        velocity: Maximum position velocity to position the motor. Units are module specific.
+        If no velocity is given, the previously configured maximum positioning velocity (AP 4)
+        will be used.
+
+        Returns: None
+        """
         if velocity:
             self.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
+        """
+        Moves the motor on the given axis by the given position difference.
+
+        Parameters:
+        axis: Axis index.
+        difference: Position difference to move the motor by. Units are module specific.
+        velocity: Maximum position velocity to position the motor. Units are module specific.
+        If no velocity is given, the previously configured maximum positioning velocity (AP 4)
+        will be used.
+
+        Returns: None
+        """
         if velocity:
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
     class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
+        "Motor class for the motor on axis 0."
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
@@ -49,9 +93,17 @@ class TMCM_1270(tmcl_module):
             CurrentModule.__init__(self)
 
         def get_position_reached(self):
+            """
+            Indicates whether a positioning task has been completed.
+
+            Returns:
+            1, if target position has been reached.
+            0, if target position has not been reached.
+            """
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
         class APs():
+            "Axis parameter map for this axis."
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2
@@ -131,10 +183,11 @@ class TMCM_1270(tmcl_module):
             UnitMode                       = 255
 
     class ENUMs():
+        "Constant enums for parameters of this module."
         pass
 
     class GPs():
-
+        "Global parameter map for this module."
         CANBitrate                    = 69
         CANSendId                     = 70
         CANReceiveId                  = 71
