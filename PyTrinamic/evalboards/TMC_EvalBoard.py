@@ -34,7 +34,7 @@ class TMC_EvalBoard(tmcl_module):
         """
         Writes the given value to the register identified by the given address.
         Register access commands will be invoked via TMCL for evalboards.
-        Register addresses can be retrieved from the REGISTERS class.
+        Register addresses can be retrieved from the REGISTERS class of the ic.
 
         Parameters:
         channel: Channel of the IC to write to. For evalboards this is implemented
@@ -56,7 +56,7 @@ class TMC_EvalBoard(tmcl_module):
         """
         Reads the value from the register identified by the given address.
         Register access commands will be invoked via TMCL for evalboards.
-        Register addresses can be retrieved from the REGISTERS class.
+        Register addresses can be retrieved from the REGISTERS class of the ic.
 
         Parameters:
         channel: Channel of the IC to write to. For evalboards this is implemented
@@ -81,7 +81,7 @@ class TMC_EvalBoard(tmcl_module):
         Register access commands will be invoked via TMCL for evalboards.
         Register fields are subdivisions of registers and thus identified by
         register address, bitmask and shift count.
-        Register fields can be retrieved from the FIELDS class.
+        Register fields can be retrieved from the FIELDS class of the ic.
 
         channel: Channel of the IC to write to. For evalboards this is implemented
         in different write commands and only depends on the eval_type. Thus, this
@@ -100,7 +100,7 @@ class TMC_EvalBoard(tmcl_module):
         Register access commands will be invoked via TMCL for evalboards.
         Register fields are subdivisions of registers and thus identified by
         register address, bitmask and shift count.
-        Register fields can be retrieved from the FIELDS class.
+        Register fields can be retrieved from the FIELDS class of the ic.
 
         channel: Channel of the IC to write to. For evalboards this is implemented
         in different write commands and only depends on the eval_type. Thus, this
