@@ -117,7 +117,7 @@ class tmcl_module(object):
         """
         return self.connection.axisParameter(type, axis, self.module_id, signed=signed)
 
-    def setGlobalParameter(self, type, bank, value):
+    def set_global_parameter(self, type, bank, value):
         """
         Sets the global parameter on this module identified by type to the given value.
 
@@ -128,7 +128,7 @@ class tmcl_module(object):
         """
         self.connection.setGlobalParameter(type, bank, value, self.module_id)
 
-    def globalParameter(self, type, bank, signed=False):
+    def get_global_parameter(self, type, bank, signed=False):
         """
         Gets the global parameter on this module identified by type.
 
@@ -142,7 +142,7 @@ class tmcl_module(object):
         """
         return self.connection.globalParameter(type, bank, self.module_id, signed=signed)
 
-    def analogInput(self, x):
+    def get_analog_input(self, x):
         """
         Gets the analog input value identified by index x.
 
@@ -151,9 +151,9 @@ class tmcl_module(object):
 
         Returns: Analog input value.
         """
-        return self.connection.analogInput(x, self.moduleID)
+        return self.connection.analogInput(x, self.module_id)
 
-    def digitalInput(self, x):
+    def get_digital_input(self, x):
         """
         Gets the digital input value identified by index x.
 
@@ -162,9 +162,9 @@ class tmcl_module(object):
 
         Returns: Digital input value.
         """
-        return self.connection.digitalInput(x, self.moduleID)
+        return self.connection.digitalInput(x, self.module_id)
 
-    def digitalOutput(self, x):
+    def get_digital_output(self, x):
         """
         Gets the digital output value identified by index x.
 
@@ -173,23 +173,23 @@ class tmcl_module(object):
 
         Returns: Digital output value.
         """
-        return self.connection.digitalOutput(x, self.moduleID)
+        return self.connection.digitalOutput(x, self.module_id)
 
     " write outputs "
-    def setDigitalOutput(self, x):
+    def set_digital_output(self, x):
         """
         Sets the digital output value identified by index x.
 
         Parameters:
         x: Digital output index.
         """
-        return self.connection.setDigitalOutput(x, self.moduleID)
+        return self.connection.setDigitalOutput(x, self.module_id)
 
-    def clearDigitalOutput(self, x):
+    def clear_digital_output(self, x):
         """
         Clears the digital output identified by index x.
 
         Parameters:
         x: Digital output index.
         """
-        return self.connection.clearDigitalOutput(x, self.moduleID)
+        return self.connection.clearDigitalOutput(x, self.module_id)
