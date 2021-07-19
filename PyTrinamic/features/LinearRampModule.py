@@ -5,6 +5,7 @@ from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.LinearRamp import LinearRamp
 
 class LinearRampModule(LinearRamp, FeatureProvider):
+    "LinearRamp feature implementation for modules"
 
     class __GROUPING(LinearRamp, FeatureProvider):
 
@@ -16,36 +17,107 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         # Grouped feature functions
 
         def get_target_position(self):
+            """
+            Gets the target position of this axis.
+            This value is stored as TargetPosition axis parameter.
+
+            Returns: Target position for this axis.
+            """
             return self.parent.get_axis_parameter(self.parent.APs.TargetPosition)
 
         def set_target_position(self, position):
+            """
+            Sets the target position of this axis.
+            This value is stored as TargetPosition axis parameter.
+
+            Parameters:
+            position: Target position.
+            """
             self.parent.set_axis_parameter(self.parent.APs.TargetPosition, position)
 
         def get_actual_position(self):
+            """
+            Gets the actual position of this axis.
+            This value is stored as ActualPosition axis parameter.
+
+            Returns: Actual position for this axis.
+            """
             return self.parent.get_axis_parameter(self.parent.APs.ActualPosition)
 
         def set_actual_position(self, position):
+            """
+            Sets the actual position of this axis.
+            This value is stored as ActualPosition axis parameter.
+
+            Parameters:
+            position: Actual position.
+            """
             self.parent.set_axis_parameter(self.parent.APs.ActualPosition, position)
 
         def get_target_velocity(self):
+            """
+            Gets the target velocity of this axis.
+            This value is stored as TargetVelocity axis parameter.
+
+            Returns: Target velocity for this axis.
+            """
             return self.parent.get_axis_parameter(self.parent.APs.TargetVelocity)
 
         def set_target_velocity(self, velocity):
+            """
+            Sets the target velocity of this axis.
+            This value is stored as TargetVelocity axis parameter.
+
+            Parameters:
+            velocity: Target velocity.
+            """
             self.parent.set_axis_parameter(self.parent.APs.TargetVelocity, velocity)
 
         def get_actual_velocity(self):
+            """
+            Gets the actual velocity of this axis.
+            This value is stored as ActualVelocity axis parameter.
+
+            Returns: Actual velocity for this axis.
+            """
             return self.parent.get_axis_parameter(self.parent.APs.ActualVelocity)
 
         def get_max_velocity(self):
+            """
+            Gets the maximum positioning velocity of this axis.
+            This value is stored as MaxVelocity axis parameter.
+
+            Returns: Maximum positioning velocity for this axis.
+            """
             return self.parent.get_axis_parameter(self.parent.APs.MaxVelocity)
 
         def set_max_velocity(self, velocity):
+            """
+            Sets the maximum positioning velocity of this axis.
+            This value is stored as MaxVelocity axis parameter.
+
+            Parameters:
+            velocity: Maximum positioning velocity.
+            """
             self.parent.set_axis_parameter(self.parent.APs.MaxVelocity, velocity)
 
         def get_max_acceleration(self):
+            """
+            Gets the maximum acceleration of this axis.
+            This value is stored as MaxAcceleration axis parameter.
+
+            Returns: Maximum acceleration for this axis.
+            """
             return self.parent.get_axis_parameter(self.parent.APs.MaxAcceleration)
 
         def set_max_acceleration(self, acceleration):
+            """
+            Sets the maximum acceleration of this axis.
+            This value is stored as MaxAcceleration axis parameter.
+
+            Parameters:
+            acceleration: Maximum acceleration.
+            """
             self.parent.set_axis_parameter(self.parent.APs.MaxAcceleration, acceleration)
 
         # Properties
@@ -69,36 +141,107 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         raise NotImplementedError()
 
     def get_target_position(self):
+        """
+        Gets the target position of this axis.
+        This value is stored as TargetPosition axis parameter.
+
+        Returns: Target position for this axis.
+        """
         return self.get_axis_parameter(self.APs.TargetPosition)
 
     def set_target_position(self, position):
+        """
+        Sets the target position of this axis.
+        This value is stored as TargetPosition axis parameter.
+
+        Parameters:
+        position: Target position.
+        """
         self.set_axis_parameter(self.APs.TargetPosition, position)
 
     def get_actual_position(self):
+        """
+        Gets the actual position of this axis.
+        This value is stored as ActualPosition axis parameter.
+
+        Returns: Actual position for this axis.
+        """
         return self.get_axis_parameter(self.APs.ActualPosition)
 
     def set_actual_position(self, position):
+        """
+        Sets the actual position of this axis.
+        This value is stored as ActualPosition axis parameter.
+
+        Parameters:
+        position: Actual position.
+        """
         self.set_axis_parameter(self.APs.ActualPosition, position)
 
     def get_target_velocity(self):
+        """
+        Gets the target velocity of this axis.
+        This value is stored as TargetVelocity axis parameter.
+
+        Returns: Target velocity for this axis.
+        """
         return self.get_axis_parameter(self.APs.TargetVelocity)
 
     def set_target_velocity(self, velocity):
+        """
+        Sets the target velocity of this axis.
+        This value is stored as TargetVelocity axis parameter.
+
+        Parameters:
+        velocity: Target velocity.
+        """
         self.set_axis_parameter(self.APs.TargetVelocity, velocity)
 
     def get_actual_velocity(self):
+        """
+        Gets the actual velocity of this axis.
+        This value is stored as ActualVelocity axis parameter.
+
+        Returns: Actual velocity for this axis.
+        """
         return self.get_axis_parameter(self.APs.ActualVelocity)
 
     def get_max_velocity(self):
+        """
+        Gets the maximum positioning velocity of this axis.
+        This value is stored as MaxVelocity axis parameter.
+
+        Returns: Maximum positioning velocity for this axis.
+        """
         return self.get_axis_parameter(self.APs.MaxVelocity)
 
     def set_max_velocity(self, velocity):
+        """
+        Sets the maximum positioning velocity of this axis.
+        This value is stored as MaxVelocity axis parameter.
+
+        Parameters:
+        velocity: Maximum positioning velocity.
+        """
         self.set_axis_parameter(self.APs.MaxVelocity, velocity)
 
     def get_max_acceleration(self):
+        """
+        Gets the maximum acceleration of this axis.
+        This value is stored as MaxAcceleration axis parameter.
+
+        Returns: Maximum acceleration for this axis.
+        """
         return self.get_axis_parameter(self.APs.MaxAcceleration)
 
     def set_max_acceleration(self, acceleration):
+        """
+        Sets the maximum acceleration of this axis.
+        This value is stored as MaxAcceleration axis parameter.
+
+        Parameters:
+        acceleration: Maximum acceleration.
+        """
         self.set_axis_parameter(self.APs.MaxAcceleration, acceleration)
 
     # Motor-global properties
