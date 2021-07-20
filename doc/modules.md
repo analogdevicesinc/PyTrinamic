@@ -51,15 +51,14 @@ functions can be implemented aswell.
 
 The following code snipped shows the principle of using the module object to
 work with TMCL-Modules on module-level.  
-`TMCM_1234` and `x_tmcl_interface` are fictional and for reference only,
-to show the working principle.
+Change `TMCM_1270` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder axis parameter.
 
 ```Python
-from PyTrinamic.modules.TMCM1234.TMCM_1234 import TMCM_1234
-from PyTrinamic.connections.x_tmcl_interface import x_tmcl_interface
+from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
-con = x_tmcl_interface()
-module = TMCM_1234(con, module_id=1)
+con = usb_tmcl_interface()
+module = TMCM_1270(con, module_id=1)
 axis = 0
 
 module.set_axis_parameter(module.MOTORS[axis].APs.X, axis, 42)
@@ -91,11 +90,11 @@ work with TMCL-Modules on motor-level.
 to show the working principle.
 
 ```Python
-from PyTrinamic.modules.TMCM1234.TMCM_1234 import TMCM_1234
-from PyTrinamic.connections.x_tmcl_interface import x_tmcl_interface
+from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
-con = x_tmcl_interface()
-module = TMCM_1234(con, module_id=1)
+con = usb_tmcl_interface()
+module = TMCM_1270(con, module_id=1)
 motor = module.MOTORS[0]
 
 # Feature parameters

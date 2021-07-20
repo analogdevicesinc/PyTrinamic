@@ -59,13 +59,12 @@ register field accesses in the given IC.
 
 The following code snipped shows the principle of using the IC object to
 work with ICs on IC-level.  
-`TMCM1234` is fictional and for reference only,
-to show the working principle.
+Change used IC `TMC5130` to your preferences. `X` is just a placeholder field.
 `handler` object is intended to have the platform-specific `read_register(...)`
 and `write_register(...)` functions implemented.
 
 ```Python
-from PyTrinamic.ic.TMC1234.TMC1234 import TMC1234
+from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
 
 class Handler(object):
   def read_register(self, channel, address, signed=False):
@@ -77,7 +76,7 @@ class Handler(object):
 
 handler = Handler()
 channel = 0
-ic = TMC1234(handler, channel)
+ic = TMC5130(handler, channel)
 
 ic.write_register_field(ic.FIELDS.X, 42)
 ic.read_register_field(ic.FIELDS.X)
@@ -90,13 +89,12 @@ correctly implemented, the IC object can be used to read or write to registers.
 
 The following code snipped shows the principle of using the motor object to
 work with ICs on motor-level.  
-`TMCM1234` is fictional and for reference only,
-to show the working principle.
+Change used IC `TMC5130` to your preferences. `X` is just a placeholder field.
 `handler` object is intended to have the platform-specific `read_register(...)`
 and `write_register(...)` functions implemented.
 
 ```Python
-from PyTrinamic.ic.TMC1234.TMC1234 import TMC1234
+from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
 
 class Handler(object):
   def read_register(self, channel, address, signed=False):
@@ -108,7 +106,7 @@ class Handler(object):
 
 handler = Handler()
 channel = 0
-ic = TMC1234(handler, channel)
+ic = TMC5130(handler, channel)
 motor = ic.MOTOR[0]
 
 # Feature parameters

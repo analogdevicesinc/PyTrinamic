@@ -29,15 +29,14 @@ and its motors.
 
 The following code snipped shows the principle of using the EvalBoard object to
 work with EvalBoard on module-level.  
-`TMC1234_eval` and `x_tmcl_interface` are fictional and for reference only,
-to show the working principle.
+Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder axis parameter.
 
 ```Python
-from PyTrinamic.evalboards.TMC1234_eval import TMC1234_eval
-from PyTrinamic.connections.x_tmcl_interface import x_tmcl_interface
+from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
-con = x_tmcl_interface()
-eval = TMC1234_eval(con)
+con = usb_tmcl_interface()
+eval = TMC5130_eval(con)
 axis = 0
 
 eval.set_axis_parameter(eval.MOTORS[axis].APs.X, axis, 42)
@@ -62,15 +61,14 @@ motor object for the given axis.
 
 The following code snipped shows the principle of using the motors within the EvalBoard object to
 work with EvalBoard on motor-level.  
-`TMC1234_eval` and `x_tmcl_interface` are fictional and for reference only,
-to show the working principle.
+Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder axis parameter.
 
 ```Python
-from PyTrinamic.evalboards.TMC1234_eval import TMC1234_eval
-from PyTrinamic.connections.x_tmcl_interface import x_tmcl_interface
+from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
-con = x_tmcl_interface()
-eval = TMC1234_eval(con)
+con = usb_tmcl_interface()
+eval = TMC5130_eval(con)
 motor = eval.MOTORS[0]
 
 # Feature parameters
@@ -108,16 +106,14 @@ example are completely equivalent.
 
 The following code snipped shows the principle of using the IC within the EvalBoard object to
 work with the IC on the EvalBoard directly.  
-`TMC1234_eval` and `x_tmcl_interface` are fictional and for reference only,
-to show the working principle.
-
+Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder field.
 
 ```Python
-from PyTrinamic.evalboards.TMC1234_eval import TMC1234_eval
-from PyTrinamic.connections.x_tmcl_interface import x_tmcl_interface
+from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
-con = x_tmcl_interface()
-eval = TMC1234_eval(con)
+con = usb_tmcl_interface()
+eval = TMC5130_eval(con)
 ic = eval.IC
 
 ic.write_register_field(ic.FIELDS.X, 42)
@@ -132,15 +128,14 @@ As in the above example, in this level direct access to fields is possible.
 
 The following code snipped shows the principle of using the motor interfaces of the IC within the EvalBoard object to
 work directly with the attached motors, abstracting from the individual IC.  
-`TMC1234_eval` and `x_tmcl_interface` are fictional and for reference only,
-to show the working principle.
+Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder field.
 
 ```Python
-from PyTrinamic.evalboards.TMC1234_eval import TMC1234_eval
-from PyTrinamic.connections.x_tmcl_interface import x_tmcl_interface
+from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
+from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
 
-con = x_tmcl_interface()
-eval = TMC1234_eval(con)
+con = usb_tmcl_interface()
+eval = TMC5130_eval(con)
 ic = eval.IC
 motor = ic.MOTOR[0]
 
