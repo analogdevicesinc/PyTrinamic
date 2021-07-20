@@ -31,25 +31,26 @@ measured = [(0, 0, 247), (1, 1, 247), (2, 3, 247), (3, 4, 247), (4, 6, 247), (5,
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
-TMC5130 = TMC5130_eval(myInterface)
-TMC5130.showChipInfo()
+eval = TMC5130_eval(myInterface)
+eval.showChipInfo()
+ic = eval.IC
 
 MSLUT = [
-        TMC5130.readRegister(TMC5130.registers.MSLUT0),
-        TMC5130.readRegister(TMC5130.registers.MSLUT1),
-        TMC5130.readRegister(TMC5130.registers.MSLUT2),
-        TMC5130.readRegister(TMC5130.registers.MSLUT3),
-        TMC5130.readRegister(TMC5130.registers.MSLUT4),
-        TMC5130.readRegister(TMC5130.registers.MSLUT5),
-        TMC5130.readRegister(TMC5130.registers.MSLUT6),
-        TMC5130.readRegister(TMC5130.registers.MSLUT7),
+        ic.read_register(ic.REGISTERS.MSLUT0),
+        ic.read_register(ic.REGISTERS.MSLUT1),
+        ic.read_register(ic.REGISTERS.MSLUT2),
+        ic.read_register(ic.REGISTERS.MSLUT3),
+        ic.read_register(ic.REGISTERS.MSLUT4),
+        ic.read_register(ic.REGISTERS.MSLUT5),
+        ic.read_register(ic.REGISTERS.MSLUT6),
+        ic.read_register(ic.REGISTERS.MSLUT7),
     ]
 
 ranges = [
-        (TMC5130.readRegisterField(TMC5130.fields.X1), TMC5130.readRegisterField(TMC5130.fields.W0)),
-        (TMC5130.readRegisterField(TMC5130.fields.X2), TMC5130.readRegisterField(TMC5130.fields.W1)),
-        (TMC5130.readRegisterField(TMC5130.fields.X3), TMC5130.readRegisterField(TMC5130.fields.W2)),
-        (257,                                          TMC5130.readRegisterField(TMC5130.fields.W3)),
+        (ic.read_register_field(ic.FIELDS.X1), ic.read_register_field(ic.FIELDS.W0)),
+        (ic.read_register_field(ic.FIELDS.X2), ic.read_register_field(ic.FIELDS.W1)),
+        (ic.read_register_field(ic.FIELDS.X3), ic.read_register_field(ic.FIELDS.W2)),
+        (257,                                          ic.read_register_field(ic.FIELDS.W3)),
     ]
 
 print(ranges)
@@ -59,8 +60,8 @@ if not(ranges[0][0] <= ranges[1][0] <= ranges[2][0] <= ranges[3][0]):
 for i in range(0, 8):
     print("MSLUT{0}:      0x{1:08X}".format(i, MSLUT[i]))
 
-print("MSLUTSEL:    0x{0:08X}".format(TMC5130.readRegister(TMC5130.registers.MSLUTSEL)))
-print("MSLUTSTART:  0x{0:08X}".format(TMC5130.readRegister(TMC5130.registers.MSLUTSTART)))
+print("MSLUTSEL:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUTSEL)))
+print("MSLUTSTART:  0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUTSTART)))
 print()
 
 start = TMC5130.readRegisterField(TMC5130.fields.START_SIN)
@@ -97,35 +98,35 @@ del newValues
 
 # Measure the MS values from the IC directly. Can be skipped to save time
 if MEASURE:
-    TMC5130.writeRegisterField(TMC5130.fields.IRUN, 10)
-    TMC5130.writeRegister(TMC5130.registers.A1, 10000)
-    TMC5130.writeRegister(TMC5130.registers.V1, 500000)
-    TMC5130.writeRegister(TMC5130.registers.D1, 10000)
-    TMC5130.writeRegister(TMC5130.registers.DMAX, 500)
-    TMC5130.writeRegister(TMC5130.registers.VSTART, 0)
-    TMC5130.writeRegister(TMC5130.registers.VSTOP, 10)
-    TMC5130.writeRegister(TMC5130.registers.AMAX, 1000)
+    ic.write_register_field(ic.FIELDS.IRUN, 10)
+    ic.write_register(ic.REGISTERS.A1, 10000)
+    ic.write_register(ic.REGISTERS.V1, 500000)
+    ic.write_register(ic.REGISTERS.D1, 10000)
+    ic.write_register(ic.REGISTERS.DMAX, 500)
+    ic.write_register(ic.REGISTERS.VSTART, 0)
+    ic.write_register(ic.REGISTERS.VSTOP, 10)
+    ic.write_register(ic.REGISTERS.AMAX, 1000)
 
-    if TMC5130.readRegister(TMC5130.registers.MSCNT) != 0:
+    if ic.read_register(ic.REGISTERS.MSCNT) != 0:
         # ToDo: Move to 0 instead of erroring out
         print("Error: Motor not at MS 0")
         exit(1)
 
     measured = []
     for i in range(0, 1025):
-        CUR_A = TMC5130.readRegisterField(TMC5130.fields.CUR_A)
+        CUR_A = ic.read_register_field(ic.FIELDS.CUR_A)
         if CUR_A >=256:
             CUR_A -= 512
-        CUR_B = TMC5130.readRegisterField(TMC5130.fields.CUR_B)
+        CUR_B = ic.read_register_field(ic.FIELDS.CUR_B)
         if CUR_B >=256:
             CUR_B -= 512
-        STEP  = TMC5130.readRegisterField(TMC5130.fields.MSCNT)
+        STEP  = ic.read_register_field(ic.FIELDS.MSCNT)
 
         measured = measured + [(STEP, CUR_A, CUR_B)]
-        TMC5130.moveBy(0, 1, 1000)
+        ic.move_by(0, 1, 1000)
         time.sleep(0.1)
 
-    TMC5130.moveTo(0, 0, 1000)
+    ic.move_to(0, 0, 1000)
 
 myInterface.close()
 
