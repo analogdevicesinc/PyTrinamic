@@ -59,7 +59,7 @@ class socketcan_tmcl_interface(tmcl_interface):
 
     def close(self):
         if self.__debug:
-            print("Closing PCAN bus")
+            print("Closing socketcan bus")
 
         self.__connection.shutdown()
 
@@ -108,7 +108,7 @@ class socketcan_tmcl_interface(tmcl_interface):
         return bytearray([msg.arbitration_id]) + msg.data
 
     def printInfo(self):
-        print("Connection: type=pcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
+        print("Connection: type=socketcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
 
     def enableDebug(self, enable):
         self.__debug = enable
