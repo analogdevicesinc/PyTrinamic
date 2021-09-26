@@ -66,15 +66,15 @@ print("ActualPostion Axis 1= {}".format(motor_1.actual_position))
 time.sleep(3)
 
 print("Moving back to 0")
-motor_0.move_to(0, 100000)
-motor_1.move_to(0, 100000)
+motor_0.move_to(0, 300000)
+motor_1.move_to(0, 300000)
 
 # Wait until position 0 is reached
-while not(motor_0.get_position_reached()) and not(motor_1.get_position_reached()) :
+while not(motor_0.get_position_reached()) or not(motor_1.get_position_reached()) :
     pass
 
 print("Reached Position 0")
 
-print()
+print("End of demo script")
 
 myInterface.close()
