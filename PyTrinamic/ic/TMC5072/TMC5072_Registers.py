@@ -4,7 +4,7 @@ Created on 20.09.2019
 @author: JM
 '''
 
-class TMC5072_register:
+class TMC5072_Registers(object):
     """
     Define all registers of the TMC5072.
 
@@ -72,7 +72,14 @@ class TMC5072_register:
     ENC_CONST_M2    = 0x5A
     ENC_STATUS_M2   = 0x5B
     ENC_LATCH_M2    = 0x5C
-    MSLUT__         = 0x60
+    MSLUT_0         = 0x60
+    MSLUT_1         = 0x61
+    MSLUT_2         = 0x62
+    MSLUT_3         = 0x63
+    MSLUT_4         = 0x64
+    MSLUT_5         = 0x65
+    MSLUT_6         = 0x66
+    MSLUT_7         = 0x67
     MSLUTSEL        = 0x68
     MSLUTSTART      = 0x69
     MSCNT_M1        = 0x6A
