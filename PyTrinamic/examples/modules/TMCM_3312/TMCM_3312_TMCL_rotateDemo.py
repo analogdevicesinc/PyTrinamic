@@ -25,13 +25,6 @@ print("Preparing parameters")
 motor_0.max_acceleration = 20000
 motor_1.max_acceleration = 20000
 
-print("Setting up motor 0 with s-ramp")
-motor_0.SRamp.ramp_type = 1
-motor_0.SRamp.bow_1 = 10000
-motor_0.SRamp.bow_2 = 10000
-motor_0.SRamp.bow_3 = 10000
-motor_0.SRamp.bow_4 = 10000
-
 print("Rotating in same direction")
 motor_0.rotate(50000)
 motor_1.rotate(50000)

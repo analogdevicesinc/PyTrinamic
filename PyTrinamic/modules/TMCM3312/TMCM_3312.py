@@ -9,8 +9,7 @@ from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
-from PyTrinamic.features.SRampModule import SRampModule
-from PyTrinamic.features.SixPointRampModule import SixPointRampModule
+
 class TMCM_3312(tmcl_module):
 
     def __init__(self, connection, module_id=1):
@@ -38,15 +37,13 @@ class TMCM_3312(tmcl_module):
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, SRampModule, SixPointRampModule, CurrentModule, MotorControlModule):
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
             LinearRampModule.__init__(self)
             StallGuard2Module.__init__(self)
-            SRampModule.__init__(self)
             CurrentModule.__init__(self)
-            SixPointRampModule.__init__(self)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
@@ -71,9 +68,9 @@ class TMCM_3312(tmcl_module):
             StartAcceleration              = 16
             MaxDeceleration                = 17
             BreakVelocity                  = 18
-            FinalDeceleration              = 19 
+            FinalDeceleration              =19 
             StopVelocity                   = 20
-            StopDeceleration               = 21 
+            StopDeceleration               =21 
             Bow1                           = 22
             Bow2                           = 23
             Bow3                           = 24
