@@ -18,7 +18,7 @@ from PyTrinamic.modules.features.pid_ap_feature import pid_ap_feature
 from PyTrinamic.modules.features.commutation_selection_ap_feature import commutation_selection_ap_feature
 
 class TMCM_1617(tmcl_module_interface):
-    
+
     def __init__(self, connection, moduleID=1):
         tmcl_module_interface.__init__(self, connection, moduleID)
         self.GP = _GP
@@ -29,90 +29,89 @@ class TMCM_1617(tmcl_module_interface):
 
     def moduleName(self):
         return "TMCM-1617"
-    
+
     def moduleDescription(self):
-        return "The TMCM-1617 is a low-weight miniaturized single axis servo drive for 3-phase BLDC motors. Supply voltage is 10-28V."
+        return "The TMCM-1617 is a low-weight miniaturized single axis servo drive for 3-phase BLDC motors and DC motors. Supply voltage is 10-28V."
 
 class _AP_MOTOR_0():
-    AdcPhaseA                      = 0
-    AdcPhaseB                      = 1
-    CurrentPhaseA                  = 2
-    CurrentPhaseB                  = 3
-    CurrentPhaseC                  = 4
-    AdcOffsetPhaseA                = 5
-    AdcOffsetPhaseB                = 6
-    dualShuntFactor                = 7
-    MotorPolePairs                 = 10
-    MaxTorque                      = 11
-    StartCurrent                   = 12
-    MotorType                      = 14
-    CommutationMode                = 15
-    ActualControlledAngle          = 16
-    ActualEncoderAngle             = 17
-    ActualHallAngle                = 18
-    TargetTorque                   = 30
-    ActualTorque                   = 31
-    TargetFlux                     = 32
-    ActualFlux                     = 33
-    TargetVelocity                 = 40
-    RampVelocity                   = 41
-    ActualVelocity                 = 42
-    MaxVelocity                    = 43
-    Acceleration                   = 44
-    EnableRamp                     = 45
-    TargetPosition                 = 50
-    RampPosition                   = 51
-    ActualPosition                 = 52
-    TargetReachedDistance          = 53
-    TargetReachedVelocity          = 54
-    PositionReachedFlag            = 55
-    PositionScaler                 = 56
-    TorqueP                        = 70
-    TorqueI                        = 71
-    VelocityP                      = 72
-    VelocityI                      = 73
-    PositionP                      = 74
-    CurrentPIDErrorSum             = 75
-    FluxPIDErrorSum                = 76
-    VelocityPIDErrorSum            = 77
-    TorquePIDError                 = 78
-    FluxPIDError                   = 79
-    VelocityPIDError               = 80
-    PositionPIDError               = 81
-    HallSensorPolarity             = 90
-    HallSensorDirection            = 91
-    HallSensorInterpolation        = 92
-    HallSensorOffset               = 93
-    EncoderSteps                   = 100
-    EncoderDirection               = 101
-    EncoderInitMode                = 102
-    EncoderInitState               = 103
-    EncoderInitDelay               = 104
-    InitVelocity                   = 105
-    EncoderOffset                  = 106
-    ClearOnNull                    = 107
-    ClearOnce                      = 108
-    StatusFlags                    = 156
-    ReferenceSwitchPolarity        = 210
-    RightStopSwitch                = 211
-    LeftStopSwitch                 = 212
-    HomeStopSwitch                 = 213
-    SupplyVoltage                  = 220
-    DriverTemperature              = 221
-    MainLoopsPerSecond             = 230
-    TorqueLoopsPerSecond           = 231
-    VelocityLoopsPerSecond         = 232
-    DebugValue0                    = 240
-    DebugValue1                    = 241
-    DebugValue2                    = 242
-    DebugValue3                    = 243
-    DebugValue4                    = 244
-    DebugValue5                    = 245
-    DebugValue6                    = 246
-    DebugValue7                    = 247
-    DebugValue8                    = 248
-    DebugValue9                    = 249
-    EnableDriver                   = 255
+    AdcPhaseA                       = 0
+    AdcPhaseB                       = 1
+    CurrentPhaseA                   = 2
+    CurrentPhaseB                   = 3
+    CurrentPhaseC                   = 4
+    AdcOffsetPhaseA                 = 5
+    AdcOffsetPhaseB                 = 6
+    MotorPolePairs                  = 10
+    MaxTorque                       = 11
+    StartCurrent                    = 12
+    MotorType                       = 14
+    CommutationMode                 = 15
+    ActualOpenLoopAngle             = 16
+    ActualEncoderAngle              = 17
+    ActualHallAngle                 = 18
+    TargetTorque                    = 30
+    ActualTorque                    = 31
+    TargetFlux                      = 32
+    ActualFlux                      = 33
+    TargetVelocity                  = 40
+    RampVelocity                    = 41
+    ActualVelocity                  = 42
+    MaxVelocity                     = 43
+    Acceleration                    = 44
+    EnableRamp                      = 45
+    TargetPosition                  = 50
+    RampPosition                    = 51
+    ActualPosition                  = 52
+    TargetReachedDistance           = 53
+    TargetReachedVelocity           = 54
+    PositionReachedFlag             = 55
+    PositionScaler                  = 56
+    TorqueP                         = 70
+    TorqueI                         = 71
+    VelocityP                       = 72
+    VelocityI                       = 73
+    PositionP                       = 74
+    CurrentPIDErrorSum              = 75
+    FluxPIDErrorSum                 = 76
+    VelocityPIDErrorSum             = 77
+    TorquePIDError                  = 78
+    FluxPIDError                    = 79
+    VelocityPIDError                = 80
+    PositionPIDError                = 81
+    HallSensorPolarity              = 90
+    HallSensorDirection             = 91
+    HallSensorInterpolation         = 92
+    HallSensorOffset                = 93
+    EncoderSteps                    = 100
+    EncoderDirection                = 101
+    EncoderInitMode                 = 102
+    EncoderInitState                = 103
+    EncoderInitDelay                = 104
+    EncoderInitVelocity             = 105
+    EncoderOffset                   = 106
+    ClearOnNull                     = 107
+    ClearOnce                       = 108
+    StatusFlags                     = 156
+    ReferenceSwitchPolarity         = 210
+    RightStopSwitch                 = 211
+    LeftStopSwitch                  = 212
+    HomeStopSwitch                  = 213
+    SupplyVoltage                   = 220
+    DriverTemperature               = 221
+    MainLoopsPerSecond              = 230
+    TorqueLoopsPerSecond            = 231
+    VelocityLoopsPerSecond          = 232
+    DebugValue0                     = 240
+    DebugValue1                     = 241
+    DebugValue2                     = 242
+    DebugValue3                     = 243
+    DebugValue4                     = 244
+    DebugValue5                     = 245
+    DebugValue6                     = 246
+    DebugValue7                     = 247
+    DebugValue8                     = 248
+    DebugValue9                     = 249
+    EnableDriver                    = 255
 
 class _ENUM_MOTOR_0():
     COMM_MODE_DISABLED              = 0
@@ -129,19 +128,19 @@ class _ENUM_MOTOR_0():
     MOTOR_TYPE_NO_MOTOR             = 0
     MOTOR_TYPE_SINGLE_PHASE_DC      = 1
     MOTOR_TYPE_THREE_PHASE_BLDC     = 3
-    
+
 class _GP():
-    serialBaudRate                 = 65
-    serialAddress                  = 66
-    CANBitRate                     = 69
-    CANsendID                      = 70
-    CANreceiveID                   = 71
-    telegramPauseTime              = 75
-    serialHostAddress              = 76
-    autoStartMode                  = 77
-    applicationStatus              = 128
-    programCounter                 = 130
-    tickTimer                      = 132
+    serialBaudRate                  = 65
+    serialAddress                   = 66
+    CANBitRate                      = 69
+    CANsendID                       = 70
+    CANreceiveID                    = 71
+    telegramPauseTime               = 75
+    serialHostAddress               = 76
+    autoStartMode                   = 77
+    applicationStatus               = 128
+    programCounter                  = 130
+    tickTimer                       = 132
 
 class _IO():
     GPIO_0  = 0
