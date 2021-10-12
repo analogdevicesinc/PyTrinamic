@@ -14,7 +14,7 @@ import time
 
 PyTrinamic.showInfo()
 
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM3 --data-rate 115200")
+connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 myInterface = connectionManager.connect()
 module = TMCM_1636(myInterface)
 motor = module.MOTORS[0]
