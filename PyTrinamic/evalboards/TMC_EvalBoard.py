@@ -27,7 +27,7 @@ class TMC_EvalBoard(tmcl_module):
         the EVAL_TYPES class.
         """
         super().__init__(connection, module_id)
-        self.IC = IC
+        self.IC = ic
         self.eval_type = eval_type
 
     def write_register(self, channel, address, value):

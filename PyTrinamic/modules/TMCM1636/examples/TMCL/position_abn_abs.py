@@ -7,51 +7,63 @@ Created on 28.11.2019
 @author: SW
 '''
 
-import PyTrinamic
+if __name__ == '__main__':
+    pass
+
+import PyTrinamic, time
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1636.TMCM_1636 import TMCM_1636
-import time
 
 PyTrinamic.showInfo()
-#connectionManager = ConnectionManager("--interface pcan_tmcl")
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-myInterface = connectionManager.connect()
+
+#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 module = TMCM_1636(myInterface)
+module.showModuleInfo()
+motor = module.motor(0)
 
 """
-    Define all motor configurations for the TMCM-1636.
+    Define motor configuration for the TMCM-1636.
 
     The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
 """
 
 " config abn encoder "
-module.setAxisParameter(module.APs.EncoderSteps, 4096);
-module.setAxisParameter(module.APs.EncoderDirection, 0);
-module.setAxisParameter(module.APs.EncoderInitMode, 0);
+motor.openLoop.setOpenLoopTorque(1000)
+motor.abnEncoder.setResolution(4096)
+motor.abnEncoder.setDirection(1)
+motor.abnEncoder.setInitMode(motor.ENUM.ENCODER_INIT_MODE_0)
+motor.showConfiguration()
 
 " config absolute encoder "
-module.setAxisParameter(module.APs.AbsoluteEncoderType, 1);
-module.setAxisParameter(module.APs.AbsoluteEncoderInit, 0);
-module.setAxisParameter(module.APs.AbsoluteEncoderDirection, 1);
+motor.setAxisParameter(motor.AP.AbsoluteEncoderType, 1)
+motor.setAxisParameter(motor.AP.AbsoluteEncoderInit, 0)
+motor.setAxisParameter(motor.AP.AbsoluteEncoderDirection, 1)
 
 " config drive mode "
-module.setAxisParameter(module.APs.CommutationMode, module.ENUMs.COMM_MODE_ABN);
-module.setAxisParameter(module.APs.PositionSensorSelection, module.ENUMs.POS_MODE_ABS);
-time.sleep(1);
+motor.setAxisParameter(motor.AP.CommutationMode, motor.ENUM.COMM_MODE_ABN_ENCODER)
+motor.setAxisParameter(motor.AP.PositionSensorSelection, motor.ENUM.POS_SELECTION_ABS)
+time.sleep(1)
 
-" test drive "
-module.setAxisParameter(module.APs.ActualPosition, 0);
-module.setAxisParameter(module.APs.MaxVelocity, 1000);
-module.setAxisParameter(module.APs.Acceleration, 250);
-module.setAxisParameter(module.APs.TargetPosition, 10000000);
+" motion settings "
+motor.linearRamp.setMaxVelocity(1000)
+motor.linearRamp.setAcceleration(250)
+motor.linearRamp.showConfiguration()
 
-while not module.axisParameter(module.APs.PositionReachedFlag) :
-    time.sleep(0.1);
+" clear actual position "
+motor.setActualPosition(0)
 
-module.setAxisParameter(module.APs.CommutationMode, 0);
-module.setAxisParameter(module.APs.PositionSensorSelection, 0);
+" move to new target position "
+motor.moveToPosition(1000000)
 
-print("Done")
+while not motor.positionReachedFlag():
+    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
+    time.sleep(0.2)
+
+motor.setAxisParameter(motor.AP.CommutationMode, motor.ENUM.COMM_MODE_DISABLED)
+motor.setAxisParameter(motor.AP.PositionSensorSelection, motor.ENUM.POS_SELECTION_SAME)
+
 myInterface.close()
+print("\nReady.")
