@@ -38,7 +38,11 @@ class PIDModule(PID,FeatureProvider):
 
         def set_velocity_i_parameter(self, iValue):
             self.parent.set_axis_parameter(self.parent.APs.VelocityI,iValue)
-
+        
+        def set_velocity_sensor(self, sensor):
+            self.parent.set_axis_parameter(self.parent.APs.VelocitySensorSelection,sensor)
+        def get_velocity_sensor(self):
+            return self.parent.get_axis_parameter(self.parent.APs.VelocitySensorSelection)
 
         " position controller "
         def get_position_p_parameter(self):
@@ -47,26 +51,19 @@ class PIDModule(PID,FeatureProvider):
         def set_position_p_parameter(self, pValue):
             self.parent.set_axis_parameter(self.parent.APs.PositionP,pValue)
 
-
-        def __str__(self):
-            return "{} {}".format(
-                "PID",
-                {
-                    "torque_p": self.torque_p,
-                    "torque_i": self.torque_i,
-
-                    "velocity_p": self.velocity_p,
-                    "velocity_i": self.velocity_i,
-
-                    "position_p": self.position_p
-                }
-            )
+        def set_position_sensor(self, sensor):
+            self.parent.set_axis_parameter(self.parent.APs.PositionSensorSelection,sensor)
+        
+        def get_position_sensor(self):
+            return self.parent.get_axis_parameter(self.parent.APs.PositionSensorSelection)
 
         torque_p = property(get_torque_p_parameter,set_torque_p_parameter)
         torque_i = property(get_torque_i_parameter,set_torque_i_parameter)
         velocity_p = property(get_velocity_p_parameter,set_velocity_p_parameter)
         velocity_i = property(get_velocity_i_parameter,set_velocity_i_parameter)
+        velocity_sensor = property(get_velocity_sensor,set_velocity_sensor)
         position_p = property(get_position_p_parameter,set_position_p_parameter)
-
+        position_sensor = property(get_position_sensor,set_position_sensor)
+        
     def __init__(self):
         self.PID = self.__GROUPING(self)
