@@ -25,6 +25,9 @@ class ABNEncoder(Feature):
     def get_init_mode(self):
        raise NotImplementedError()
 
+    def clear_once_on_n_channel(self):
+        raise NotImplementedError()
+    
     def __str__(self):
             return "{} {}".format(
                 "ABNEncoder",

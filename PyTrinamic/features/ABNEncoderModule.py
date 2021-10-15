@@ -29,7 +29,11 @@ class ABNEncoderModule(ABNEncoder,FeatureProvider):
 
         def get_init_mode(self):
             return self.parent.get_axis_parameter(self.parent.APs.EncoderInitMode)
-
+        
+        def clear_once_on_n_channel(self):
+            self.parent.set_axis_parameter(self.parent.APs.ClearOnce,1)
+            self.parent.set_axis_parameter(self.parent.APs.ClearOnNull,1)
+        
         # Properties
         resolution = property(get_resolution,set_resolution)
         direction  = property(get_direction,set_direction)
