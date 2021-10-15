@@ -20,7 +20,7 @@ class DigitalHallWeaselModule(DigitalHallWeasel,FeatureProvider):
             return self.parent.get_axis_parameter(self.parent.APs.HallSensorDirection)
 
         def set_polarity(self, invert):
-            self.parent.set_axis_parameter(self.parent.APs.HallSensorDirection,invert)
+            self.parent.set_axis_parameter(self.parent.APs.HallSensorPolarity,invert)
 
         def get_polarity(self):
             return self.parent.get_axis_parameter(self.parent.APs.HallSensorPolarity)
