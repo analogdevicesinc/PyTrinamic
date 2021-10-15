@@ -8,7 +8,7 @@ from PyTrinamic.features.Feature import Feature
 
 class OpenLoop(Feature):
  
-    def set_open_loop_torque(self, torque):
+    def set_torque(self, torque):
         """
         Sets if open loop torque that is used for this axis.
         This value is stored as OpenLoopCurrent axis parameter.
@@ -18,7 +18,7 @@ class OpenLoop(Feature):
         """
         raise NotImplementedError()
 
-    def get_open_loop_torque(self):
+    def get_torque(self):
         """
         Gets open loop torque that is used for this axis.
         This value is stored as OpenLoopCurrent axis parameter.
@@ -32,8 +32,8 @@ class OpenLoop(Feature):
             return "{} {}".format(
                 "OpenLoop",
                 {
-                    "open_loop_torque": self.open_loop_torque,
+                    "open_loop_torque": self.torque,
                 }
             )
     
-    open_loop_torque = property(get_open_loop_torque,set_open_loop_torque)
+    torque = property(get_torque,set_torque)

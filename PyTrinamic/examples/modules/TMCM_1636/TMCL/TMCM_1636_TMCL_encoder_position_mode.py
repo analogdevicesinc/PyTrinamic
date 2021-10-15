@@ -34,7 +34,7 @@ motor.BLDCMotor.max_torque = 2000
 print(motor.BLDCMotor.__str__())
 
 " encoder configuration "
-motor.OpenLoop.open_loop_torque = 1000 
+motor.OpenLoop.torque = 1000 
 motor.ABNEncoder.resolution = 4096
 motor.ABNEncoder.direction = 1
 motor.ABNEncoder.init_mode =motor.ENUMs.ENCODER_INIT_MODE_0

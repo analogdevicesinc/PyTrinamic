@@ -30,7 +30,7 @@ motor = module.MOTORS[0]
 """
 
 " config open loop torque"
-motor.OpenLoop.open_loop_torque = 1000
+motor.OpenLoop.torque = 1000
 motor.OpenLoop.__str__()
 
 " config abn encoder "

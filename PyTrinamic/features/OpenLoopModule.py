@@ -13,7 +13,7 @@ class OpenLoopModule(OpenLoop,FeatureProvider):
         def __init__(self, parent):
                     self.parent = parent
 
-        def set_open_loop_torque(self, current):
+        def set_torque(self, current):
             """
             Sets if open loop torque that is used for this axis.
             This value is stored as OpenLoopCurrent axis parameter.
@@ -23,7 +23,7 @@ class OpenLoopModule(OpenLoop,FeatureProvider):
             """
             self.parent.set_axis_parameter(self.parent.APs.OpenLoopCurrent,current)
 
-        def get_open_loop_torque(self):
+        def get_torque(self):
             """
             Gets open loop torque that is used for this axis.
             This value is stored as OpenLoopCurrent axis parameter.
@@ -33,7 +33,7 @@ class OpenLoopModule(OpenLoop,FeatureProvider):
             """
             return self.parent.get_axis_parameter(self.parent.APs.OpenLoopCurrent)
    
-        open_loop_torque = property(get_open_loop_torque,set_open_loop_torque)
+        torque = property(get_torque,set_torque)
     
     def __init__(self):
             self.OpenLoop = self.__GROUPING(self)
