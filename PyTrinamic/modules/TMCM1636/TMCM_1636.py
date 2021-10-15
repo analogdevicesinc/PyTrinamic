@@ -26,8 +26,11 @@ class TMCM_1636(tmcl_module):
     def getEdsFile():
         return __file__.replace("TMCM_1636.py", "TMCM-1636-CANopen_Hw1.1_Fw1.12.eds")
 
-    def showChipInfo(self):
-        print("The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V");
+    def moduleDescription(self):
+        return "The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V"
+
+    def moduleName(self):
+        return "TMCM-1617"
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -44,6 +47,7 @@ class TMCM_1636(tmcl_module):
         if velocity:
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
+
 
     class MOTOR_0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule,AbsoluteEncoderModule,DigitalHallWeaselModule,CommutationSelectionModule,PIDModule,MotorControlModule, OpenLoopModule, BLDCMotorModule):
 
