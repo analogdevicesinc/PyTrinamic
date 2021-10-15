@@ -9,9 +9,23 @@ from PyTrinamic.features.Feature import Feature
 class OpenLoop(Feature):
  
     def set_open_loop_torque(self, torque):
+        """
+        Sets if open loop torque that is used for this axis.
+        This value is stored as OpenLoopCurrent axis parameter.
+
+        Parameters:
+        current: Open Loop Current
+        """
         raise NotImplementedError()
 
     def get_open_loop_torque(self):
+        """
+        Gets open loop torque that is used for this axis.
+        This value is stored as OpenLoopCurrent axis parameter.
+
+        
+        returns: Open loop current
+        """
         raise NotImplementedError()
 
     def __str__(self):
@@ -19,7 +33,6 @@ class OpenLoop(Feature):
                 "OpenLoop",
                 {
                     "open_loop_torque": self.open_loop_torque,
-
                 }
             )
     
