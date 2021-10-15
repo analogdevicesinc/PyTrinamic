@@ -20,6 +20,17 @@ module = TMCM_1636(myInterface)
 motor = module.MOTORS[0]
 
 print("Preparing parameters")
+" motor configuration for three phase bldc"
+motor.BLDCMotor.type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+motor.BLDCMotor.pole_pairs = 4
+motor.BLDCMotor.max_torque = 2000
+print(motor.BLDCMotor.__str__())
+
+"Set sensors to open loop mode"
+motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_OPENLOOP
+motor.PID.position_sensor = motor.ENUMs.POS_SELECTION_SAME
+motor.PID.velocity_sensor = motor.ENUMs.VEL_SELECTION_SAME
+
 motor.max_acceleration = 1000
 motor.max_velocity = 1000
 
@@ -33,12 +44,13 @@ motor.stop()
 
 print("ActualPostion = {}".format(motor.actual_position))
 
-time.sleep(5)
+time.sleep(2)
 
 print("Doubling moved distance")
 motor.move_by(motor.actual_position, 1000000)
 while not(motor.get_position_reached()):
-    pass
+    print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+    time.sleep(0.2)
 
 print("Furthest point reached")
 print("ActualPostion = {}".format(motor.actual_position))
@@ -50,7 +62,8 @@ motor.move_to(0)
 
 # Wait until position 0 is reached
 while not(motor.get_position_reached()):
-    pass
+    print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+    time.sleep(0.2)
 
 print("Reached Position 0")
 
