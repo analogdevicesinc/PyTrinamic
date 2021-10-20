@@ -27,11 +27,14 @@ motor = module.MOTORS[0]
     If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 """
 
-" motor configuration "
-motor.BLDCMotor.type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
-motor.BLDCMotor.pole_pairs = 4
-motor.BLDCMotor.max_torque = 2000
-print(motor.BLDCMotor.__str__())
+" drive configuration "
+motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+motor.DriveSetting.pole_pairs = 4
+motor.DriveSetting.max_current = 2000
+motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_ABN_ENCODER
+motor.DriveSetting.target_reached_distance = 5
+motor.DriveSetting.target_reached_velocity = 500
+print(motor.DriveSetting.__str__())
 
 " encoder configuration "
 motor.OpenLoop.torque = 1000 
@@ -44,8 +47,6 @@ print(motor.ABNEncoder.__str__())
 motor.LinearRamp.max_velocity = 2000
 motor.LinearRamp.max_acceleration = 1000
 motor.LinearRamp.enabled = 1 
-motor.LinearRamp.target_reached_distance = 5
-motor.LinearRamp.target_reached_velocity = 500
 print(motor.LinearRamp.__str__())
 
 motor.set_axis_parameter(motor.APs.PositionScaler, motor.ABNEncoder.resolution)
@@ -57,9 +58,6 @@ motor.PID.velocity_i = 100
 motor.PID.position_p = 300
 print(motor.PID.__str__())
 
-" set commutation mode to FOC based on hall sensor signals "
-motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_ABN_ENCODER
-print(motor.CommutationSelection.__str__())
 
 time.sleep(1.0)
 

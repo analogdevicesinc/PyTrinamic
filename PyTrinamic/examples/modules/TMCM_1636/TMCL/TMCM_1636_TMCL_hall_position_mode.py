@@ -28,38 +28,35 @@ motor = module.MOTORS[0]
 """
 
 " motor configuration "
-motor.BLDCMotor.type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
-motor.BLDCMotor.pole_pairs = 4
-motor.BLDCMotor.max_torque = 2000
-motor.BLDCMotor.__str__()
+motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+motor.DriveSetting.pole_pairs = 4
+motor.DriveSetting.max_current = 2000
+motor.DriveSetting.target_reached_distance = 5
+motor.DriveSetting.target_reached_velocity = 500
+motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
+print(motor.DriveSetting.__str__())
 
 " hall sensor configuration "
-motor.DigitalHallWeasel.direction = 0
-motor.DigitalHallWeasel.polarity = 1
-motor.DigitalHallWeasel.offset = 0
-motor.DigitalHallWeasel.interpolation = 1
-motor.DigitalHallWeasel.__str__()
+motor.DigitalHall.direction = 0
+motor.DigitalHall.polarity = 1
+motor.DigitalHall.offset = 0
+motor.DigitalHall.interpolation = 1
+print(motor.DigitalHall.__str__())
 
-" motion settings "
+" ramp settings "
 motor.LinearRamp.max_velocity = 2000
 motor.LinearRamp.max_acceleration = 1000
 motor.LinearRamp.enabled = 1 
-motor.LinearRamp.target_reached_distance = 5
-motor.LinearRamp.target_reached_velocity = 500
-motor.LinearRamp.__str__()
+print(motor.LinearRamp.__str__())
 
-motor.set_axis_parameter(motor.APs.PositionScaler, 6*motor.BLDCMotor.pole_pairs)
+motor.set_axis_parameter(motor.APs.PositionScaler, 6*motor.DriveSetting.pole_pairs)
 " PI configuration "
 motor.PID.torque_p = 300 
 motor.PID.torque_i = 600
 motor.PID.velocity_p = 100
 motor.PID.velocity_i = 100
 motor.PID.position_p = 300
-motor.PID.__str__()
-
-" set commutation mode to FOC based on hall sensor signals "
-motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
-motor.CommutationSelection.__str__()
+print(motor.PID.__str__())
 
 " set position counter to zero"
 motor.actual_position = 0

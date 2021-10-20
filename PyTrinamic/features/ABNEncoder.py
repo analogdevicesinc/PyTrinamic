@@ -1,7 +1,7 @@
 '''
-Created on 01.10.2020
+Created on 14.06.2020
 
-@author: ED
+@author:JH
 '''
 from PyTrinamic.features.Feature import Feature
 

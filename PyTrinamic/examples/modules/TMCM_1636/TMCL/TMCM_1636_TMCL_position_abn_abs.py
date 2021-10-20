@@ -47,9 +47,9 @@ motor.AbsoluteEncoder.offset = 0
 motor.AbsoluteEncoder.__str__()
 
 " config drive mode "
-motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_ABN_ENCODER
-motor.CommutationSelection.__str__()
-motor.PID.position_sensor = motor.ENUMs.POS_SELECTION_ABS
+motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_ABN_ENCODER
+motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_ABS
+print(motor.DriveSetting.__str__())
 time.sleep(1)
 
 " motion settings "
@@ -67,8 +67,8 @@ while not motor.get_position_reached():
     print("target position: " + str(motor.LinearRamp.target_position) + " actual position: " + str(motor.LinearRamp.actual_position))
     time.sleep(0.2)
 
-motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_DISABLED
-motor.PID.position_sensor = motor.ENUMs.POS_SELECTION_SAME
+motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DISABLED
+motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_SAME
 
 myInterface.close()
 print("\nReady.")

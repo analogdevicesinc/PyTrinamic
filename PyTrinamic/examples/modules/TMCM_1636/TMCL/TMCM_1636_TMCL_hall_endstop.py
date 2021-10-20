@@ -29,21 +29,19 @@ motor = module.MOTORS[0]
 """
 
 " motor configuration "
-motor.BLDCMotor.type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
-motor.BLDCMotor.pole_pairs = 4
-motor.BLDCMotor.max_torque = 2000
-print(motor.BLDCMotor.__str__())
+motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
+motor.DriveSetting.pole_pairs = 4
+motor.DriveSetting.max_torque = 2000
+print(motor.DriveSetting.__str__())
 
 " hall sensor configuration "
-motor.DigitalHallWeasel.direction = 0
-motor.DigitalHallWeasel.polarity = 1
-motor.DigitalHallWeasel.offset = 0
-motor.DigitalHallWeasel.interpolation = 1
-print(motor.DigitalHallWeasel.__str__())
+motor.DigitalHall.direction = 0
+motor.DigitalHall.polarity = 1
+motor.DigitalHall.offset = 0
+motor.DigitalHall.interpolation = 1
+print(motor.DigitalHall.__str__())
 
-" set commutation mode to FOC based on hall sensor signals "
-motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
-print(motor.CommutationSelection.__str__())
 
 " enable ref switch "
 motor.set_axis_parameter(motor.APs.ReferenceSwitchEnable, 3)
@@ -64,8 +62,8 @@ while not motor.get_axis_parameter(motor.APs.LeftStopSwitch) :
     time.sleep(0.1)
 
 print("Triggered!")
-#print("Stopping motor...")
-# module.setAxisParameter(module.APs.CommutationMode, 0);
+print("Stopping motor...")
+motor.rotate(0)
 
 myInterface.close()
 print("\nReady.")

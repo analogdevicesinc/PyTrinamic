@@ -4,25 +4,48 @@ Created on 13.07.2021
 @author: JH
 '''
 
+
 from PyTrinamic.features.Feature import Feature
 
 class DigitalHall(Feature):
+ 
+    def set_direction(self, direction):
+        raise NotImplementedError()
+
+    def get_direction(self):
+        raise NotImplementedError()
+
+    def set_polarity(self, invert):
+        raise NotImplementedError()
+
+    def get_polarity(self):
+        raise NotImplementedError()
+
+    def set_offset(self, offset):
+        raise NotImplementedError()
         
-    def get_hall_invert(self):
+    def get_offset(self):
         raise NotImplementedError()
 
-    def set_hall_invert(self, invert):
+    def set_interpolation(self, enableInterpolation):
         raise NotImplementedError()
-
+        
+    def get_interpolation(self):
+        raise NotImplementedError()
+        
     def __str__(self):
             return "{} {}".format(
-                "Hall",
+                "DigitalHall",
                 {
-                    "hall": self.hall,
                     "direction": self.direction,
-                    "init_mode": self.init_mode
+                    "polarity": self.polarity,
+                    "offset": self.offset,
+                    "interpolation": self.interpolation
+
                 }
             )
     
-    hall = property(get_hall_invert,set_hall_invert)
-
+    direction = property(get_direction,set_direction)
+    polarity  = property(get_polarity,set_polarity)
+    offset  = property(get_offset,set_offset)
+    interpolation = property(get_interpolation,set_interpolation)

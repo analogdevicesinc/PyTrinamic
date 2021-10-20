@@ -3,17 +3,15 @@ Created on 04.05.2020
 @author: JM, ED, JH 
 '''
 
-from PyTrinamic.features.DigitalHallWeaselModule import DigitalHallWeaselModule
 from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
 from PyTrinamic.features.AbsoluteEncoderModule import AbsoluteEncoderModule
-from PyTrinamic.features.DigitalHallWeaselModule import DigitalHallWeaselModule
-from PyTrinamic.features.CommutationSelectionModule import CommutationSelectionModule
+from PyTrinamic.features.DigitalHallModule import DigitalHallModule
 from PyTrinamic.features.OpenLoopModule import OpenLoopModule
 from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
-from PyTrinamic.features.BLDCMotorModule import BLDCMotorModule
 
 class TMCM_1636(tmcl_module):
 
@@ -49,18 +47,17 @@ class TMCM_1636(tmcl_module):
         self.connection.moveBy(axis, difference, self.module_id)
 
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule,AbsoluteEncoderModule,DigitalHallWeaselModule,CommutationSelectionModule,PIDModule,MotorControlModule, OpenLoopModule, BLDCMotorModule):
+    class MOTOR_0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule,AbsoluteEncoderModule,DigitalHallModule,PIDModule,MotorControlModule, OpenLoopModule):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
+            DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             ABNEncoderModule.__init__(self)
             AbsoluteEncoderModule.__init__(self)
-            DigitalHallWeaselModule.__init__(self)
-            CommutationSelectionModule.__init__(self)
+            DigitalHallModule.__init__(self)
             OpenLoopModule.__init__(self)
             PIDModule.__init__(self)
-            BLDCMotorModule.__init__(self)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)

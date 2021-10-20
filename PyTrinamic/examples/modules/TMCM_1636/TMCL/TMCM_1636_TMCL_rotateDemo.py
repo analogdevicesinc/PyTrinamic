@@ -21,16 +21,15 @@ motor = module.MOTORS[0]
 
 print("Preparing parameters")
 " motor configuration for three phase bldc"
-motor.BLDCMotor.type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
-motor.BLDCMotor.pole_pairs = 4
-motor.BLDCMotor.max_torque = 2000
-print(motor.BLDCMotor.__str__())
+motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+motor.DriveSetting.pole_pairs = 4
+motor.DriveSetting.max_current= 2000
+motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_OPENLOOP
+motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_SAME
+motor.DriveSetting.velocity_sensor = motor.ENUMs.VEL_SELECTION_SAME
+print(motor.DriveSetting.__str__())
 
 "Set sensors to open loop mode"
-motor.CommutationSelection.mode = motor.ENUMs.COMM_MODE_OPENLOOP
-motor.PID.position_sensor = motor.ENUMs.POS_SELECTION_SAME
-motor.PID.velocity_sensor = motor.ENUMs.VEL_SELECTION_SAME
-
 motor.max_acceleration = 1000
 motor.max_velocity = 1000
 
@@ -55,7 +54,7 @@ while not(motor.get_position_reached()):
 print("Furthest point reached")
 print("ActualPostion = {}".format(motor.actual_position))
 
-time.sleep(5)
+time.sleep(2)
 
 print("Moving back to 0")
 motor.move_to(0)
