@@ -38,9 +38,22 @@ class DriveSetting(Feature):
 
 
     def set_open_loop_current(self, current):
+        """
+        Sets  open loop current that is used for this axis.
+        This value is stored as OpenLoopCurrent axis parameter.
+
+        Parameters:
+        current:  open loop current
+        """
         raise NotImplemented
 
     def get_open_loop_current(self):
+        """
+        Gets open loop current that is used for this axis.
+        This value is stored in the  OpenLoopCurrent axis parameter.
+
+        Returns: open loop current
+        """
         raise NotImplemented
     
     def get_max_current(self):
@@ -62,18 +75,44 @@ class DriveSetting(Feature):
         raise NotImplementedError()
     
     def set_position_sensor(self, sensor):
+        """
+        Sets if position sensor velocity for this axis.
+        This value is stored as PositionSensorSelection axis parameter.
+
+        Parameters: 
+        sensor: position sensor 
+        """
         raise NotADirectoryError()
     def get_position_sensor(self):
+        """
+        Gets position sensor for this axis.
+        This value is stored as PositionSensorSelection axis parameter.
+
+        Returns: position sensor
+        """
         raise NotImplementedError()
 
     def set_velocity_sensor(self, sensor):
+        """
+        Sets if velocity sensor velocity for this axis.
+        This value is stored as VelocitySensorSelection axis parameter.
+
+        Parameters: 
+        sensor: velocity sensor 
+        """
         raise NotADirectoryError()
     def get_velocity_sensor(self):
+        """
+        Gets velocity sensor for this axis.
+        This value is stored as VelocitySensorSelection axis parameter.
+
+        Returns: velocity sensor
+        """
         raise NotImplementedError()
 
     def set_motor_halted_velocity(self, velocity): 
         """
-        Sets if motor halted velocity for this axis.
+        Sets motor halted velocity for this axis.
         This value is stored as MotorHaltedVelocity axis parameter.
 
         Parameters:
@@ -83,7 +122,7 @@ class DriveSetting(Feature):
     
     def get_motor_halted_velocity(self): 
         """
-        Gets if motor halted velocity for this axis.
+        Gets motor halted velocity for this axis.
         This value is stored as MotorHaltedVelocity axis parameter.
 
         Returns: motor halted velocity
@@ -92,7 +131,7 @@ class DriveSetting(Feature):
 
     def set_target_reached_distance(self, distance): 
         """
-        Sets if target reached distance for this axis.
+        Sets target reached distance for this axis.
         This value is stored as TargetReachedDistance axis parameter.
 
         Parameters: 
@@ -102,7 +141,7 @@ class DriveSetting(Feature):
             
     def get_target_reached_distance(self): 
         """
-        Gets if target reached distance for this axis.
+        Gets target reached distance for this axis.
         This value is stored as TargetReachedDistance axis parameter.
 
         Returns: target reached distance
@@ -111,7 +150,7 @@ class DriveSetting(Feature):
 
     def set_target_reached_velocity(self, velocity): 
         """
-        Sets if target reached velocity for this axis.
+        Sets target reached velocity for this axis.
         This value is stored as TargetReachedVelocity axis parameter.
 
         Parameters:
@@ -122,7 +161,7 @@ class DriveSetting(Feature):
             
     def get_target_reached_velocity(self): 
         """
-        Gets if target reached velocity for this axis.
+        Gets target reached velocity for this axis.
         This value is stored as TargetReachedVelocity axis parameter.
 
         Returns: target reached velocity

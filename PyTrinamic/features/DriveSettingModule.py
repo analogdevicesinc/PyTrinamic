@@ -70,33 +70,72 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return "Not supported"
         
         def set_motor_type(self, type):
+            """
+            Sets motor type that is used for this axis.
+            This value is stored as MotorType axis parameter.
+
+            Parameters:
+            type: motor type
+            """
             if self._hasMotorType:
                 return self.parent.set_axis_parameter(self.parent.APs.MotorType,type)
             else:
                 return "Not supported"
         def get_motor_type(self):
+            """
+            Gets motor type that is used for this axis.
+            This value is stored in the  MotorType axis parameter.
+
+            Returns: motor type
+            """
             if self._hasMotorType:
                 return self.parent.get_axis_parameter(self.parent.APs.MotorType)
             else:
                 return "Not supported"
 
         def set_pole_pairs(self, number):
+            """
+            Sets pole pairs that is used for this axis.
+            This value is stored as MotorPolePairs axis parameter.
+
+            Parameters:
+            number:  pole pairs
+            """
             if self._hasMotorPolePairs:
                 return self.parent.set_axis_parameter(self.parent.APs.MotorPolePairs,number)
             else:
                 return "Not supported"
         def get_pole_pairs(self):
+            """
+            Gets pole pairs that is used for this axis.
+            This value is stored in the  MotorPolePairs axis parameter.
+
+            Returns: pole pairs
+            """
             if self._hasMotorPolePairs:
                 return self.parent.get_axis_parameter(self.parent.APs.MotorPolePairs)
             else:
                 return "Not supported"
 
         def set_open_loop_current(self, current):
+            """
+            Sets  open loop current that is used for this axis.
+            This value is stored as OpenLoopCurrent axis parameter.
+
+            Parameters:
+            current:  open loop current
+            """
             if self._hasOpenLoopCurrent:
                 return self.parent.set_axis_parameter(self.parent.APs.OpenLoopCurrent, current)
             else:
                 return "Not supported"
         def get_open_loop_current(self):
+            """
+            Gets open loop current that is used for this axis.
+            This value is stored in the  OpenLoopCurrent axis parameter.
+
+            Returns: open loop current
+            """
             if self._hasOpenLoopCurrent:
                 return self.parent.get_axis_parameter(self.parent.APs.OpenLoopCurrent)
             else:
@@ -119,7 +158,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
             Gets motor maximum current that is used for this axis.
             This value is stored in the  MaxCurrent axis parameter.
 
-            Returns: motor type
+            Returns: maximum current
             """
             if self._hasMaxCurrent:
                 return self.parent.get_axis_parameter(self.parent.APs.MaxCurrent)
@@ -127,22 +166,48 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return "Not supported"      
 
         def set_velocity_sensor(self, sensor):
+            """
+            Sets if velocity sensor velocity for this axis.
+            This value is stored as VelocitySensorSelection axis parameter.
+
+            Parameters: 
+            sensor: velocity sensor 
+            """
             if self._hasVelocitySensorSelection:
                 return self.parent.set_axis_parameter(self.parent.APs.VelocitySensorSelection,sensor)
             else:
                 return "Not supported"
         def get_velocity_sensor(self):
+            """
+            Gets velocity sensor for this axis.
+            This value is stored as VelocitySensorSelection axis parameter.
+
+            Returns: velocity sensor
+            """
             if self._hasVelocitySensorSelection:
                 return self.parent.get_axis_parameter(self.parent.APs.VelocitySensorSelection)
             else:
                 return "Not supported"
 
         def set_position_sensor(self, sensor):
+            """
+            Sets if position sensor velocity for this axis.
+            This value is stored as PositionSensorSelection axis parameter.
+
+            Parameters: 
+            sensor: position sensor 
+            """
             if self._hasPositionSensorSelection:
                 return self.parent.set_axis_parameter(self.parent.APs.PositionSensorSelection,sensor)
             else:
                 return "Not supported"
         def get_position_sensor(self):
+            """
+            Gets position sensor for this axis.
+            This value is stored as PositionSensorSelection axis parameter.
+
+            Returns: position sensor
+            """
             if self._hasPositionSensorSelection:
                 return self.parent.get_axis_parameter(self.parent.APs.PositionSensorSelection)
             else:
@@ -150,7 +215,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
         
         def set_motor_halted_velocity(self, velocity): 
             """
-            Sets if motor halted velocity for this axis.
+            Sets motor halted velocity for this axis.
             This value is stored as MotorHaltedVelocity axis parameter.
 
             Parameters:
@@ -162,7 +227,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return "Not supported"
         def get_motor_halted_velocity(self): 
             """
-            Gets if motor halted velocity for this axis.
+            Gets motor halted velocity for this axis.
             This value is stored as MotorHaltedVelocity axis parameter.
 
             Returns: motor halted velocity
@@ -174,7 +239,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
 
         def set_target_reached_distance(self, distance): 
             """
-            Sets if target reached distance for this axis.
+            Sets target reached distance for this axis.
             This value is stored as TargetReachedDistance axis parameter.
 
             Parameters: 
@@ -186,7 +251,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return "Not supported"
         def get_target_reached_distance(self): 
             """
-            Gets if target reached distance for this axis.
+            Gets target reached distance for this axis.
             This value is stored as TargetReachedDistance axis parameter.
 
             Returns: target reached distance
@@ -198,7 +263,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
 
         def set_target_reached_velocity(self, velocity): 
             """
-            Sets if target reached velocity for this axis.
+            Sets target reached velocity for this axis.
             This value is stored as TargetReachedVelocity axis parameter.
 
             Parameters:
@@ -210,7 +275,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return "Not supported"
         def get_target_reached_velocity(self): 
             """
-            Gets if target reached velocity for this axis.
+            Gets target reached velocity for this axis.
             This value is stored as TargetReachedVelocity axis parameter.
 
             Returns: target reached velocity
