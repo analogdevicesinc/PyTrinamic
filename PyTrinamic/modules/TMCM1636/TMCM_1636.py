@@ -1,6 +1,8 @@
 '''
-Created on 04.05.2020
-@author: JM, ED, JH 
+    Created on 04.05.2020
+
+    @author: @author: Trinamic Software Team
+    
 '''
 
 from PyTrinamic.modules.tmcl_module import tmcl_module
@@ -9,7 +11,6 @@ from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
 from PyTrinamic.features.AbsoluteEncoderModule import AbsoluteEncoderModule
 from PyTrinamic.features.DigitalHallModule import DigitalHallModule
-from PyTrinamic.features.OpenLoopModule import OpenLoopModule
 from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
@@ -18,17 +19,13 @@ class TMCM_1636(tmcl_module):
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
 
-        self.MOTORS = [self.MOTOR_0(self, 0)]
+        self.name = "TMCM-1617"
+        self.desc = "The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V"
+        self.motors = [self.MOTOR_0(self, 0)]
 
     @staticmethod
     def getEdsFile():
         return __file__.replace("TMCM_1636.py", "TMCM-1636-CANopen_Hw1.1_Fw1.12.eds")
-
-    def moduleDescription(self):
-        return "The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V"
-
-    def moduleName(self):
-        return "TMCM-1617"
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -47,7 +44,7 @@ class TMCM_1636(tmcl_module):
         self.connection.moveBy(axis, difference, self.module_id)
 
 
-    class MOTOR_0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule,AbsoluteEncoderModule,DigitalHallModule,PIDModule,MotorControlModule, OpenLoopModule):
+    class MOTOR_0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule,AbsoluteEncoderModule,DigitalHallModule,PIDModule,MotorControlModule):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
@@ -56,7 +53,6 @@ class TMCM_1636(tmcl_module):
             ABNEncoderModule.__init__(self)
             AbsoluteEncoderModule.__init__(self)
             DigitalHallModule.__init__(self)
-            OpenLoopModule.__init__(self)
             PIDModule.__init__(self)
 
         def get_position_reached(self):

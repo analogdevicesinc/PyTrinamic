@@ -4,68 +4,72 @@ Move a motor back and forth using the TMCM1636 module
 
 Created on 13.07.2021
 
-@author: JH
+@author: Trinamic Software Team
 '''
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1636.TMCM_1636 import TMCM_1636
+from PyTrinamic.modules import TMCM_1636
 import time
 
 PyTrinamic.showInfo()
 
 connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-myInterface = connectionManager.connect()
-module = TMCM_1636(myInterface)
-motor = module.MOTORS[0]
+with connectionManager.connect() as myInterface: 
+    module = TMCM_1636(myInterface)
+    motor = module.motors[0]
 
-print("Preparing parameters")
-" motor configuration for three phase bldc"
-motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
-motor.DriveSetting.pole_pairs = 4
-motor.DriveSetting.max_current= 2000
-motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_OPENLOOP
-motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_SAME
-motor.DriveSetting.velocity_sensor = motor.ENUMs.VEL_SELECTION_SAME
-print(motor.DriveSetting.__str__())
+    # Define motor configuration for the TMCM-1636.
+    #
+    # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
+    # If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
 
-"Set sensors to open loop mode"
-motor.max_acceleration = 1000
-motor.max_velocity = 1000
+    # motor configuration for three phase bldc
+    print("Preparing parameters")
+    motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.DriveSetting.pole_pairs = 4
+    motor.DriveSetting.max_current= 2000
+    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_OPENLOOP
+    motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_SAME
+    motor.DriveSetting.velocity_sensor = motor.ENUMs.VEL_SELECTION_SAME
+    print(motor.DriveSetting)
 
-print("Rotating")
-motor.rotate(1000)
+    motor.max_acceleration = 1000
+    motor.max_velocity = 1000
 
-time.sleep(5)
+    print("Rotating")
+    motor.rotate(1000)
 
-print("Stopping")
-motor.stop()
+    time.sleep(5)
 
-print("ActualPostion = {}".format(motor.actual_position))
+    print("Stopping")
+    motor.stop()
 
-time.sleep(2)
+    print("ActualPostion = {}".format(motor.actual_position))
 
-print("Doubling moved distance")
-motor.move_by(motor.actual_position, 1000000)
-while not(motor.get_position_reached()):
-    print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
-    time.sleep(0.2)
+    time.sleep(2)
 
-print("Furthest point reached")
-print("ActualPostion = {}".format(motor.actual_position))
+    print("Doubling moved distance")
+    motor.move_by(motor.actual_position, 1000000)
+    while not(motor.get_position_reached()):
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-time.sleep(2)
+    print("Furthest point reached")
+    print("ActualPostion = {}".format(motor.actual_position))
 
-print("Moving back to 0")
-motor.move_to(0)
+    time.sleep(2)
 
-# Wait until position 0 is reached
-while not(motor.get_position_reached()):
-    print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
-    time.sleep(0.2)
+    print("Moving back to 0")
+    motor.move_to(0)
 
-print("Reached Position 0")
+    # Wait until position 0 is reached
+    while not(motor.get_position_reached()):
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-print()
+    print("Reached Position 0")
 
-myInterface.close()
+    print()
+
+    myInterface.close()

@@ -1,16 +1,15 @@
 '''
-Created on 04.02.2020
+    Created on 04.05.2020
 
-@author: JM, ED, JH
+    @author: @author: Trinamic Software Team
+    
 '''
-
 
 from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
 from PyTrinamic.features.DigitalHallModule import DigitalHallModule
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
-from PyTrinamic.features.OpenLoopModule import OpenLoopModule
 from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
@@ -19,13 +18,9 @@ class TMCM_1617(tmcl_module):
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
 
-        self.MOTORS = [self.MOTOR_0(self, 0)]
-
-    def moduleName(self):
-        return "TMCM-1617"
-
-    def moduleDescription(self):
-        return "The TMCM-1617 is a low-weight miniaturized single axis servo drive for 3-phase BLDC motors and DC motors. Supply voltage is 10-28V."
+        self.name = "TMCM-1617"
+        self.desc = "The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V"
+        self.motors = [self.MOTOR_0(self, 0)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -44,14 +39,13 @@ class TMCM_1617(tmcl_module):
         self.connection.moveBy(axis, difference, self.module_id)
 
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule,DigitalHallModule,DriveSettingModule,PIDModule,MotorControlModule, OpenLoopModule):
+    class MOTOR_0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule,DigitalHallModule,DriveSettingModule,PIDModule,MotorControlModule):
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
             LinearRampModule.__init__(self)
             ABNEncoderModule.__init__(self)
             DigitalHallModule.__init__(self)
             DriveSettingModule.__init__(self)
-            OpenLoopModule.__init__(self)
             PIDModule.__init__(self)
 
         def get_position_reached(self):

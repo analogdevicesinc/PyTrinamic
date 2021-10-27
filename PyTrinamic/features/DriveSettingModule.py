@@ -143,7 +143,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
 
         def set_max_current(self, current):
             """
-            Sets motor maximum current that is used for this axis.
+            Sets maximum current that is used for this axis.
             This value is stored as MaxCurrent axis parameter.
 
             Parameters:
@@ -155,7 +155,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return "Not supported"
         def get_max_current(self):
             """
-            Gets motor maximum current that is used for this axis.
+            Gets maximum current that is used for this axis.
             This value is stored in the  MaxCurrent axis parameter.
 
             Returns: maximum current
@@ -167,7 +167,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
 
         def set_velocity_sensor(self, sensor):
             """
-            Sets if velocity sensor velocity for this axis.
+            Sets velocity sensor velocity for this axis.
             This value is stored as VelocitySensorSelection axis parameter.
 
             Parameters: 
@@ -191,7 +191,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
 
         def set_position_sensor(self, sensor):
             """
-            Sets if position sensor velocity for this axis.
+            Sets position sensor velocity for this axis.
             This value is stored as PositionSensorSelection axis parameter.
 
             Parameters: 
