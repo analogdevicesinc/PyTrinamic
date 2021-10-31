@@ -81,5 +81,4 @@ with connectionManager.connect() as myInterface:
     # stop motor 
     motor.rotate(0)
 
-    myInterface.close()
-    print("\nReady.")
+print("\nReady.")

@@ -70,6 +70,4 @@ with connectionManager.connect() as myInterface:
 
     print("Reached Position 0")
 
-    print()
-
-    myInterface.close()
+print("\nReady.")

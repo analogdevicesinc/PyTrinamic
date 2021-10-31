@@ -77,5 +77,4 @@ with connectionManager.connect() as myInterface:
         print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
         time.sleep(0.2)
 
-    myInterface.close()
-    print("\nReady.")
+print("\nReady.")

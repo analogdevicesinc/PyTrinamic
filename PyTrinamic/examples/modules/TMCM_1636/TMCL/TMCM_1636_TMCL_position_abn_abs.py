@@ -60,5 +60,4 @@ with connectionManager.connect() as myInterface:
     motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DISABLED
     motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_SAME
 
-    myInterface.close()
-    print("\nReady.")
+print("\nReady.")
