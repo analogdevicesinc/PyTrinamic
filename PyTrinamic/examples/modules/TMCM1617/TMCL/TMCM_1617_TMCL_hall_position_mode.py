@@ -7,7 +7,7 @@ Created on 28.11.2019
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1617.TMCM_1617 import TMCM_1617
+from PyTrinamic.modules import TMCM_1617
 import time
 
 PyTrinamic.showInfo()
@@ -51,7 +51,7 @@ with connectionManager.connect() as myInterface:
     motor.PID.velocity_p = 100
     motor.PID.velocity_i = 100
     motor.PID.position_p = 300
-    print(motor.PID.__str__())
+    print(motor.PID)
 
     # set position counter to zero
     motor.actual_position = 0

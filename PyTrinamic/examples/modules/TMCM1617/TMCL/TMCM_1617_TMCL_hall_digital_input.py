@@ -5,8 +5,6 @@ Created on 28.11.2019
 @author: Trinamic Software Team
 '''
 
-
-
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1617
@@ -53,7 +51,7 @@ with connectionManager.connect() as myInterface:
     motor.PID.velocity_p = 100
     motor.PID.velocity_i = 100
     motor.PID.position_p = 300
-    print(motor.PID.__str__())
+    print(motor.PID)
 
     # set position counter to zero
     motor.actual_position = 0

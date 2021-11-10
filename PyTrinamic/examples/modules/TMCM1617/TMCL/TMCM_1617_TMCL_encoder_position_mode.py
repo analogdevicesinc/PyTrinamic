@@ -12,6 +12,7 @@ import time
 
 PyTrinamic.showInfo()
 connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+
 with connectionManager.connect() as myInterface: 
     module = TMCM_1617(myInterface)
     motor = module.motors[0]
@@ -51,7 +52,6 @@ with connectionManager.connect() as myInterface:
     motor.PID.velocity_i = 100
     motor.PID.position_p = 300
     print(motor.PID)
-
 
     time.sleep(1.0)
 
