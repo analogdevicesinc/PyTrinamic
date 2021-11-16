@@ -14,6 +14,11 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         def __init__(self, parent):
             self.parent = parent
 
+            self._hasRampEnable = False 
+
+            if hasattr(parent.APs, "EnableRamp"):
+                self._hasRampEnable = True
+
         def get_target_position(self):
             """
             Gets the target position of this axis.
@@ -145,8 +150,10 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Parameters:
             enabled: ramp enable
             """
-            self.parent.set_axis_parameter(self.parent.APs.EnableRamp, enabled)
-        
+            if self._hasRampEnable:
+                self.parent.set_axis_parameter(self.parent.APs.EnableRamp, enabled)
+            else:
+                return "Not supported"
         def get_ramp_enabled(self):
             """
             Gets if ramp is enabled for this axis.
@@ -154,7 +161,10 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: ramp enable
             """
-            return self.parent.get_axis_parameter(self.parent.APs.EnableRamp)
+            if self._hasRampEnable:
+                return self.parent.get_axis_parameter(self.parent.APs.EnableRamp)
+            else:
+                return "Not supported"
 
         def __str__(self):
             return "{} {}".format(

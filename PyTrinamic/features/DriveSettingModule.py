@@ -19,10 +19,14 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
             self._hasOpenLoopCurrent = False
             self._hasMaxCurrent = False
             self._hasVelocitySensorSelection = False 
-            self._hasPositionSensor = False 
+            self._hasPositionSensorSelection = False 
             self._hasMotorHaltedVelocity = False
             self._hasTargetReachedDistance = False
             self._hasTargetReachedVelocity = False
+            self._hasMicrostepResolution = False 
+            self._hasReferenceSwitchTolerance = False 
+            self._hasStandbyCurrent = False 
+            self._hasBoostCurrent = False 
 
             if hasattr(parent.APs, "CommutationMode"):
                 self._hasCommutationMode = True
@@ -44,6 +48,14 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 self._hasTargetReachedDistance = True
             if hasattr(parent.APs, "MotorHaltedVelocity"):
                 self._hasMotorHaltedVelocity = True
+            if hasattr(parent.APs, "MicrostepResolution"):
+                self._hasMicrostepResolution = True
+            if hasattr(parent.APs, "ReferenceSwitchTolerance"):
+                self._hasReferenceSwitchTolerance = True
+            if hasattr(parent.APs, "StandbyCurrent"):
+                self._hasStandbyCurrent = True
+            if hasattr(parent.APs, "BoostCurrent"):
+                self._hasBoostCurrent = True
             
         def set_commutation_mode(self, mode):
             """
@@ -153,6 +165,7 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
                 return self.parent.set_axis_parameter(self.parent.APs.MaxCurrent,current)
             else:
                 return "Not supported"
+
         def get_max_current(self):
             """
             Gets maximum current that is used for this axis.
@@ -163,7 +176,57 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
             if self._hasMaxCurrent:
                 return self.parent.get_axis_parameter(self.parent.APs.MaxCurrent)
             else:
-                return "Not supported"      
+                return "Not supported"   
+
+        def set_standby_current(self, current):
+            """
+            Sets standby current that is used for this axis.
+            This value is stored as StandbyCurrent axis parameter.
+
+            Parameters:
+            current: standby current
+            """
+            if self._hasStandbyCurrent:
+                return self.parent.set_axis_parameter(self.parent.APs.StandbyCurrent,current)
+            else:
+                return "Not supported"   
+
+        def get_standby_current(self):
+            """
+            Gets standby current that is used for this axis.
+            This value is stored in the StandbyCurrent axis parameter.
+
+            Returns: standby current
+            """
+            if self._hasMaxCurrent:
+                return self.parent.get_axis_parameter(self.parent.APs.StandbyCurrent)
+            else:
+                return "Not supported"   
+
+        def set_boost_current(self, current):
+            """
+            Sets boost current that is used for this axis.
+            This value is stored as BoostCurrent axis parameter.
+
+            Parameters:
+            current: boost current
+            """
+            if self._hasBoostCurrent:
+                return self.parent.set_axis_parameter(self.parent.APs.BoostCurrent,current)
+            else:
+                return "Not supported"   
+
+        def get_boost_current(self):
+            """
+            Gets boost current that is used for this axis.
+            This value is stored in the BoostCurrent axis parameter.
+
+            Returns: boost current
+            """
+            if self._hasBoostCurrent:
+                return self.parent.get_axis_parameter(self.parent.APs.BoostCurrent)
+            else:
+                return "Not supported"   
 
         def set_velocity_sensor(self, sensor):
             """
@@ -285,6 +348,105 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
             else:
                 return "Not supported"
 
+        def set_microstep_resolution(self, resolution): 
+            """
+            Sets microstep resolution for this axis.
+            This value is stored as MicrostepResolution axis parameter.
+
+            Parameters:
+            resolution: microstep resolution
+            """
+            if self._hasMicrostepResolution:
+                self.parent.set_axis_parameter(self.parent.APs.MicrostepResolution, resolution)
+            else:
+                return "Not supported"
+        def get_microstep_resolution(self): 
+            """
+            Gets microstep resolution for this axis.
+            This value is stored as MicrostepResolution axis parameter.
+
+            Returns: microstep resolution
+            """
+            if self._hasMicrostepResolution:
+                return self.parent.get_axis_parameter(self.parent.APs.MicrostepResolution)
+            else:
+                return "Not supported"
+            
+        def set_reference_switch_tolerance(self, tolerance): 
+            """
+            Sets reference switch tolerance for this axis.
+            This value is stored as ReferenceSwitchTolerance axis parameter.
+
+            Parameters:
+            tolerance: reference switch tolerance 
+            """
+            if self._hasReferenceSwitchTolerance:
+                self.parent.set_axis_parameter(self.parent.APs.ReferenceSwitchTolerance, tolerance)
+            else:
+                return "Not supported"
+        def get_reference_switch_tolerance(self): 
+            """
+            Gets reference switch tolerance for this axis.
+            This value is stored as TargetReachedVelocity axis parameter.
+
+            Returns: reference switch tolerance 
+            """
+            if self._hasReferenceSwitchTolerance:
+                return self.parent.get_axis_parameter(self.parent.APs.ReferenceSwitchTolerance)
+            else:
+                return "Not supported"
+        
+        def __str__(self):
+            values = "" 
+            if self._hasCommutationMode: 
+                values += "'commutation_mode':" + str(self.commutation_mode)+ ", "
+
+            if self._hasMotorType:
+                values += "'motor_type':"+ str(self.motor_type) + ", "
+
+            if self._hasMotorPolePairs:
+                values += "'pole_pairs':"+ str(self.pole_pairs) + ", "
+
+            if self._hasOpenLoopCurrent:
+                values += "'open_loop_current':"+ str(self.open_loop_current) + ", "
+
+            if self._hasMaxCurrent:
+                values += "'max_current':"+ str(self.max_current)+", "
+
+            if self._hasPositionSensorSelection:  
+                 values += "'position_sensor': "+ str(self.position_sensor) + ", "
+
+            if self._hasVelocitySensorSelection:
+                values += "'velocity_sensor':"+ str(self.velocity_sensor)+ ", "
+
+            if self._hasTargetReachedVelocity:
+                values += "'target_reached_velocity':"+ str(self.target_reached_velocity)+ ", "
+
+            if self._hasTargetReachedDistance:
+                values += "'target_reached_distance':"+ str(self.target_reached_distance)+ ", "
+
+            if self._hasMotorHaltedVelocity:
+                values += "'motor_halted_velocity':"+ str(self.motor_halted_velocity)+ ", "
+
+            if self._hasMicrostepResolution:
+                values += "'microstep_resolution':"+ str(self.microstep_resolution)+ ", "
+
+            if self._hasMotorHaltedVelocity:
+                values += "'reference_switch_tolerance':"+ str(self.reference_switch_tolerance)+ ", "
+            
+            if self._hasStandbyCurrent:
+                values += "'standby_current':"+ str(self.standby_current)+ ", "
+            
+            if self._hasBoostCurrent:
+                values += "'boost_current':"+ str(self.boost_current)+ ", "
+
+            return "{} {}".format(
+                "Drive Settings:",
+                {
+                    values[:-2]
+                }
+            )
+
         commutation_mode = property(get_commutation_mode,set_commutation_mode)
         motor_type = property(get_motor_type,set_motor_type)
         pole_pairs = property(get_pole_pairs,set_pole_pairs)
@@ -295,7 +457,11 @@ class DriveSettingModule(DriveSetting,FeatureProvider):
         target_reached_velocity = property(get_target_reached_velocity,set_target_reached_velocity)
         velocity_sensor = property(get_velocity_sensor,set_velocity_sensor)
         position_sensor = property(get_position_sensor,set_position_sensor)
-        
+        microstep_resolution = property(get_microstep_resolution, set_microstep_resolution)
+        reference_switch_tolerance = property(get_reference_switch_tolerance, set_reference_switch_tolerance)
+        standby_current = property(get_standby_current, set_standby_current)
+        boost_current = property(get_boost_current, set_boost_current)
+
     # Feature initialization
     def __init__(self):
         self.DriveSetting = self.__GROUPING(self)
