@@ -74,7 +74,16 @@ class StallGuard2(Feature):
         Returns: Velocity threshold.
         """
         raise NotImplementedError()
+    
+    def get_load_value(self):
+        """
+        Gets the load value for monitoring smart energy current scaling or automatic current scaling.
+        This value is stored as LoadValue axis parameter.
 
+        Returns: LoadValue
+        """
+        raise NotImplementedError()
+    
     def __str__(self):
         return "{} {}".format(
             "StallGuard2",

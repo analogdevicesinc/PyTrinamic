@@ -3,6 +3,7 @@
 
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.StallGuard2 import StallGuard2
+import time
 
 class StallGuard2Module(StallGuard2, FeatureProvider):
     "StallGuard2 feature implementation for modules"
@@ -81,6 +82,85 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             Returns: Velocity threshold.
             """
             return self.parent.get_axis_parameter(self.parent.APs.SmartEnergyStallVelocity)
+
+        def get_load_value(self):
+            """
+            Gets the load value for monitoring smart energy current scaling or automatic current scaling.
+            This value is stored as LoadValue axis parameter.
+
+            Returns: LoadValue
+            """
+            return self.parent.get_axis_parameter(self.parent.APs.LoadValue)
+
+        def calibrate_zero(self, threshold = 1):
+            """
+            Interactive calibration function. 
+            Takes threshold as optional input. 
+            Sets parameter automatically 
+
+            """
+            self.__threshold = threshold
+            print("StallGuard zero calibration.")
+
+            self.parent.StallGuard2.stop_velocity = 0
+
+            print("Now, do apply some load to the motor, at which you want it to stop automatically.")
+            input("Press enter to continue ...")
+
+            for i in range(3):
+                print("Starting calibration in "+ str(3-i) +"seconds.")
+                time.sleep(1.0)
+
+            print("Calibrating SGT.")
+            sgthresh = 0
+            sgt = 0
+            while((sgt == 0) and (sgthresh < 64)):
+                print("SGT too low, increasing threshold to "+ str(sgthresh))
+                self.parent.StallGuard2.threshold = sgthresh
+                sgthresh = sgthresh + 1
+                time.sleep(0.2)
+
+                sgt = self.parent.StallGuard2.get_load_value()
+                print("SGT load:" + str(sgt))
+            self.parent.StallGuard2.threshold = sgthresh - 1
+            print("Calibration done. Now release the load.")
+
+            input("Press enter to continue ...")
+            self.parent.StallGuard2.stop_velocity = self.__threshold
+
+        def calibrate_middle(self, threshold = 1):
+            """
+            Interactive calibration function. 
+            Takes threshold as optional input. 
+            Sets parameter automatically 
+
+            """
+            self.__threshold = threshold
+            print("StallGuard middle calibration.")
+
+            self.parent.StallGuard2.stop_velocity = 0
+
+            print("Now, do not apply any load to the motor. Let it run freely.")
+            input("Press enter to continue ...")
+
+            print("Calibrating SGT.")
+            sgthresh = 0
+            sgt = 0
+            while((sgt < 450) and (sgthresh < 64)):
+                print("SGT too low, increasing threshold to "+ str(sgthresh))
+                self.parent.StallGuard2.threshold = sgthresh
+                sgthresh = sgthresh + 1
+                time.sleep(0.1)
+                sgt = self.parent.StallGuard2.get_load_value()
+                print("SGT load:" + str(sgt))
+            self.parent.StallGuard2.threshold = sgthresh - 1
+            print("Calibration done.")
+
+
+
+
+
+
 
         # Properties
         filter = property(get_filter, set_filter)
