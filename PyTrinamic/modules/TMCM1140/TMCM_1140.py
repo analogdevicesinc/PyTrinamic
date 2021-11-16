@@ -5,16 +5,12 @@
     
 '''
 
+from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.CoolStepModule import CoolStepModule
 from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
-from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
-from PyTrinamic.features.AbsoluteEncoderModule import AbsoluteEncoderModule
-from PyTrinamic.features.DigitalHallModule import DigitalHallModule
-from PyTrinamic.features.OpenLoopModule import OpenLoopModule
-from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
-from PyTrinamic.features.SixPointRampModule import SixPointRampModule
 
 class TMCM_1140(tmcl_module):
 
@@ -42,16 +38,16 @@ class TMCM_1140(tmcl_module):
         self.connection.moveBy(axis, difference, self.module_id)
 
 
-    class motor_0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule,AbsoluteEncoderModule,DigitalHallModule,PIDModule,MotorControlModule, SixPointRampModule):
+    class motor_0(tmcl_module.Motor, DriveSettingModule, LinearRampModule,MotorControlModule, StallGuard2Module, CoolStepModule):
 
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
-            ABNEncoderModule.__init__(self)
-            AbsoluteEncoderModule.__init__(self)
-            DigitalHallModule.__init__(self)
-            PIDModule.__init__(self)
+            StallGuard2Module.__init__(self)
+            CoolStepModule.__init__(self)
+
+
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
@@ -126,7 +122,15 @@ class TMCM_1140(tmcl_module):
 
 
         class ENUMs():
-            pass
+            microstep_resolution_fullstep = 0
+            microstep_resolution_halfstep = 1
+            microstep_resolution_4_microsteps = 2
+            microstep_resolution_8_microsteps = 3
+            microstep_resolution_16_microsteps = 4
+            microstep_resolution_32_microsteps = 5
+            microstep_resolution_64_microsteps = 6
+            microstep_resolution_128_microsteps = 7
+            microstep_resolution_256_microsteps = 8
 
     class GPs():
         serialBaudRate      = 65
@@ -142,7 +146,5 @@ class TMCM_1140(tmcl_module):
         tickTimer           = 132
 
     class IOs():
-        GPI_0   = 0
-        GPI_1   = 1
-        GPI_2   = 2
-        GPI_3   = 3
+        OUT0   = 0
+        OUT1   = 1
