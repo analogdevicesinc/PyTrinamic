@@ -156,12 +156,6 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             self.parent.StallGuard2.threshold = sgthresh - 1
             print("Calibration done.")
 
-
-
-
-
-
-
         # Properties
         filter = property(get_filter, set_filter)
         threshold = property(get_threshold, set_threshold)
