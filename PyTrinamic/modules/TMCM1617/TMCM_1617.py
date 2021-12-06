@@ -1,11 +1,8 @@
-'''
-    Created on 04.05.2020
 
-    @author: @author: Trinamic Software Team
-    
-'''
-
+# interfaces
 from PyTrinamic.modules.tmcl_module import tmcl_module
+
+# features
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
 from PyTrinamic.features.DigitalHallModule import DigitalHallModule
@@ -13,14 +10,18 @@ from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
-class TMCM_1617(tmcl_module):
 
+class TMCM_1617(tmcl_module):
+    """
+    The TMCM-1617 is a single axis servo drive platform for 3-phase BLDC motors and DC motors.
+        * Supply Voltage: 8 - 28V
+    """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
 
         self.name = "TMCM-1617"
-        self.desc = "The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Voltage supply: 8 - 28V"
-        self.motors = [self.MOTOR_0(self, 0)]
+        self.desc = self.__doc__
+        self.motors = [self.Motor0(self, 0)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -38,8 +39,8 @@ class TMCM_1617(tmcl_module):
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule,DigitalHallModule,DriveSettingModule,PIDModule,MotorControlModule):
+    class Motor0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule, DigitalHallModule, DriveSettingModule,
+                  PIDModule, MotorControlModule):
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
             LinearRampModule.__init__(self)
@@ -51,7 +52,7 @@ class TMCM_1617(tmcl_module):
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
-        class APs():
+        class APs:
             AdcPhaseA                       = 0
             AdcPhaseB                       = 1
             CurrentPhaseA                   = 2
@@ -133,7 +134,7 @@ class TMCM_1617(tmcl_module):
             DebugValue9                     = 249
             EnableDriver                    = 255
 
-        class ENUMs():
+        class ENUMs:
             COMM_MODE_DISABLED              = 0
             COMM_MODE_OPENLOOP              = 1
             COMM_MODE_DIGITAL_HALL          = 2
@@ -158,21 +159,23 @@ class TMCM_1617(tmcl_module):
             MOTOR_TYPE_SINGLE_PHASE_DC      = 1
             MOTOR_TYPE_THREE_PHASE_BLDC     = 3
 
-    class GPs():
-        serialBaudRate      = 65
-        serialAddress       = 66
+    class GPs:
+        SerialBaudRate      = 65
+        SerialAddress       = 66
         CANBitRate          = 69
         CANsendID           = 70
         CANreceiveID        = 71
-        telegramPauseTime   = 75
-        serialHostAddress   = 76
-        autoStartMode       = 77
-        applicationStatus   = 128
-        programCounter      = 130
-        tickTimer           = 132
+        TelegramPauseTime   = 75
+        SerialHostAddress   = 76
+        AutoStartMode       = 77
+        ApplicationStatus   = 128
+        ProgramCounter      = 130
+        TickTimer           = 132
 
-    class IOs():
-        GPI_0   = 0
-        GPI_1   = 1
-        GPI_2   = 2
-        GPI_3   = 3
+    class IOs:
+        GPI_0 = 0
+        GPI_1 = 1
+        GPI_2 = 2
+        GPI_3 = 3
+        GPI_4 = 3
+        GPI_5 = 3
