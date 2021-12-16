@@ -247,7 +247,7 @@ class tmcl_interface():
 
     def referenceSearch(self, commandType, motor, moduleID=None):
         """Use the TMCL RFS command to search for the reference points."""
-        return self.send(TMCL_Command.RFS, commandType, motor, moduleID)
+        return self.send(TMCL_Command.RFS, commandType, motor, 0, moduleID).value
 
     # IO pin functions
     def analogInput(self, x, moduleID=None):
