@@ -13,12 +13,14 @@ from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 class TMCM_1140(tmcl_module):
-
+    """
+    The TMCM-1140 is a single axis stepper motor controller/driver module for sensorless load dependent current control.
+            * Supply Voltage: 9 - 28V
+    """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-
-        self.name = "TMCM-1617"
-        self.desc = " The TMCM-1140 is a single axis stepper motor controller/driver module for sensorless load dependent current control."
+        self.name = "TMCM-1140"
+        self.desc = self.__doc__
         self.motors = [self.motor_0(self, 0)]
 
     def rotate(self, axis, velocity):
