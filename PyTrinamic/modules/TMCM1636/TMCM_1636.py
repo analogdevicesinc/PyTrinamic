@@ -23,7 +23,7 @@ class TMCM_1636(tmcl_module):
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
 
-        self.name = "TMCM-1617"
+        self.name = "TMCM-1636"
         self.desc = self.__doc__
         self.motors = [self.Motor0(self, 0)]
 
