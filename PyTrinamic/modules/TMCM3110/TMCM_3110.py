@@ -65,9 +65,12 @@ class TMCM_3110():
             self.setReferenceSearchMode(motor, mode)
         self.connection.referenceSearch(0, motor)
 
+    def stopReferenceSearch(self, motor):
+        self.connection.referenceSearch(1, motor)
+
     def getReferenceSearchStatus(self, motor):
         """Get the status, whether reference search is active."""
-        self.connection.referenceSearch(2, motor)
+        return self.connection.referenceSearch(2, motor)
 
     # Current control functions
     def setMotorRunCurrent(self, motor, current):
