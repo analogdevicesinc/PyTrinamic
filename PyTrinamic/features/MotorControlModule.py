@@ -4,6 +4,7 @@
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.MotorControl import MotorControl
 
+
 class MotorControlModule(MotorControl, FeatureProvider):
 
     def rotate(self, velocity):

@@ -3,10 +3,10 @@
 from PyTrinamic.modules.tmcl_module import tmcl_module
 
 # features
+from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
 from PyTrinamic.features.DigitalHallModule import DigitalHallModule
-from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
@@ -31,22 +31,22 @@ class TMCM_1617(tmcl_module):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(tmcl_module.Motor, LinearRampModule, ABNEncoderModule, DigitalHallModule, DriveSettingModule,
-                  PIDModule, MotorControlModule):
+    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
+                 PIDModule, MotorControlModule):
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
+            DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             ABNEncoderModule.__init__(self)
             DigitalHallModule.__init__(self)
-            DriveSettingModule.__init__(self)
             PIDModule.__init__(self)
 
         def get_position_reached(self):
@@ -63,6 +63,7 @@ class TMCM_1617(tmcl_module):
             MotorPolePairs                  = 10
             MaxCurrent                      = 11
             OpenLoopCurrent                 = 12
+            MotorDirection                  = 13
             MotorType                       = 14
             CommutationMode                 = 15
             ActualOpenLoopAngle             = 16
@@ -103,6 +104,7 @@ class TMCM_1617(tmcl_module):
             HallSensorDirection             = 91
             HallSensorInterpolation         = 92
             HallSensorOffset                = 93
+            HallSensorInputs                = 94
             EncoderSteps                    = 100
             EncoderDirection                = 101
             EncoderInitMode                 = 102
@@ -112,6 +114,8 @@ class TMCM_1617(tmcl_module):
             EncoderOffset                   = 106
             ClearOnNull                     = 107
             ClearOnce                       = 108
+            EncoderInputs                   = 109
+            PWMFrequency                    = 110
             StatusFlags                     = 156
             ReferenceSwitchPolarity         = 210
             RightStopSwitch                 = 211

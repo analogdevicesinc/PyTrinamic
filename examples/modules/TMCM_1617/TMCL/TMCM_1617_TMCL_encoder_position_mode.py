@@ -11,7 +11,8 @@ from PyTrinamic.modules import TMCM_1617
 import time
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
 with connectionManager.connect() as myInterface: 
     module = TMCM_1617(myInterface)
@@ -35,7 +36,7 @@ with connectionManager.connect() as myInterface:
     # encoder configuration 
     motor.ABNEncoder.resolution = 4096
     motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode =motor.ENUMs.ENCODER_INIT_MODE_0
+    motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
 
     # motion settings 
@@ -45,6 +46,7 @@ with connectionManager.connect() as myInterface:
     print(motor.LinearRamp)
 
     motor.set_axis_parameter(motor.APs.PositionScaler, motor.ABNEncoder.resolution)
+
     # PI configuration 
     motor.PID.torque_p = 300 
     motor.PID.torque_i = 600

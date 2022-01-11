@@ -3,6 +3,7 @@
 
 from PyTrinamic.features.Feature import Feature
 
+
 class MotorControl(Feature):
 
     def rotate(self, axis, velocity):

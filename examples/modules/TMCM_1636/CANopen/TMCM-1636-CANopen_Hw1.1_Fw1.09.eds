@@ -11,8 +11,8 @@ Description=TMCM-1636  BLDC module
 CreationTime=04:04PM
 CreationDate=01-15-2020
 CreatedBy=ok
-ModificationTime=07:55AM
-ModificationDate=04-08-2020
+ModificationTime=08:24AM
+ModificationDate=05-18-2020
 ModifiedBy=ok
 
 [DeviceInfo]
@@ -20,7 +20,7 @@ VendorName=Trinamic Motion Control GmbH
 VendorNumber=0x286
 ProductName=TMCM-1636
 ProductNumber=0x664
-RevisionNumber=0x00010008
+RevisionNumber=0x00010009
 OrderCode=TMCM-1636
 BaudRate_10=0
 BaudRate_20=1
@@ -1225,7 +1225,7 @@ DefaultValue=0x0
 PDOMapping=0
 
 [2042]
-SubNumber=5
+SubNumber=6
 ParameterName=Velocity Mode Settings
 ObjectType=0x09
 
@@ -1234,7 +1234,7 @@ ParameterName=numOfEntries
 ObjectType=0x07
 DataType=0x0005
 AccessType=const
-DefaultValue=0x4
+DefaultValue=0x5
 PDOMapping=0
 
 [2042sub1]
@@ -1269,6 +1269,14 @@ AccessType=ro
 DefaultValue=0x0
 PDOMapping=0
 
+[2042sub5]
+ParameterName=Sensor_Selection
+ObjectType=0x07
+DataType=0x0005
+AccessType=rw
+DefaultValue=0x0
+PDOMapping=0
+
 [2043]
 SubNumber=4
 ParameterName=Position Mode Settings
@@ -1279,7 +1287,7 @@ ParameterName=Highest sub-index supported
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x1
+DefaultValue=0x3
 PDOMapping=0
 
 [2043sub1]
@@ -1299,7 +1307,7 @@ DefaultValue=0x0
 PDOMapping=0
 
 [2043sub3]
-ParameterName=AlwaysUseEncoder
+ParameterName=Sensor_Selection
 ObjectType=0x07
 DataType=0x0005
 AccessType=rw

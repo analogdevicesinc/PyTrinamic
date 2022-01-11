@@ -11,8 +11,9 @@ from PyTrinamic.modules import TMCM_1617
 import time
 
 PyTrinamic.showInfo()
+# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 with connectionManager.connect() as myInterface: 
     module = TMCM_1617(myInterface)
     motor = module.motors[0]
@@ -45,6 +46,7 @@ with connectionManager.connect() as myInterface:
     print(motor.LinearRamp)
 
     motor.set_axis_parameter(motor.APs.PositionScaler, 6*motor.DriveSetting.pole_pairs)
+
     # PI configuration 
     motor.PID.torque_p = 300 
     motor.PID.torque_i = 600
@@ -70,7 +72,7 @@ with connectionManager.connect() as myInterface:
     # move back to zero
     motor.move_to(0)
 
-    # wait for position reache
+    # wait for position reached
     while not(motor.get_position_reached()):
         print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
         time.sleep(0.2)

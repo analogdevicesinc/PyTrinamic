@@ -11,8 +11,9 @@ from PyTrinamic.modules import TMCM_1636
 import time
 
 PyTrinamic.showInfo()
+# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 with connectionManager.connect() as myInterface: 
     module = TMCM_1636(myInterface)
     motor = module.motors[0]
@@ -23,7 +24,7 @@ with connectionManager.connect() as myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not working. 
 
     # config abn encoder 
-    motor.ABNEncoder.resolution  = 4096
+    motor.ABNEncoder.resolution = 4096
     motor.ABNEncoder.direction = 1
     motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
@@ -54,7 +55,8 @@ with connectionManager.connect() as myInterface:
     motor.move_to(1000000)
 
     while not motor.get_position_reached():
-        print("target position: " + str(motor.LinearRamp.target_position) + " actual position: " + str(motor.LinearRamp.actual_position))
+        print("target position: " + str(motor.LinearRamp.target_position) + " actual position: "
+              + str(motor.LinearRamp.actual_position))
         time.sleep(0.2)
 
     motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DISABLED

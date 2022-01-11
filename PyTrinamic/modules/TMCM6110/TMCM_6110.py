@@ -31,12 +31,12 @@ class TMCM_6110(tmcl_module):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[axis].LinearRamp.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[axis].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
     class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, MotorControlModule, StallGuard2Module,

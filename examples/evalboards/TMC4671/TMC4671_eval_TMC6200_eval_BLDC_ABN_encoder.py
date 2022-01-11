@@ -35,8 +35,8 @@ else:
 
 " read ChipInfo "
 
-TMC4671.showChipInfo
-TMC6200.showChipInfo
+TMC4671.showChipInfo()
+TMC6200.showChipInfo()
 
 " configure TMC6200 pwm for use with TMC4671 (disable singleline)"
 TMC6200.writeRegister(TMC6200.registers.GCONF, 0x0)

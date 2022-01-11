@@ -5,16 +5,15 @@ Created on 28.11.2019
 @author: Trinamic Software Team
 '''
 
-
-
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1636
 import time
 
 PyTrinamic.showInfo()
+# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 with connectionManager.connect() as myInterface: 
     module = TMCM_1636(myInterface)
     motor = module.motors[0]
@@ -23,14 +22,14 @@ with connectionManager.connect() as myInterface:
     #
     # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
-    
-    # motor configuration 
+
+    # drive configuration
     motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
     motor.DriveSetting.pole_pairs = 4
     motor.DriveSetting.max_current = 2000
+    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
     motor.DriveSetting.target_reached_distance = 5
     motor.DriveSetting.target_reached_velocity = 500
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
     print(motor.DriveSetting)
 
     # hall sensor configuration 
@@ -47,6 +46,7 @@ with connectionManager.connect() as myInterface:
     print(motor.LinearRamp)
 
     motor.set_axis_parameter(motor.APs.PositionScaler, 6*motor.DriveSetting.pole_pairs)
+
     # PI configuration 
     motor.PID.torque_p = 300 
     motor.PID.torque_i = 600
@@ -72,7 +72,7 @@ with connectionManager.connect() as myInterface:
     # move back to zero
     motor.move_to(0)
 
-    # wait for position reache
+    # wait for position reached
     while not(motor.get_position_reached()):
         print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
         time.sleep(0.2)

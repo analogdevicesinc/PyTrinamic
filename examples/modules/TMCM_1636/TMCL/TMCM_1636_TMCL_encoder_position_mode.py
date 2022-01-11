@@ -11,7 +11,9 @@ from PyTrinamic.modules import TMCM_1636
 import time
 
 PyTrinamic.showInfo()
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
+
 with connectionManager.connect() as myInterface: 
     module = TMCM_1636(myInterface)
     motor = module.motors[0]
@@ -21,7 +23,7 @@ with connectionManager.connect() as myInterface:
     # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
-    # drive configuration 
+    # drive configuration
     motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
     motor.DriveSetting.pole_pairs = 4
     motor.DriveSetting.max_current = 2000
@@ -34,7 +36,7 @@ with connectionManager.connect() as myInterface:
     # encoder configuration 
     motor.ABNEncoder.resolution = 4096
     motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode =motor.ENUMs.ENCODER_INIT_MODE_0
+    motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
 
     # motion settings 
@@ -44,6 +46,7 @@ with connectionManager.connect() as myInterface:
     print(motor.LinearRamp)
 
     motor.set_axis_parameter(motor.APs.PositionScaler, motor.ABNEncoder.resolution)
+
     # PI configuration 
     motor.PID.torque_p = 300 
     motor.PID.torque_i = 600
@@ -51,7 +54,6 @@ with connectionManager.connect() as myInterface:
     motor.PID.velocity_i = 100
     motor.PID.position_p = 300
     print(motor.PID)
-
 
     time.sleep(1.0)
 

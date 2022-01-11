@@ -1,35 +1,28 @@
 
-import os
-
-# interface
+# interfaces
 from PyTrinamic.modules.tmcl_module import tmcl_module
 
 # features
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
-from PyTrinamic.features.AbsoluteEncoderModule import AbsoluteEncoderModule
 from PyTrinamic.features.DigitalHallModule import DigitalHallModule
 from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
+from PyTrinamic.features.AbsoluteEncoderModule import AbsoluteEncoderModule
 
 
 class TMCM_1636(tmcl_module):
     """
     The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors.
-        * Voltage supply: 8 - 28V
+        * Supply Voltage: 8 - 48V
     """
-
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
 
         self.name = "TMCM-1636"
         self.desc = self.__doc__
         self.motors = [self.Motor0(self, 0)]
-
-    @staticmethod
-    def get_eds_file():
-        return os.path.abspath("./TMCM-1636-CANopen_Hw1.1_Fw1.12.eds")
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -39,25 +32,24 @@ class TMCM_1636(tmcl_module):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, AbsoluteEncoderModule,
-                 DigitalHallModule, PIDModule, MotorControlModule):
-
+    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
+                 PIDModule, MotorControlModule, AbsoluteEncoderModule):
         def __init__(self, module, axis):
             tmcl_module.Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             ABNEncoderModule.__init__(self)
-            AbsoluteEncoderModule.__init__(self)
             DigitalHallModule.__init__(self)
             PIDModule.__init__(self)
+            AbsoluteEncoderModule.__init__(self)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
@@ -90,7 +82,7 @@ class TMCM_1636(tmcl_module):
             RampVelocity                    = 41
             ActualVelocity                  = 42
             MaxVelocity                     = 43
-            MaxAcceleration                 = 44 #renamed from Acceleration
+            MaxAcceleration                 = 44
             EnableRamp                      = 45
             TargetPosition                  = 50
             RampPosition                    = 51
@@ -104,13 +96,13 @@ class TMCM_1636(tmcl_module):
             VelocityP                       = 72
             VelocityI                       = 73
             PositionP                       = 74
-            CurrentPiErrorSum               = 75
-            FluxPiErrorSum                  = 76
-            VelocityPiErrorSum              = 77
-            TorquePiError                   = 78
-            FluxPiError                     = 79
-            VelocityPiError                 = 80
-            PositionPiError                 = 81
+            CurrentPIDErrorSum              = 75
+            FluxPIDErrorSum                 = 76
+            VelocityPIDErrorSum             = 77
+            TorquePIDError                  = 78
+            FluxPIDError                    = 79
+            VelocityPIDError                = 80
+            PositionPIDError                = 81
             HallSensorPolarity              = 90
             HallSensorDirection             = 91
             HallSensorInterpolation         = 92
@@ -165,7 +157,7 @@ class TMCM_1636(tmcl_module):
             DebugValue7                     = 247
             DebugValue8                     = 248
             DebugValue9                     = 249
-            DriverEnabled                   = 255
+            EnableDriver                    = 255
 
         class ENUMs:
             COMM_MODE_DISABLED              = 0
@@ -206,7 +198,7 @@ class TMCM_1636(tmcl_module):
         TickTimer           = 132
 
     class IOs:
-        GPI_0   = 0
-        GPI_1   = 1
-        GPI_2   = 2
-        GPI_3   = 3
+        GPI_0 = 0
+        GPI_1 = 1
+        GPI_2 = 2
+        GPI_3 = 3
