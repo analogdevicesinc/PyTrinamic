@@ -131,7 +131,7 @@ class TMCM_1636(tmcl_module):
             BrakeChopperActive              = 144
             StatusFlags                     = 156
             AbsoluteEncoderType             = 160
-            AbsoluteEncoderInit             = 161
+            AbsoluteEncoderInitMode         = 161
             AbsoluteEncoderDirection        = 162
             AbsoluteEncoderOffset           = 163
             AbsoluteEncoderDataLength       = 165

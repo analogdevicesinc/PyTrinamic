@@ -36,7 +36,7 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
             if self._hasHallSensorDirection:
                 return self.parent.get_axis_parameter(self.parent.APs.HallSensorDirection)
             else:
-                return "Not supported"
+                return None
 
         def set_polarity(self, invert):
             if self._hasHallSensorPolarity:
@@ -46,7 +46,7 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
             if self._hasHallSensorPolarity:
                 return self.parent.get_axis_parameter(self.parent.APs.HallSensorPolarity)
             else:
-                return "Not supported"
+                return None
 
         def set_offset(self, offset):
             if self._hasHallSensorOffset:
@@ -56,7 +56,7 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
             if self._hasHallSensorOffset:
                 return self.parent.get_axis_parameter(self.parent.APs.HallSensorOffset)
             else:
-                return "Not supported"
+                return None
 
         def set_interpolation(self, enable_interpolation):
             if self._hasHallSensorInterpolation:
@@ -65,7 +65,8 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
         def get_interpolation(self):
             if self._hasHallSensorInterpolation:
                 return self.parent.get_axis_parameter(self.parent.APs.HallSensorInterpolation)
-            return "Not supported"
+            else:
+                return None
 
         def __str__(self):
             values = ""
@@ -82,7 +83,7 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
                 values += "'interpolation':" + str(self.interpolation) + ", "
 
             return "{} {}".format(
-                "DigitalHall:",
+                "DigitalHall",
                 {
                     values[:-2]
                 }

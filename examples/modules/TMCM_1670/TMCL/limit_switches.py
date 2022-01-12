@@ -2,65 +2,68 @@
 '''
 Created on 24.06.2019
 
-@author: ED
+@author: Trinamic Software Team
 '''
 
-if __name__ == '__main__':
-    pass
-
-import PyTrinamic, time
+import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1670.TMCM_1670 import TMCM_1670
+import time
 
 PyTrinamic.showInfo()
 
-" please select your CAN adapter "
-#myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+# please select your CAN adapter
+# myInterface = ConnectionManager("--interface pcan_tmcl").connect()
 myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
-module = TMCM_1670(myInterface)
-module.showModuleInfo()
-motor = module.motor(0)
+with myInterface:
+    module = TMCM_1670(myInterface)
+    motor = module.motors[0]
 
-" motor configuration "
-motor.setMaxTorque(2000)
-motor.showConfiguration()
+    # drive configuration
+    motor.DriveSetting.poles = 8
+    motor.DriveSetting.max_current = 2000
+    motor.DriveSetting.target_reached_velocity = 500
+    motor.DriveSetting.target_reached_distance = 10
+    motor.DriveSetting.motor_halted_velocity = 5
+    motor.DriveSetting.open_loop_current = 1000
+    print(motor.DriveSetting)
 
-" encoder configuration "
-motor.spiEncoder.showConfiguration()
+    # encoder configuration
+    print(motor.AbsoluteEncoder)
 
-" motion control settings "
-motor.linearRamp.setMaxVelocity(4000)
-motor.linearRamp.setAcceleration(4000)
-motor.linearRamp.setRampEnabled(1)
-motor.linearRamp.setTargetReachedVelocity(500)
-motor.linearRamp.setTargetReachedDistance(10)
-motor.linearRamp.setMotorHaltedVelocity(5)
-motor.linearRamp.showConfiguration()
+    # motion settings
+    motor.LinearRamp.max_velocity = 4000
+    motor.LinearRamp.max_acceleration = 4000
+    motor.LinearRamp.enabled = 1
+    print(motor.LinearRamp)
 
-" PI configuration "
-motor.pid.setTorquePIParameter(1000, 1000)
-motor.pid.setVelocityPIParameter(2000, 1000)
-motor.pid.setPositionPParameter(300)
-motor.pid.showConfiguration()
+    # PI configuration
+    motor.PID.torque_p = 1000
+    motor.PID.torque_i = 1000
+    motor.PID.velocity_p = 2000
+    motor.PID.velocity_i = 1000
+    motor.PID.position_p = 300
+    print(motor.PID)
 
-" use out_0 output for enable input (directly shortened) "
-module.setDigitalOutput(0);
+    time.sleep(1.0)
 
-" rotate motor in right direction " 
-motor.setTargetVelocity(1000)
-while module.digitalInput(0):
-    print("waiting for right switch...")
-    time.sleep(0.2)
+    # use out_0 output for enable input (directly shortened)
+    module.set_digital_output(module.DOs.OUT_0)
 
-" rotate motor in left direction "
-motor.setTargetVelocity(-1000)
-while module.digitalInput(1):
-    print("waiting for left switch...")
-    time.sleep(0.2)
+    # rotate motor in right direction
+    motor.rotate(1000)
+    while module.get_digital_input(module.DIs.REF_R):
+        print("waiting for right switch...")
+        time.sleep(0.2)
 
-" stop motor "
-motor.setTargetVelocity(0)
+    # rotate motor in left direction
+    motor.rotate(-1000)
+    while module.get_digital_input(module.DIs.REF_L):
+        print("waiting for left switch...")
+        time.sleep(0.2)
 
-myInterface.close()
+    # stop motor
+    motor.rotate(0)
+
 print("\nReady.")

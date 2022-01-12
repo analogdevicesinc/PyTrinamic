@@ -3,23 +3,25 @@
 
 from PyTrinamic.features.Feature import Feature
 
-class LinearRamp(Feature):
-    "LinearRamp feature implementation"
 
-    def get_target_position(self, axis):
+class LinearRamp(Feature):
+
+    # LinearRamp feature implementation
+
+    def get_target_position(self):
         """
-        Gets the target position of the given axis.
+        Gets the target position of this axis.
 
         Parameters:
         axis: Axis index.
 
-        Returns: Target position for the given axis.
+        Returns: Target position for this axis.
         """
         raise NotImplementedError()
 
-    def set_target_position(self, axis, position):
+    def set_target_position(self, position):
         """
-        Sets the target position of the given axis.
+        Sets the target position of this axis.
 
         Parameters:
         axis: Axis index.
@@ -27,20 +29,20 @@ class LinearRamp(Feature):
         """
         raise NotImplementedError()
 
-    def get_actual_position(self, axis):
+    def get_actual_position(self):
         """
-        Gets the actual position of the given axis.
+        Gets the actual position of this axis.
 
         Parameters:
         axis: Axis index.
 
-        Returns: Actual position for the given axis.
+        Returns: Actual position for this axis.
         """
         raise NotImplementedError()
 
-    def set_actual_position(self, axis, position):
+    def set_actual_position(self, position):
         """
-        Sets the actual position of the given axis.
+        Sets the actual position of this axis.
 
         Parameters:
         axis: Axis index.
@@ -48,20 +50,20 @@ class LinearRamp(Feature):
         """
         raise NotImplementedError()
 
-    def get_target_velocity(self, axis):
+    def get_target_velocity(self):
         """
-        Gets the target velocity of the given axis.
+        Gets the target velocity of this axis.
 
         Parameters:
         axis: Axis index.
 
-        Returns: Target velocity for the given axis.
+        Returns: Target velocity for this axis.
         """
         raise NotImplementedError()
 
-    def set_target_velocity(self, axis, velocity):
+    def set_target_velocity(self, velocity):
         """
-        Sets the target velocity of the given axis.
+        Sets the target velocity of this axis.
 
         Parameters:
         axis: Axis index.
@@ -69,31 +71,31 @@ class LinearRamp(Feature):
         """
         raise NotImplementedError()
 
-    def get_actual_velocity(self, axis):
+    def get_actual_velocity(self):
         """
-        Gets the actual velocity of the given axis.
+        Gets the actual velocity of this axis.
 
         Parameters:
         axis: Axis index.
 
-        Returns: Actual velocity for the given axis.
+        Returns: Actual velocity for this axis.
         """
         raise NotImplementedError()
 
-    def get_max_velocity(self, axis):
+    def get_max_velocity(self):
         """
-        Gets the maximum positioning velocity of the given axis.
+        Gets the maximum positioning velocity of this axis.
 
         Parameters:
         axis: Axis index.
 
-        Returns: Maximum positioning velocity for the given axis.
+        Returns: Maximum positioning velocity for this axis.
         """
         raise NotImplementedError()
 
-    def set_max_velocity(self, axis, velocity):
+    def set_max_velocity(self, velocity):
         """
-        Sets the maximum positioning velocity of the given axis.
+        Sets the maximum positioning velocity of this axis.
 
         Parameters:
         axis: Axis index.
@@ -101,20 +103,20 @@ class LinearRamp(Feature):
         """
         raise NotImplementedError()
 
-    def get_max_acceleration(self, axis):
+    def get_max_acceleration(self):
         """
-        Gets the maximum acceleration of the given axis.
+        Gets the maximum acceleration of this axis.
 
         Parameters:
         axis: Axis index.
 
-        Returns: Maximum acceleration for the given axis.
+        Returns: Maximum acceleration for this axis.
         """
         raise NotImplementedError()
 
-    def set_max_acceleration(self, axis, acceleration):
+    def set_max_acceleration(self, acceleration):
         """
-        Sets the maximum acceleration of the given axis.
+        Sets the maximum acceleration of this axis.
 
         Parameters:
         axis: Axis index.

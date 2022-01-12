@@ -6,12 +6,10 @@ from PyTrinamic.features.LinearRamp import LinearRamp
 
 
 class LinearRampModule(LinearRamp, FeatureProvider):
-    "LinearRamp feature implementation for modules"
+
+    # LinearRamp feature implementation for modules
 
     class __GROUPING(LinearRamp, FeatureProvider):
-
-        # Grouping parent handling
-
         def __init__(self, parent):
             self.parent = parent
 
@@ -124,25 +122,6 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             """
             self.parent.set_axis_parameter(self.parent.APs.MaxAcceleration, acceleration)
         
-        def get_max_acceleration(self):
-            """
-            Gets the maximum acceleration of this axis.
-            This value is stored as MaxAcceleration axis parameter.
-
-            Returns: Maximum acceleration for this axis.
-            """
-            return self.parent.get_axis_parameter(self.parent.APs.MaxAcceleration)
-
-        def set_max_acceleration(self, acceleration):
-            """
-            Sets the maximum acceleration of this axis.
-            This value is stored as MaxAcceleration axis parameter.
-
-            Parameters:
-            acceleration: Maximum acceleration.
-            """
-            self.parent.set_axis_parameter(self.parent.APs.MaxAcceleration, acceleration)
-
         def set_ramp_enabled(self, enabled):
             """
             Sets if ramp is enabled for this axis.
@@ -153,8 +132,6 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             """
             if self._hasRampEnable:
                 self.parent.set_axis_parameter(self.parent.APs.EnableRamp, enabled)
-            else:
-                return "Not supported"
 
         def get_ramp_enabled(self):
             """
@@ -166,7 +143,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             if self._hasRampEnable:
                 return self.parent.get_axis_parameter(self.parent.APs.EnableRamp)
             else:
-                return "Not supported"
+                return None
 
         def __str__(self):
             return "{} {}".format(

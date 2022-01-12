@@ -6,6 +6,7 @@ Created on 05.10.2020
 
 from abc import ABC
 
+
 class spi_encoder_ap_feature(ABC):
  
     def __init__(self, parent):

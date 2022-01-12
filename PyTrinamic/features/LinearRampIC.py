@@ -4,17 +4,15 @@
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.LinearRamp import LinearRamp
 
+
 class LinearRampIC(LinearRamp, FeatureProvider):
-    "LinearRamp feature implementation for ICs"
+
+    # LinearRamp feature implementation for ICs
 
     class __GROUPING(LinearRamp, FeatureProvider):
 
-        # Grouping parent handling
-
         def __init__(self, parent):
             self.parent = parent
-
-        # Grouped feature functions
 
         def get_target_position(self):
             """

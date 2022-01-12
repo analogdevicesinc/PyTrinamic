@@ -4,6 +4,7 @@
 class FeatureProvider(object):
     pass
 
+
 class Feature(object):
 
     def has_feature(self, feature_class):

@@ -5,6 +5,7 @@ Created on 14.06.2020
 '''
 from PyTrinamic.features.Feature import Feature
 
+
 class ABNEncoder(Feature):
         
     def set_resolution(self, steps):
@@ -38,6 +39,6 @@ class ABNEncoder(Feature):
                 }
             )
     
-    resolution = property(get_resolution,set_resolution)
-    direction  = property(get_direction,set_direction)
-    init_mode  = property(get_init_mode,set_init_mode)
+    resolution = property(get_resolution, set_resolution)
+    direction = property(get_direction, set_direction)
+    init_mode = property(get_init_mode, set_init_mode)

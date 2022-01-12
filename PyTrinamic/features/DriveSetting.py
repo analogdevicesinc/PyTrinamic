@@ -52,7 +52,7 @@ class DriveSetting(Feature):
         This value is stored as OpenLoopCurrent axis parameter.
 
         Parameters:
-        current:  open loop current
+        current: open loop current
         """
         raise NotImplemented
 
@@ -70,7 +70,7 @@ class DriveSetting(Feature):
         Gets motor maximum current that is used for this axis.
         This value is stored in the  MaxCurrent axis parameter.
 
-        Returns: motor type
+        Returns: maximum current
         """
         raise NotImplementedError()
 
@@ -180,8 +180,8 @@ class DriveSetting(Feature):
         raise NotImplementedError()
 
     def __str__(self):
-            return "{} {}".format(
-                "Drive Settings:",
+        return "{} {}".format(
+                "DriveSettings",
                 {
                     "commutation_mode": self.commutation_mode,
                     "motor_type": self.motor_type,

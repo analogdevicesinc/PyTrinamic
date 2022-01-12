@@ -4,6 +4,7 @@
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.Current import Current
 
+
 class CurrentModule(Current, FeatureProvider):
     "Current feature implementation for modules"
 

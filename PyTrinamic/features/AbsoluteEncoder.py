@@ -6,9 +6,10 @@ Created on 13.07.2021
 
 from PyTrinamic.features.Feature import Feature
 
+
 class AbsoluteEncoder(Feature):
         
-    def set_type(self, type):
+    def set_type(self, encoder_type):
         """
         Set absolut encoder type that is used for this axis.
         This value is stored as AbsoluteEncoderType axis parameter.
@@ -17,6 +18,7 @@ class AbsoluteEncoder(Feature):
         type: Absolute encoder type
         """
         raise NotImplementedError()
+
     def get_type(self):
         """
         Gets absolut encoder type that is used for this axis.
@@ -26,25 +28,32 @@ class AbsoluteEncoder(Feature):
         """
         raise NotImplementedError()
 
-    def set_init(self, init):
+    def set_resolution(self, resolution):
+        raise NotImplementedError()
+
+    def get_resolution(self):
+        raise NotImplementedError()
+
+    def set_init_mode(self, init_mode):
         """
-        Sets absolute encoder init that is used for this axis.
+        Sets absolute encoder init mode that is used for this axis.
         This value is stored as AbsoluteEncoderInit axis parameter.
 
         Parameters:
-        inti: absolute encoder init
+        init_mode: absolute encoder init mode
         """
         raise NotImplementedError()
-    def get_init(self):
+
+    def get_init_mode(self):
         """
-        Gets absolute encoder init that is used for this axis.
+        Gets absolute encoder init mode that is used for this axis.
         This value is stored in the  AbsoluteEncoderInit axis parameter.
 
-        Returns: absolute encoder init
+        Returns: absolute encoder init mode
         """
         raise NotImplementedError()
 
-    def set_direction(self, dir):
+    def set_direction(self, direction):
         """
         Sets absolute encoder direction that is used for this axis.
         This value is stored as AbsoluteEncoderDirection axis parameter.
@@ -53,6 +62,7 @@ class AbsoluteEncoder(Feature):
         dir:  absolute encoder direction 
         """
         raise NotImplementedError()
+
     def get_direction(self):
         """
         Gets  absolute encoder direction that is used for this axis.
@@ -68,32 +78,33 @@ class AbsoluteEncoder(Feature):
         This value is stored as AbsoluteEncoderOffset axis parameter.
 
         Parameters:
-        offset: bsolute encoder offset
+        offset: absolute encoder offset
         """
         raise NotImplementedError()
+
     def get_offset(self):
         """
         Gets absolute encoder offset that is used for this axis.
         This value is stored in the  AbsoluteEncoderOffset axis parameter.
 
-        Returns: bsolute encoder offset
+        Returns: absolute encoder offset
         """
         raise NotImplementedError()
 
-
     def __str__(self):
-            return "{} {}".format(
-                "SPIEncoder",
-                {
-                    "type":self.type,
-                    "direction": self.direction,
-                    "offset":self.offset,
-                    "init_mode": self.init_mode,
-                }
-            )
+        values = "AbsoluteEncoder {"
+        if self._hasAbsoluteEncoderType:
+            values += "'type': " + str(self.type) + ", "
+        if self._hasAbsoluteEncoderResolution:
+            values += "'resolution': " + str(self.resolution) + ", "
+        values += "'direction': " + str(self.direction) + ", "
+        values += "'offset': " + str(self.offset) + ", "
+        values += "'init_mode': " + str(self.init_mode)
+        values += "}"
+        return values
 
-    type       = property(get_type,set_type)
-    init_mode = property(get_init,set_init)
-    direction = property(get_direction,set_direction)
-    offset = property(get_offset,set_offset)
-    
+    type = property(get_type, set_type)
+    resolution = property(get_resolution, set_resolution)
+    init_mode = property(get_init_mode, set_init_mode)
+    direction = property(get_direction, set_direction)
+    offset = property(get_offset, set_offset)
