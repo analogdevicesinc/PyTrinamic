@@ -70,13 +70,13 @@ with myInterface:
     motor.rotate(-500)
 
     print("Press 'input_1' to stop the motor (waiting for input_1)")
- 
+
     # wait for input_1
     while module.get_digital_input(1) == 0:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
               motor.actual_velocity, motor.get_axis_parameter(motor.APs.ActualTorque, True)))
         time.sleep(0.2)
- 
+
     # stop motor
     motor.rotate(0)
 

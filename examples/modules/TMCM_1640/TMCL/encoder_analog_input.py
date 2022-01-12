@@ -7,7 +7,7 @@ Created on 30.12.2018
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1640.TMCM_1640 import TMCM_1640
+from PyTrinamic.modules import TMCM_1640
 import time
 
 PyTrinamic.showInfo()
@@ -39,7 +39,7 @@ with myInterface:
     motor.ABNEncoder.direction = 0
     motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_1
     print(motor.ABNEncoder)
- 
+
     # motion settings
     motor.LinearRamp.max_velocity = 2048
     motor.LinearRamp.max_acceleration = 10000
