@@ -4,6 +4,7 @@
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.LinearRamp import LinearRamp
 
+
 class LinearRampModule(LinearRamp, FeatureProvider):
     "LinearRamp feature implementation for modules"
 
@@ -154,6 +155,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
                 self.parent.set_axis_parameter(self.parent.APs.EnableRamp, enabled)
             else:
                 return "Not supported"
+
         def get_ramp_enabled(self):
             """
             Gets if ramp is enabled for this axis.
@@ -187,7 +189,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         actual_velocity = property(get_actual_velocity)
         max_velocity = property(get_max_velocity, set_max_velocity)
         max_acceleration = property(get_max_acceleration, set_max_acceleration)
-        enabled         = property(get_ramp_enabled, set_ramp_enabled)
+        enabled = property(get_ramp_enabled, set_ramp_enabled)
         
     # Feature initialization and aggregation
     def __init__(self):
@@ -208,7 +210,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Target position for this axis.
         """
-        return self.get_axis_parameter(self.APs.TargetPosition)
+        return self.get_axis_parameter(self.APs.TargetPosition, True)
 
     def set_target_position(self, position):
         """
@@ -227,7 +229,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Actual position for this axis.
         """
-        return self.get_axis_parameter(self.APs.ActualPosition)
+        return self.get_axis_parameter(self.APs.ActualPosition, True)
 
     def set_actual_position(self, position):
         """
@@ -246,7 +248,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Target velocity for this axis.
         """
-        return self.get_axis_parameter(self.APs.TargetVelocity)
+        return self.get_axis_parameter(self.APs.TargetVelocity, True)
 
     def set_target_velocity(self, velocity):
         """
@@ -265,7 +267,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Actual velocity for this axis.
         """
-        return self.get_axis_parameter(self.APs.ActualVelocity)
+        return self.get_axis_parameter(self.APs.ActualVelocity, True)
 
     def get_max_velocity(self):
         """

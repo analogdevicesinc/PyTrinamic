@@ -2,81 +2,77 @@
 '''
 Created on 30.12.2018
 
-@author: ED
+@author: Trinamic Software Team
 '''
 
-if __name__ == '__main__':
-    pass
-
-import PyTrinamic, time
+import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1640.TMCM_1640 import TMCM_1640
+import time
 
 PyTrinamic.showInfo()
-
 myInterface = ConnectionManager().connect()
-module = TMCM_1640(myInterface)
-module.showModuleInfo()
-motor = module.motor(0)
 
-"""
-    Define all motor configurations for the TMCM-1640.
+with myInterface:
+    module = TMCM_1640(myInterface)
+    motor = module.motors[0]
 
-    The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
-"""
+    # Define all motor configurations for the TMCM-1640.
+    #
+    # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
+    # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
-" motor configuration "
-motor.setMotorPolePairs(4)
-motor.setMaxTorque(2000)
-motor.showConfiguration()
+    # drive configuration
+    motor.DriveSetting.poles = 8
+    motor.DriveSetting.max_current = 2000
+    motor.DriveSetting.target_reached_velocity = 500
+    motor.DriveSetting.target_reached_distance = 5
+    motor.DriveSetting.open_loop_current = 1000
 
-" open loop configuration "
-motor.openLoop.setOpenLoopTorque(1000)
+    # encoder configuration
+    motor.ABNEncoder.resolution = 4096
+    # motor.ABNEncoder.resolution = 16384
+    motor.ABNEncoder.direction = 0
+    motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
+    print(motor.ABNEncoder)
 
-" encoder configuration "
-motor.abnEncoder.setResolution(4096)
-#motor.abnEncoder.setResolution(16384)
-motor.abnEncoder.setDirection(0)
-motor.abnEncoder.setInitMode(motor.ENUM.ENCODER_INIT_MODE_0)
-motor.abnEncoder.showConfiguration()
+    # motion settings
+    motor.LinearRamp.max_velocity = 1000
+    motor.LinearRamp.max_acceleration = 2000
+    motor.LinearRamp.enabled = 1
+    print(motor.LinearRamp)
 
-" motion settings "
-motor.linearRamp.setMaxVelocity(1000)
-motor.linearRamp.setAcceleration(2000)
-motor.linearRamp.setRampEnabled(1)
-motor.linearRamp.setTargetReachedVelocity(500)
-motor.linearRamp.setTargetReachedDistance(5)
-motor.linearRamp.showConfiguration()
+    # PI configuration
+    motor.PID.torque_p = 600
+    motor.PID.torque_i = 600
+    motor.PID.velocity_p = 800
+    motor.PID.velocity_i = 500
+    motor.PID.position_p = 300
+    print(motor.PID)
 
-" PI configuration "
-motor.pid.setTorquePIParameter(600, 600)
-motor.pid.setVelocityPIParameter(800, 500)
-motor.pid.setPositionPParameter(300)
-motor.pid.showConfiguration()
+    time.sleep(1.0)
 
-" set commutation mode to FOC based on encoder feedback "
-motor.commutationSelection.setMode(motor.ENUM.COMM_MODE_FOC_ENCODER)
-motor.commutationSelection.showConfiguration()
+    # set commutation mode to FOC based on encoder feedback
+    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_FOC_ENCODER
+    print(motor.DriveSetting)
 
-" clear actual position "
-motor.setActualPosition(0)
+    # clear actual position
+    motor.actual_position = 0
 
-print("move to first position")
-motor.moveToPosition(motor.abnEncoder.resolution() * 50)
+    print("move to first position")
+    motor.move_to(motor.ABNEncoder.resolution * 50)
 
-" wait for position reached "
-while not motor.positionReachedFlag():
-    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
-    time.sleep(0.2)
+    # wait for position reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-print("move back to zero")
-motor.moveToPosition(0)
+    print("move back to zero")
+    motor.move_to(0)
 
-" wait for position reached "
-while not motor.positionReachedFlag():
-    print("target position: " + str(motor.targetPosition()) + " actual position: " + str(motor.actualPosition()))
-    time.sleep(0.2)
+    # wait for position reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-myInterface.close()
 print("\nReady.")

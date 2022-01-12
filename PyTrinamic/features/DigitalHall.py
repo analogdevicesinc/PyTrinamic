@@ -7,6 +7,7 @@ Created on 13.07.2021
 
 from PyTrinamic.features.Feature import Feature
 
+
 class DigitalHall(Feature):
  
     def set_direction(self, direction):
@@ -27,7 +28,7 @@ class DigitalHall(Feature):
     def get_offset(self):
         raise NotImplementedError()
 
-    def set_interpolation(self, enableInterpolation):
+    def set_interpolation(self, enable_interpolation):
         raise NotImplementedError()
         
     def get_interpolation(self):
@@ -41,11 +42,10 @@ class DigitalHall(Feature):
                     "polarity": self.polarity,
                     "offset": self.offset,
                     "interpolation": self.interpolation
-
                 }
             )
     
-    direction = property(get_direction,set_direction)
-    polarity  = property(get_polarity,set_polarity)
-    offset  = property(get_offset,set_offset)
-    interpolation = property(get_interpolation,set_interpolation)
+    direction = property(get_direction, set_direction)
+    polarity = property(get_polarity, set_polarity)
+    offset = property(get_offset, set_offset)
+    interpolation = property(get_interpolation, set_interpolation)

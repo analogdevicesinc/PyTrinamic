@@ -17,6 +17,7 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
             self._hasCommutationMode = False 
             self._hasMotorType = False
             self._hasMotorPolePairs = False
+            self._hasMotorPoles = False
             self._hasOpenLoopCurrent = False
             self._hasMaxCurrent = False
             self._hasVelocitySensorSelection = False 
@@ -35,6 +36,8 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
                 self._hasMotorType = True
             if hasattr(parent.APs, "MotorPolePairs"):
                 self._hasMotorPolePairs = True
+            if hasattr(parent.APs, "MotorPoles"):
+                self._hasMotorPoles = True
             if hasattr(parent.APs, "OpenLoopCurrent"):
                 self._hasOpenLoopCurrent = True
             if hasattr(parent.APs, "MaxCurrent"):
@@ -124,12 +127,37 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
         def get_pole_pairs(self):
             """
             Gets pole pairs that is used for this axis.
-            This value is stored in the  MotorPolePairs axis parameter.
+            This value is stored in the MotorPolePairs axis parameter.
 
             Returns: pole pairs
             """
             if self._hasMotorPolePairs:
                 return self.parent.get_axis_parameter(self.parent.APs.MotorPolePairs)
+            else:
+                return "Not supported"
+
+        def set_poles(self, number):
+            """
+            Sets motor poles that are used for this axis.
+            This value is stored as MotorPoles axis parameter.
+
+            Parameters:
+            number:  poles
+            """
+            if self._hasMotorPoles:
+                return self.parent.set_axis_parameter(self.parent.APs.MotorPoles, number)
+            else:
+                return "Not supported"
+
+        def get_poles(self):
+            """
+            Gets motor poles that are used for this axis.
+            This value is stored in the MotorPoles axis parameter.
+
+            Returns: poless
+            """
+            if self._hasMotorPoles:
+                return self.parent.get_axis_parameter(self.parent.APs.MotorPoles)
             else:
                 return "Not supported"
 
@@ -291,7 +319,7 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
             Parameters:
             velocity:  motor halted velocity
             """
-            if self._hasPositionSensorSelection:
+            if self._hasMotorHaltedVelocity:
                 return self.parent.set_axis_parameter(self.parent.APs.MotorHaltedVelocity, velocity)
             else:
                 return "Not supported"
@@ -419,6 +447,9 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
             if self._hasMotorPolePairs:
                 values += "'pole_pairs':" + str(self.pole_pairs) + ", "
 
+            if self._hasMotorPoles:
+                values += "'poles':" + str(self.poles) + ", "
+
             if self._hasOpenLoopCurrent:
                 values += "'open_loop_current':" + str(self.open_loop_current) + ", "
 
@@ -443,7 +474,7 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
             if self._hasMicrostepResolution:
                 values += "'microstep_resolution':" + str(self.microstep_resolution) + ", "
 
-            if self._hasMotorHaltedVelocity:
+            if self._hasReferenceSwitchTolerance:
                 values += "'reference_switch_tolerance':" + str(self.reference_switch_tolerance) + ", "
             
             if self._hasStandbyCurrent:
@@ -453,7 +484,7 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
                 values += "'boost_current':" + str(self.boost_current) + ", "
 
             return "{} {}".format(
-                "Drive Settings:",
+                "DriveSettings:",
                 {
                     values[:-2]
                 }
@@ -462,6 +493,7 @@ class DriveSettingModule(DriveSetting, FeatureProvider):
         commutation_mode = property(get_commutation_mode, set_commutation_mode)
         motor_type = property(get_motor_type, set_motor_type)
         pole_pairs = property(get_pole_pairs, set_pole_pairs)
+        poles = property(get_poles, set_poles)
         open_loop_current = property(get_open_loop_current, set_open_loop_current)
         max_current = property(get_max_current, set_max_current)
         motor_halted_velocity = property(get_motor_halted_velocity, set_motor_halted_velocity)

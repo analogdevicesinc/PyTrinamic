@@ -1,161 +1,158 @@
-'''
-Created on 25.02.2019
 
-@author: ED
-'''
-import PyTrinamic
+# interfaces
+from PyTrinamic.modules.tmcl_module import tmcl_module
 
-" interfaces "
-from PyTrinamic.modules.tmcl_module_interface import tmcl_module_interface
-from PyTrinamic.modules.tmcl_motor_interface import tmcl_motor_interface
+# features
+from PyTrinamic.features.DriveSettingModule import DriveSettingModule
+from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
+from PyTrinamic.features.DigitalHallModule import DigitalHallModule
+from PyTrinamic.features.PIDModule import PIDModule
+from PyTrinamic.features.MotorControlModule import MotorControlModule
 
-" features "
-from PyTrinamic.modules.features.open_loop_ap_feature import open_loop_ap_feature
-from PyTrinamic.modules.features.digital_hall_ap_feature import digital_hall_ap_feature
-from PyTrinamic.modules.features.abn_encoder_ap_feature import abn_encoder_ap_feature
-from PyTrinamic.modules.features.linear_ramp_ap_feature import linear_ramp_ap_feature
-from PyTrinamic.modules.features.pid_ap_feature import pid_ap_feature
-from PyTrinamic.modules.features.commutation_selection_ap_feature import commutation_selection_ap_feature
 
-class TMCM_1640(tmcl_module_interface):
-    
-    def __init__(self, connection, moduleID=1):
-        tmcl_module_interface.__init__(self, connection, moduleID)
-        self.GP = _GP
+class TMCM_1640(tmcl_module):
+    """
+    The TMCM-1640 is a highly compact controller/driver module for brushless DC (BLDC) motors
+    with up to 5A coil current, optional encoder and/or hall sensor feedback. Supply voltage is 15-28V.
+    """
+    def __init__(self, connection, module_id=1):
+        super().__init__(connection, module_id)
 
-        " add the motor with available features "
-        self._motors.append(TMCM_1640_motor_interface(self, 0, PyTrinamic.MotorTypes.BLDC, _AP_MOTOR_0, _ENUM_MOTOR_0)) 
+        self.name = "TMCM-1640"
+        self.desc = self.__doc__
+        self.motors = [self.Motor0(self, 0)]
 
-    def moduleName(self):
-        return "TMCM-1640"
-        
-    def moduleDescription(self):
-        return "The TMCM-1640 is a highly compact controller/driver module for brushless DC (BLDC) motors with up to 5A coil current, optional encoder and/or hall sensor feedback. Supply voltage is 15-28V."
+    def rotate(self, axis, velocity):
+        self.connection.rotate(axis, velocity, self.module_id)
 
-class _AP_MOTOR_0():
-    TargetPosition                 = 0
-    ActualPosition                 = 1
-    TargetVelocity                 = 2
-    ActualVelocity                 = 3
-    MaxVelocity                    = 4
-    MaxTorque                      = 6
-    TargetReachedVelocity          = 7
-    MotorHaltedVelocity            = 9
-    TargetReachedDistance          = 10
-    Acceleration                   = 11
-    RampVelocity                   = 13
-    ThermalWindingTimeConstant     = 25
-    IItlimit                       = 26
-    IItSum                         = 27
-    IItExceededCounter             = 28
-    ClearIItExceededFlag           = 29
-    ReinitBldcRegulation           = 31
-    PIDRegulationLoopDelay         = 133
-    CurrentRegulationLoopDelay     = 134
-    EnableRamp                     = 146
-    ActualTorque                   = 150
-    SupplyVoltage                  = 151
-    DriverTemperature              = 152
-    TargetTorque                   = 155
-    StatusFlags                    = 156
-    CommutationMode                = 159
-    ClearOnNull                    = 161
-    ClearOnce                      = 163
-    EncoderOffset                  = 165
-    TorqueP                        = 172
-    TorqueI                        = 173
-    StartCurrent                   = 177
-    DebugValue0                    = 190
-    DebugValue1                    = 191
-    DebugValue2                    = 192
-    DebugValue3                    = 193
-    DebugValue4                    = 194
-    DebugValue5                    = 195
-    DebugValue6                    = 196
-    DebugValue7                    = 197
-    DebugValue8                    = 198
-    DebugValue9                    = 199
-    CurrentPIDError                = 200
-    CurrentPIDErrorSum             = 201
-    ActualHallAngle                = 210
-    ActualEncoderAngle             = 211
-    ActualControlledAngle          = 212
-    PositionPIDError               = 226
-    VelocityPIDError               = 228
-    VelocityPIDErrorSum            = 229
-    PositionP                      = 230
-    VelocityP                      = 234
-    VelocityI                      = 235
-    InitVelocity                   = 241
-    InitSineDelay                  = 244
-    EncoderInitMode                = 249
-    EncoderSteps                   = 250
-    EncoderDirection               = 251
-    HallInterpolation              = 252
-    MotorPoles                     = 253
-    HallSensorInvert               = 254
-    EnableDriver                   = 255
+    def stop(self, axis):
+        self.connection.stop(axis, self.module_id)
 
-class _ENUM_MOTOR_0():
-    COMM_MODE_BLOCK_HALL            = 0
-    COMM_MODE_FOC_HALL              = 6
-    COMM_MODE_FOC_ENCODER           = 7
-    COMM_MODE_FOC_CONTROLLED        = 8
+    def move_to(self, axis, position, velocity=None):
+        if velocity:
+            self.motors[0].LinearRamp.max_velocity = velocity
+        self.connection.moveTo(axis, position, self.module_id)
 
-    ENCODER_INIT_MODE_0             = 0
-    ENCODER_INIT_MODE_1             = 1
-    ENCODER_INIT_MODE_2             = 2
+    def move_by(self, axis, difference, velocity=None):
+        if velocity:
+            self.motors[0].LinearRamp.max_velocity = velocity
+        self.connection.moveBy(axis, difference, self.module_id)
 
-    FLAG_POSITION_END               = 0x00004000
+    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
+                 PIDModule, MotorControlModule):
 
-class _GP():
-    serialBaudRate                 = 65
-    serialAddress                  = 66
-    CANBitRate                     = 69
-    CANsendID                      = 70
-    CANreceiveID                   = 71
-    telegramPauseTime              = 75
-    serialHostAddress              = 76
-    autoStartMode                  = 77
-    applicationStatus              = 128
-    programCounter                 = 130
-    tickTimer                      = 132
+        def __init__(self, module, axis):
+            tmcl_module.Motor.__init__(self, module, axis)
+            DriveSettingModule.__init__(self)
+            LinearRampModule.__init__(self)
+            ABNEncoderModule.__init__(self)
+            DigitalHallModule.__init__(self)
+            PIDModule.__init__(self)
 
-class TMCM_1640_motor_interface(tmcl_motor_interface):
-    
-    def __init__(self, parent, axisID, motorType, axisParameter, constants):
-        tmcl_motor_interface.__init__(self, parent, axisID, motorType, axisParameter, constants)
-        
-        " add features "
-        
-        self.openLoop = open_loop_ap_feature(self)
-        self.feature.update({"open_loop" : self.openLoop})
+        def get_position_reached(self):
+            return self.get_axis_parameter(self.APs.StatusFlags) & self.ENUMs.FLAG_POSITION_END
 
-        self.digitalHall = digital_hall_ap_feature(self)
-        self.feature.update({"digital_hall" : self.digitalHall})
+        class APs:
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxCurrent                     = 6      # MaxTorque
+            TargetReachedVelocity          = 7
+            MotorHaltedVelocity            = 9
+            TargetReachedDistance          = 10
+            MaxAcceleration                = 11
+            RampVelocity                   = 13
+            ThermalWindingTimeConstant     = 25
+            IItlimit                       = 26
+            IItSum                         = 27
+            IItExceededCounter             = 28
+            ClearIItExceededFlag           = 29
+            ReinitBldcRegulation           = 31
+            PIDRegulationLoopDelay         = 133
+            CurrentRegulationLoopDelay     = 134
+            EnableRamp                     = 146
+            ActualTorque                   = 150
+            SupplyVoltage                  = 151
+            DriverTemperature              = 152
+            TargetTorque                   = 155
+            StatusFlags                    = 156
+            CommutationMode                = 159
+            ClearOnNull                    = 161
+            ClearOnce                      = 163
+            EncoderOffset                  = 165
+            TorqueP                        = 172
+            TorqueI                        = 173
+            OpenLoopCurrent                = 177    # StartCurrent
+            DebugValue0                    = 190
+            DebugValue1                    = 191
+            DebugValue2                    = 192
+            DebugValue3                    = 193
+            DebugValue4                    = 194
+            DebugValue5                    = 195
+            DebugValue6                    = 196
+            DebugValue7                    = 197
+            DebugValue8                    = 198
+            DebugValue9                    = 199
+            CurrentPIDError                = 200
+            CurrentPIDErrorSum             = 201
+            ActualHallAngle                = 210
+            ActualEncoderAngle             = 211
+            ActualControlledAngle          = 212
+            PositionPIDError               = 226
+            VelocityPIDError               = 228
+            VelocityPIDErrorSum            = 229
+            PositionP                      = 230
+            VelocityP                      = 234
+            VelocityI                      = 235
+            InitVelocity                   = 241
+            InitSineDelay                  = 244
+            EncoderInitMode                = 249
+            EncoderSteps                   = 250
+            EncoderDirection               = 251
+            HallSensorInterpolation        = 252    # HallInterpolation
+            MotorPoles                     = 253
+            HallSensorPolarity             = 254    # HallSensorInvert
+            EnableDriver                   = 255
 
-        self.abnEncoder = abn_encoder_ap_feature(self)
-        self.feature.update({"abn_encoder" : self.abnEncoder})
+        class ENUMs:
+            COMM_MODE_BLOCK_HALL           = 0
+            COMM_MODE_FOC_HALL             = 6
+            COMM_MODE_FOC_ENCODER          = 7
+            COMM_MODE_FOC_CONTROLLED       = 8
 
-        self.linearRamp = linear_ramp_ap_feature(self)
-        self.feature.update({"linear_ramp" : self.linearRamp})
-        
-        self.pid = pid_ap_feature(self)
-        self.feature.update({"pid" : self.pid})
+            ENCODER_INIT_MODE_0            = 0
+            ENCODER_INIT_MODE_1            = 1
+            ENCODER_INIT_MODE_2            = 2
 
-        self.commutationSelection = commutation_selection_ap_feature(self)
-        self.feature.update({"commutation_selection" : self.commutationSelection})
+            FLAG_POSITION_END              = 0x00004000
 
-    " motor type (BLDC only) "
-    def setMotorType(self, motorType):
-        pass
-    
-    def motorType(self):
-        return PyTrinamic.MotorTypes.BLDC
+    class GPs:
+        SerialBaudRate      = 65
+        SerialAddress       = 66
+        CANBitRate          = 69
+        CANsendID           = 70
+        CANreceiveID        = 71
+        TelegramPauseTime   = 75
+        SerialHostAddress   = 76
+        AutoStartMode       = 77
+        ApplicationStatus   = 128
+        ProgramCounter      = 130
+        TickTimer           = 132
 
-    " motor pole pairs "
-    def setMotorPolePairs(self, polePairs):
-        self.setAxisParameter(self.AP.MotorPoles, polePairs*2)
- 
-    def motorPolePairs(self):
-        return int(self.axisParameter(self.AP.MotorPoles)/2)
+    class DIs:
+        IN_0        = 0
+        IN_1        = 1
+
+    class AINs:
+        ADC_IN_0    = 0
+        ADC_phase_A = 1
+        ADC_phase_B = 2
+        ADC_phase_C = 3
+        ADC_VSupply = 4
+        ADC_Temp    = 5
+
+    class DOs:
+        OUT_0       = 0

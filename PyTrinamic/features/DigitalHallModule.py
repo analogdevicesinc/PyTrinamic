@@ -7,41 +7,92 @@ Created on 13.07.2021
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.DigitalHall import DigitalHall
 
-class DigitalHallModule(DigitalHall,FeatureProvider):
+
+class DigitalHallModule(DigitalHall, FeatureProvider):
     
-    class __GROUPING(DigitalHall,FeatureProvider):
+    class __GROUPING(DigitalHall, FeatureProvider):
         def __init__(self, parent):
             self.parent = parent
 
+            self._hasHallSensorDirection = False
+            self._hasHallSensorPolarity = False
+            self._hasHallSensorOffset = False
+            self._hasHallSensorInterpolation = False
+
+            if hasattr(parent.APs, "HallSensorDirection"):
+                self._hasHallSensorDirection = True
+            if hasattr(parent.APs, "HallSensorPolarity"):
+                self._hasHallSensorPolarity = True
+            if hasattr(parent.APs, "HallSensorOffset"):
+                self._hasHallSensorOffset = True
+            if hasattr(parent.APs, "HallSensorInterpolation"):
+                self._hasHallSensorInterpolation = True
+
         def set_direction(self, direction):
-            self.parent.set_axis_parameter(self.parent.APs.HallSensorDirection,direction)
+            if self._hasHallSensorDirection:
+                self.parent.set_axis_parameter(self.parent.APs.HallSensorDirection, direction)
 
         def get_direction(self):
-            return self.parent.get_axis_parameter(self.parent.APs.HallSensorDirection)
+            if self._hasHallSensorDirection:
+                return self.parent.get_axis_parameter(self.parent.APs.HallSensorDirection)
+            else:
+                return "Not supported"
 
         def set_polarity(self, invert):
-            self.parent.set_axis_parameter(self.parent.APs.HallSensorPolarity,invert)
+            if self._hasHallSensorPolarity:
+                self.parent.set_axis_parameter(self.parent.APs.HallSensorPolarity, invert)
 
         def get_polarity(self):
-            return self.parent.get_axis_parameter(self.parent.APs.HallSensorPolarity)
+            if self._hasHallSensorPolarity:
+                return self.parent.get_axis_parameter(self.parent.APs.HallSensorPolarity)
+            else:
+                return "Not supported"
 
         def set_offset(self, offset):
-            self.parent.set_axis_parameter(self.parent.APs.HallSensorOffset,offset)
+            if self._hasHallSensorOffset:
+                self.parent.set_axis_parameter(self.parent.APs.HallSensorOffset, offset)
             
         def get_offset(self):
-            return self.parent.get_axis_parameter(self.parent.APs.HallSensorOffset)
+            if self._hasHallSensorOffset:
+                return self.parent.get_axis_parameter(self.parent.APs.HallSensorOffset)
+            else:
+                return "Not supported"
 
-        def set_interpolation(self, enableInterpolation):
-            self.parent.set_axis_parameter(self.parent.APs.HallSensorInterpolation,enableInterpolation)
+        def set_interpolation(self, enable_interpolation):
+            if self._hasHallSensorInterpolation:
+                self.parent.set_axis_parameter(self.parent.APs.HallSensorInterpolation, enable_interpolation)
             
         def get_interpolation(self):
-            return self.parent.get_axis_parameter(self.parent.APs.HallSensorInterpolation)
-            
-        direction = property(get_direction,set_direction)
-        polarity  = property(get_polarity,set_polarity)
-        offset  = property(get_offset,set_offset)
-        interpolation = property(get_interpolation,set_interpolation)
-    
+            if self._hasHallSensorInterpolation:
+                return self.parent.get_axis_parameter(self.parent.APs.HallSensorInterpolation)
+            return "Not supported"
+
+        def __str__(self):
+            values = ""
+            if self._hasHallSensorDirection:
+                values += "'direction':" + str(self.direction) + ", "
+
+            if self._hasHallSensorPolarity:
+                values += "'polarity':" + str(self.polarity) + ", "
+
+            if self._hasHallSensorOffset:
+                values += "'offset':" + str(self.offset) + ", "
+
+            if self._hasHallSensorInterpolation:
+                values += "'interpolation':" + str(self.interpolation) + ", "
+
+            return "{} {}".format(
+                "DigitalHall:",
+                {
+                    values[:-2]
+                }
+            )
+
+        direction = property(get_direction, set_direction)
+        polarity = property(get_polarity, set_polarity)
+        offset = property(get_offset, set_offset)
+        interpolation = property(get_interpolation, set_interpolation)
+
     # Feature initialization
     def __init__(self):
         self.DigitalHall = self.__GROUPING(self)
