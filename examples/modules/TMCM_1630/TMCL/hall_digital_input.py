@@ -66,7 +66,7 @@ with myInterface:
     print("\nRotate motor in clockwise direction...")
     motor.rotate(500)
 
-    print("Press 'input_0' to swap the direction (waiting for input_0)")
+    print("Press 'input_0' to swap the direction (waiting for input_0)\n")
 
     # wait for input_0
     while module.get_digital_input(0) == 1:
@@ -77,7 +77,7 @@ with myInterface:
     print("\nRotate motor in counterclockwise direction...")
     motor.rotate(-500)
 
-    print("Press 'input_1' to stop the motor (waiting for input_1)")
+    print("Press 'input_1' to stop the motor (waiting for input_1)\n")
 
     # wait for input_1
     while module.get_digital_input(1) == 1:

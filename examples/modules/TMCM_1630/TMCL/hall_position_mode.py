@@ -70,7 +70,7 @@ with myInterface:
     while not motor.get_position_reached():
         print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
         time.sleep(0.2)
- 
+
     print("move back to zero")
     motor.move_to(0)
 

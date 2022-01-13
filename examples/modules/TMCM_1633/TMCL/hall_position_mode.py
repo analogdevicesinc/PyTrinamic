@@ -2,82 +2,76 @@
 '''
 Created on 31.01.2020
 
-@author: JM, ED
+@author: Trinamic Software Team
 '''
 
-if __name__ == '__main__':
-    pass
-
-import time
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1633.TMCM_1633 import TMCM_1633
+from PyTrinamic.modules import TMCM_1633
+import time
 
 PyTrinamic.showInfo()
 
-" please select your CAN adapter "
-#connectionManager = ConnectionManager("--interface pcan_tmcl")
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-myInterface = connectionManager.connect()
+# please select your CAN adapter
+# myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
-module = TMCM_1633(myInterface)
+with myInterface:
+    module = TMCM_1633(myInterface)
+    motor = module.motors[0]
 
-"""
-    Define motor configuration for the TMCM-1633.
+    # Define motor configuration for the TMCM-1633.
+    #
+    # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
+    # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
-    The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
-    If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
-"""
+    # drive configuration
+    motor.DriveSetting.poles = 8
+    motor.DriveSetting.max_current = 2000
+    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_FOC_HALL
+    motor.DriveSetting.target_reached_velocity = 500
+    motor.DriveSetting.target_reached_distance = 5
+    motor.DriveSetting.motor_halted_velocity = 5
+    print(motor.DriveSetting)
 
-" motor configuration "
-module.setMotorPoles(8)
-module.setMaxTorque(2000)
-module.showMotorConfiguration()
+    # hall sensor configuration
+    motor.DigitalHall.polarity = 0
+    motor.DigitalHall.interpolation = 0
+    print(motor.DigitalHall)
 
-" hall configuration "
-module.setHallInvert(0)
-module.showHallConfiguration()
+    # motion settings
+    motor.LinearRamp.max_velocity = 1000
+    motor.LinearRamp.max_acceleration = 2000
+    motor.LinearRamp.enabled = 1
+    print(motor.LinearRamp)
 
-" motion settings "
-module.setMaxVelocity(1000)
-module.setAcceleration(2000)
-module.setRampEnabled(1)
-module.setTargetReachedVelocity(500)
-module.setTargetReachedDistance(5)
-module.showMotionConfiguration()
+    # PI configuration
+    motor.PID.torque_p = 600
+    motor.PID.torque_i = 600
+    motor.PID.velocity_p = 800
+    motor.PID.velocity_i = 500
+    motor.PID.position_p = 300
+    print(motor.PID)
 
-" PI configuration "
-module.setTorquePParameter(600)
-module.setTorqueIParameter(600)
-module.setVelocityPParameter(800)
-module.setVelocityIParameter(500)
-module.setPositionPParameter(300)
-module.showPIConfiguration()
+    time.sleep(1.0)
 
-" set commutation mode to FOC based on hall sensor signals "
-module.setCommutationMode(module.ENUMs.COMM_MODE_FOC_HALL)
+    # clear actual position
+    motor.actual_position = 0
 
-" set position counter to zero"
-module.setActualPosition(0)
+    print("move to first position")
+    motor.move_to(motor.DriveSetting.poles * 3 * 50)
 
-" move to zero position"
-module.moveToPosition(0)
+    # wait for position reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-print("starting positioning")
+    print("move back to zero")
+    motor.move_to(0)
 
-module.moveToPosition(4000)
+    # wait for position reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-" wait for position reached "
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.2)
-
-module.moveToPosition(0)
-
-" wait for position reached "
-while not module.positionReached():
-    print("target position: " + str(module.targetPosition()) + " actual position: " + str(module.actualPosition()))
-    time.sleep(0.2)
-
-myInterface.close()
-print("Ready.")
+print("\nReady.")
