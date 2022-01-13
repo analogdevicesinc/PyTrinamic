@@ -69,7 +69,7 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
                 return None
 
         def __str__(self):
-            values = ""
+            values = "DigitalHall {"
             if self._hasHallSensorDirection:
                 values += "'direction':" + str(self.direction) + ", "
 
@@ -82,12 +82,9 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
             if self._hasHallSensorInterpolation:
                 values += "'interpolation':" + str(self.interpolation) + ", "
 
-            return "{} {}".format(
-                "DigitalHall",
-                {
-                    values[:-2]
-                }
-            )
+            values = values[:-2]
+            values += "}"
+            return values
 
         direction = property(get_direction, set_direction)
         polarity = property(get_polarity, set_polarity)

@@ -12,9 +12,14 @@ import time
 
 PyTrinamic.showInfo()
 
-# please select your CAN adapter
+# please select a CAN or USB interface
+
+# CAN
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()
-myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
+# myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
+
+# USB
+myInterface = ConnectionManager().connect()
 
 with myInterface:
     module = TMCM_1630(myInterface)
@@ -34,8 +39,7 @@ with myInterface:
 
     # encoder configuration
     motor.ABNEncoder.resolution = 4096
-    # motor.ABNEncoder.resolution = 16384
-    motor.ABNEncoder.direction = 0
+    motor.ABNEncoder.direction = 1
     motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
 
