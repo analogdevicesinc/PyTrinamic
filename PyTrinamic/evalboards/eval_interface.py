@@ -5,6 +5,7 @@ Created on 22.02.2019
 '''
 import abc
 
+
 class eval_interface(abc.ABC):
 
     @abc.abstractmethod

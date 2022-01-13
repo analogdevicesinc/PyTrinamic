@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
 '''
-Created on 30.12.2018
+Created on 04.02.2020
 
 @author: Trinamic Software Team
 '''
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_1640
+from PyTrinamic.modules import TMCC_160
 import time
 
 PyTrinamic.showInfo()
-myInterface = ConnectionManager().connect()
+
+# please select your CAN adapter
+# myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 with myInterface:
-    module = TMCM_1640(myInterface)
+    module = TMCC_160(myInterface)
     motor = module.motors[0]
-    
-    # Define motor configuration for the TMCM-1640.
+
+    # Define motor configuration for the TMCC160-EVAL.
     #
     # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -37,7 +40,7 @@ with myInterface:
     print(motor.DigitalHall)
 
     # motion settings
-    motor.LinearRamp.max_velocity = 1500
+    motor.LinearRamp.max_velocity = 4000
     motor.LinearRamp.max_acceleration = 2000
     motor.LinearRamp.enabled = 1
     print(motor.LinearRamp)
@@ -61,7 +64,7 @@ with myInterface:
     print("Press 'input_0' to swap the direction (waiting for input_0)\n")
 
     # wait for input_0
-    while module.get_digital_input(0) == 0:
+    while module.get_digital_input(module.DIs.REF_R) == 1:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
               motor.actual_velocity, motor.get_axis_parameter(motor.APs.ActualTorque, True)))
         time.sleep(0.2)
@@ -72,7 +75,7 @@ with myInterface:
     print("Press 'input_1' to stop the motor (waiting for input_1)\n")
 
     # wait for input_1
-    while module.get_digital_input(1) == 0:
+    while module.get_digital_input(module.DIs.REF_L) == 1:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
               motor.actual_velocity, motor.get_axis_parameter(motor.APs.ActualTorque, True)))
         time.sleep(0.2)

@@ -4,6 +4,7 @@
 from PyTrinamic.modules.tmcl_module import tmcl_module
 from PyTrinamic.helpers import TMC_helpers
 
+
 class TMC_EvalBoard(tmcl_module):
     "General Trinamic EvalBoard implementation"
 

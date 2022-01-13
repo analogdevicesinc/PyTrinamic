@@ -6,6 +6,7 @@ Created on 01.10.2020
 
 from abc import ABC
 
+
 class abn_encoder_ap_feature(ABC):
  
     def __init__(self, parent):
