@@ -1,7 +1,5 @@
-# Created on: 06.07.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import Feature
+
 
 class Current(Feature):
     "Current feature implementation"

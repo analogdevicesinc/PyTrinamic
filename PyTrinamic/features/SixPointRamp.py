@@ -1,7 +1,5 @@
-# Created on: 08.10.2021
-# Author: JH
-
 from PyTrinamic.features.Feature import Feature
+
 
 class SixPointRamp(Feature):
     "SixPointRamp feature implementation"

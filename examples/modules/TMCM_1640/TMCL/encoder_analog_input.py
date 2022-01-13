@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-'''
-Created on 30.12.2018
-
-@author: Trinamic Software Team
-'''
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager

@@ -1,9 +1,7 @@
-# Created on: 14.06.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.CoolStep import CoolStep
 import time
+
 
 class CoolStepModule(CoolStep, FeatureProvider):
     "StallGuard2 feature implementation for modules"
@@ -207,8 +205,6 @@ class CoolStepModule(CoolStep, FeatureProvider):
         hysteresis_start = property(get_hysteresis_start, set_hysteresis_start)
         threshold_speed = property(get_threshold_speed, set_threshold_speed)
         slow_run_current = property(get_slow_run_current, set_slow_run_current)
-
-
 
     # Feature initialization
     def __init__(self):

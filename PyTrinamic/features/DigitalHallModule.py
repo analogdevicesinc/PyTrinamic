@@ -1,9 +1,3 @@
-'''
-Created on 13.07.2021
-
-@author: JH
-'''
-
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.DigitalHall import DigitalHall
 

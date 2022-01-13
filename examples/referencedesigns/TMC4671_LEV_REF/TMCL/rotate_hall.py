@@ -1,17 +1,23 @@
+"""
+Turn a motor using hall sensors
+"""
+
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_1636
+from PyTrinamic.referencedesigns import TMC4671_LEV_REF
 import time
 
 PyTrinamic.showInfo()
-# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-with connectionManager.connect() as myInterface: 
-    module = TMCM_1636(myInterface)
+# please select your CAN adapter
+# myInterface = ConnectionManager("--interface pcan_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
+
+with myInterface:
+    module = TMC4671_LEV_REF(myInterface)
     motor = module.motors[0]
 
-    # Define motor configuration for the TMCM-1636.
+    # Define motor configuration for the TMC4671-LEV-REF.
     #
     # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
@@ -21,6 +27,8 @@ with connectionManager.connect() as myInterface:
     motor.DriveSetting.pole_pairs = 4
     motor.DriveSetting.max_current = 2000
     motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
+    motor.DriveSetting.target_reached_distance = 5
+    motor.DriveSetting.target_reached_velocity = 500
     print(motor.DriveSetting)
 
     # hall sensor configuration
@@ -30,26 +38,25 @@ with connectionManager.connect() as myInterface:
     motor.DigitalHall.interpolation = 1
     print(motor.DigitalHall)
 
-    # enable ref switch 
-    motor.set_axis_parameter(motor.APs.ReferenceSwitchEnable, 3)
-    motor.set_axis_parameter(motor.APs.ReferenceSwitchPolarity, 0)
+    # motion settings
+    motor.LinearRamp.max_velocity = 2000
+    motor.LinearRamp.max_acceleration = 500
+    motor.LinearRamp.enabled = 1
+    print(motor.LinearRamp)
 
-    print("\nRotate motor in clockwise direction...")
-    motor.rotate(500)
+    print("Starting motor...")
+    motor.rotate(1000)
+    time.sleep(3)
 
-    print("Waiting for right ref switch...")
-    while not motor.get_axis_parameter(motor.APs.RightStopSwitch):
-        time.sleep(0.1)
+    print("Changing motor direction...")
+    motor.rotate(-1000)
+    time.sleep(6)
 
-    print("Triggered!")
-    motor.rotate(-500)
-
-    print("Waiting for left ref switch...")
-    while not motor.get_axis_parameter(motor.APs.LeftStopSwitch):
-        time.sleep(0.1)
-
-    print("Triggered!")
     print("Stopping motor...")
     motor.rotate(0)
+    time.sleep(3)
+
+    # power of
+    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DISABLED
 
 print("\nReady.")

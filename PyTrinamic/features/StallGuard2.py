@@ -1,7 +1,5 @@
-# Created on: 04.03.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import Feature
+
 
 class StallGuard2(Feature):
     "StallGuard2 feature implementation"

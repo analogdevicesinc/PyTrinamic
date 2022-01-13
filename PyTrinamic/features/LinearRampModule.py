@@ -1,6 +1,3 @@
-# Created on: 14.06.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.LinearRamp import LinearRamp
 

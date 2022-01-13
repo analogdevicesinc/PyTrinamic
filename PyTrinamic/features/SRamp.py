@@ -1,7 +1,5 @@
-# Created on: 28.09.2021
-# Author: JH
-
 from PyTrinamic.features.Feature import Feature
+
 
 class SRamp(Feature):
     "SRamp feature implementation"

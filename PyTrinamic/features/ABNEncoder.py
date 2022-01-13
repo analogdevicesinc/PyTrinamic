@@ -1,8 +1,3 @@
-'''
-Created on 14.06.2020
-
-@author:JH
-'''
 from PyTrinamic.features.Feature import Feature
 
 

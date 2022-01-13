@@ -1,10 +1,3 @@
-'''
-Created on 24.03.2021
-
-@author: LK
-'''
-
-
 class tmcl_module(object):
 
     class Motor(object):

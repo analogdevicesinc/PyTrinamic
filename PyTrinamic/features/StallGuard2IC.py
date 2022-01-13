@@ -1,8 +1,6 @@
-# Created on: 14.06.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.StallGuard2 import StallGuard2
+
 
 class StallGuard2IC(StallGuard2, FeatureProvider):
     "StallGuard2 feature implementation for ICs"

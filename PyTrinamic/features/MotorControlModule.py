@@ -1,6 +1,3 @@
-# Created on: 04.03.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.MotorControl import MotorControl
 

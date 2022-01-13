@@ -1,6 +1,3 @@
-# Created on: 04.03.2021
-# Author: LK
-
 class FeatureProvider(object):
     pass
 

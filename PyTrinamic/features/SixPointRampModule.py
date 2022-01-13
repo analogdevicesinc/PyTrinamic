@@ -1,6 +1,3 @@
-# Created on: 08.10.2021
-# Author: JH
-
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.SixPointRamp import SixPointRamp
 

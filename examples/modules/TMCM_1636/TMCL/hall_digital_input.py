@@ -1,20 +1,15 @@
-#!/usr/bin/env python3
-'''
-Created on 12.04.2021
-
-@author: Trinamic Software Team
-'''
-
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1636
 import time
 
 PyTrinamic.showInfo()
-# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-with connectionManager.connect() as myInterface: 
+# please select your interface
+# myInterface = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl --module-id 1").connect()
+
+with myInterface:
     module = TMCM_1636(myInterface)
     motor = module.motors[0]
 
@@ -32,17 +27,17 @@ with connectionManager.connect() as myInterface:
     motor.DriveSetting.target_reached_velocity = 500
     print(motor.DriveSetting)
 
-    # hall sensor configuration 
+    # hall sensor configuration
     motor.DigitalHall.direction = 0
     motor.DigitalHall.polarity = 1
     motor.DigitalHall.offset = 0
     motor.DigitalHall.interpolation = 1
     print(motor.DigitalHall)
 
-    # motion settings 
+    # motion settings
     motor.LinearRamp.max_velocity = 2000
     motor.LinearRamp.max_acceleration = 1000
-    motor.LinearRamp.enabled = 1 
+    motor.LinearRamp.enabled = 1
     print(motor.LinearRamp)
 
     motor.set_axis_parameter(motor.APs.PositionScaler, 6*motor.DriveSetting.pole_pairs)

@@ -1,8 +1,3 @@
-'''
-Created on 01.10.2020
-
-@author: JH
-'''
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.ABNEncoder import ABNEncoder
 

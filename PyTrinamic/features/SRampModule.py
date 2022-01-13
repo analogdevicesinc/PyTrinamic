@@ -1,8 +1,6 @@
-# Created on: 28.09.2021
-# Author: JH
-
 from PyTrinamic.features.Feature import FeatureProvider
 from PyTrinamic.features.SRamp import SRamp
+
 
 class SRampModule(SRamp, FeatureProvider):
     "S-Ramp feature implementation for modules"

@@ -1,12 +1,10 @@
-# Created on: 23.03.2020
-# Author: LK
-
 import argparse
 import logging
 import time
 
 import PyTrinamic
 from PyTrinamic.features.Feature import Feature
+
 
 class StallGuard(Feature):
 

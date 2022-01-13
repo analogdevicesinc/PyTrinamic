@@ -1,8 +1,6 @@
-# Created on: 06.07.2021
-# Author: LK
-
 from PyTrinamic.features.Feature import Feature, FeatureProvider
 from PyTrinamic.features.Current import Current
+
 
 class CurrentIC(Current, FeatureProvider):
     "Current feature implementation for ICs"

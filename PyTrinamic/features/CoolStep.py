@@ -1,6 +1,3 @@
-# Created on: 04.03.2021
-# Author: JH
-
 from PyTrinamic.features.Feature import Feature
 
 class CoolStep(Feature):
