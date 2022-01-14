@@ -1,17 +1,12 @@
-'''
-Created on 03.01.2019
-
-@author: ED
-'''
-
 import struct
 from serial import Serial
-import serial.tools.list_ports;
+import serial.tools.list_ports
 from PyTrinamic.helpers import TMC_helpers
 from PyTrinamic.connections.connection_interface import connection_interface
 
-REGISTER_PACKAGE_STRUCTURE   = ">BI"
-REGISTER_PACKAGE_LENGTH      = 5
+REGISTER_PACKAGE_STRUCTURE = ">BI"
+REGISTER_PACKAGE_LENGTH = 5
+
 
 class Register_Request(object):
     def __init__(self, address, value):
@@ -24,6 +19,7 @@ class Register_Request(object):
     def dump(self):
         print("Register_Request: " + str(self.address) + "," + str(self.value))
 
+
 class Register_Reply(object):
     def __init__(self, reply_struct):
         self.address = reply_struct[0]
@@ -35,25 +31,26 @@ class Register_Reply(object):
     def value(self):
         return self.value
 
+
 class uart_ic_interface(connection_interface):
 
-    def __init__(self, comPort, datarate=9600, debug=False):
+    def __init__(self, com_port, datarate=9600, debug=False):
         self.debugEnabled = debug
         self.baudrate = datarate
-        self.serial = Serial(comPort, self.baudrate)
+        self.serial = Serial(com_port, self.baudrate)
         print("Open port: " + self.serial.portstr)
 
     def __enter__(self):
         return self
 
-    def __exit__(self, exitType, value, traceback):
+    def __exit__(self, exit_type, value, traceback):
         """
         Close the connection at the end of a with-statement block.
         """
-        del exitType, value, traceback
+        del exit_type, value, traceback
         self.close()
 
-    def send_datagram(self, data, recv_size , channel):
+    def send_datagram(self, data, recv_size, channel):
         del channel
         self.serial.write(data)
         return self.serial.read(recv_size)
@@ -64,12 +61,12 @@ class uart_ic_interface(connection_interface):
     def close( self ):
         print("Close port: " + self.serial.portstr)
         self.serial.close()
-        return 0;
+        return 0
 
     def enableDebug(self, enable):
         self.debugEnabled = enable
 
-    def send ( self, address, value ):
+    def send ( self, address, value):
 
         "prepare TMCL request"
         request = Register_Request(address, value)
@@ -87,17 +84,18 @@ class uart_ic_interface(connection_interface):
         return reply
 
     " direct register access "
-    def writeRegister(self, registerAddress, value):
-        return self.send_receive(registerAddress | 0x80, value)
+    def writeRegister(self, register_address, value):
+        return self.send_receive(register_address | 0x80, value)
 
-    def readRegister(self, registerAddress):
-        return self.send_receive(registerAddress, 0).value
+    def readRegister(self, register_address):
+        return self.send_receive(register_address, 0).value
 
-    def writeRegisterField(self, registerAddress, value, mask, shift):
-        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
+    def writeRegisterField(self, register_address, value, mask, shift):
+        return self.writeRegister(register_address, TMC_helpers.field_set(self.readRegister(register_address), mask,
+                                                                          shift, value))
 
-    def readRegisterField(self, registerAddress, mask, shift):
-        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
+    def readRegisterField(self, register_address, mask, shift):
+        return TMC_helpers.field_get(self.readRegister(register_address), mask, shift)
 
     @staticmethod
     def supportsTMCL():

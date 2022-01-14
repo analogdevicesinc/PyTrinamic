@@ -1,10 +1,5 @@
-'''
-Created on 13.02.2020
-
-@author: JM
-'''
-
 import canopen
+
 
 class CANopen_interface():
 
@@ -21,7 +16,9 @@ class CANopen_interface():
 
     def addDs402Node(self, eds_path, node_id, number_of_motors=1):
         if self._debug:
-            print("Adding network node (id: {0:d}) with {1:d} motors using EDS file: {3:s}".format(node_id, number_of_motors, eds_path))
+            print("Adding network node (id: {0:d}) with {1:d} motors using EDS file: {3:s}".format(node_id,
+                                                                                                   number_of_motors,
+                                                                                                   eds_path))
 
         # Add some nodes with corresponding Object Dictionaries
         node = canopen.BaseNode402(1, eds_path)
@@ -29,19 +26,19 @@ class CANopen_interface():
         node.setup_402_state_machine()
 
         self.__nodes.append({
-            "node_id" : node_id,
-            "node"    : node,
+            "node_id": node_id,
+            "node": node,
             })
         return node
 
     def __enter__(self):
         return self
 
-    def __exit__(self, exitType, value, traceback):
+    def __exit__(self, exit_type, value, traceback):
         """
         Close the connection at the end of a with-statement block.
         """
-        del exitType, value, traceback
+        del exit_type, value, traceback
         self.close()
 
     def close(self):

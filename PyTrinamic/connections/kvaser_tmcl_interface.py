@@ -1,10 +1,6 @@
 '''
 Created on 03.01.2020
-
 @author: JH
-
-
-
 '''
 import can
 from PyTrinamic.connections.tmcl_interface import tmcl_interface
@@ -14,13 +10,14 @@ _CHANNELS = [
      "0",  "1",  "2",
      ]
 
+
 class kvaser_tmcl_interface(tmcl_interface):
     """
     This class implements a TMCL connection for Kvaser adapter using CANLIB.
     Try 0 as default channel.
     """
 
-    def __init__(self, port = 0, datarate=1000000, hostID=2, moduleID=1, debug=False):
+    def __init__(self, port=0, datarate=1000000, hostID=2, moduleID=1, debug=False):
         if type(port) != str:
             raise TypeError
 
@@ -37,7 +34,7 @@ class kvaser_tmcl_interface(tmcl_interface):
             if self.__debug:
                 self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate)
             else:
-                self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate,can_filters=[{ "can_id": hostID, "can_mask": 0x7F }])
+                self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate, can_filters=[{ "can_id": hostID, "can_mask": 0x7F }])
 
         except CanError as e:
             self.__connection = None
@@ -78,7 +75,6 @@ class kvaser_tmcl_interface(tmcl_interface):
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
-
     def _recv(self, hostID, moduleID):
         """
             Read 9 bytes and return them as a bytearray.
@@ -87,8 +83,6 @@ class kvaser_tmcl_interface(tmcl_interface):
             class.
         """
         del moduleID
-
-
 
         try:
             msg = self.__connection.recv(timeout=3)

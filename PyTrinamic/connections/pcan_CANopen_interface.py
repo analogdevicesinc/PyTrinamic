@@ -1,9 +1,3 @@
-'''
-Created on 13.02.2020
-
-@author: JM
-'''
-
 from PyTrinamic.connections.CANopen_interface import CANopen_interface
 
 _CHANNELS = [

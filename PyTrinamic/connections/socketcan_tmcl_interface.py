@@ -5,7 +5,6 @@ Created on 03.01.2020
 
 Use following command under linux to activate can socket
 sudo ip link set can0 down type can bitrate 1000000
-
 '''
 
 import can
@@ -17,28 +16,29 @@ _CHANNELS = [
     "can0",  "can1",  "can2",  "can3",  "can4",  "can5",  "can6",  "can7"
     ]
 
+
 class socketcan_tmcl_interface(tmcl_interface):
     """
     This class implements a TMCL connection over a SocketCAN adapter.
     """
 
-    def __init__(self, port, datarate=1000000, hostID=2, moduleID=1, debug=False):
+    def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False):
         if type(port) != str:
             raise TypeError
 
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        tmcl_interface.__init__(self, host_id, module_id, debug)
 
-        self.__debug    = debug
-        self.__channel  = port
-        self.__bitrate  = datarate
+        self.__debug = debug
+        self.__channel = port
+        self.__bitrate = datarate
 
         try:
             self.__connection = can.Bus(interface="socketcan", channel=self.__channel, bitrate=self.__bitrate)
 
-            self.__connection.set_filters([{ "can_id": hostID, "can_mask": 0x7F }])
+            self.__connection.set_filters([{ "can_id": host_id, "can_mask": 0x7F }])
 
         except CanError as e:
             self.__connection = None
@@ -50,11 +50,11 @@ class socketcan_tmcl_interface(tmcl_interface):
     def __enter__(self):
         return self
 
-    def __exit__(self, exitType, value, traceback):
+    def __exit__(self, exit_type, value, traceback):
         """
         Close the connection at the end of a with-statement block.
         """
-        del exitType, value, traceback
+        del exit_type, value, traceback
         self.close()
 
     def close(self):
@@ -63,33 +63,30 @@ class socketcan_tmcl_interface(tmcl_interface):
 
         self.__connection.shutdown()
 
-    def _send(self, hostID, moduleID, data):
+    def _send(self, host_id, module_id, data):
         """
             Send the bytearray parameter [data].
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del hostID
+        del host_id
 
-        msg = can.Message(arbitration_id=moduleID, is_extended_id=False, data=data[1:])
+        msg = can.Message(arbitration_id=module_id, is_extended_id=False, data=data[1:])
 
         try:
             self.__connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
-
-    def _recv(self, hostID, moduleID):
+    def _recv(self, host_id, module_id):
         """
             Read 9 bytes and return them as a bytearray.
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del moduleID
-
-
+        del module_id
 
         try:
             msg = self.__connection.recv(timeout=3)
@@ -100,7 +97,7 @@ class socketcan_tmcl_interface(tmcl_interface):
             # Todo: Timeout retry mechanism
             raise ConnectionError("Recv timed out")
 
-        if msg.arbitration_id != hostID:
+        if msg.arbitration_id != host_id:
             # The filter shouldn't let wrong messages through.
             # This is just a sanity check
             raise ConnectionError("Received wrong ID")

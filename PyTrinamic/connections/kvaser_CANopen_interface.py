@@ -1,15 +1,9 @@
-'''
-Created on 13.02.2020
-
-@author: JM
-'''
-#import canopen
 from PyTrinamic.connections.CANopen_interface import CANopen_interface
-#from canopen import import CanError
 
 _CHANNELS = [
     "0",  "1",  "2",  "3"
     ]
+
 
 class kvaser_CANopen_interface(CANopen_interface):
 
@@ -44,16 +38,10 @@ class kvaser_CANopen_interface(CANopen_interface):
             This function is required for using this interface with the
             connection manager.
         """
-        
-        
-        #num_channels = ctypes.c_int(0)
-        #res = canGetNumberOfChannels(ctypes.byref(num_channels))
-        #num_channels = int(num_channels.value)
-        #print(res)
-        #print(num_channels)
+        # num_channels = ctypes.c_int(0)
+        # res = canGetNumberOfChannels(ctypes.byref(num_channels))
+        # num_channels = int(num_channels.value)
+        # print(res)
+        # print(num_channels)
 
-        
-        return _CHANNELS #range(num_channels)
-
-if __name__ == "__main__":
-    list()
+        return _CHANNELS    # range(num_channels)

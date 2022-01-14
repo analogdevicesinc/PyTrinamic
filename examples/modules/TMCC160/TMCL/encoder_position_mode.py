@@ -11,7 +11,7 @@ myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 with myInterface:
     module = TMCC_160(myInterface)
-    motor = module.motor[0]
+    motor = module.motors[0]
 
     # Define motor configuration for the TMCC160-EVAL.
     #

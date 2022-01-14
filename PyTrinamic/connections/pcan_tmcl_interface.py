@@ -34,6 +34,7 @@ _CHANNELS = [
     "PCAN_LANBUS13", "PCAN_LANBUS14", "PCAN_LANBUS15", "PCAN_LANBUS16"
     ]
 
+
 class pcan_tmcl_interface(tmcl_interface):
     """
     This class implements a TMCL connection over a PCAN adapter.
@@ -48,9 +49,9 @@ class pcan_tmcl_interface(tmcl_interface):
 
         tmcl_interface.__init__(self, hostID, moduleID, debug)
 
-        self._debug    = debug
-        self.__channel  = port
-        self.__bitrate  = datarate
+        self._debug = debug
+        self.__channel = port
+        self.__bitrate = datarate
 
         try:
             self.__connection = can.Bus(interface="pcan", channel=self.__channel, bitrate=self.__bitrate)
@@ -95,7 +96,6 @@ class pcan_tmcl_interface(tmcl_interface):
             self.__connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
-
 
     def _recv(self, hostID, moduleID):
         """
