@@ -160,20 +160,18 @@ class SixPointRamp(Feature):
         return "{} {}".format(
             "SixPointRamp",
             {
-                "ramp_type" : self.ramp_type, 
-                "start_velocity" : self.start_velocity, 
-                "start_acceleration" : self.start_acceleration, 
-                "max_deceleration" : self.max_deceleration, 
-                "break_velocity" : self.break_velocity, 
-                "final_deceleration" : self.final_deceleration, 
-                "stop_velocity" : self.stop_velocity, 
+                "ramp_type": self.ramp_type,
+                "start_velocity": self.start_velocity,
+                "start_acceleration": self.start_acceleration,
+                "max_deceleration": self.max_deceleration,
+                "break_velocity": self.break_velocity,
+                "final_deceleration": self.final_deceleration,
+                "stop_velocity": self.stop_velocity,
                 "stop_deceleration": self.stop_deceleration, 
             }
         )
 
     # Properties
-
-
     ramp_type = property(get_ramp_type, set_ramp_type)
     start_velocity = property(get_start_velocity, set_start_velocity)
     start_acceleration = property(get_start_acceleration, set_start_acceleration)

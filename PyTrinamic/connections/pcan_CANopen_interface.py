@@ -4,6 +4,7 @@ _CHANNELS = [
     "PCAN_USBBUS1",  "PCAN_USBBUS2",  "PCAN_USBBUS3",  "PCAN_USBBUS4"
     ]
 
+
 class pcan_CANopen_interface(CANopen_interface):
 
     def __init__(self, port, datarate, debug=False):

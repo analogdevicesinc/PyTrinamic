@@ -18,7 +18,7 @@ from PyTrinamic.TMCL import TMCL_Command
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
 # command.
 SERIAL_BOOT_TIMEOUT = 100
-################################# Preparation ##################################
+# ################################ Preparation ##################################
 PyTrinamic.showInfo()
 
 if len(sys.argv) < 2:
@@ -35,19 +35,19 @@ except FileNotFoundError:
 
 connectionManager = ConnectionManager(sys.argv)
 
-############################### Hex file parsing ###############################
+# ############################## Hex file parsing ###############################
 print("Parsing hex file")
 
 data = []
 extendedAddress = 0
-segmentAddress  = 0
+segmentAddress = 0
 for lineNumber, line in enumerate(f, 1):
-    ### Parse a hex file line
+    # ## Parse a hex file line
     # Check for RECORD MARK
     if line[0] != ':':
         continue
 
-    # CHKSUM validation
+    # CHECKSUM validation
     # All Bytes summed together modulo 256 have to be 0
     checksum = 0
     for i in range(1, len(line)-1, 2):
@@ -57,10 +57,10 @@ for lineNumber, line in enumerate(f, 1):
         exit(1)
 
     # Read the fields of the entry
-    rec_len      = int(line[1:3], 16)
-    rec_address  = int(line[3:7], 16)
-    rec_type     = int(line[7:9], 16)
-    rec_data     = line[9:rec_len*2+9]
+    rec_len = int(line[1:3], 16)
+    rec_address = int(line[3:7], 16)
+    rec_type = int(line[7:9], 16)
+    rec_data = line[9:rec_len*2+9]
 
     # RECLEN validation
     # Total characters:
@@ -74,12 +74,12 @@ for lineNumber, line in enumerate(f, 1):
     if 1 + 2 + 4 + 2 + (rec_len*2) + 2 + 1 != len(line):
         print("Error: Invalid record length in line " + str(lineNumber))
 
-    ### Record type distinction
+    # ## Record type distinction
     if rec_type == 0:
         # Type: Data Record
         address = extendedAddress + segmentAddress + rec_address
         if address % 4 != 0:
-            print("Error: Address is not 4-Byte aligned (Line " + str(lineNumber) +")")
+            print("Error: Address is not 4-Byte aligned (Line " + str(lineNumber) + ")")
             exit(1)
 
         data.append((address, rec_len, rec_data))
@@ -116,17 +116,17 @@ for lineNumber, line in enumerate(f, 1):
 print("Parsed " + str(lineNumber) + " lines containing " + str(len(data)) + " data records")
 
 # Make sure that the data is sorted by address
-data.sort(key=lambda x:x[0])
+data.sort(key=lambda x: x[0])
 
 f.close()
 
 print()
 
-########################### Binary data preparation ############################
+# ########################## Binary data preparation ############################
 
 # Get the boundaries and size of the data
 start_address = data[0][0]
-end_address   = data[-1][0] + data[-1][1]
+end_address = data[-1][0] + data[-1][1]
 length = end_address - start_address
 
 # Extract the parsed hex data into a bytearray
@@ -137,7 +137,7 @@ for entry in data:
 
     for i in range(0, entry[1]):
         value = int(entry[2][i*2:(i+1)*2], 16)
-        checksum  = (checksum + value) & 0xFFFFFFFF
+        checksum = (checksum + value) & 0xFFFFFFFF
         byteData[address-start_address + i] = value
 
 print("Start address: 0x{0:08X}".format(start_address))
@@ -147,7 +147,7 @@ print("Checksum:      0x{0:08X}".format(checksum))
 
 print()
 
-############################## Bootloader entry ################################
+# ############################# Bootloader entry ################################
 # Connect to the evaluation board
 print("Connecting")
 myInterface = connectionManager.connect()
@@ -164,14 +164,15 @@ while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
     try:
         # Attempt to connect
         myInterface = connectionManager.connect()
-        # If no exception occured, exit the retry loop
+        # If no exception occurred, exit the retry loop
         break
     except (ConnectionError, TypeError):
         myInterface = None
 
-if not(myInterface):
+if not myInterface:
     print("Error: Timeout when attempting to reconnect to bootloader")
     exit(1)
+
 myInterface.enableDebug(True)
 # Retrieve the bootloader version
 bootloaderVersion = myInterface.getVersionString(1)
@@ -191,7 +192,7 @@ else:
 # Scan for the module string
 firmwareString = str(byteData, encoding="ascii", errors="ignore")
 found = re.search(pattern, firmwareString)
-if not(found):
+if not found:
     print("Error: No matching version string found in firmware image")
     exit(1)
 
@@ -219,16 +220,17 @@ if start_address != mem_start_address:
     print("Error: Start address of firmware (0x{0:08X}) does not match start address of bootloader (0x{1:08X})".format(start_address, mem_start_address))
     exit(1)
 
-############################### Firmware upload ################################
+# ############################## Firmware upload ################################
 
 # Erase the old firmware
 print("Erasing the old firmware")
 reply = myInterface.send(TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0)
 
 # Calculate the starting page
-current_page        = math.floor(start_address/mem_page_size) * mem_page_size
+current_page = math.floor(start_address/mem_page_size) * mem_page_size
 # Store the internal page buffer state
-current_page_dirty  = False
+current_page_dirty = False
+
 
 # Helper function: BOOT_WRITE_PAGE safety wrapper
 def writePage(page):
@@ -238,23 +240,25 @@ def writePage(page):
     print("Writing page 0x{0:08X}".format(page))
     myInterface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
 
+
 # Helper function: Write a 32 bit data block
-def write32Bit(address, writeData):
+def write32Bit(address, write_data):
     global current_page
     global current_page_dirty
 
     # Split the address of the entry into page/offset values
-    page    = math.floor(address/mem_page_size) * mem_page_size
-    offset  = address - page
+    page = math.floor(address/mem_page_size) * mem_page_size
+    offset = address - page
 
     if page != current_page:
         writePage(current_page)
         current_page = page
         current_page_dirty = False
 
-    #print("Writing {0:08X} to offset {1:04X} on page {2:08X}".format(writeData, offset, page))
-    myInterface.send(TMCL_Command.BOOT_WRITE_BUFFER, math.floor(offset/4) % 256, math.floor(math.floor(offset/4) / 256), writeData)
+    # print("Writing {0:08X} to offset {1:04X} on page {2:08X}".format(writeData, offset, page))
+    myInterface.send(TMCL_Command.BOOT_WRITE_BUFFER, math.floor(offset/4) % 256, math.floor(math.floor(offset/4) / 256), write_data)
     current_page_dirty = True
+
 
 for i in range(0, len(byteData), 4):
     address = i + start_address
@@ -270,7 +274,7 @@ print()
 # Checksum verification
 reply = myInterface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, end_address-1)
 if reply.value != checksum:
-    print("Error: Checksums dont match! (Checksum: 0x{0:08X}, received: 0x{1:08X}".format(checksum, reply.value))
+    print("Error: Checksums don't match! (Checksum: 0x{0:08X}, received: 0x{1:08X}".format(checksum, reply.value))
     exit(1)
 
 print("Checksum of the uploaded firmware matches")

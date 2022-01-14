@@ -1,6 +1,7 @@
 from PyTrinamic.TMCL import TMCL, TMCL_Request, TMCL_Command, TMCL_Reply
 from PyTrinamic.helpers import TMC_helpers
 
+
 class tmcl_interface():
     """
     This class is a base class for sending TMCL commands over a communication

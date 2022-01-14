@@ -2,7 +2,7 @@
 """
 Print the received version of an attached module.
 
-This uses the generic connection manager commmandline to allow flexible
+This uses the generic connection manager commandline to allow flexible
 module connection selection.
 """
 

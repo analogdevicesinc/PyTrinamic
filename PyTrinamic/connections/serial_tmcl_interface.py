@@ -8,7 +8,7 @@ class serial_tmcl_interface(tmcl_interface):
     Opens a serial TMCL connection
     """
     def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False):
-        if type(comPort) != str:
+        if type(com_port) != str:
             raise TypeError;
 
         super().__init__(host_id, module_id, debug)
@@ -40,7 +40,7 @@ class serial_tmcl_interface(tmcl_interface):
             print("Close port: " + self._serial.portstr)
 
         self._serial.close()
-        return 0;
+        return 0
 
     def _send(self, host_id, module_id, data):
         """
