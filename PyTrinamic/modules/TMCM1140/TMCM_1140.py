@@ -1,5 +1,5 @@
 # interfaces
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
 # features
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
@@ -9,7 +9,7 @@ from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 
-class TMCM_1140(tmcl_module):
+class TMCM_1140(TMCLModule):
     """
     The TMCM-1140 is a single axis stepper motor controller/driver module for sensorless load dependent current control.
             * Supply Voltage: 9 - 28V
@@ -36,10 +36,10 @@ class TMCM_1140(tmcl_module):
             self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, MotorControlModule, StallGuard2Module, CoolStepModule):
+    class Motor0(TMCLModule.Motor, DriveSettingModule, LinearRampModule, MotorControlModule, StallGuard2Module, CoolStepModule):
 
         def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
+            TMCLModule.Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             StallGuard2Module.__init__(self)

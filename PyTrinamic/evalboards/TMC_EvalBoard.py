@@ -1,11 +1,11 @@
 # Created on: 06.07.2021
 # Author: LK
 
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.helpers import TMC_helpers
 
 
-class TMC_EvalBoard(tmcl_module):
+class TMC_EvalBoard(TMCLModule):
     "General Trinamic EvalBoard implementation"
 
     class EVAL_TYPES:

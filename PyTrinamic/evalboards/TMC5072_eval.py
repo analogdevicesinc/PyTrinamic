@@ -5,7 +5,7 @@ Created on 09.01.2019
 '''
 
 from PyTrinamic.evalboards.TMC_EvalBoard import TMC_EvalBoard
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.ic.TMC5072.TMC5072 import TMC5072
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
@@ -30,11 +30,11 @@ class TMC5072_eval(TMC_EvalBoard):
         super().__init__(connection, module_id, TMC5072(self, 0), self.EVAL_TYPES.MOTION_CONTROLLER)
         self.MOTORS = [ self.MOTOR(self, 0), self.MOTOR(self, 1) ]
 
-    class MOTOR(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
+    class MOTOR(TMCLModule.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
         "Motor class for the generic motor."
 
         def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
+            TMCLModule.Motor.__init__(self, module, axis)
             LinearRampModule.__init__(self)
             StallGuard2Module.__init__(self)
             CurrentModule.__init__(self)

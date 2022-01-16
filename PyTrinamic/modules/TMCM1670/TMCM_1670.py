@@ -1,5 +1,5 @@
 # interfaces
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
 # features
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
@@ -9,7 +9,7 @@ from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 
-class TMCM_1670(tmcl_module):
+class TMCM_1670(TMCLModule):
     """
     The TMCM-1670 is an easy to use and rather compact PANdrive™ smart BLDC motor. Supply voltage is 10-28V.
     """
@@ -36,11 +36,11 @@ class TMCM_1670(tmcl_module):
             self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, AbsoluteEncoderModule,
+    class Motor0(TMCLModule.Motor, DriveSettingModule, LinearRampModule, AbsoluteEncoderModule,
                  PIDModule, MotorControlModule):
 
         def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
+            TMCLModule.Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             AbsoluteEncoderModule.__init__(self)

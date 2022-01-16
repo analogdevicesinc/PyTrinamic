@@ -4,13 +4,13 @@ Created on 03.12.2019
 @author: JM
 '''
 
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
-class TMCM_1270(tmcl_module):
+class TMCM_1270(TMCLModule):
     "TMCM-1270 module implementation"
 
     def __init__(self, connection, module_id=1):
@@ -83,11 +83,11 @@ class TMCM_1270(tmcl_module):
             self.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class MOTOR_0(tmcl_module.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
+    class MOTOR_0(TMCLModule.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
         "Motor class for the motor on axis 0."
 
         def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
+            TMCLModule.Motor.__init__(self, module, axis)
             LinearRampModule.__init__(self)
             StallGuard2Module.__init__(self)
             CurrentModule.__init__(self)

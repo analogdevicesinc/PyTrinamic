@@ -4,9 +4,9 @@ Created on 21.05.2019
 @author: LH
 '''
 
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_1161(tmcl_module):
+class TMCM_1161(TMCLModule):
 
     class APs():
         TargetPosition                 = 0

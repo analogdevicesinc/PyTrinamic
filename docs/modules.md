@@ -21,11 +21,11 @@ composition of features. Individual features for module motors are implemented
 in the corresponding feature class, and inherited by the motor class in the module.
 This way, the feature functions are directly accessible from the motor object.
 
-Every module inherits from the general `tmcl_module` class, implementing
+Every module inherits from the general `TMCLModule` class, implementing
 general module functions, which are supported by all modules, such as
 `set_axis_parameter(...)`, `set_global_parameter(...)`, `set_digital_output(...)` etc.
 
-Every module motor inherits from the general `tmcl_module.Motor` class, storing
+Every module motor inherits from the general `TMCLModule.Motor` class, storing
 general data such as axis number and module reference.  
 Also, general axis-dependend functions for modules are reimplemented here,
 without the requirement of axis argument, such as `set_axis_parameter(...)` and

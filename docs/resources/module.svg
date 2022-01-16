@@ -77,7 +77,7 @@
     </g>
     <g text-rendering="geometricPrecision" stroke-miterlimit="1.45" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,-312,446)" stroke-linecap="butt">
       <rect fill="none" x="621" width="207.2" height="179.6" y="12.4" clip-path="url(#clipPath2)"/>
-      <text x="682.7855" font-size="13px" y="31.297" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve">tmcl_module</text>
+      <text x="682.7855" font-size="13px" y="31.297" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve">TMCLModule</text>
       <line stroke-linecap="square" clip-path="url(#clipPath5)" fill="none" x1="622" x2="827" y1="40" y2="40" stroke-miterlimit="10"/>
       <text x="626" xml:space="preserve" y="57.9341" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none">...</text>
       <line stroke-linecap="square" clip-path="url(#clipPath5)" fill="none" x1="622" x2="827" y1="66" y2="66" stroke-miterlimit="10"/>
@@ -106,7 +106,7 @@
     </g>
     <g text-rendering="geometricPrecision" stroke-miterlimit="1.45" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,-312,446)" stroke-linecap="butt">
       <rect fill="none" x="892" width="157.6" height="146.8" y="28.8" clip-path="url(#clipPath2)"/>
-      <text x="907.1844" font-size="13px" y="47.697" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve">tmcl_module.Motor</text>
+      <text x="907.1844" font-size="13px" y="47.697" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve">TMCLModule.Motor</text>
       <line stroke-linecap="square" clip-path="url(#clipPath7)" fill="none" x1="892" x2="1048" y1="56" y2="56" stroke-miterlimit="10"/>
       <text x="897" xml:space="preserve" y="74.3341" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none">axis</text>
       <text x="897" xml:space="preserve" y="90.6782" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none">module</text>

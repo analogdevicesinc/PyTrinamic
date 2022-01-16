@@ -1,5 +1,5 @@
 # interfaces
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
 # features
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
@@ -9,7 +9,7 @@ from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 
-class TMC4671_LEV_REF(tmcl_module):
+class TMC4671_LEV_REF(TMCLModule):
     """
     The TMC4671-LEV-REF is a highly compact controller/driver module for brushless DC (BLDC) motors with up to 30A
     coil current and hall sensor feedback. Supply voltage is 24-48V.
@@ -37,10 +37,10 @@ class TMC4671_LEV_REF(tmcl_module):
             self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, DigitalHallModule,
+    class Motor0(TMCLModule.Motor, DriveSettingModule, LinearRampModule, DigitalHallModule,
                  PIDModule, MotorControlModule):
         def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
+            TMCLModule.Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             DigitalHallModule.__init__(self)

@@ -4,9 +4,9 @@ Created on 05.06.2020
 @author: JM
 '''
 
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_3110(tmcl_module):
+class TMCM_3110(TMCLModule):
     MOTORS = 3
 
     class APs():

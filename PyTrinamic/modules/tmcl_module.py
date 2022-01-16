@@ -1,4 +1,4 @@
-class tmcl_module(object):
+class TMCLModule(object):
 
     class Motor(object):
         "TMCL compatible motor instance."

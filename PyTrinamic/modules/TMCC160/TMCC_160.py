@@ -1,6 +1,6 @@
 
 # interfaces
-from PyTrinamic.modules.tmcl_module import tmcl_module
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
 # features
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
@@ -11,7 +11,7 @@ from PyTrinamic.features.PIDModule import PIDModule
 from PyTrinamic.features.MotorControlModule import MotorControlModule
 
 
-class TMCC_160(tmcl_module):
+class TMCC_160(TMCLModule):
     """
     The TMCC160 is designed for evaluating all features of the TMCC160-LC motionCookie. Supply voltage is 7-24V.
     """
@@ -38,11 +38,11 @@ class TMCC_160(tmcl_module):
             self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(tmcl_module.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
+    class Motor0(TMCLModule.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
                  PIDModule, MotorControlModule):
 
         def __init__(self, module, axis):
-            tmcl_module.Motor.__init__(self, module, axis)
+            TMCLModule.Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             ABNEncoderModule.__init__(self)
