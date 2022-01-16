@@ -1,7 +1,5 @@
-# Created on: 06.07.2021
-# Author: LK
-
 from PyTrinamic.helpers import TMC_helpers
+
 
 class TMC_IC(object):
     "General Trinamic IC implementation"

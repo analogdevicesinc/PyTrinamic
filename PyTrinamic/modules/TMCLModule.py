@@ -1,58 +1,5 @@
 class TMCLModule(object):
 
-    class Motor(object):
-        "TMCL compatible motor instance."
-
-        def __init__(self, module, axis):
-            """
-            Constructor for the TMCL motor instance.
-
-            Parameters:
-            module: Module object this motor is part of.
-            axis: Axis index of this motor.
-            """
-            self.module = module
-            self.axis = axis
-
-        def set_axis_parameter(self, ap_type, value):
-            """
-            Sets the axis parameter for this axis identified by type to the given value.
-
-            Parameters:
-            type: Axis parameter type. These can be retrieved from the APs class of this axis.
-            value: Value to set the axis parameter to.
-            """
-            self.module.set_axis_parameter(ap_type, self.axis, value)
-
-        def get_axis_parameter(self, ap_type, signed=False):
-            """
-            Gets the axis parameter for this axis identified by type.
-
-            Parameters:
-            type: Axis parameter type. These can be retrieved from the APs class of this axis.
-            signed: Indicates whether the value should be interpreted as signed or not.
-            By default, this is False, so the value will be interpreted as unsigned.
-
-            Returns: Axis parameter value.
-            """
-            return self.module.get_axis_parameter(ap_type, self.axis, signed)
-
-        def get_status_flags(self):
-            """
-            Gets the status flags for this axis.
-
-            Returns: Status flags.
-            """
-            return self.get_axis_parameter(self.APs.StatusFlags)
-
-        def get_error_flags(self):
-            """
-            Gets the error flags for this axis.
-
-            Returns: Error flags.
-            """
-            return self.get_axis_parameter(self.APs.ErrorFlags)
-
     def __init__(self, connection, module_id=1):
         """
         Constructor for the module instance.
@@ -63,11 +10,11 @@ class TMCLModule(object):
         between different modules on shared busses. Default is set to 1, different
         values have to be configured with the module first.
         """
-        self.MOTORS = 0
         self.connection = connection
         self.module_id = module_id
         self.name = ""
         self.desc = ""
+        self.motors = []
 
     def list_features(self):
         """
@@ -76,15 +23,23 @@ class TMCLModule(object):
         Returns: Unified list of features of all axes.
         """
         features = list()
-        for motor in self.MOTORS:
+        for motor in self.motors:
             features.append(motor.list_features())
         return features
 
     def __str__(self):
-        return "{}\{module_id={}\}".format(self.name, self.module_id)
-
-    def showModuleInfo(self):
-        print(self)
+        features = ""
+        for feature in self.list_features():
+            features += str(feature) + ", "
+        features = features[1:]
+        features = features[:-3]
+        return "{} {}".format(
+                self.name,
+                {
+                    "module_id": self.module_id,
+                    "features": features
+                }
+        )
 
     def set_axis_parameter(self, ap_type, axis, value):
         """

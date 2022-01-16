@@ -4,7 +4,7 @@ Created on 09.04.2019
 @author: ED, AH, LH
 '''
 
-from PyTrinamic.modules.tmcl_module import TMCLModule
+from PyTrinamic.modules.TMCLModule import TMCLModule
 
 class TMCM_1160(TMCLModule):
 

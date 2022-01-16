@@ -8,6 +8,7 @@ from PyTrinamic.features.LinearRampIC import LinearRampIC
 from PyTrinamic.features.CurrentIC import CurrentIC
 from PyTrinamic.features.StallGuard2IC import StallGuard2IC
 
+
 class TMC5072(TMC_IC):
     "TMC5130 IC implementation"
     # Constant registers, variants, fields

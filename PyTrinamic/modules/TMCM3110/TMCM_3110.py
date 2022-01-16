@@ -4,7 +4,7 @@ Created on 05.06.2020
 @author: JM
 '''
 
-from PyTrinamic.modules.tmcl_module import TMCLModule
+from PyTrinamic.modules.TMCLModule import TMCLModule
 
 class TMCM_3110(TMCLModule):
     MOTORS = 3

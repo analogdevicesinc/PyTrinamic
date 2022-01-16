@@ -1,7 +1,7 @@
 # Created on: 06.07.2021
 # Author: LK
 
-from PyTrinamic.modules.tmcl_module import TMCLModule
+from PyTrinamic.modules.TMCLModule import TMCLModule
 from PyTrinamic.helpers import TMC_helpers
 
 

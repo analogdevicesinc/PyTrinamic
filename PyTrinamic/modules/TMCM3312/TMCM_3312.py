@@ -4,7 +4,7 @@ Created on 03.12.2019
 @author: JM
 '''
 
-from PyTrinamic.modules.tmcl_module import TMCLModule
+from PyTrinamic.modules.TMCLModule import TMCLModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule

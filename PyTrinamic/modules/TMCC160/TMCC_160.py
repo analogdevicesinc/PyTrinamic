@@ -1,14 +1,10 @@
 
 # interfaces
-from PyTrinamic.modules.tmcl_module import TMCLModule
+from PyTrinamic.modules import TMCLModule, Motor
 
 # features
-from PyTrinamic.features.DriveSettingModule import DriveSettingModule
-from PyTrinamic.features.LinearRampModule import LinearRampModule
-from PyTrinamic.features.ABNEncoderModule import ABNEncoderModule
-from PyTrinamic.features.DigitalHallModule import DigitalHallModule
-from PyTrinamic.features.PIDModule import PIDModule
-from PyTrinamic.features.MotorControlModule import MotorControlModule
+from PyTrinamic.features import DriveSettingModule, LinearRampModule, ABNEncoderModule
+from PyTrinamic.features import DigitalHallModule, PIDModule, MotorControlModule
 
 
 class TMCC_160(TMCLModule):
@@ -38,11 +34,11 @@ class TMCC_160(TMCLModule):
             self.motors[0].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(TMCLModule.Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
+    class Motor0(Motor, DriveSettingModule, LinearRampModule, ABNEncoderModule, DigitalHallModule,
                  PIDModule, MotorControlModule):
 
         def __init__(self, module, axis):
-            TMCLModule.Motor.__init__(self, module, axis)
+            Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             ABNEncoderModule.__init__(self)

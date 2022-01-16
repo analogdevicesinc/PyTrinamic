@@ -1,6 +1,6 @@
 
 # interfaces
-from PyTrinamic.modules.tmcl_module import TMCLModule
+from PyTrinamic.modules import TMCLModule, Motor
 
 # features
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
@@ -39,11 +39,11 @@ class TMCM_6110(TMCLModule):
             self.motors[axis].LinearRamp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(TMCLModule.Motor, DriveSettingModule, LinearRampModule, MotorControlModule, StallGuard2Module,
+    class Motor0(Motor, DriveSettingModule, LinearRampModule, MotorControlModule, StallGuard2Module,
                  CoolStepModule):
 
         def __init__(self, module, axis):
-            TMCLModule.Motor.__init__(self, module, axis)
+            Motor.__init__(self, module, axis)
             DriveSettingModule.__init__(self)
             LinearRampModule.__init__(self)
             StallGuard2Module.__init__(self)

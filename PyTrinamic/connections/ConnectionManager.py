@@ -276,7 +276,7 @@ class ConnectionManager():
 
     def listConnections(self):
         # Get the list of ports
-        portList = self.__interface.list(self)
+        portList = self.__interface.list()
 
         # Apply the port blacklist
         portList = [port for port in portList if port not in self.__no_port]
