@@ -2,25 +2,24 @@ import struct
 from serial import Serial
 import serial.tools.list_ports
 from PyTrinamic.helpers import TMC_helpers
-from PyTrinamic.connections.connection_interface import connection_interface
 
 REGISTER_PACKAGE_STRUCTURE = ">BI"
 REGISTER_PACKAGE_LENGTH = 5
 
 
-class Register_Request(object):
+class RegisterRequest:
     def __init__(self, address, value):
         self.address = address
         self.value = value & 0xFFFFFFFF
 
-    def toBuffer(self):
+    def to_buffer(self):
         return struct.pack(REGISTER_PACKAGE_STRUCTURE, self.address, self.value)
 
     def dump(self):
         print("Register_Request: " + str(self.address) + "," + str(self.value))
 
 
-class Register_Reply(object):
+class RegisterReply:
     def __init__(self, reply_struct):
         self.address = reply_struct[0]
         self.value = reply_struct[1]
@@ -32,7 +31,7 @@ class Register_Reply(object):
         return self.value
 
 
-class uart_ic_interface(connection_interface):
+class uart_ic_interface:
 
     def __init__(self, com_port, datarate=9600, debug=False):
         self.debugEnabled = debug
@@ -55,7 +54,7 @@ class uart_ic_interface(connection_interface):
         self.serial.write(data)
         return self.serial.read(recv_size)
 
-    def printInfo(self):
+    def print_info(self):
         print("Connection: type=uart_ic_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
 
     def close( self ):
@@ -63,20 +62,20 @@ class uart_ic_interface(connection_interface):
         self.serial.close()
         return 0
 
-    def enableDebug(self, enable):
+    def enable_debug(self, enable):
         self.debugEnabled = enable
 
-    def send ( self, address, value):
+    def send(self, address, value):
 
         "prepare TMCL request"
-        request = Register_Request(address, value)
+        request = RegisterRequest(address, value)
 
         if self.debugEnabled:
             request.dump()
 
         "send request, wait, and handle reply"
-        self.serial.write(request.toBuffer())
-        reply = Register_Reply(struct.unpack(REGISTER_PACKAGE_STRUCTURE, self.serial.read(REGISTER_PACKAGE_LENGTH)))
+        self.serial.write(request.to_buffer())
+        reply = RegisterReply(struct.unpack(REGISTER_PACKAGE_STRUCTURE, self.serial.read(REGISTER_PACKAGE_LENGTH)))
 
         if self.debugEnabled:
             reply.dump()

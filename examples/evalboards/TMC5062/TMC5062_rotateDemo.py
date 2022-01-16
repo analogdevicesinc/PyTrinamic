@@ -35,12 +35,12 @@ TMC5062.writeRegister(TMC5062.registers.AMAX[DEFAULT_MOTOR], 1000)
 print("Rotating")
 TMC5062.rotate(DEFAULT_MOTOR, 5*25600)
 
-time.sleep(5);
+time.sleep(5)
 
 print("Stopping")
 TMC5062.stop(DEFAULT_MOTOR)
 
-time.sleep(1);
+time.sleep(1)
 
 print("Moving back to 0")
 TMC5062.moveTo(DEFAULT_MOTOR, 0, 100000)

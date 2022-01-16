@@ -1,12 +1,6 @@
-'''
-Created on 02.01.2019
-
-@author: ED
-'''
-
 class TMC4671_register:
     """
-    Define all registers of the TMC4671.
+    Defines all registers of the TMC4671.
     """
     CHIPINFO_DATA                       = 0x00
     CHIPINFO_ADDR                       = 0x01
@@ -142,33 +136,3 @@ class TMC4671_register:
 
     STATUS_FLAGS                        = 0x7C
     STATUS_MASK                         = 0x7D
-
-    " motion modes "
-    MOTION_MODE_STOPPED     = 0
-    MOTION_MODE_TORQUE      = 1
-    MOTION_MODE_VELOCITY    = 2
-    MOTION_MODE_POSITION    = 3
-    MOTION_MODE_UQ_UD_EXT   = 8
-
-    " phi_e selections "
-    PHI_E_EXTERNAL      = 1
-    PHI_E_OPEN_LOOP     = 2
-    PHI_E_ABN           = 3
-    PHI_E_HALL          = 5
-    PHI_E_AENC          = 6
-    PHI_A_AENC          = 7
-
-    " velocity/position selection "
-    VELOCITY_PHI_E_SELECTION    = 0
-    VELOCITY_PHI_E_EXT          = 1
-    VELOCITY_PHI_E_OPENLOOP     = 2
-    VELOCITY_PHI_E_ABN          = 3
-
-    VELOCITY_PHI_E_HAL          = 5
-    VELOCITY_PHI_E_AENC         = 6
-    VELOCITY_PHI_A_AENC         = 7
-
-    VELOCITY_PHI_M_ABN          = 9
-    VELOCITY_PHI_M_ABN_2        = 10
-    VELOCITY_PHI_M_AENC         = 11
-    VELOCITY_PHI_M_HAL          = 12

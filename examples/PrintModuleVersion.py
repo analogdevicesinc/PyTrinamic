@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Print the received version of an attached module.
 
@@ -8,7 +7,7 @@ module connection selection.
 
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 
-connectionManager = ConnectionManager()
+myInterface = ConnectionManager().connect()
 
-myInterface = connectionManager.connect()
-print(myInterface.getVersionString())
+with myInterface:
+    print(myInterface.get_version_string())

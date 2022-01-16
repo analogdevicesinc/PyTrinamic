@@ -9,7 +9,7 @@ sudo ip link set can0 down type can bitrate 1000000
 
 import can
 
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamic.connections.TmclInterface import TmclInterface
 from can import CanError
 
 _CHANNELS = [
@@ -17,7 +17,7 @@ _CHANNELS = [
     ]
 
 
-class socketcan_tmcl_interface(tmcl_interface):
+class socketcan_tmclInterface(TmclInterface):
     """
     This class implements a TMCL connection over a SocketCAN adapter.
     """
@@ -29,7 +29,7 @@ class socketcan_tmcl_interface(tmcl_interface):
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        tmcl_interface.__init__(self, host_id, module_id, debug)
+        TmclInterface.__init__(self, host_id, module_id, debug)
 
         self.__debug = debug
         self.__channel = port

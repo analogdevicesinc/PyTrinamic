@@ -55,9 +55,9 @@ Change `TMCM_1270` and `usb_tmcl_interface` to your preferences. `X` is just a p
 
 ```Python
 from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 
-con = usb_tmcl_interface()
+con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)
 axis = 0
 
@@ -91,9 +91,9 @@ to show the working principle.
 
 ```Python
 from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 
-con = usb_tmcl_interface()
+con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)
 motor = module.MOTORS[0]
 

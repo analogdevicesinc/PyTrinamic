@@ -6,7 +6,7 @@ Created on 31.05.2019
 
 import can
 
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamic.connections.TmclInterface import TmclInterface
 from can.interfaces.pcan.pcan import PcanError
 from can import CanError
 
@@ -35,7 +35,7 @@ _CHANNELS = [
     ]
 
 
-class pcan_tmcl_interface(tmcl_interface):
+class pcan_tmclInterface(TmclInterface):
     """
     This class implements a TMCL connection over a PCAN adapter.
     """
@@ -47,7 +47,7 @@ class pcan_tmcl_interface(tmcl_interface):
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        TmclInterface.__init__(self, hostID, moduleID, debug)
 
         self._debug = debug
         self.__channel = port

@@ -1,79 +1,76 @@
-#!/usr/bin/env python3
-'''
-Created on 02.01.2019
-
-@author: ED
-'''
-if __name__ == '__main__':
-    pass
-
 import time
+import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC4671_eval import TMC4671_eval
-from PyTrinamic.ic.TMC4671.TMC4671 import TMC4671 as TMC4671_IC
+from PyTrinamic.evalboards import TMC4671_eval
+from PyTrinamic.ic import TMC4671 as TMC4671_IC
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+PyTrinamic.showInfo()
 
-if myInterface.supportsTMCL():
-    # Create an TMC4671-Eval class which communicates over the Landungsbruecke via TMCL
-    TMC4671 = TMC4671_eval(myInterface)
-else:
-    # Create an TMC4671 IC class which communicates directly over UART
-    TMC4671 = TMC4671_IC(myInterface)
+myInterface = ConnectionManager().connect()
+# myInterface.enable_debug(True)
+print(myInterface)
 
-" read ChipInfo "
+with myInterface:
 
-TMC4671.showChipInfo
+    if myInterface.supports_tmcl():
+        # Create an TMC4671-EVAL class which communicates over the Landungsbrücke via TMCL
+        TMC4671 = TMC4671_eval(myInterface)
+    else:
+        # Create an TMC4671 IC class which communicates directly over UART
+        TMC4671 = TMC4671_IC(myInterface)
 
-" configure TMC4671 for a BLDC motor in open loop mode"
+    # Configure TMC4671 for a BLDC motor in open loop mode
 
-" Motor type &  PWM configuration "
-TMC4671.writeRegister(TMC4671.registers.MOTOR_TYPE_N_POLE_PAIRS, 0x00030004)
-TMC4671.writeRegister(TMC4671.registers.PWM_POLARITIES, 0x00000000)
-TMC4671.writeRegister(TMC4671.registers.PWM_MAXCNT, int(0x00000F9F))
-TMC4671.writeRegister(TMC4671.registers.PWM_BBM_H_BBM_L, 0x00000505)
-TMC4671.writeRegister(TMC4671.registers.PWM_SV_CHOP, 0x00000007)
+    # Motor type & PWM configuration
+    TMC4671.write_register_field(TMC4671.fields.MOTOR_TYPE, TMC4671.ENUMs.MOTOR_TYPE_BLDC)
+    TMC4671.write_register_field(TMC4671.fields.N_POLE_PAIRS, 4)
+    TMC4671.write_register(TMC4671.registers.PWM_POLARITIES, 0x00000000)
+    TMC4671.write_register(TMC4671.registers.PWM_MAXCNT, int(0x00000F9F))
+    TMC4671.write_register(TMC4671.registers.PWM_BBM_H_BBM_L, 0x00000A0A)
+    TMC4671.write_register_field(TMC4671.fields.PWM_CHOP, TMC4671.ENUMs.PWM_CENTERED_FOR_FOC)
+    TMC4671.write_register_field(TMC4671.fields.PWM_SV, 1)
 
-" ADC configuration "
-TMC4671.writeRegister(TMC4671.registers.ADC_I_SELECT, 0x18000100)
-TMC4671.writeRegister(TMC4671.registers.dsADC_MCFG_B_MCFG_A, 0x00100010)
-TMC4671.writeRegister(TMC4671.registers.dsADC_MCLK_A, 0x20000000)
-TMC4671.writeRegister(TMC4671.registers.dsADC_MCLK_B, 0x00000000)
-TMC4671.writeRegister(TMC4671.registers.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-TMC4671.writeRegister(TMC4671.registers.ADC_I0_SCALE_OFFSET, 0x01008218)
-TMC4671.writeRegister(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0x0100820A)
+    # ADC configuration
+    TMC4671.write_register(TMC4671.registers.ADC_I_SELECT, 0x18000100)
+    TMC4671.write_register(TMC4671.registers.dsADC_MCFG_B_MCFG_A, 0x00100010)
+    TMC4671.write_register(TMC4671.registers.dsADC_MCLK_A, 0x20000000)
+    TMC4671.write_register(TMC4671.registers.dsADC_MCLK_B, 0x00000000)
+    TMC4671.write_register(TMC4671.registers.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
+    TMC4671.write_register(TMC4671.registers.ADC_I0_SCALE_OFFSET, 0x01008218)
+    TMC4671.write_register(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0x0100820A)
 
-" Open loop settings "
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_MODE, 0x00000000)
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_ACCELERATION, 0x0000003C)
+    # Open loop settings
+    TMC4671.write_register(TMC4671.registers.OPENLOOP_MODE, 0x00000000)
+    TMC4671.write_register(TMC4671.registers.OPENLOOP_ACCELERATION, 100)
 
-" Feedback selection "
-TMC4671.writeRegister(TMC4671.registers.PHI_E_SELECTION, TMC4671.registers.PHI_E_OPEN_LOOP)
-TMC4671.writeRegister(TMC4671.registers.UQ_UD_EXT, 2000)
+    # Feedback selection
+    TMC4671.write_register(TMC4671.registers.PHI_E_SELECTION, TMC4671.ENUMs.PHI_E_OPEN_LOOP)
+    TMC4671.write_register(TMC4671.registers.UQ_UD_EXT, 2000)
 
-" ===== Open loop test drive ===== "
+    # ===== Open loop test drive =====
 
-" Switch to open loop velocity mode "
-TMC4671.writeRegister(TMC4671.registers.MODE_RAMP_MODE_MOTION, TMC4671.registers.MOTION_MODE_UQ_UD_EXT)
+    # Switch to open loop velocity mode
+    TMC4671.write_register(TMC4671.registers.MODE_RAMP_MODE_MOTION, TMC4671.ENUMs.MOTION_MODE_UQ_UD_EXT)
 
-" Rotate right "
-print("rotate right...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 2000)
-time.sleep(3)
+    # Rotate right
+    print("Rotate right...")
+    TMC4671.write_register(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 200)
+    time.sleep(3)
 
-" Rotate left "
-print("rotate left...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, -2000)
-time.sleep(6)
+    # Rotate left
+    print("Rotate left...")
+    TMC4671.write_register(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, -200)
+    time.sleep(6)
 
-" Stop "
-print("stop...")
-TMC4671.writeRegister(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 0)
-time.sleep(3)
+    # Stop
+    print("Stop...")
+    TMC4671.write_register(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 0)
+    time.sleep(3)
 
-" unpower "
-print("unpowered...")
-TMC4671.writeRegister(TMC4671.registers.UQ_UD_EXT, 0)
+    # Unpower
+    print("Unpowered...")
+    TMC4671.write_register(TMC4671.registers.UQ_UD_EXT, 0)
 
-myInterface.close()
+    myInterface.close()
+
+print("\nReady.")

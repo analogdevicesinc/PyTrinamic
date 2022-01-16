@@ -1,7 +1,9 @@
+from abc import ABC
 import canopen
+from PyTrinamic.connections.ConnectionInterface import ConnectionInterface
 
 
-class CANopen_interface():
+class CANopenInterface(ConnectionInterface, ABC):
 
     def __init__(self, bustype, channel, bitrate, debug=False):
         self._debug = debug
@@ -13,6 +15,18 @@ class CANopen_interface():
             print("Opened Channel " + channel)
 
         self.__nodes = []
+
+    # override ConnectionInterface
+    def supports_tmcl(self):
+        return False
+
+    # override ConnectionInterface
+    def supports_canopen(self):
+        return True
+
+    # override ConnectionInterface
+    def enable_debug(self, enable):
+        self._debug = enable
 
     def addDs402Node(self, eds_path, node_id, number_of_motors=1):
         if self._debug:
@@ -46,14 +60,3 @@ class CANopen_interface():
             print("Close PCAN")
 
         self.__network.disconnect()
-
-    def enableDebug(self, enable):
-        self._debug = enable
-
-    @staticmethod
-    def supportsTMCL():
-        return False
-
-    @staticmethod
-    def supportsCANOpen():
-        return True

@@ -1,11 +1,11 @@
-from PyTrinamic.connections.CANopen_interface import CANopen_interface
+from PyTrinamic.connections.CANopenInterface import CANopenInterface
 
 _CHANNELS = [
     "0",  "1",  "2",  "3"
     ]
 
 
-class kvaser_CANopen_interface(CANopen_interface):
+class kvaser_CANopen_interface(CANopenInterface):
 
     def __init__(self, port, datarate, debug=False):
         if type(port) != str:
@@ -14,7 +14,7 @@ class kvaser_CANopen_interface(CANopen_interface):
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        CANopen_interface.__init__(self, "kvaser", int(port), datarate, debug=debug)
+        CANopenInterface.__init__(self, "kvaser", int(port), datarate, debug=debug)
 
         self.__channel = str(port)
         self.__bitrate = datarate

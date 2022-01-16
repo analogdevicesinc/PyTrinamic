@@ -32,11 +32,11 @@ class TMC4330():
 
     def writeRegister(self, registerAddress, value):
         datagram = struct.pack(DATAGRAM_FORMAT, registerAddress | 0x80, value & 0xFFFFFFFF)
-        self.__connection.send_datagram(datagram, DATAGRAM_LENGTH, self.__channel)
+        self.__connection.send_datagram(datagram, DATAGRAM_LENGTH)
 
     def readRegister(self, registerAddress, signed=False):
         datagram = struct.pack(DATAGRAM_FORMAT, registerAddress, 0)
-        reply = self.__connection.send_datagram(datagram, DATAGRAM_LENGTH, self.__channel)
+        reply = self.__connection.send_datagram(datagram, DATAGRAM_LENGTH)
 
         values = struct.unpack(DATAGRAM_FORMAT, reply)
         value = values[1]

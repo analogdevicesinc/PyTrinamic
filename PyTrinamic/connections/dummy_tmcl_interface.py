@@ -1,15 +1,9 @@
-'''
-Created on 27.05.2019
-
-@author: LH
-'''
-
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamic.connections.TmclInterface import TmclInterface
 
 
-class dummy_tmcl_interface(tmcl_interface):
+class dummy_tmclInterface(TmclInterface):
 
-    def __init__(self, port, datarate=115200, hostID=2, moduleID=1, debug=True):
+    def __init__(self, port, datarate=115200, host_id=2, module_id=1, debug=True):
         """
         Opens a dummy TMCL connection
         """
@@ -18,22 +12,22 @@ class dummy_tmcl_interface(tmcl_interface):
 
         del debug
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug=True)
+        TmclInterface.__init__(self, host_id, module_id, debug=True)
 
         if self._debug:
             print("Opened dummy TMCL interface on port '" + port + "'")
             print("\tData rate:  " + str(datarate))
-            print("\tHost ID:    " + str(hostID))
-            print("\tModule ID:  " + str(moduleID))
+            print("\tHost ID:    " + str(host_id))
+            print("\tModule ID:  " + str(module_id))
 
     def __enter__(self):
         return self
 
-    def __exit__(self, exitType, value, traceback):
+    def __exit__(self, exit_type, value, traceback):
         """
         Close the connection at the end of a with-statement block.
         """
-        del exitType, value, traceback
+        del exit_type, value, traceback
         self.close()
 
     def close(self):
@@ -43,28 +37,28 @@ class dummy_tmcl_interface(tmcl_interface):
         if self._debug:
             print("Closed dummy TMCL interface")
 
-    def _send(self, hostID, moduleID, data):
+    def _send(self, host_id, module_id, data):
         """
             Send the bytearray parameter [data].
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del hostID, moduleID, data
+        del host_id, module_id, data
         pass
 
-    def _recv(self, hostID, moduleID):
+    def _recv(self, host_id, module_id):
         """
             Read 9 bytes and return them as a bytearray.
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del hostID, moduleID
+        del host_id, module_id
 
         return bytearray(9)
 
-    def printInfo(self):
+    def print_info(self):
         print("Connection: type=dummy_tmcl_interface")
 
     @staticmethod
@@ -85,10 +79,11 @@ class dummy_tmcl_interface(tmcl_interface):
         """
         return ["dummy"]
 
-if __name__ == "__main__":
-    interface = dummy_tmcl_interface("dummy")
 
-    interface.getVersionString()
-    interface.sendBoot()
+if __name__ == "__main__":
+    interface = dummy_tmclInterface("dummy")
+
+    interface.get_version_string()
+    interface.send_boot()
 
     interface.close()

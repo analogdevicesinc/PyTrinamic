@@ -1,10 +1,5 @@
-'''
-Created on 09.01.2019
-
-@author: LK
-'''
-
 from PyTrinamic import name, desc
+
 
 class TMC_helpers(object):
 
@@ -25,7 +20,8 @@ class TMC_helpers(object):
     def showInfo():
         print(name + " - " + desc)
 
-class EEPROM():
+
+class EEPROM:
     """
     This class provides basic access to an EEPROM.
 

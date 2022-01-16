@@ -1,11 +1,11 @@
-from PyTrinamic.connections.CANopen_interface import CANopen_interface
+from PyTrinamic.connections.CANopenInterface import CANopenInterface
 
 _CHANNELS = [
     "PCAN_USBBUS1",  "PCAN_USBBUS2",  "PCAN_USBBUS3",  "PCAN_USBBUS4"
     ]
 
 
-class pcan_CANopen_interface(CANopen_interface):
+class pcan_CANopen_interface(CANopenInterface):
 
     def __init__(self, port, datarate, debug=False):
         if type(port) != str:
@@ -14,7 +14,7 @@ class pcan_CANopen_interface(CANopen_interface):
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        CANopen_interface.__init__(self, "pcan", port, datarate, debug=debug)
+        CANopenInterface.__init__(self, "pcan", port, datarate, debug=debug)
         
         self.__channel = port
         self.__bitrate = datarate

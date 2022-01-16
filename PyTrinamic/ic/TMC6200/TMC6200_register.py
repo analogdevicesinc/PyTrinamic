@@ -1,9 +1,3 @@
-'''
-Created on 06.03.2019
-
-@author: ED
-'''
-
 class TMC6200_register:
 
     GCONF           = 0x00

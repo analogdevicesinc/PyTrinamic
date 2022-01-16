@@ -4,11 +4,11 @@ Created on 03.01.2020
 @author: JH
 '''
 import can
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamic.connections.TmclInterface import TmclInterface
 from can import CanError
 from serial.tools.list_ports import comports
 
-class slcan_tmcl_interface(tmcl_interface):
+class slcan_tmclInterface(TmclInterface):
     """
     This class implements a TMCL connection for CAN over Serial / SLCAN. Comatible with CANable running slcan firmware and similar.
     Set underlying serial device as channel. (e.g. /dev/ttyUSB0, COM8, …)
@@ -19,7 +19,7 @@ class slcan_tmcl_interface(tmcl_interface):
         if type(comPort) != str:
             raise TypeError
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        TmclInterface.__init__(self, hostID, moduleID, debug)
 
         self.__debug = debug
         self.__bitrate = datarate

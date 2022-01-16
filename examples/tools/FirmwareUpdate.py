@@ -154,7 +154,7 @@ myInterface = connectionManager.connect()
 
 # Send the boot command
 print("Switching to bootloader mode")
-myInterface.sendBoot(1)
+myInterface.send_boot(1)
 myInterface.close()
 
 # Reconnect after a small delay

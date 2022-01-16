@@ -26,12 +26,12 @@ DEFAULT_MOTOR = 0
 print("Rotating")
 TMC2225.rotate(DEFAULT_MOTOR, 1*27000)
 
-time.sleep(5);
+time.sleep(5)
 
 print("Stopping")
 TMC2225.stop(DEFAULT_MOTOR)
 
-time.sleep(1);
+time.sleep(1)
 
 print("Moving back to 0")
 TMC2225.moveTo(DEFAULT_MOTOR, 0, 18000)

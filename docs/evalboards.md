@@ -33,9 +33,9 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 
-con = usb_tmcl_interface()
+con = UsbTmclInterface()
 eval = TMC5130_eval(con)
 axis = 0
 
@@ -65,9 +65,9 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 
-con = usb_tmcl_interface()
+con = UsbTmclInterface()
 eval = TMC5130_eval(con)
 motor = eval.MOTORS[0]
 
@@ -110,9 +110,9 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 
-con = usb_tmcl_interface()
+con = UsbTmclInterface()
 eval = TMC5130_eval(con)
 ic = eval.IC
 
@@ -132,9 +132,9 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 
-con = usb_tmcl_interface()
+con = UsbTmclInterface()
 eval = TMC5130_eval(con)
 ic = eval.IC
 motor = ic.MOTOR[0]

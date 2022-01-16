@@ -1,42 +1,26 @@
-'''
-Created on 31.01.2020
-
-@author: JM
-'''
-
-from PyTrinamic.ic.TMC6100.TMC6100 import TMC6100
+from PyTrinamic.ic import TMC6100
 from PyTrinamic.helpers import TMC_helpers
 
+
 class TMC6100_eval(TMC6100):
-
-    def __init__(self, connection, moduleID=1):
+    """
+    Use TMC6100-EVAL with Landungsbrücke/Startrampe at DRV spi channel to access the TMC6100.
+    """
+    def __init__(self, connection, module_id=1):
         self.connection = connection
-        TMC6100.__init__(self, connection=None, channel=moduleID)
+        TMC6100.__init__(self)
 
-    def register(self):
-        return self.TMC6100.register()
+    # use Landungsbrücke/Startrampe with DRV channel for register access
 
-    def variants(self):
-        return self.TMC6100.variants()
+    def write_register(self, register_address, value):
+        return self.connection.writeDRV(register_address, value)
 
-    def maskShift(self):
-        return self.TMC6100.maskShift()
+    def read_register(self, register_address):
+        return self.connection.readDRV(register_address)
 
-    def ic(self):
-        return self.TMC6100
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                   field[1], field[2], value))
 
-    " register access: use Landungsbrücke/Startrampe with DRV channel"
-    def writeRegister(self, registerAddress, value):
-        return self.connection.writeDRV(registerAddress, value)
-
-    def readRegister(self, registerAddress):
-        return self.connection.readDRV(registerAddress)
-
-    def writeRegisterField(self, registerAddress, value, mask, shift):
-        return self.writeRegister(registerAddress, TMC_helpers.field_set(self.readRegister(registerAddress), mask, shift, value))
-
-    def readRegisterField(self, registerAddress, mask, shift):
-        return TMC_helpers.field_get(self.readRegister(registerAddress), mask, shift)
-
-class _APs():
-    pass
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])

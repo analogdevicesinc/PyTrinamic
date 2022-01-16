@@ -32,7 +32,7 @@ print("Begin Hall demo")
 print("Rotating")
 TMC6300.setTargetPWM(DEFAULT_MOTOR, 6000)
 
-time.sleep(3);
+time.sleep(3)
 
 print("Stopping")
 TMC6300.setTargetPWM(DEFAULT_MOTOR, 0)
@@ -42,7 +42,7 @@ time.sleep(2)
 print("Rotating back")
 TMC6300.setTargetPWM(DEFAULT_MOTOR, -6000)
 
-time.sleep(3);
+time.sleep(3)
 
 print("Stopping")
 TMC6300.setTargetPWM(DEFAULT_MOTOR, 0)

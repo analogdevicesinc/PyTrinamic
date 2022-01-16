@@ -29,12 +29,12 @@ TMC2300.setMicrostepResolution(DEFAULT_MOTOR, 256)
 print("Rotating")
 TMC2300.rotate(DEFAULT_MOTOR, 10*25600)
 
-time.sleep(2);
+time.sleep(2)
 
 print("Stopping")
 TMC2300.stop(DEFAULT_MOTOR)
 
-time.sleep(1);
+time.sleep(1)
 
 print("Moving back to 0")
 TMC2300.moveTo(DEFAULT_MOTOR, 0, 10*25600)

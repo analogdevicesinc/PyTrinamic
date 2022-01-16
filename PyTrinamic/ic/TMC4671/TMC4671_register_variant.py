@@ -1,13 +1,7 @@
-'''
-Created on 15.02.2019
-
-@author: ED
-'''
-
 class TMC4671_register_variant:
-
-    " ===== TMC4671 register variants ===== "
-
+    """
+    TMC4671 register variants.
+    """
     CHIPINFO_ADDR_SI_TYPE                                   = 0
     CHIPINFO_ADDR_SI_VERSION                                = 1
     CHIPINFO_ADDR_SI_DATA                                   = 2
@@ -85,7 +79,6 @@ class TMC4671_register_variant:
     INTERIM_ADDR_PWM_WY_UX                                  = 17
     INTERIM_ADDR_PWM_UV                                     = 18
     INTERIM_ADDR_ADC_I1_I0                                  = 19
-    INTERIM_ADDR_PID_TORQUE_TARGET_FLUX_TARGET_TORQUE_ACTUAL_FLUX_ACTUAL_DIV256 = 20
     INTERIM_ADDR_PID_TORQUE_TARGET_TORQUE_ACTUAL            = 21
     INTERIM_ADDR_PID_FLUX_TARGET_FLUX_ACTUAL                = 22
     INTERIM_ADDR_PID_VELOCITY_TARGET_VELOCITY_ACTUAL_DIV256 = 23

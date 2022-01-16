@@ -1,8 +1,8 @@
 import serial.tools.list_ports
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.serial_tmcl_interface import serial_tmclInterface
 
 
-class usb_tmcl_interface(serial_tmcl_interface):
+class UsbTmclInterface(serial_tmclInterface):
     """
     Opens a USB TMCL connection.
 
@@ -51,15 +51,8 @@ class usb_tmcl_interface(serial_tmcl_interface):
     def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False):
         super().__init__(com_port, datarate, host_id, module_id, debug)
 
-    def printInfo(self):
-        print("Connection: type=usb_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
-
-    @staticmethod
-    def supportsTMCL():
-        return True
-
-    @staticmethod
-    def list():
+    # override serial_tmcl_interface
+    def list(self):
         """
             Return a list of available connection ports as a list of strings.
 
@@ -68,8 +61,22 @@ class usb_tmcl_interface(serial_tmcl_interface):
         """
         connected = []
         for element in sorted(serial.tools.list_ports.comports()):
-            for entry in usb_tmcl_interface.__USB_IDS:
+            for entry in UsbTmclInterface.__USB_IDS:
                 if entry["VID"] == element.vid and entry["PID"] == element.pid:
                     connected.append(element.device)
 
         return connected
+
+    def __str__(self):
+        info = "UsbTmclInterface {"
+        info += "'com_port':" + self._serial.portstr + ", "
+        info += "'baudrate':" + str(self._baudrate) + ", "
+        if self.supports_tmcl():
+            info += "'supports_tmcl': True, "
+        if self.supports_canopen():
+            info += "'supports_canopen': True, "
+        if self.debug_enabled():
+            info += "'debug_enabled':" + str(self._debug) + ", "
+        info = info[:-2]
+        info += "}"
+        return info

@@ -7,15 +7,15 @@ Created on 28.05.2019
 import sys
 import argparse
 
-from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmcl_interface
-from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmcl_interface
-from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmcl_interface
-from PyTrinamic.connections.kvaser_tmcl_interface import kvaser_tmcl_interface
-from PyTrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from PyTrinamic.connections.dummy_tmcl_interface import dummy_tmclInterface
+from PyTrinamic.connections.pcan_tmcl_interface import pcan_tmclInterface
+from PyTrinamic.connections.socketcan_tmcl_interface import socketcan_tmclInterface
+from PyTrinamic.connections.kvaser_tmcl_interface import kvaser_tmclInterface
+from PyTrinamic.connections.serial_tmcl_interface import serial_tmclInterface
 from PyTrinamic.connections.uart_ic_interface import uart_ic_interface
-from PyTrinamic.connections.usb_tmcl_interface import usb_tmcl_interface
+from PyTrinamic.connections.UsbTmclInterface import UsbTmclInterface
 from PyTrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
-from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmcl_interface
+from PyTrinamic.connections.slcan_tmcl_interface import slcan_tmclInterface
 from PyTrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_interface
 
 class ConnectionManager():
@@ -85,14 +85,14 @@ class ConnectionManager():
     # All available interfaces
     # The tuples consist of (string representation, class type, default datarate)
     _INTERFACES = [
-        ("dummy_tmcl",      dummy_tmcl_interface,       0),
-        ("pcan_tmcl",       pcan_tmcl_interface,        1000000),
-        ("socketcan_tmcl",  socketcan_tmcl_interface,   1000000),
-        ("kvaser_tmcl",     kvaser_tmcl_interface,      1000000),
-        ("slcan_tmcl",      slcan_tmcl_interface,       1000000),
-        ("serial_tmcl",     serial_tmcl_interface,      9600),
+        ("dummy_tmcl", dummy_tmclInterface, 0),
+        ("pcan_tmcl", pcan_tmclInterface, 1000000),
+        ("socketcan_tmcl", socketcan_tmclInterface, 1000000),
+        ("kvaser_tmcl", kvaser_tmclInterface, 1000000),
+        ("slcan_tmcl", slcan_tmclInterface, 1000000),
+        ("serial_tmcl", serial_tmclInterface, 9600),
         ("uart_ic",         uart_ic_interface,          9600),
-        ("usb_tmcl",        usb_tmcl_interface,         115200),
+        ("usb_tmcl", UsbTmclInterface, 115200),
         ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
         ("kvaser_CANopen",  kvaser_CANopen_interface,   1000000)
     ]
@@ -127,7 +127,7 @@ class ConnectionManager():
             self.__host_id    = 0
             self.__module_id  = 0
         else:
-            self.__interface  = usb_tmcl_interface
+            self.__interface  = UsbTmclInterface
             self.__port       = "any"
             self.__no_port    = []
             self.__data_rate  = 115200
@@ -143,7 +143,7 @@ class ConnectionManager():
         ### Interpret given arguments
         # Interface
         for interface in self._INTERFACES:
-            if connectionType == "tmcl" and not(interface[1].supportsTMCL()):
+            if connectionType == "tmcl" and not(interface[1].supports_tmcl()):
                 continue
 
             if connectionType == "CANopen" and not(interface[1].supportsCANopen()):
@@ -276,7 +276,7 @@ class ConnectionManager():
 
     def listConnections(self):
         # Get the list of ports
-        portList = self.__interface.list()
+        portList = self.__interface.list(self)
 
         # Apply the port blacklist
         portList = [port for port in portList if port not in self.__no_port]

@@ -3,7 +3,7 @@ Created on 03.01.2020
 @author: JH
 '''
 import can
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+from PyTrinamic.connections.TmclInterface import TmclInterface
 from can import CanError
 
 _CHANNELS = [
@@ -11,7 +11,7 @@ _CHANNELS = [
      ]
 
 
-class kvaser_tmcl_interface(tmcl_interface):
+class kvaser_tmclInterface(TmclInterface):
     """
     This class implements a TMCL connection for Kvaser adapter using CANLIB.
     Try 0 as default channel.
@@ -24,7 +24,7 @@ class kvaser_tmcl_interface(tmcl_interface):
         if not port in _CHANNELS:
             raise ValueError("Invalid port")
 
-        tmcl_interface.__init__(self, hostID, moduleID, debug)
+        TmclInterface.__init__(self, hostID, moduleID, debug)
 
         self.__debug    = debug
         self.__channel  = port
@@ -46,11 +46,11 @@ class kvaser_tmcl_interface(tmcl_interface):
     def __enter__(self):
         return self
 
-    def __exit__(self, exitType, value, traceback):
+    def __exit__(self, exit_type, value, traceback):
         """
         Close the connection at the end of a with-statement block.
         """
-        del exitType, value, traceback
+        del exit_type, value, traceback
         self.close()
 
     def close(self):
@@ -59,30 +59,30 @@ class kvaser_tmcl_interface(tmcl_interface):
 
         self.__connection.shutdown()
 
-    def _send(self, hostID, moduleID, data):
+    def _send(self, host_id, module_id, data):
         """
             Send the bytearray parameter [data].
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del hostID
+        del host_id
 
-        msg = can.Message(arbitration_id=moduleID, is_extended_id=False, data=data[1:])
+        msg = can.Message(arbitration_id=module_id, is_extended_id=False, data=data[1:])
 
         try:
             self.__connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
-    def _recv(self, hostID, moduleID):
+    def _recv(self, host_id, module_id):
         """
             Read 9 bytes and return them as a bytearray.
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del moduleID
+        del module_id
 
         try:
             msg = self.__connection.recv(timeout=3)
@@ -93,7 +93,7 @@ class kvaser_tmcl_interface(tmcl_interface):
             # Todo: Timeout retry mechanism
             raise ConnectionError("Recv timed out")
 
-        if msg.arbitration_id != hostID:
+        if msg.arbitration_id != host_id:
             # The filter shouldn't let wrong messages through.
             # This is just a sanity check
             if self.__debug:

@@ -51,22 +51,22 @@ ic.MOTORS[1].write_axis_field(ic.FIELDS.AMAX, 1000)
 print("Rotating motor 1")
 ic.MOTORS[0].rotate(10*25600)
 
-time.sleep(5);
+time.sleep(5)
 
 print("Stopping motor 1")
 ic.MOTORS[0].stop()
 
-time.sleep(1);
+time.sleep(1)
 
 print("Rotating motor 2")
 ic.MOTORS[1].rotate(10*25600)
 
-time.sleep(5);
+time.sleep(5)
 
 print("Stopping motor 2")
 ic.MOTORS[1].stop()
 
-time.sleep(1);
+time.sleep(1)
 
 print("Moving back to 0")
 ic.MOTORS[0].move_to(0, 100000)

@@ -42,12 +42,12 @@ TMC4330.setAxisParameter(TMC4330.APs.MaxAcceleration, DEFAULT_MOTOR, 10000)
 print("Rotating")
 TMC4330.rotate(DEFAULT_MOTOR, 30*25600)
 
-time.sleep(12);
+time.sleep(12)
 
 print("Stopping")
 TMC4330.stop(DEFAULT_MOTOR)
 
-time.sleep(3);
+time.sleep(3)
 
 print("Moving back to 0")
 TMC4330.moveTo(DEFAULT_MOTOR, 0, 30*25600)

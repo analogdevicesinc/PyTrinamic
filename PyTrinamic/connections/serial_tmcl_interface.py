@@ -1,15 +1,15 @@
 from serial import Serial, SerialException
-import serial.tools.list_ports;
-from PyTrinamic.connections.tmcl_interface import tmcl_interface
+import serial.tools.list_ports
+from PyTrinamic.connections.TmclInterface import TmclInterface
 
 
-class serial_tmcl_interface(tmcl_interface):
+class serial_tmclInterface(TmclInterface):
     """
     Opens a serial TMCL connection
     """
     def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False):
         if type(com_port) != str:
-            raise TypeError;
+            raise TypeError
 
         super().__init__(host_id, module_id, debug)
 
@@ -34,6 +34,45 @@ class serial_tmcl_interface(tmcl_interface):
         """
         del exit_type, value, traceback
         self.close()
+
+    # override ConnectionInterface
+    def supports_tmcl(self):
+        return True
+
+    # override ConnectionInterface
+    def supports_canopen(self):
+        return False
+
+    # override ConnectionInterface
+    def enable_debug(self, enable):
+        self._debug = enable
+
+    # override ConnectionInterface
+    def print_info(self):
+        print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
+
+
+
+
+    @staticmethod
+    def list():
+        """
+            Return a list of available connection ports as a list of strings.
+
+            This function is required for using this interface with the
+            connection manager.
+        """
+        connected = []
+        for element in sorted(serial.tools.list_ports.comports()):
+            connected.append(element.device)
+
+        return connected
+
+    # @staticmethod
+    def supportsTMCL():
+        return True
+
+
 
     def close(self):
         if self._debug:
@@ -74,31 +113,3 @@ class serial_tmcl_interface(tmcl_interface):
 
     def get_timeout(self):
         return self._serial.timeout
-
-    def printInfo(self):
-        print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
-
-    def enableDebug(self, enable):
-        self._debug = enable
-
-    @staticmethod
-    def supportsTMCL():
-        return True
-
-    @staticmethod
-    def supportsCANopen():
-        return False
-
-    @staticmethod
-    def list():
-        """
-            Return a list of available connection ports as a list of strings.
-
-            This function is required for using this interface with the
-            connection manager.
-        """
-        connected = []
-        for element in sorted(serial.tools.list_ports.comports()):
-            connected.append(element.device)
-
-        return connected
