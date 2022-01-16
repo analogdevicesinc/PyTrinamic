@@ -1,15 +1,9 @@
-'''
-Created on 14.10.2019
-
-@author: JM
-'''
-
 from PyTrinamic.ic.TMC2130.TMC2130_register import TMC2130_register
-from PyTrinamic.ic.TMC2130.TMC2130_register_variant import TMC2130_register_variant
 from PyTrinamic.ic.TMC2130.TMC2130_fields import TMC2130_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC2130():
+
+class TMC2130:
     """
     Class for the TMC2130 IC
     """
@@ -18,7 +12,6 @@ class TMC2130():
 
         self.registers  = TMC2130_register
         self.fields     = TMC2130_fields
-        self.variants   = TMC2130_register_variant
 
         self.MOTORS     = 2
 

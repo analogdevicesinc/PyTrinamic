@@ -1,19 +1,13 @@
-'''
-Created on 30.03.2020
-
-@author: JM
-'''
-
 import struct
 from PyTrinamic.ic.TMC7300.TMC7300_register import TMC7300_register
-from PyTrinamic.ic.TMC7300.TMC7300_register_variant import TMC7300_register_variant
 from PyTrinamic.ic.TMC7300.TMC7300_fields import TMC7300_fields
 from PyTrinamic.helpers import TMC_helpers
 
 DATAGRAM_FORMAT = ">BI"
 DATAGRAM_LENGTH = 5
 
-class TMC7300():
+
+class TMC7300:
     """
     Class for the TMC7300 IC
     """
@@ -23,7 +17,6 @@ class TMC7300():
 
         self.registers    = TMC7300_register
         self.fields       = TMC7300_fields
-        self.variants     = TMC7300_register_variant
 
         self.MOTORS       = 1
 

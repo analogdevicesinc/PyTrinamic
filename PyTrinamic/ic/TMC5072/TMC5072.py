@@ -1,13 +1,8 @@
-# Created on: 12.10.2021
-# Author: LK
-
-# General imports
 from PyTrinamic.ic.TMC_IC import TMC_IC
-from PyTrinamic.ic.TMC5072.TMC5072_Registers import TMC5072_Registers
-from PyTrinamic.ic.TMC5072.TMC5072_Register_Variants import TMC5072_Register_Variants
-from PyTrinamic.ic.TMC5072.TMC5072_Fields import TMC5072_Fields
+from PyTrinamic.ic.TMC5072.TMC5072_register import TMC5072_register
+from PyTrinamic.ic.TMC5072.TMC5072_fields import TMC5072_fields
 
-# Feature imports
+# Features
 from PyTrinamic.features.MotorControlIC import MotorControlIC
 from PyTrinamic.features.LinearRampIC import LinearRampIC
 from PyTrinamic.features.CurrentIC import CurrentIC
@@ -16,9 +11,8 @@ from PyTrinamic.features.StallGuard2IC import StallGuard2IC
 class TMC5072(TMC_IC):
     "TMC5130 IC implementation"
     # Constant registers, variants, fields
-    REGISTERS = TMC5072_Registers
-    VARIANTS = TMC5072_Register_Variants
-    FIELDS = TMC5072_Fields
+    REGISTERS = TMC5072_register
+    FIELDS = TMC5072_fields
 
     def __init__(self, handler, channel):
         """

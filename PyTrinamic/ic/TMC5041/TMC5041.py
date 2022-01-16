@@ -1,15 +1,9 @@
-'''
-Created on 18.04.2019
-
-@author: LH
-'''
-
 from PyTrinamic.ic.TMC5041.TMC5041_register import TMC5041_register
-from PyTrinamic.ic.TMC5041.TMC5041_register_variant import TMC5041_register_variant
 from PyTrinamic.ic.TMC5041.TMC5041_fields import TMC5041_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC5041():
+
+class TMC5041:
     """
     Class for the TMC5041 IC
     """
@@ -18,7 +12,6 @@ class TMC5041():
 
         self.registers  = TMC5041_register
         self.fields     = TMC5041_fields
-        self.variants   = TMC5041_register_variant
 
         self.MOTORS     = 2
 

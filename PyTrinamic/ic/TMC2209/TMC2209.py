@@ -1,15 +1,9 @@
-'''
-Created on 18.10.2019
-
-@author: JM
-'''
-
 from PyTrinamic.ic.TMC2209.TMC2209_register import TMC2209_register
-from PyTrinamic.ic.TMC2209.TMC2209_register_variant import TMC2209_register_variant
 from PyTrinamic.ic.TMC2209.TMC2209_fields import TMC2209_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC2209():
+
+class TMC2209:
     """
     Class for the TMC2209 IC
     """
@@ -18,7 +12,6 @@ class TMC2209():
 
         self.registers  = TMC2209_register
         self.fields     = TMC2209_fields
-        self.variants   = TMC2209_register_variant
 
         self.MOTORS     = 2
 

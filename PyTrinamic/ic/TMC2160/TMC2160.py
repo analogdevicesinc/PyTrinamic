@@ -1,15 +1,9 @@
-'''
-Created on 23.10.2019
-
-@author: JM
-'''
-
 from PyTrinamic.ic.TMC2160.TMC2160_register import TMC2160_register
-from PyTrinamic.ic.TMC2160.TMC2160_register_variant import TMC2160_register_variant
 from PyTrinamic.ic.TMC2160.TMC2160_fields import TMC2160_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC2160():
+
+class TMC2160:
     """
     Class for the TMC2160 IC
     """
@@ -18,7 +12,6 @@ class TMC2160():
 
         self.registers  = TMC2160_register
         self.fields     = TMC2160_fields
-        self.variants   = TMC2160_register_variant
 
         self.MOTORS     = 2
 

@@ -1,15 +1,9 @@
-'''
-Created on 24.10.2019
-
-@author: JM
-'''
-
 from PyTrinamic.ic.TMC2041.TMC2041_register import TMC2041_register
-from PyTrinamic.ic.TMC2041.TMC2041_register_variant import TMC2041_register_variant
 from PyTrinamic.ic.TMC2041.TMC2041_fields import TMC2041_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC2041():
+
+class TMC2041:
     """
     Class for the TMC2041 IC
     """
@@ -18,7 +12,6 @@ class TMC2041():
 
         self.registers  = TMC2041_register
         self.fields     = TMC2041_fields
-        self.variants   = TMC2041_register_variant
 
         self.MOTORS     = 2
 

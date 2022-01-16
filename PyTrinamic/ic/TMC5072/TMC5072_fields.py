@@ -4,7 +4,7 @@ Created on 20.09.2019
 @author: JM
 '''
 
-class TMC5072_Fields(object):
+class TMC5072_fields(object):
 	"""
 	Define all register bitfields of the TMC5072.
 

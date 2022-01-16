@@ -1,15 +1,9 @@
-'''
-Created on 07.11.2019
-
-@author: JM
-'''
-
 from PyTrinamic.ic.TMC2660.TMC2660_register import TMC2660_register
-from PyTrinamic.ic.TMC2660.TMC2660_register_variant import TMC2660_register_variant
 from PyTrinamic.ic.TMC2660.TMC2660_fields import TMC2660_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC2660():
+
+class TMC2660:
     """
     Class for the TMC2660 IC
     """
@@ -18,7 +12,6 @@ class TMC2660():
 
         self.registers  = TMC2660_register
         self.fields     = TMC2660_fields
-        self.variants   = TMC2660_register_variant
 
         self.MOTORS     = 2
 

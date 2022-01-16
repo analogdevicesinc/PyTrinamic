@@ -1,15 +1,9 @@
-'''
-Created on 24.09.2019
-
-@author: JM
-'''
-
 from PyTrinamic.ic.TMC5062.TMC5062_register import TMC5062_register
-from PyTrinamic.ic.TMC5062.TMC5062_register_variant import TMC5062_register_variant
 from PyTrinamic.ic.TMC5062.TMC5062_fields import TMC5062_fields
 from PyTrinamic.helpers import TMC_helpers
 
-class TMC5062():
+
+class TMC5062:
     """
     Class for the TMC5062 IC
     """
@@ -18,7 +12,6 @@ class TMC5062():
 
         self.registers  = TMC5062_register
         self.fields     = TMC5062_fields
-        self.variants   = TMC5062_register_variant
 
         self.MOTORS     = 2
 

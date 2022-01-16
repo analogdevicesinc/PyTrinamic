@@ -1,25 +1,17 @@
-'''
-Created on 17.04.2020
-
-@author: JM
-'''
-
 import struct
-
 from PyTrinamic.helpers import TMC_helpers
 
 DATAGRAM_FORMAT = ">BI"
 DATAGRAM_LENGTH = 5
 
-class TMC6300():
+
+class TMC6300:
     """
     Class for the TMC6300 IC
     """
     def __init__(self, connection, channel=0):
         self.__connection = connection
         self.__channel    = channel
-
-
 
         self.MOTORS       = 1
 

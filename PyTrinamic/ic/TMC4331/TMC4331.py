@@ -1,19 +1,13 @@
-'''
-Created on 06.02.2020
-
-@author: JM
-'''
-
 import struct
 from PyTrinamic.ic.TMC4331.TMC4331_register import TMC4331_register
-from PyTrinamic.ic.TMC4331.TMC4331_register_variant import TMC4331_register_variant
 from PyTrinamic.ic.TMC4331.TMC4331_fields import TMC4331_fields
 from PyTrinamic.helpers import TMC_helpers
 
 DATAGRAM_FORMAT = ">BI"
 DATAGRAM_LENGTH = 5
 
-class TMC4331():
+
+class TMC4331:
     """
     Class for the TMC4331 IC
     """
@@ -23,7 +17,6 @@ class TMC4331():
 
         self.registers    = TMC4331_register
         self.fields       = TMC4331_fields
-        self.variants     = TMC4331_register_variant
 
         self.MOTORS       = 1
 

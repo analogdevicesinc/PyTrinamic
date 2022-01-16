@@ -4,7 +4,7 @@ Created on 20.09.2019
 @author: JM
 '''
 
-class TMC5072_Registers(object):
+class TMC5072_register(object):
     """
     Define all registers of the TMC5072.
 
