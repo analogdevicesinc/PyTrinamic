@@ -49,7 +49,7 @@ class MockTmclInterface:
 
 
 @pytest.mark.parametrize('example_script_path', [
-    f'../TMCM_6110/TMCM_6110_TMCL_rotateDemo.py',
+    f'../TMCM_6110/TMCL/rotate_demo.py',
 ])
 def test(monkeypatch, example_script_path):
 

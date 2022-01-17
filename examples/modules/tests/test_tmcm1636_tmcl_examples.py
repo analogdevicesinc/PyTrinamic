@@ -61,12 +61,11 @@ class MockTmclInterface:
 
 
 @pytest.mark.parametrize('example_script_path', [
-    f'../TMCM_1636/TMCL/TMCM_1636_TMCL_encoder_position_mode.py',
-    f'../TMCM_1636/TMCL/TMCM_1636_TMCL_hall_digital_input.py',
-    f'../TMCM_1636/TMCL/TMCM_1636_TMCL_hall_endstop.py',
-    f'../TMCM_1636/TMCL/TMCM_1636_TMCL_hall_position_mode.py',
-    f'../TMCM_1636/TMCL/TMCM_1636_TMCL_position_abn_abs.py',
-    f'../TMCM_1636/TMCL/TMCM_1636_TMCL_rotateDemo.py',
+    f'../TMCM_1636/TMCL/encoder_position_mode.py',
+    f'../TMCM_1636/TMCL/hall_digital_input.py',
+    f'../TMCM_1636/TMCL/hall_endstop.py',
+    f'../TMCM_1636/TMCL/hall_position_mode.py',
+    f'../TMCM_1636/TMCL/position_abn_abs.py',
 ])
 def test(monkeypatch, example_script_path):
 
