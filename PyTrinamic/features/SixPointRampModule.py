@@ -8,7 +8,6 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
         def __init__(self, parent):
             self.parent = parent
 
-
         def get_ramp_type(self):
             """
             Gets if Ramp that is used for this axis.
@@ -16,7 +15,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: ramp type 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.RampType)
+            return self.parent.get_axis_parameter(self.parent.AP.RampType)
 
         def set_ramp_type(self, ramp_type):
             """
@@ -26,7 +25,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             ramp_type: ramp type value 
             """
-            self.parent.set_axis_parameter(self.parent.APs.RampType, ramp_type)
+            self.parent.set_axis_parameter(self.parent.AP.RampType, ramp_type)
         
         def get_start_velocity(self):
             """
@@ -35,7 +34,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: start velocity 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.StartVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.StartVelocity)
 
         def set_start_velocity(self, start_velocity):
             """
@@ -45,7 +44,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             start_velocity: start velocity 
             """
-            self.parent.set_axis_parameter(self.parent.APs.StartVelocity, start_velocity)
+            self.parent.set_axis_parameter(self.parent.AP.StartVelocity, start_velocity)
 
         def get_start_acceleration(self):
             """
@@ -54,7 +53,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: start acceleration 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.StartAcceleration)
+            return self.parent.get_axis_parameter(self.parent.AP.StartAcceleration)
 
         def set_start_acceleration(self, start_acceleration):
             """
@@ -64,7 +63,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             start_acceleration: start acceleration 
             """
-            self.parent.set_axis_parameter(self.parent.APs.StartAcceleration, start_acceleration)
+            self.parent.set_axis_parameter(self.parent.AP.StartAcceleration, start_acceleration)
 
         def get_max_deceleration(self):
             """
@@ -73,7 +72,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: maximum deceleration
             """
-            return self.parent.get_axis_parameter(self.parent.APs.MaxDeceleration)
+            return self.parent.get_axis_parameter(self.parent.AP.MaxDeceleration)
 
         def set_max_deceleration(self, max_deceleration):
             """
@@ -83,7 +82,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             max_deceleration: maximum deceleration
             """
-            self.parent.set_axis_parameter(self.parent.APs.MaxDeceleration, max_deceleration)
+            self.parent.set_axis_parameter(self.parent.AP.MaxDeceleration, max_deceleration)
 
         def get_break_velocity(self):
             """
@@ -92,7 +91,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: break velocity
             """
-            return self.parent.get_axis_parameter(self.parent.APs.BreakVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.BreakVelocity)
 
         def set_break_velocity(self, break_velocity):
             """
@@ -102,7 +101,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             break_velocity: break velocity 
             """
-            self.parent.set_axis_parameter(self.parent.APs.BreakVelocity, break_velocity)
+            self.parent.set_axis_parameter(self.parent.AP.BreakVelocity, break_velocity)
 
         def get_final_deceleration(self):
             """
@@ -111,7 +110,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: final deceleration
             """
-            return self.parent.get_axis_parameter(self.parent.APs.FinalDeceleration)
+            return self.parent.get_axis_parameter(self.parent.AP.FinalDeceleration)
 
         def set_final_deceleration(self, final_deceleration):
             """
@@ -121,7 +120,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             final_deceleration: final deceleration
             """
-            self.parent.set_axis_parameter(self.parent.APs.FinalDeceleration, final_deceleration)
+            self.parent.set_axis_parameter(self.parent.AP.FinalDeceleration, final_deceleration)
 
         def get_stop_velocity(self):
             """
@@ -130,7 +129,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: stop velocity 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.StopVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.StopVelocity)
 
         def set_stop_velocity(self, stop_velocity):
             """
@@ -140,7 +139,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             stop_velocity: stop velocity
             """
-            self.parent.set_axis_parameter(self.parent.APs.StopVelocity, stop_velocity)
+            self.parent.set_axis_parameter(self.parent.AP.StopVelocity, stop_velocity)
 
         def get_stop_deceleration(self):
             """
@@ -149,7 +148,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
 
             Returns: stop deceleration 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.StopDeceleration)
+            return self.parent.get_axis_parameter(self.parent.AP.StopDeceleration)
 
         def set_stop_deceleration(self, stop_deceleration): 
             """
@@ -159,7 +158,7 @@ class SixPointRampModule(SixPointRamp, FeatureProvider):
             Parameters:
             stop_deceleration: stop deceleration
             """
-            self.parent.set_axis_parameter(self.parent.APs.StopDeceleration, stop_deceleration)
+            self.parent.set_axis_parameter(self.parent.AP.StopDeceleration, stop_deceleration)
         
     
         # Properties

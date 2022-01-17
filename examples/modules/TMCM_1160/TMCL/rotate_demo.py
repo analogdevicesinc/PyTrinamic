@@ -12,7 +12,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1160.TMCM_1160 import TMCM_1160
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
@@ -35,7 +35,7 @@ time.sleep(1);
 
 print("Doubling moved distance")
 Module_1160.moveBy(Module_1160.getActualPosition(), 500)
-Module_1160.getAxisParameter(Module_1160.APs.ActualPosition)
+Module_1160.getAxisParameter(Module_1160.AP.ActualPosition)
 while not(Module_1160.positionReached()):
     pass
 

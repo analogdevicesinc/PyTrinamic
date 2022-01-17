@@ -44,9 +44,9 @@ class TMCM_1670(TMCLModule):
             PIDModule.__init__(self)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.StatusFlags) & self.ENUMs.FLAG_POSITION_END
+            return self.get_axis_parameter(self.AP.StatusFlags) & self.ENUM.FLAG_POSITION_END
 
-        class APs:
+        class AP:
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2
@@ -129,7 +129,7 @@ class TMCM_1670(TMCLModule):
             MotorPoles                     = 253
             EnableDriver                   = 255
 
-        class ENUMs:
+        class ENUM:
             COMM_MODE_FOC_ENCODER          = 7
             COMM_MODE_FOC_CONTROLLED       = 8
 
@@ -138,7 +138,7 @@ class TMCM_1670(TMCLModule):
 
             FLAG_POSITION_END              = 0x00004000
 
-    class GPs:
+    class GP:
         SerialBaudRate      = 65
         SerialAddress       = 66
         CANBitRate          = 69
@@ -151,17 +151,17 @@ class TMCM_1670(TMCLModule):
         ProgramCounter      = 130
         TickTimer           = 132
 
-    class DIs:
+    class DI:
         REF_R       = 0
         REF_L       = 1
         IN_0        = 2
         ENABLE      = 3
 
-    class AINs:
+    class AIN:
         ADC_phase_A = 0
         ADC_phase_C = 1
         ADC_VSupply = 2
         ADC_Temp    = 3
 
-    class DOs:
+    class DO:
         OUT_0       = 0

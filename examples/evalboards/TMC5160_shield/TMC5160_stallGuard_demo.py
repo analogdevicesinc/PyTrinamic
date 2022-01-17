@@ -56,7 +56,7 @@ formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(messag
 consoleHandler.setFormatter(formatter)
 logger.addHandler(consoleHandler)
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
@@ -74,8 +74,8 @@ for shield in shields:
     logger.info(f"Initializing motor at shield {shield}.")
 
     logger.info("Rotating motor.")
-    shield.setAxisParameter(shield.APs.MaxCurrent, 0, args.current[0])
-    shield.setAxisParameter(shield.APs.MaxAcceleration, 0, args.acceleration[0])
+    shield.setAxisParameter(shield.AP.MaxCurrent, 0, args.current[0])
+    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, args.acceleration[0])
     shield.rotate(0, args.velocity[0])
 
     StallGuard(shield, sys.argv, logger).calibrate_zero()
@@ -90,11 +90,12 @@ def handle_key():
             logger.info("Resetting stall for all shields.")
             for shield in shields:
                 logger.info(f"Resetting stall for {shield}.")
-                shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, 0)
+                shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, 0)
                 time.sleep(1)
-                shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, args.threshold[0])
+                shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, args.threshold[0])
         elif ch == b'e':
             exit()
+
 
 t = Thread(target=handle_key)
 t.start()
@@ -103,13 +104,13 @@ t.start()
 while True:
     status = ""
     for shield in shields:
-        sgt = shield.getAxisParameter(shield.APs.LoadValue, 0)
+        sgt = shield.getAxisParameter(shield.AP.LoadValue, 0)
         status = status + f"Shield: {shield}, SGT: {sgt}\n"
     status = status + """
     Keyboard shortcuts:
     'r': Reset stall on all motors.
     'e': Exit the demo."""
-    os.system('cls' if os.name=='nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(status)
     time.sleep(0.1)
     if not t.isAlive():

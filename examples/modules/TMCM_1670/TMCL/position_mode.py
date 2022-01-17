@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1670
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 # please select your CAN adapter
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()
@@ -43,7 +43,7 @@ with myInterface:
     time.sleep(1.0)
 
     # use out_0 output for enable input (directly shortened)
-    module.set_digital_output(module.DOs.OUT_0)
+    module.set_digital_output(module.DO.OUT_0)
 
     # clear actual position
     motor.actual_position = 0

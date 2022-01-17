@@ -12,7 +12,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1260.TMCM_1260 import TMCM_1260
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
@@ -22,7 +22,7 @@ print("Preparing parameters")
 Module_1260.setMaxAcceleration(40000)
 Module_1260.setMaxCurrent(50)
 # Set moveBy() relative to the actual position
-Module_1260.setAxisParameter(Module_1260.APs.relative_positioning_option, 1)
+Module_1260.setAxisParameter(Module_1260.AP.relative_positioning_option, 1)
 
 print("Rotating")
 Module_1260.rotate(-20000)
@@ -36,7 +36,7 @@ time.sleep(1);
 
 print("Doubling moved distance")
 Module_1260.moveBy(Module_1260.getActualPosition(), 10000)
-Module_1260.getAxisParameter(Module_1260.APs.ActualPosition)
+Module_1260.getAxisParameter(Module_1260.AP.ActualPosition)
 while not(Module_1260.positionReached()):
     pass
 

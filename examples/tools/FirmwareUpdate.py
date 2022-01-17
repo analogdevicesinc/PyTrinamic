@@ -19,7 +19,7 @@ from PyTrinamic.TMCL import TMCL_Command
 # command.
 SERIAL_BOOT_TIMEOUT = 100
 # ################################ Preparation ##################################
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 if len(sys.argv) < 2:
     print("Usage:\n\tFirmwareUpdate.py HexFilePath [connection options]")

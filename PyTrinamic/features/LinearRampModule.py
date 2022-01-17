@@ -12,7 +12,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             self._hasRampEnable = False 
 
-            if hasattr(parent.APs, "EnableRamp"):
+            if hasattr(parent.AP, "EnableRamp"):
                 self._hasRampEnable = True
 
         def get_target_position(self):
@@ -22,7 +22,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: Target position for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.TargetPosition)
+            return self.parent.get_axis_parameter(self.parent.AP.TargetPosition)
 
         def set_target_position(self, position):
             """
@@ -32,7 +32,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Parameters:
             position: Target position.
             """
-            self.parent.set_axis_parameter(self.parent.APs.TargetPosition, position)
+            self.parent.set_axis_parameter(self.parent.AP.TargetPosition, position)
 
         def get_actual_position(self):
             """
@@ -41,7 +41,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: Actual position for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.ActualPosition)
+            return self.parent.get_axis_parameter(self.parent.AP.ActualPosition)
 
         def set_actual_position(self, position):
             """
@@ -51,7 +51,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Parameters:
             position: Actual position.
             """
-            self.parent.set_axis_parameter(self.parent.APs.ActualPosition, position)
+            self.parent.set_axis_parameter(self.parent.AP.ActualPosition, position)
 
         def get_target_velocity(self):
             """
@@ -60,7 +60,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: Target velocity for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.TargetVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.TargetVelocity)
 
         def set_target_velocity(self, velocity):
             """
@@ -70,7 +70,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Parameters:
             velocity: Target velocity.
             """
-            self.parent.set_axis_parameter(self.parent.APs.TargetVelocity, velocity)
+            self.parent.set_axis_parameter(self.parent.AP.TargetVelocity, velocity)
 
         def get_actual_velocity(self):
             """
@@ -79,7 +79,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: Actual velocity for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.ActualVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.ActualVelocity)
 
         def get_max_velocity(self):
             """
@@ -88,7 +88,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: Maximum positioning velocity for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.MaxVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.MaxVelocity)
 
         def set_max_velocity(self, velocity):
             """
@@ -98,7 +98,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Parameters:
             velocity: Maximum positioning velocity.
             """
-            self.parent.set_axis_parameter(self.parent.APs.MaxVelocity, velocity)
+            self.parent.set_axis_parameter(self.parent.AP.MaxVelocity, velocity)
 
         def get_max_acceleration(self):
             """
@@ -107,7 +107,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
             Returns: Maximum acceleration for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.MaxAcceleration)
+            return self.parent.get_axis_parameter(self.parent.AP.MaxAcceleration)
 
         def set_max_acceleration(self, acceleration):
             """
@@ -117,7 +117,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Parameters:
             acceleration: Maximum acceleration.
             """
-            self.parent.set_axis_parameter(self.parent.APs.MaxAcceleration, acceleration)
+            self.parent.set_axis_parameter(self.parent.AP.MaxAcceleration, acceleration)
         
         def set_ramp_enabled(self, enabled):
             """
@@ -128,7 +128,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             enabled: ramp enable
             """
             if self._hasRampEnable:
-                self.parent.set_axis_parameter(self.parent.APs.EnableRamp, enabled)
+                self.parent.set_axis_parameter(self.parent.AP.EnableRamp, enabled)
 
         def get_ramp_enabled(self):
             """
@@ -138,7 +138,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
             Returns: ramp enable
             """
             if self._hasRampEnable:
-                return self.parent.get_axis_parameter(self.parent.APs.EnableRamp)
+                return self.parent.get_axis_parameter(self.parent.AP.EnableRamp)
             else:
                 return None
 
@@ -184,7 +184,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Target position for this axis.
         """
-        return self.get_axis_parameter(self.APs.TargetPosition, True)
+        return self.get_axis_parameter(self.AP.TargetPosition, True)
 
     def set_target_position(self, position):
         """
@@ -194,7 +194,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         Parameters:
         position: Target position.
         """
-        self.set_axis_parameter(self.APs.TargetPosition, position)
+        self.set_axis_parameter(self.AP.TargetPosition, position)
 
     def get_actual_position(self):
         """
@@ -203,7 +203,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Actual position for this axis.
         """
-        return self.get_axis_parameter(self.APs.ActualPosition, True)
+        return self.get_axis_parameter(self.AP.ActualPosition, True)
 
     def set_actual_position(self, position):
         """
@@ -213,7 +213,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         Parameters:
         position: Actual position.
         """
-        self.set_axis_parameter(self.APs.ActualPosition, position)
+        self.set_axis_parameter(self.AP.ActualPosition, position)
 
     def get_target_velocity(self):
         """
@@ -222,7 +222,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Target velocity for this axis.
         """
-        return self.get_axis_parameter(self.APs.TargetVelocity, True)
+        return self.get_axis_parameter(self.AP.TargetVelocity, True)
 
     def set_target_velocity(self, velocity):
         """
@@ -232,7 +232,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         Parameters:
         velocity: Target velocity.
         """
-        self.set_axis_parameter(self.APs.TargetVelocity, velocity)
+        self.set_axis_parameter(self.AP.TargetVelocity, velocity)
 
     def get_actual_velocity(self):
         """
@@ -241,7 +241,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Actual velocity for this axis.
         """
-        return self.get_axis_parameter(self.APs.ActualVelocity, True)
+        return self.get_axis_parameter(self.AP.ActualVelocity, True)
 
     def get_max_velocity(self):
         """
@@ -250,7 +250,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Maximum positioning velocity for this axis.
         """
-        return self.get_axis_parameter(self.APs.MaxVelocity)
+        return self.get_axis_parameter(self.AP.MaxVelocity)
 
     def set_max_velocity(self, velocity):
         """
@@ -260,7 +260,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         Parameters:
         velocity: Maximum positioning velocity.
         """
-        self.set_axis_parameter(self.APs.MaxVelocity, velocity)
+        self.set_axis_parameter(self.AP.MaxVelocity, velocity)
 
     def get_max_acceleration(self):
         """
@@ -269,7 +269,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
 
         Returns: Maximum acceleration for this axis.
         """
-        return self.get_axis_parameter(self.APs.MaxAcceleration)
+        return self.get_axis_parameter(self.AP.MaxAcceleration)
 
     def set_max_acceleration(self, acceleration):
         """
@@ -279,7 +279,7 @@ class LinearRampModule(LinearRamp, FeatureProvider):
         Parameters:
         acceleration: Maximum acceleration.
         """
-        self.set_axis_parameter(self.APs.MaxAcceleration, acceleration)
+        self.set_axis_parameter(self.AP.MaxAcceleration, acceleration)
 
     # Motor-global properties
     target_position = property(get_target_position, set_target_position)

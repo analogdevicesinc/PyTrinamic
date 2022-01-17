@@ -13,7 +13,7 @@ Created on 30.03.2020
 import PyTrinamic
 from PyTrinamic.evalboards.TMC7300_eval import TMC7300_eval
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()

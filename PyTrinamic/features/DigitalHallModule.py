@@ -13,52 +13,52 @@ class DigitalHallModule(DigitalHall, FeatureProvider):
             self._hasHallSensorOffset = False
             self._hasHallSensorInterpolation = False
 
-            if hasattr(parent.APs, "HallSensorDirection"):
+            if hasattr(parent.AP, "HallSensorDirection"):
                 self._hasHallSensorDirection = True
-            if hasattr(parent.APs, "HallSensorPolarity"):
+            if hasattr(parent.AP, "HallSensorPolarity"):
                 self._hasHallSensorPolarity = True
-            if hasattr(parent.APs, "HallSensorOffset"):
+            if hasattr(parent.AP, "HallSensorOffset"):
                 self._hasHallSensorOffset = True
-            if hasattr(parent.APs, "HallSensorInterpolation"):
+            if hasattr(parent.AP, "HallSensorInterpolation"):
                 self._hasHallSensorInterpolation = True
 
         def set_direction(self, direction):
             if self._hasHallSensorDirection:
-                self.parent.set_axis_parameter(self.parent.APs.HallSensorDirection, direction)
+                self.parent.set_axis_parameter(self.parent.AP.HallSensorDirection, direction)
 
         def get_direction(self):
             if self._hasHallSensorDirection:
-                return self.parent.get_axis_parameter(self.parent.APs.HallSensorDirection)
+                return self.parent.get_axis_parameter(self.parent.AP.HallSensorDirection)
             else:
                 return None
 
         def set_polarity(self, invert):
             if self._hasHallSensorPolarity:
-                self.parent.set_axis_parameter(self.parent.APs.HallSensorPolarity, invert)
+                self.parent.set_axis_parameter(self.parent.AP.HallSensorPolarity, invert)
 
         def get_polarity(self):
             if self._hasHallSensorPolarity:
-                return self.parent.get_axis_parameter(self.parent.APs.HallSensorPolarity)
+                return self.parent.get_axis_parameter(self.parent.AP.HallSensorPolarity)
             else:
                 return None
 
         def set_offset(self, offset):
             if self._hasHallSensorOffset:
-                self.parent.set_axis_parameter(self.parent.APs.HallSensorOffset, offset)
+                self.parent.set_axis_parameter(self.parent.AP.HallSensorOffset, offset)
             
         def get_offset(self):
             if self._hasHallSensorOffset:
-                return self.parent.get_axis_parameter(self.parent.APs.HallSensorOffset)
+                return self.parent.get_axis_parameter(self.parent.AP.HallSensorOffset)
             else:
                 return None
 
         def set_interpolation(self, enable_interpolation):
             if self._hasHallSensorInterpolation:
-                self.parent.set_axis_parameter(self.parent.APs.HallSensorInterpolation, enable_interpolation)
+                self.parent.set_axis_parameter(self.parent.AP.HallSensorInterpolation, enable_interpolation)
             
         def get_interpolation(self):
             if self._hasHallSensorInterpolation:
-                return self.parent.get_axis_parameter(self.parent.APs.HallSensorInterpolation)
+                return self.parent.get_axis_parameter(self.parent.AP.HallSensorInterpolation)
             else:
                 return None
 

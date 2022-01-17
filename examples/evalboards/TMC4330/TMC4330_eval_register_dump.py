@@ -13,7 +13,7 @@ import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards.TMC4330_eval import TMC4330_eval
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

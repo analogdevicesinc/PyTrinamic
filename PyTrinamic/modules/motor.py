@@ -1,6 +1,7 @@
 class Motor(object):
-    "TMCL compatible motor instance."
-
+    """
+    TMCL compatible motor instance.
+    """
     def __init__(self, module, axis):
         """
         Constructor for the TMCL motor instance.

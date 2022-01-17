@@ -12,7 +12,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1276.TMCM_1276 import TMCM_1276
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
@@ -37,7 +37,7 @@ time.sleep(5);
 
 print("Doubling moved distance")
 Module_1276.moveBy(Module_1276.getActualPosition(), 50000)
-Module_1276.getAxisParameter(Module_1276.APs.ActualPosition)
+Module_1276.getAxisParameter(Module_1276.AP.ActualPosition)
 while not(Module_1276.positionReached()):
     pass
 

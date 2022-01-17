@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1640
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 myInterface = ConnectionManager().connect()
 
 with myInterface:
@@ -18,7 +18,7 @@ with myInterface:
     # drive configuration
     motor.DriveSetting.poles = 8
     motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_FOC_HALL
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_FOC_HALL
     motor.DriveSetting.target_reached_velocity = 500
     motor.DriveSetting.target_reached_distance = 5
     motor.DriveSetting.motor_halted_velocity = 5

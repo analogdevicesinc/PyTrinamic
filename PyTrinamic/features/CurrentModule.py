@@ -24,7 +24,7 @@ class CurrentModule(Current, FeatureProvider):
 
             Returns: Run current for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.RunCurrent)
+            return self.parent.get_axis_parameter(self.parent.AP.RunCurrent)
 
         def set_current_run(self, value):
             """
@@ -34,7 +34,7 @@ class CurrentModule(Current, FeatureProvider):
             Parameters:
             value: Target run current.
             """
-            self.parent.set_axis_parameter(self.parent.APs.RunCurrent, value)
+            self.parent.set_axis_parameter(self.parent.AP.RunCurrent, value)
 
         def get_current_standby(self):
             """
@@ -43,7 +43,7 @@ class CurrentModule(Current, FeatureProvider):
 
             Returns: Standby current for this axis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.StandbyCurrent)
+            return self.parent.get_axis_parameter(self.parent.AP.StandbyCurrent)
 
         def set_current_standby(self, value):
             """
@@ -53,7 +53,7 @@ class CurrentModule(Current, FeatureProvider):
             Parameters:
             value: Target standby current.
             """
-            self.parent.set_axis_parameter(self.parent.APs.StandbyCurrent, value)
+            self.parent.set_axis_parameter(self.parent.AP.StandbyCurrent, value)
 
         # Properties
         run = property(get_current_run, set_current_run)

@@ -1,4 +1,4 @@
-from PyTrinamic.features.Feature import Feature
+from PyTrinamic.features import Feature
 
 
 class DriveSetting(Feature):
@@ -59,15 +59,6 @@ class DriveSetting(Feature):
         """
         raise NotImplemented
     
-    def get_max_current(self):
-        """
-        Gets motor maximum current that is used for this axis.
-        This value is stored in the  MaxCurrent axis parameter.
-
-        Returns: maximum current
-        """
-        raise NotImplementedError()
-
     def set_max_current(self, current):
         """
         Sets motor maximum current that is used for this axis.
@@ -77,7 +68,16 @@ class DriveSetting(Feature):
         current: maximum current
         """
         raise NotImplementedError()
-    
+
+    def get_max_current(self):
+        """
+        Gets motor maximum current that is used for this axis.
+        This value is stored in the  MaxCurrent axis parameter.
+
+        Returns: maximum current
+        """
+        raise NotImplementedError()
+
     def set_position_sensor(self, sensor):
         """
         Sets if position sensor velocity for this axis.

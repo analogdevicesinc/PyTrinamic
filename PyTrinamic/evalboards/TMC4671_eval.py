@@ -17,7 +17,7 @@ class TMC4671_eval(TMC4671):
     def read_register(self, register_address, signed=False):
         return self.connection.readMC(register_address, signed=signed)
 
-    class APs:
+    class AP:
         MaxVelocity                    = 4
         Acceleration                   = 11
         EnableRamp                     = 12

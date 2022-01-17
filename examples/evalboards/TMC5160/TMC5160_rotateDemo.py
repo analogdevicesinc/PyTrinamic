@@ -16,7 +16,7 @@ connectionManager = ConnectionManager()
 
 myInterface = connectionManager.connect()
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 TMC5160 = TMC5160_eval(myInterface)
 TMC5160.showChipInfo()

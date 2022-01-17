@@ -8,6 +8,7 @@ import struct
 
 _PACKAGE_STRUCTURE = ">BBBBIB"
 
+
 class TMCL(object):
     @staticmethod
     def validate_host_id(host_id):

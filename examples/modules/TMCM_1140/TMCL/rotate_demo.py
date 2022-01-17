@@ -4,7 +4,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1140
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 connectionManager = ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200")
 
 with connectionManager.connect() as myInterface: 

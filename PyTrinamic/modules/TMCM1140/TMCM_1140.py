@@ -46,9 +46,9 @@ class TMCM_1140(TMCLModule):
             CoolStepModule.__init__(self)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
+            return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
-        class APs: 
+        class AP:
             TargetPosition              =  0
             ActualPosition              =  1
             TargetVelocity              =  2

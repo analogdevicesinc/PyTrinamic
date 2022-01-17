@@ -56,7 +56,7 @@ formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(messag
 consoleHandler.setFormatter(formatter)
 logger.addHandler(consoleHandler)
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
@@ -73,8 +73,8 @@ for shield in shields:
     logger.info(f"Initializing motor at shield {shield}.")
 
     logger.info("Rotating motor.")
-    shield.setAxisParameter(shield.APs.MaxCurrent, 0, args.current[0])
-    shield.setAxisParameter(shield.APs.MaxAcceleration, 0, args.acceleration[0])
+    shield.setAxisParameter(shield.AP.MaxCurrent, 0, args.current[0])
+    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, args.acceleration[0])
     shield.rotate(0, args.velocity[0])
 
     CoolStep(shield, sys.argv, logger).calibrate()
@@ -95,8 +95,8 @@ t.start()
 while True:
     status = ""
     for shield in shields:
-        sgt = shield.getAxisParameter(shield.APs.LoadValue, 0)
-        status = status + f"Shield: {shield}, SGT: {sgt}, Current: {shield.getAxisParameter(shield.APs.smartEnergyActualCurrent, 0)}\n"
+        sgt = shield.getAxisParameter(shield.AP.LoadValue, 0)
+        status = status + f"Shield: {shield}, SGT: {sgt}, Current: {shield.getAxisParameter(shield.AP.smartEnergyActualCurrent, 0)}\n"
     status = status + """
     Keyboard shortcuts:
     'e': Exit the demo."""

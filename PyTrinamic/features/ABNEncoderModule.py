@@ -9,26 +9,26 @@ class ABNEncoderModule(ABNEncoder, FeatureProvider):
             self.parent = parent
 
         def set_resolution(self, steps):
-            self.parent.set_axis_parameter(self.parent.APs.EncoderSteps, steps)
+            self.parent.set_axis_parameter(self.parent.AP.EncoderSteps, steps)
                                                 
         def get_resolution(self):
-            return self.parent.get_axis_parameter(self.parent.APs.EncoderSteps)
+            return self.parent.get_axis_parameter(self.parent.AP.EncoderSteps)
 
         def set_direction(self, direction):
-            self.parent.set_axis_parameter(self.parent.APs.EncoderDirection, direction)
+            self.parent.set_axis_parameter(self.parent.AP.EncoderDirection, direction)
 
         def get_direction(self):
-            return self.parent.get_axis_parameter(self.parent.APs.EncoderDirection)
+            return self.parent.get_axis_parameter(self.parent.AP.EncoderDirection)
 
         def set_init_mode(self, mode):
-            self.parent.set_axis_parameter(self.parent.APs.EncoderInitMode, mode)
+            self.parent.set_axis_parameter(self.parent.AP.EncoderInitMode, mode)
 
         def get_init_mode(self):
-            return self.parent.get_axis_parameter(self.parent.APs.EncoderInitMode)
+            return self.parent.get_axis_parameter(self.parent.AP.EncoderInitMode)
         
         def clear_once_on_n_channel(self):
-            self.parent.set_axis_parameter(self.parent.APs.ClearOnce, 1)
-            self.parent.set_axis_parameter(self.parent.APs.ClearOnNull, 1)
+            self.parent.set_axis_parameter(self.parent.AP.ClearOnce, 1)
+            self.parent.set_axis_parameter(self.parent.AP.ClearOnNull, 1)
         
         # Properties
         resolution = property(get_resolution, set_resolution)

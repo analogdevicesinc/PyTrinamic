@@ -12,7 +12,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM3110.TMCM_3110 import TMCM_3110
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
@@ -35,7 +35,7 @@ time.sleep(1);
 
 print("Doubling moved distance")
 Module_3110.moveBy(motor, Module_3110.getActualPosition(motor), 500)
-Module_3110.getAxisParameter(Module_3110.APs.ActualPosition, motor)
+Module_3110.getAxisParameter(Module_3110.AP.ActualPosition, motor)
 while not(Module_3110.positionReached(motor)):
     pass
 

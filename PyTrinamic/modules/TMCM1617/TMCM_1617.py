@@ -45,9 +45,9 @@ class TMCM_1617(TMCLModule):
             PIDModule.__init__(self)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
+            return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
-        class APs:
+        class AP:
             AdcPhaseA                       = 0
             AdcPhaseB                       = 1
             CurrentPhaseA                   = 2

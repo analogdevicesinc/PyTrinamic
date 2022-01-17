@@ -16,7 +16,8 @@ class SRampModule(SRamp, FeatureProvider):
 
             Returns: ramp type 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.RampType)
+            return self.parent.get_axis_parameter(self.parent.AP.RampType)
+
         def set_ramp_type(self, ramp_type):
             """
             Sets if Ramp that is used for this axis.
@@ -25,7 +26,8 @@ class SRampModule(SRamp, FeatureProvider):
             Parameters:
             ramp_type: ramp type value 
             """
-            self.parent.set_axis_parameter(self.parent.APs.RampType, ramp_type)
+            self.parent.set_axis_parameter(self.parent.AP.RampType, ramp_type)
+
         def get_bow_1(self):
             """
             Gets the bow 1 value for the S-Ramp of this axis.
@@ -33,7 +35,8 @@ class SRampModule(SRamp, FeatureProvider):
 
             Returns: Bow 1 value 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.Bow1)
+            return self.parent.get_axis_parameter(self.parent.AP.Bow1)
+
         def set_bow_1(self, pps):
             """
             Sets the bow 1 value for the S-Ramp of this axis.
@@ -42,7 +45,8 @@ class SRampModule(SRamp, FeatureProvider):
             Parameters:
             pps: Bow 1 value
             """
-            self.parent.set_axis_parameter(self.parent.APs.Bow1,pps)
+            self.parent.set_axis_parameter(self.parent.AP.Bow1, pps)
+
         def get_bow_2(self):
             """
             Gets the bow 1 value for the S-Ramp of this axis.
@@ -50,7 +54,8 @@ class SRampModule(SRamp, FeatureProvider):
 
             Returns: Bow 1 value 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.Bow2)
+            return self.parent.get_axis_parameter(self.parent.AP.Bow2)
+
         def set_bow_2(self, pps):
             """
             Sets the bow 2 value for the S-Ramp of this axis.
@@ -59,7 +64,8 @@ class SRampModule(SRamp, FeatureProvider):
             Parameters:
             pps: Bow 2 value
             """
-            self.parent.set_axis_parameter(self.parent.APs.Bow2,pps)
+            self.parent.set_axis_parameter(self.parent.AP.Bow2,pps)
+
         def get_bow_3(self):
             """
             Gets the bow 3 value for the S-Ramp of this axis.
@@ -67,7 +73,8 @@ class SRampModule(SRamp, FeatureProvider):
 
             Returns: Bow 3 value 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.Bow3)
+            return self.parent.get_axis_parameter(self.parent.AP.Bow3)
+
         def set_bow_3(self, pps):
             """
             Sets the bow 3 value for the S-Ramp of this axis.
@@ -76,7 +83,8 @@ class SRampModule(SRamp, FeatureProvider):
             Parameters:
             pps: Bow 3 value
             """
-            self.parent.set_axis_parameter(self.parent.APs.Bow3,pps)
+            self.parent.set_axis_parameter(self.parent.AP.Bow3, pps)
+
         def get_bow_4(self):
             """
             Gets the bow 4 value for the S-Ramp of this axis.
@@ -84,7 +92,8 @@ class SRampModule(SRamp, FeatureProvider):
 
             Returns: Bow 4 value 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.Bow4)
+            return self.parent.get_axis_parameter(self.parent.AP.Bow4)
+
         def set_bow_4(self, pps):
             """
             Sets the bow 4 value for the S-Ramp of this axis.
@@ -93,7 +102,7 @@ class SRampModule(SRamp, FeatureProvider):
             Parameters:
             pps: Bow 4 value
             """
-            self.parent.set_axis_parameter(self.parent.APs.Bow4,pps)
+            self.parent.set_axis_parameter(self.parent.AP.Bow4, pps)
 
         # Properties
         ramp_type = property(get_ramp_type, set_ramp_type)

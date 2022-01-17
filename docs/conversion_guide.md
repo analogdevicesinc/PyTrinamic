@@ -66,8 +66,8 @@ eval.write_register(0, eval.IC.REGISTERS.X, 42)
 Previous:
 
 ```Python
-module.axisParameter(axis, module.APs.X)
-module.setAxisParameter(axis, module.APs.X, 42)
+module.axisParameter(axis, module.AP.X)
+module.setAxisParameter(axis, module.AP.X, 42)
 ```
 
 Now there are several ways of accessing axis parameters, each for a specific use case.
@@ -76,11 +76,11 @@ All of the below statements for setting/getting axis parameters are equivalent.
 
 ```Python
 # Getting axis parameter directly from module
-module.get_axis_parameter(module.MOTORS[axis].APs.X, axis)
+module.get_axis_parameter(module.MOTORS[axis].AP.X, axis)
 
 # Getting axis parameter from the specific axis/motor
 # motor = module.MOTORS[0]
-motor.get_axis_parameter(motor.APs.X)
+motor.get_axis_parameter(motor.AP.X)
 
 # Getting the axis parameter as grouped feature property
 # motor = module.MOTORS[0]
@@ -93,11 +93,11 @@ motor.X
 
 ```Python
 # Setting axis parameter directly on module
-module.set_axis_parameter(module.MOTORS[axis].APs.X, axis, 42)
+module.set_axis_parameter(module.MOTORS[axis].AP.X, axis, 42)
 
 # Setting axis parameter for the specific axis/motor
 # motor = module.MOTORS[0]
-motor.set_axis_parameter(motor.APs.X, 42)
+motor.set_axis_parameter(motor.AP.X, 42)
 
 # Setting the axis parameter as grouped feature property
 # motor = module.MOTORS[0]

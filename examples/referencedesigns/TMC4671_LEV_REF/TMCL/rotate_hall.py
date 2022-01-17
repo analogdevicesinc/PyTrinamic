@@ -7,7 +7,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.referencedesigns import TMC4671_LEV_REF
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 # please select your CAN adapter
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()
@@ -23,10 +23,10 @@ with myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration
-    motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
     motor.DriveSetting.pole_pairs = 4
     motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DIGITAL_HALL
     motor.DriveSetting.target_reached_distance = 5
     motor.DriveSetting.target_reached_velocity = 500
     print(motor.DriveSetting)
@@ -57,6 +57,6 @@ with myInterface:
     time.sleep(3)
 
     # power of
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DISABLED
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
 
 print("\nReady.")

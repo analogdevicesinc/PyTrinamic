@@ -13,7 +13,7 @@ from PyTrinamic.evalboards.TMC2590_eval import TMC2590_eval
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 TMC2590 = TMC2590_eval(myInterface)
 TMC2590.showChipInfo()

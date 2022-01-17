@@ -42,7 +42,7 @@ DELAY        = 1
 CHANGE_DIR   = True
 ################################################################################
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 # Initialization
 

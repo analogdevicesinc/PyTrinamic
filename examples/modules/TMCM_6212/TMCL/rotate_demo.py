@@ -12,7 +12,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM6212.TMCM_6212 import TMCM_6212
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 connectionManager = ConnectionManager() # If no Interface is selected , the default interface is usb_tmcl
 myInterface = connectionManager.connect()
@@ -37,7 +37,7 @@ time.sleep(5);
 
 print("Doubling moved distance")
 Module_6212.moveBy(Module_6212.getActualPosition(), 50000)
-Module_6212.getAxisParameter(Module_6212.APs.ActualPosition)
+Module_6212.getAxisParameter(Module_6212.AP.ActualPosition)
 while not(Module_6212.positionReached()):
     pass
 

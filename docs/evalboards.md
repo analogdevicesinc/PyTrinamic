@@ -39,7 +39,7 @@ con = UsbTmclInterface()
 eval = TMC5130_eval(con)
 axis = 0
 
-eval.set_axis_parameter(eval.MOTORS[axis].APs.X, axis, 42)
+eval.set_axis_parameter(eval.MOTORS[axis].AP.X, axis, 42)
 eval.rotate(axis, 1000)
 eval.stop(axis)
 
@@ -72,7 +72,7 @@ eval = TMC5130_eval(con)
 motor = eval.MOTORS[0]
 
 # Feature parameters
-motor.set_axis_parameter(motor.APs.X, 42)
+motor.set_axis_parameter(motor.AP.X, 42)
 motor.FeatureX.set_x(42)
 motor.FeatureX.x = 42
 

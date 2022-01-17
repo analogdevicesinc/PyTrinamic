@@ -4,7 +4,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1140
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 connectionManager = ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200")
 
 with connectionManager.connect() as myInterface: 
@@ -21,6 +21,7 @@ with connectionManager.connect() as myInterface:
     motor.DriveSetting.boost_current = 0
     motor.DriveSetting.microstep_resolution = motor.ENUMs.MicrostepResolution256Microsteps
     print(motor.DriveSetting)
+
     # preparing linear ramp settings
     motor.max_acceleration = 2000
     motor.max_velocity = 2000

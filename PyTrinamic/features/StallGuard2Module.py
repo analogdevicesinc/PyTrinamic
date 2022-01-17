@@ -4,7 +4,9 @@ import time
 
 
 class StallGuard2Module(StallGuard2, FeatureProvider):
-    "StallGuard2 feature implementation for modules"
+    """
+    StallGuard2 feature implementation for modules
+    """
 
     class __GROUPING(StallGuard2, FeatureProvider):
 
@@ -28,7 +30,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             0 - Disable StallGuard2 filter
             1 - Enable StallGuard2 filter
             """
-            self.parent.set_axis_parameter(self.parent.APs.SG2FilterEnable, filter)
+            self.parent.set_axis_parameter(self.parent.AP.SG2FilterEnable, filter)
 
         def set_threshold(self, threshold):
             """
@@ -38,7 +40,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             Parameters:
             threshold: StallGuard2 threshold. Default 0. Lower values mean higher sensibility.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SG2Threshold, threshold)
+            self.parent.set_axis_parameter(self.parent.AP.SG2Threshold, threshold)
 
         def set_stop_velocity(self, velocity):
             """
@@ -49,7 +51,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             Parameters:
             velocity: Velocity threshold.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SmartEnergyStallVelocity, velocity)
+            self.parent.set_axis_parameter(self.parent.AP.SmartEnergyStallVelocity, velocity)
 
         def get_filter(self):
             """
@@ -60,7 +62,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             0 - StallGuard2 filter disabled
             1 - StallGuard2 filter enabled
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SG2FilterEnable)
+            return self.parent.get_axis_parameter(self.parent.AP.SG2FilterEnable)
 
         def get_threshold(self):
             """
@@ -69,7 +71,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
 
             Returns: StallGuard2 threshold.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SG2Threshold)
+            return self.parent.get_axis_parameter(self.parent.AP.SG2Threshold)
 
         def get_stop_velocity(self):
             """
@@ -79,7 +81,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
 
             Returns: Velocity threshold.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SmartEnergyStallVelocity)
+            return self.parent.get_axis_parameter(self.parent.AP.SmartEnergyStallVelocity)
 
         def get_load_value(self):
             """
@@ -88,9 +90,9 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
 
             Returns: LoadValue
             """
-            return self.parent.get_axis_parameter(self.parent.APs.LoadValue)
+            return self.parent.get_axis_parameter(self.parent.AP.LoadValue)
 
-        def calibrate_zero(self, threshold = 1):
+        def calibrate_zero(self, threshold=1):
             """
             Interactive calibration function. 
             Takes threshold as optional input. 
@@ -106,14 +108,14 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             input("Press enter to continue ...")
 
             for i in range(3):
-                print("Starting calibration in "+ str(3-i) +"seconds.")
+                print("Starting calibration in " + str(3-i) + "seconds.")
                 time.sleep(1.0)
 
             print("Calibrating SGT.")
             sgthresh = 0
             sgt = 0
             while((sgt == 0) and (sgthresh < 64)):
-                print("SGT too low, increasing threshold to "+ str(sgthresh))
+                print("SGT too low, increasing threshold to " + str(sgthresh))
                 self.parent.StallGuard2.threshold = sgthresh
                 sgthresh = sgthresh + 1
                 time.sleep(0.2)
@@ -126,7 +128,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             input("Press enter to continue ...")
             self.parent.StallGuard2.stop_velocity = self.__threshold
 
-        def calibrate_middle(self, threshold = 1):
+        def calibrate_middle(self, threshold=1):
             """
             Interactive calibration function. 
             Takes threshold as optional input. 
@@ -145,7 +147,7 @@ class StallGuard2Module(StallGuard2, FeatureProvider):
             sgthresh = 0
             sgt = 0
             while((sgt < 450) and (sgthresh < 64)):
-                print("SGT too low, increasing threshold to "+ str(sgthresh))
+                print("SGT too low, increasing threshold to " + str(sgthresh))
                 self.parent.StallGuard2.threshold = sgthresh
                 sgthresh = sgthresh + 1
                 time.sleep(0.1)

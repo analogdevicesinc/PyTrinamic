@@ -15,7 +15,7 @@ from PyTrinamic.evalboards.TMC7300_eval import TMC7300_eval
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 TMC7300 = TMC7300_eval(myInterface)
 TMC7300.showChipInfo()

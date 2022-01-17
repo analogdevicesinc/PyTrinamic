@@ -14,7 +14,7 @@ import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()

@@ -4,7 +4,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.evalboards import TMC4671_eval
 from PyTrinamic.evalboards import TMC6100_eval
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 myInterface = ConnectionManager().connect()
 # myInterface.enable_debug(True)

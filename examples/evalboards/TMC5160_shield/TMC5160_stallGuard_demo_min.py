@@ -25,7 +25,7 @@ import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
@@ -36,19 +36,19 @@ shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
 # Initialize all attached shields
 for shield in shields:
     print("Rotating motor.")
-    shield.setAxisParameter(shield.APs.MaxCurrent, 0, CURRENT_MAX)
-    shield.setAxisParameter(shield.APs.MaxAcceleration, 0, ACCELERATION)
+    shield.setAxisParameter(shield.AP.MaxCurrent, 0, CURRENT_MAX)
+    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, ACCELERATION)
     shield.rotate(0, VELOCITY)
 
-    shield.setAxisParameter(shield.APs.SG2Threshold, 0, THRESHOLD_SG)
-    shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, 0)
+    shield.setAxisParameter(shield.AP.SG2Threshold, 0, THRESHOLD_SG)
+    shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, 0)
     time.sleep(1)
-    shield.setAxisParameter(shield.APs.smartEnergyStallVelocity, 0, THRESHOLD_VELOCITY)
+    shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, THRESHOLD_VELOCITY)
 
 # Loop over all attached shields
 while True:
     for shield in shields:
-        print(f"Shield: {shield}, SGT: {shield.getAxisParameter(shield.APs.LoadValue, 0)}")
+        print(f"Shield: {shield}, SGT: {shield.getAxisParameter(shield.AP.LoadValue, 0)}")
     time.sleep(0.1)
 
 # Demo exit, stop all motors

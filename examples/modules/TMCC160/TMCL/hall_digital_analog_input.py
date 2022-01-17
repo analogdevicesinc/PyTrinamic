@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCC_160
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 # please select your CAN adapter
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()
@@ -21,7 +21,7 @@ with myInterface:
     # drive configuration
     motor.DriveSetting.poles = 8
     motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_FOC_HALL
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_FOC_HALL
     motor.DriveSetting.target_reached_velocity = 500
     motor.DriveSetting.target_reached_distance = 5
     motor.DriveSetting.motor_halted_velocity = 5
@@ -59,7 +59,7 @@ with myInterface:
     # wait for input_0
     while module.get_digital_input(module.DIs.REF_R) == 1:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
-              motor.actual_velocity, motor.get_axis_parameter(motor.APs.ActualTorque, True)))
+              motor.actual_velocity, motor.get_axis_parameter(motor.AP.ActualTorque, True)))
         time.sleep(0.2)
 
     print("\nRotate motor in counterclockwise direction...")
@@ -70,7 +70,7 @@ with myInterface:
     # wait for input_1
     while module.get_digital_input(module.DIs.REF_L) == 1:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
-              motor.actual_velocity, motor.get_axis_parameter(motor.APs.ActualTorque, True)))
+              motor.actual_velocity, motor.get_axis_parameter(motor.AP.ActualTorque, True)))
         time.sleep(0.2)
 
     # stop motor

@@ -61,7 +61,7 @@ con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)
 axis = 0
 
-module.set_axis_parameter(module.MOTORS[axis].APs.X, axis, 42)
+module.set_axis_parameter(module.MOTORS[axis].AP.X, axis, 42)
 module.rotate(axis, 1000)
 module.stop(axis)
 
@@ -98,7 +98,7 @@ module = TMCM_1270(con, module_id=1)
 motor = module.MOTORS[0]
 
 # Feature parameters
-motor.set_axis_parameter(motor.APs.X, 42)
+motor.set_axis_parameter(motor.AP.X, 42)
 motor.FeatureX.set_x(42)
 motor.FeatureX.x = 42
 

@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1630
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 # please select a CAN or USB interface
 
@@ -33,7 +33,7 @@ with myInterface:
     # encoder configuration
     motor.ABNEncoder.resolution = 4096
     motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
+    motor.ABNEncoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
 
     # motion settings
@@ -53,7 +53,7 @@ with myInterface:
     time.sleep(1.0)
 
     # set commutation mode to FOC based on encoder feedback
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_FOC_ENCODER
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_FOC_ENCODER
     print(motor.DriveSetting)
 
     # clear actual position

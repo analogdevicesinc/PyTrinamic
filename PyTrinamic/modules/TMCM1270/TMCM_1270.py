@@ -4,7 +4,7 @@ Created on 03.12.2019
 @author: JM
 '''
 
-from PyTrinamic.modules.TMCLModule import TMCLModule
+from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
@@ -100,9 +100,9 @@ class TMCM_1270(TMCLModule):
             1, if target position has been reached.
             0, if target position has not been reached.
             """
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
+            return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
-        class APs():
+        class AP():
             "Axis parameter map for this axis."
             TargetPosition                 = 0
             ActualPosition                 = 1

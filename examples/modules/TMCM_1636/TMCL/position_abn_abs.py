@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1636
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 # connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
@@ -19,7 +19,7 @@ with connectionManager.connect() as myInterface:
     # config abn encoder 
     motor.ABNEncoder.resolution = 4096
     motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
+    motor.ABNEncoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
 
     # config absolute encoder 
@@ -30,8 +30,8 @@ with connectionManager.connect() as myInterface:
     print(motor.AbsoluteEncoder)
 
     # config drive mode 
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_ABN_ENCODER
-    motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_ABS
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
+    motor.DriveSetting.position_sensor = motor.ENUM.POS_SELECTION_ABS
     motor.DriveSetting.open_loop_current = 1000
     print(motor.DriveSetting)
     time.sleep(1)
@@ -52,7 +52,7 @@ with connectionManager.connect() as myInterface:
               + str(motor.LinearRamp.actual_position))
         time.sleep(0.2)
 
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DISABLED
-    motor.DriveSetting.position_sensor = motor.ENUMs.POS_SELECTION_SAME
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
+    motor.DriveSetting.position_sensor = motor.ENUM.POS_SELECTION_SAME
 
 print("\nReady.")

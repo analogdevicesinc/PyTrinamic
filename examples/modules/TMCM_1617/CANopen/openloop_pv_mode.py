@@ -14,7 +14,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMCM1617.TMCM_1617 import TMCM_1617
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 " choose the right bustype before starting the script "
 #connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType = "CANopen")

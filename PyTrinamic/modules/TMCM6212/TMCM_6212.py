@@ -4,11 +4,11 @@ Created on 28.02.2020
 @author: JM
 '''
 
-from PyTrinamic.modules.TMCLModule import TMCLModule
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
 class TMCM_6212(TMCLModule):
 
-    class APs():
+    class AP:
         TargetPosition                 = 0
         ActualPosition                 = 1
         TargetVelocity                 = 2
@@ -87,10 +87,10 @@ class TMCM_6212(TMCLModule):
         PowerDownDelay                 = 214
         UnitMode                       = 255
 
-    class ENUMs():
+    class ENUM:
         pass
 
-    class GPs():
+    class GP:
         CANBitrate                    = 69
         CANSendId                     = 70
         CANReceiveId                  = 71

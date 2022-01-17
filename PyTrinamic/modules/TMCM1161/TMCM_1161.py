@@ -4,11 +4,11 @@ Created on 21.05.2019
 @author: LH
 '''
 
-from PyTrinamic.modules.TMCLModule import TMCLModule
+from PyTrinamic.modules.tmcl_module import TMCLModule
 
 class TMCM_1161(TMCLModule):
 
-    class APs():
+    class AP():
         TargetPosition                 = 0
         ActualPosition                 = 1
         TargetVelocity                 = 2

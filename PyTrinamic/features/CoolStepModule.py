@@ -4,8 +4,9 @@ import time
 
 
 class CoolStepModule(CoolStep, FeatureProvider):
-    "StallGuard2 feature implementation for modules"
-
+    """
+    StallGuard2 feature implementation for modules
+    """
     class __GROUPING(CoolStep, FeatureProvider):
 
         def __init__(self, parent):
@@ -26,7 +27,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             current: smartEnergy current minimum.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SEIMIN, current)
+            self.parent.set_axis_parameter(self.parent.AP.SEIMIN, current)
 
         def set_current_down_step(self, step):
             """
@@ -36,7 +37,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             step: smartEnergy current down step.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SECDS, step)
+            self.parent.set_axis_parameter(self.parent.AP.SECDS, step)
 
         def set_current_up_step(self, step):
             """
@@ -46,7 +47,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             step: smartEnergy current up step.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SECUS, step)
+            self.parent.set_axis_parameter(self.parent.AP.SECUS, step)
 
         def set_hysteresis(self, hysteresis):
             """
@@ -56,7 +57,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             hysteresis: smartEnergy hysteresis.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SmartEnergyHysteresis, hysteresis)
+            self.parent.set_axis_parameter(self.parent.AP.SmartEnergyHysteresis, hysteresis)
 
         def set_hysteresis_start(self, hysteresis_start):
             """
@@ -66,7 +67,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             hysteresis_start: smartEnergy hysteresis start .
             """
-            self.parent.set_axis_parameter(self.parent.APs.SmartEnergyHysteresisStart, hysteresis_start)
+            self.parent.set_axis_parameter(self.parent.AP.SmartEnergyHysteresisStart, hysteresis_start)
 
         def set_threshold_speed(self, speed):
             """
@@ -76,7 +77,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             speed: smartEnergy threshold speed.
             """
-            self.parent.set_axis_parameter(self.parent.APs.SmartEnergyThresholdSpeed, speed)
+            self.parent.set_axis_parameter(self.parent.AP.SmartEnergyThresholdSpeed, speed)
 
         def set_slow_run_current(self, current):
             """
@@ -86,7 +87,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             axis: Axis index.
             current: smartEnergy slow run current
             """
-            self.parent.set_axis_parameter(self.parent.APs.SmartEnergySlowRunCurrent, current)
+            self.parent.set_axis_parameter(self.parent.AP.SmartEnergySlowRunCurrent, current)
         
         def get_current_minimum(self):
             """
@@ -96,7 +97,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns: 
             smartEnergy current minimum.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SEIMIN)
+            return self.parent.get_axis_parameter(self.parent.AP.SEIMIN)
 
         def get_current_down_step(self):
             """
@@ -105,7 +106,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns: 
             smartEnergy current down step.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SECDS)
+            return self.parent.get_axis_parameter(self.parent.AP.SECDS)
 
         def get_current_up_step(self):
             """
@@ -114,7 +115,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns:
             smartEnergy current up step.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SECUS)
+            return self.parent.get_axis_parameter(self.parent.AP.SECUS)
 
         def get_hysteresis(self):
             """
@@ -123,7 +124,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns:
             smartEnergy hysteresis.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SmartEnergyHysteresis)
+            return self.parent.get_axis_parameter(self.parent.AP.SmartEnergyHysteresis)
 
         def get_hysteresis_start(self):
             """
@@ -132,7 +133,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns:
             smartEnergy hysteresis start .
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SmartEnergyHysteresisStart)
+            return self.parent.get_axis_parameter(self.parent.AP.SmartEnergyHysteresisStart)
 
         def get_threshold_speed(self):
             """
@@ -141,7 +142,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns:
             smartEnergy threshold speed.
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SmartEnergyThresholdSpeed)
+            return self.parent.get_axis_parameter(self.parent.AP.SmartEnergyThresholdSpeed)
 
         def get_slow_run_current(self):
             """
@@ -150,7 +151,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             Returns:
             smartEnergy slow run current
             """
-            return self.parent.get_axis_parameter(self.parent.APs.SmartEnergySlowRunCurrent)
+            return self.parent.get_axis_parameter(self.parent.AP.SmartEnergySlowRunCurrent)
         
         def calibrate(self, threshold = 0):
             """
@@ -165,7 +166,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             input("Press enter to continue ...")
 
             for i in range(3):
-                print("Starting calibration in "+ str(3-i) +"seconds.")
+                print("Starting calibration in "+ str(3-i) + "seconds.")
                 time.sleep(1.0)
             
             hstart = int(round((self.parent.StallGuard2.get_load_value() / 1023) * 15, 0))
@@ -175,10 +176,10 @@ class CoolStepModule(CoolStep, FeatureProvider):
             input("Press enter to continue ...")
 
             hend = int(round((self.parent.StallGuard2.get_load_value() / 1023) * 15, 0))
-            print("Hysteresis end: "+ str(hend))
+            print("Hysteresis end: " + str(hend))
 
             hwidth = hend - hstart
-            print("Hysteresis window width: "+ str(hwidth))
+            print("Hysteresis window width: " + str(hwidth))
 
             self.parent.CoolStep.hysteresis = hwidth
             self.parent.CoolStep.hysteresisStart = hstart
@@ -188,7 +189,7 @@ class CoolStepModule(CoolStep, FeatureProvider):
             return "{} {}".format(
                 "CoolStep",
                 {
-                    "current minimum" : self.current_minimum,
+                    "current minimum": self.current_minimum,
                     "current down step": self.current_down_step,
                     "current up step": self.current_up_step,
                     "hysteresis": self.hysteresis,

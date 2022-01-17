@@ -34,7 +34,7 @@ import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
@@ -45,25 +45,25 @@ shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
 # Initialize all attached shields
 for shield in shields:
     print("Rotating motor.")
-    shield.setAxisParameter(shield.APs.MaxCurrent, 0, CURRENT_MAX)
-    shield.setAxisParameter(shield.APs.MaxAcceleration, 0, ACCELERATION)
+    shield.setAxisParameter(shield.AP.MaxCurrent, 0, CURRENT_MAX)
+    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, ACCELERATION)
     shield.rotate(0, VELOCITY)
 
     # StallGuard settings
-    shield.setAxisParameter(shield.APs.SG2Threshold, 0, THRESHOLD_SG)
+    shield.setAxisParameter(shield.AP.SG2Threshold, 0, THRESHOLD_SG)
 
     # CoolStep settings
-    shield.setAxisParameter(shield.APs.SEIMIN, 0, CURRENT_MIN)
-    shield.setAxisParameter(shield.APs.SECDS, 0, CURRENT_DOWN_STEP)
-    shield.setAxisParameter(shield.APs.SECUS, 0, CURRENT_UP_STEP)
-    shield.setAxisParameter(shield.APs.smartEnergyHysteresis, 0, HYSTERESIS_WIDTH)
-    shield.setAxisParameter(shield.APs.smartEnergyHysteresisStart, 0, HYSTERESIS_START)
-    shield.setAxisParameter(shield.APs.smartEnergyThresholdSpeed, 0, THRESHOLD_COOLSTEP)
+    shield.setAxisParameter(shield.AP.SEIMIN, 0, CURRENT_MIN)
+    shield.setAxisParameter(shield.AP.SECDS, 0, CURRENT_DOWN_STEP)
+    shield.setAxisParameter(shield.AP.SECUS, 0, CURRENT_UP_STEP)
+    shield.setAxisParameter(shield.AP.smartEnergyHysteresis, 0, HYSTERESIS_WIDTH)
+    shield.setAxisParameter(shield.AP.smartEnergyHysteresisStart, 0, HYSTERESIS_START)
+    shield.setAxisParameter(shield.AP.smartEnergyThresholdSpeed, 0, THRESHOLD_COOLSTEP)
 
 # Loop over all attached shields
 while True:
     for shield in shields:
-        print(f"Shield: {shield}, SGT: {shield.getAxisParameter(shield.APs.LoadValue, 0)}, Current: {shield.getAxisParameter(shield.APs.smartEnergyActualCurrent, 0)}")
+        print(f"Shield: {shield}, SGT: {shield.getAxisParameter(shield.AP.LoadValue, 0)}, Current: {shield.getAxisParameter(shield.AP.smartEnergyActualCurrent, 0)}")
     time.sleep(0.1)
 
 # Demo exit, stop all motors

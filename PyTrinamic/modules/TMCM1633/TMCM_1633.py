@@ -46,9 +46,9 @@ class TMCM_1633(TMCLModule):
             PIDModule.__init__(self)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.StatusFlags) & self.ENUMs.FLAG_POSITION_END
+            return self.get_axis_parameter(self.AP.StatusFlags) & self.ENUMs.FLAG_POSITION_END
 
-        class APs:
+        class AP:
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2

@@ -50,9 +50,9 @@ class TMCM_6110(TMCLModule):
             CoolStepModule.__init__(self)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
+            return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
-        class APs:
+        class AP:
             TargetPosition	            = 0	#	The desired target position in position mode.
             ActualPosition	            = 1	#	The actual position of the motor. Stop the motor before overwriting it. Should normally only be overwritten for reference position setting.
             TargetVelocity	            = 2	#	The desired speed in velocity mode. Not valid in position mode.

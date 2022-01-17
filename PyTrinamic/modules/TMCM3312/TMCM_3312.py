@@ -4,7 +4,7 @@ Created on 03.12.2019
 @author: JM
 '''
 
-from PyTrinamic.modules.TMCLModule import TMCLModule
+from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
@@ -51,7 +51,7 @@ class TMCM_3312(TMCLModule):
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
-        class APs():
+        class AP():
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2

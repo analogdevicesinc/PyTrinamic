@@ -15,7 +15,7 @@ from PyTrinamic.evalboards.TMC2660_eval import TMC2660_eval
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 TMC2660 = TMC2660_eval(myInterface)
 TMC2660.showChipInfo()

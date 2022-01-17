@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1636
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 
 # please select your interface
 # myInterface = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200").connect()
@@ -19,10 +19,10 @@ with myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration
-    motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
     motor.DriveSetting.pole_pairs = 4
     motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_DIGITAL_HALL
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DIGITAL_HALL
     motor.DriveSetting.target_reached_distance = 5
     motor.DriveSetting.target_reached_velocity = 500
     print(motor.DriveSetting)
@@ -40,7 +40,7 @@ with myInterface:
     motor.LinearRamp.enabled = 1
     print(motor.LinearRamp)
 
-    motor.set_axis_parameter(motor.APs.PositionScaler, 6*motor.DriveSetting.pole_pairs)
+    motor.set_axis_parameter(motor.AP.PositionScaler, 6*motor.DriveSetting.pole_pairs)
 
     # PI configuration 
     motor.PID.torque_p = 300 

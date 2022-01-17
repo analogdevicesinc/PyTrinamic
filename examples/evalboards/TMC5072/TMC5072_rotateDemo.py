@@ -14,7 +14,7 @@ from PyTrinamic.evalboards.TMC5072_eval import TMC5072_eval
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 eval = TMC5072_eval(myInterface)
 ic = eval.IC
 

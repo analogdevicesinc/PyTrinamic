@@ -5,7 +5,7 @@ Created on 09.01.2019
 '''
 
 from PyTrinamic.evalboards.TMC_EvalBoard import TMC_EvalBoard
-from PyTrinamic.modules.TMCLModule import TMCLModule
+from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module

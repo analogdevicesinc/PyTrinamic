@@ -11,9 +11,9 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
             self._hasAbsoluteEncoderType = False
             self._hasAbsoluteEncoderResolution = False
 
-            if hasattr(parent.APs, "AbsoluteEncoderType"):
+            if hasattr(parent.AP, "AbsoluteEncoderType"):
                 self._hasAbsoluteEncoderType = True
-            if hasattr(parent.APs, "AbsoluteEncoderSteps"):
+            if hasattr(parent.AP, "AbsoluteEncoderSteps"):
                 self._hasAbsoluteEncoderResolution = True
 
         def set_type(self, encoder_type):
@@ -25,7 +25,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
             type: Absolute encoder type
             """
             if self._hasAbsoluteEncoderType:
-                self.parent.set_axis_parameter(self.parent.APs.AbsoluteEncoderType, type)
+                self.parent.set_axis_parameter(self.parent.AP.AbsoluteEncoderType, type)
 
         def get_type(self):
             """
@@ -35,7 +35,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
             Returns: Absolute encoder type
             """
             if self._hasAbsoluteEncoderType:
-                return self.parent.get_axis_parameter(self.parent.APs.AbsoluteEncoderType)
+                return self.parent.get_axis_parameter(self.parent.AP.AbsoluteEncoderType)
             else:
                 return None
 
@@ -47,7 +47,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
 
         def get_resolution(self):
             if self._hasAbsoluteEncoderResolution:
-                return self.parent.get_axis_parameter(self.parent.APs.AbsoluteEncoderSteps)
+                return self.parent.get_axis_parameter(self.parent.AP.AbsoluteEncoderSteps)
             else:
                 return None
 
@@ -59,7 +59,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
             Parameters:
             init_mode: absolute encoder init mode
             """
-            self.parent.set_axis_parameter(self.parent.APs.AbsoluteEncoderInitMode, init_mode)
+            self.parent.set_axis_parameter(self.parent.AP.AbsoluteEncoderInitMode, init_mode)
 
         def get_init_mode(self):
             """
@@ -68,7 +68,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
 
             Returns: absolute encoder init
             """
-            return self.parent.get_axis_parameter(self.parent.APs.AbsoluteEncoderInitMode)
+            return self.parent.get_axis_parameter(self.parent.AP.AbsoluteEncoderInitMode)
 
         def set_direction(self, direction):
             """
@@ -78,7 +78,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
             Parameters:
             dir:  absolute encoder direction 
             """
-            self.parent.set_axis_parameter(self.parent.APs.AbsoluteEncoderDirection, direction)
+            self.parent.set_axis_parameter(self.parent.AP.AbsoluteEncoderDirection, direction)
 
         def get_direction(self):
             """
@@ -87,7 +87,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
 
             Returns:  absolute encoder direction 
             """
-            return self.parent.get_axis_parameter(self.parent.APs.AbsoluteEncoderDirection)
+            return self.parent.get_axis_parameter(self.parent.AP.AbsoluteEncoderDirection)
 
         def set_offset(self, offset):
             """
@@ -97,7 +97,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
             Parameters:
             offset: absolute encoder offset
             """
-            self.parent.set_axis_parameter(self.parent.APs.AbsoluteEncoderOffset, offset)
+            self.parent.set_axis_parameter(self.parent.AP.AbsoluteEncoderOffset, offset)
 
         def get_offset(self):
             """
@@ -106,7 +106,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder, FeatureProvider):
 
             Returns: absolute encoder offset
             """
-            return self.parent.get_axis_parameter(self.parent.APs.AbsoluteEncoderOffset)
+            return self.parent.get_axis_parameter(self.parent.AP.AbsoluteEncoderOffset)
 
         type = property(get_type, set_type)
         resolution = property(get_resolution, set_resolution)

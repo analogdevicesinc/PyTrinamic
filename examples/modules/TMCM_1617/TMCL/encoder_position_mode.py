@@ -3,7 +3,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules import TMCM_1617
 import time
 
-PyTrinamic.showInfo()
+PyTrinamic.show_info()
 # connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
@@ -17,10 +17,10 @@ with connectionManager.connect() as myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration 
-    motor.DriveSetting.motor_type = motor.ENUMs.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
     motor.DriveSetting.pole_pairs = 4
     motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUMs.COMM_MODE_ABN_ENCODER
+    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
     motor.DriveSetting.target_reached_distance = 5
     motor.DriveSetting.target_reached_velocity = 500
     motor.DriveSetting.open_loop_current = 1000 
@@ -29,7 +29,7 @@ with connectionManager.connect() as myInterface:
     # encoder configuration 
     motor.ABNEncoder.resolution = 4096
     motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode = motor.ENUMs.ENCODER_INIT_MODE_0
+    motor.ABNEncoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
     print(motor.ABNEncoder)
 
     # motion settings 
@@ -38,7 +38,7 @@ with connectionManager.connect() as myInterface:
     motor.LinearRamp.enabled = 1 
     print(motor.LinearRamp)
 
-    motor.set_axis_parameter(motor.APs.PositionScaler, motor.ABNEncoder.resolution)
+    motor.set_axis_parameter(motor.AP.PositionScaler, motor.ABNEncoder.resolution)
 
     # PI configuration 
     motor.PID.torque_p = 300 
