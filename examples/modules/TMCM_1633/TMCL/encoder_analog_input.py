@@ -56,7 +56,7 @@ with myInterface:
 
     # read adc value and compute new target velocity
     while True:
-        adcValue = module.get_analog_input(module.AINs.ADC_IN_0)
+        adcValue = module.get_analog_input(module.AIN.ADC_IN_0)
         targetVelocity = (adcValue - 1024) * 2
         motor.rotate(targetVelocity)
         print("adc value: " + str(adcValue) + " target velocity: " + str(targetVelocity)

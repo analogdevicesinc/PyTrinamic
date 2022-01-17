@@ -154,7 +154,7 @@ class TMCM_1636(TMCLModule):
             DebugValue9                     = 249
             EnableDriver                    = 255
 
-        class ENUMs:
+        class ENUM:
             COMM_MODE_DISABLED              = 0
             COMM_MODE_OPENLOOP              = 1
             COMM_MODE_DIGITAL_HALL          = 2
@@ -179,7 +179,7 @@ class TMCM_1636(TMCLModule):
             MOTOR_TYPE_SINGLE_PHASE_DC      = 1
             MOTOR_TYPE_THREE_PHASE_BLDC     = 3
 
-    class GPs:
+    class GP:
         SerialBaudRate      = 65
         SerialAddress       = 66
         CANBitRate          = 69
@@ -192,7 +192,7 @@ class TMCM_1636(TMCLModule):
         ProgramCounter      = 130
         TickTimer           = 132
 
-    class IOs:
+    class IO:
         GPI_0 = 0
         GPI_1 = 1
         GPI_2 = 2

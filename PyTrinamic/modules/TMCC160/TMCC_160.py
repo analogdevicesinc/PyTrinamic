@@ -46,7 +46,7 @@ class TMCC_160(TMCLModule):
             PIDModule.__init__(self)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.AP.StatusFlags) & self.ENUMs.FLAG_POSITION_END
+            return self.get_axis_parameter(self.AP.StatusFlags) & self.ENUM.FLAG_POSITION_END
 
         class AP:
             TargetPosition                 = 0
@@ -130,7 +130,7 @@ class TMCC_160(TMCLModule):
             HallSensorPolarity             = 254    # HallSensorInvert
             EnableDriver                   = 255
 
-        class ENUMs:
+        class ENUM:
             COMM_MODE_BLOCK_HALL           = 0
             COMM_MODE_FOC_HALL             = 6
             COMM_MODE_FOC_ENCODER          = 7
@@ -142,7 +142,7 @@ class TMCC_160(TMCLModule):
 
             FLAG_POSITION_END              = 0x00004000
 
-    class GPs:
+    class GP:
         SerialBaudRate      = 65
         SerialAddress       = 66
         CANBitRate          = 69
@@ -155,12 +155,12 @@ class TMCC_160(TMCLModule):
         ProgramCounter      = 130
         TickTimer           = 132
 
-    class DIs:
+    class DI:
         REF_R        = 0
         REF_L        = 1
         ENABLE       = 2
 
-    class AINs:
+    class AIN:
         ADC_IN_0            = 0
         ADC_single_shunt    = 1
         ADC_phase_A         = 2

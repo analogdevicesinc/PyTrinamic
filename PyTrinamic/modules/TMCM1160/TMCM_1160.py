@@ -8,7 +8,7 @@ from PyTrinamic.modules.tmcl_module import TMCLModule
 
 class TMCM_1160(TMCLModule):
 
-    class AP():
+    class AP:
         TargetPosition                 = 0
         ActualPosition                 = 1
         TargetVelocity                 = 2
@@ -77,10 +77,10 @@ class TMCM_1160(TMCLModule):
         ExternalEncoderMax_Deviation   = 218
         Step_DirectionMode             = 254
 
-    class ENUMs():
+    class ENUM:
         pass
 
-    class GPs():
+    class GP:
         timer_0                        = 0
         timer_1                        = 1
         timer_2                        = 2

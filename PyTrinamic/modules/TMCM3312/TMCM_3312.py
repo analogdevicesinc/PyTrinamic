@@ -51,7 +51,7 @@ class TMCM_3312(TMCLModule):
         def get_position_reached(self):
             return self.get_axis_parameter(self.APs.PositionReachedFlag)
 
-        class AP():
+        class AP:
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2
@@ -163,10 +163,10 @@ class TMCM_3312(TMCLModule):
             ReverseShaft                   = 251
         
 
-    class ENUMs():
+    class ENUM():
         pass
 
-    class GPs():
+    class GP():
         RS485Baudrate                 = 65
         SerialAddress                 = 66
         SerialHeartbeat               = 68

@@ -102,8 +102,8 @@ class TMCM_1270(TMCLModule):
             """
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
-        class AP():
-            "Axis parameter map for this axis."
+        class AP:
+            # Axis parameter map for this axis.
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2
@@ -182,11 +182,11 @@ class TMCM_1270(TMCLModule):
             PowerDownDelay                 = 214
             UnitMode                       = 255
 
-    class ENUMs():
+    class ENUM():
         "Constant enums for parameters of this module."
         pass
 
-    class GPs():
+    class GP():
         "Global parameter map for this module."
         CANBitrate                    = 69
         CANSendId                     = 70

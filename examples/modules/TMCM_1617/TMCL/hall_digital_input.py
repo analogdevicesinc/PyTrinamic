@@ -56,7 +56,7 @@ with connectionManager.connect() as myInterface:
     print("Press 'input_0' to swap the direction (waiting for input_0)")
 
     # wait for input_0 
-    while module.get_digital_input(module.IOs.GPI_0) == 1:
+    while module.get_digital_input(module.IO.GPI_0) == 1:
         print("actual position: %d   actual velocity: %d" % (motor.actual_position, motor.actual_velocity))
         time.sleep(0.2)
 
@@ -66,7 +66,7 @@ with connectionManager.connect() as myInterface:
     print("Press 'input_1' to stop the motor (waiting for input_1)")
 
     # wait for input_1 
-    while module.get_digital_input(module.IOs.GPI_1) == 1:
+    while module.get_digital_input(module.IO.GPI_1) == 1:
         print("actual position: %d   actual velocity: %d" % (motor.actual_position, motor.actual_velocity))
         time.sleep(0.2)
 

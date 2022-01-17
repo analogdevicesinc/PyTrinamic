@@ -57,7 +57,7 @@ with myInterface:
     print("Press 'input_0' to swap the direction (waiting for input_0)\n")
 
     # wait for input_0
-    while module.get_digital_input(module.DIs.IN_0) == 1:
+    while module.get_digital_input(module.DI.IN_0) == 1:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
               motor.actual_velocity, motor.get_axis_parameter(motor.AP.ActualTorque, True)))
         time.sleep(0.2)
@@ -68,7 +68,7 @@ with myInterface:
     print("Press 'input_1' to stop the motor (waiting for input_1)\n")
 
     # wait for input_1
-    while module.get_digital_input(module.DIs.IN_1) == 1:
+    while module.get_digital_input(module.DI.IN_1) == 1:
         print("actual position: %d   actual velocity: %d   actual torque: %d" % (motor.actual_position,
               motor.actual_velocity, motor.get_axis_parameter(motor.AP.ActualTorque, True)))
         time.sleep(0.2)

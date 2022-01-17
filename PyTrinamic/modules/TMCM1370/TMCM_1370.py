@@ -119,10 +119,10 @@ class TMCM_1370(TMCLModule):
         ReverseShaft                   = 251
         ClearAlarmOutputs              = 252
 
-    class ENUMs():
+    class ENUM:
         FLAG_POSITION_END = 0x00004000
 
-    class GPs():
+    class GP:
         timer_0                        = 0
         timer_1                        = 1
         timer_2                        = 2

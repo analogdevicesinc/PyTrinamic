@@ -9,7 +9,7 @@ from PyTrinamic.modules.tmcl_module import TMCLModule
 class TMCM_3110(TMCLModule):
     MOTORS = 3
 
-    class AP():
+    class AP:
         TargetPosition                 = 0
         ActualPosition                 = 1
         TargetVelocity                 = 2

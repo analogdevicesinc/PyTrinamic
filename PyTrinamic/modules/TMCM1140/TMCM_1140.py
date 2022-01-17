@@ -116,7 +116,7 @@ class TMCM_1140(TMCLModule):
             ExternalEncoderPrescaler    =  217
             ExternalEncoderMaxDeviation =  218
 
-        class ENUMs:
+        class ENUM:
             MicrostepResolutionFullstep      = 0
             MicrostepResolutionHalfstep      = 1
             MicrostepResolution4Microsteps   = 2
@@ -127,7 +127,7 @@ class TMCM_1140(TMCLModule):
             MicrostepResolution128Microsteps = 7
             MicrostepResolution256Microsteps = 8
 
-    class GPs:
+    class GP:
         SerialBaudRate    = 65
         SerialAddress     = 66
         CANBitRate        = 69
@@ -140,6 +140,6 @@ class TMCM_1140(TMCLModule):
         ProgramCounter    = 130
         TickTimer         = 132
 
-    class IOs:
+    class IO:
         OUT0 = 0
         OUT1 = 1

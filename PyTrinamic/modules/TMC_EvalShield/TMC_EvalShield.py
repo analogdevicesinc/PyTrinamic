@@ -18,7 +18,7 @@ class TMC_EvalShield(object):
             which can be used later.
     """
     def __init__(self, connection, shield, moduleID=1):
-        self.GPs = _GPs
+        self.GP = _GP
 
         self.shields = []
 
@@ -28,5 +28,5 @@ class TMC_EvalShield(object):
         for i in range(attachedAxes):
             self.shields.append(shield(connection, i, moduleID))
 
-class _GPs():
-    attachedAxes = 6
+    class _GP:
+        attachedAxes = 6

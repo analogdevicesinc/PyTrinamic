@@ -19,7 +19,7 @@ with connectionManager.connect() as myInterface:
     motor.DriveSetting.max_current= 2000
     motor.DriveSetting.standby_current = 0
     motor.DriveSetting.boost_current = 0
-    motor.DriveSetting.microstep_resolution = motor.ENUMs.MicrostepResolution256Microsteps
+    motor.DriveSetting.microstep_resolution = motor.ENUM.MicrostepResolution256Microsteps
     print(motor.DriveSetting)
 
     # preparing linear ramp settings

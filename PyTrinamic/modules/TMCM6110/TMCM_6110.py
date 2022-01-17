@@ -114,7 +114,7 @@ class TMCM_6110(TMCLModule):
             GroupIndex                  = 213 #   All modules with the same group index will do the same when an ROL, ROR, MVP, MST or RFS is used on one of these motors. Setting it to 0 will turn off this feature.
             PowerDownDelay	            = 214	#	Standstill period before the current will be ramped down to standby current. The standard value is 200 (which means 2000ms).
     
-        class ENUMs:
+        class ENUM:
             microstep_resolution_fullstep = 0
             microstep_resolution_halfstep = 1
             microstep_resolution_4_microsteps = 2
@@ -125,7 +125,7 @@ class TMCM_6110(TMCLModule):
             microstep_resolution_128_microsteps = 7
             microstep_resolution_256_microsteps = 8
 
-    class GPs:
+    class GP:
         SerialBaudRate      = 65
         SerialAddress       = 66
         CANBitRate          = 69
@@ -138,6 +138,6 @@ class TMCM_6110(TMCLModule):
         ProgramCounter      = 130
         TickTimer           = 132
 
-    class IOs:
+    class IO:
         OUT0   = 0
         OUT1   = 1

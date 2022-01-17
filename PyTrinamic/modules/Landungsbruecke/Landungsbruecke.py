@@ -7,17 +7,9 @@ Created on 24.07.2019
 from PyTrinamic.TMCL import TMCL_Command
 from PyTrinamic.helpers import EEPROM
 
-class _GPs():
-    VitalSignsErrorMask  = 1
-    DriversEnable        = 2
-    DebugMode            = 3
-    BoardAssignment      = 4
-    HWID                 = 5
-    PinState             = 6
-
 class Landungsbruecke():
     def __init__(self, connection):
-        self.GPs   = _GPs
+        self.GP   = _GP
         self.__connection = connection
 
         self._mcId = 0
@@ -133,6 +125,14 @@ class Landungsbruecke():
         21 : "TMC6300",
         22 : "TMC2226",
     }
+
+class _GP:
+    VitalSignsErrorMask  = 1
+    DriversEnable        = 2
+    DebugMode            = 3
+    BoardAssignment      = 4
+    HWID                 = 5
+    PinState             = 6
 
 if __name__ == "__main__":
     from PyTrinamic.connections.ConnectionManager import ConnectionManager
