@@ -26,7 +26,7 @@ class MockTmclInterface:
         pass
 
     def axisParameter(self, type, axis, module_id, signed):
-        if type == TMCM_1140.motor_0.APs.PositionReachedFlag:
+        if type == TMCM_1140.Motor0.APs.PositionReachedFlag:
             self._position_reached_toggle ^= True
             if self._position_reached_toggle:
                 return 1
@@ -49,9 +49,9 @@ class MockTmclInterface:
 
 
 @pytest.mark.parametrize('example_script_path', [
-    f'../TMCM_1140/TMCM_1140_TMCL_CoolStepDemo.py',
-    f'../TMCM_1140/TMCM_1140_TMCL_rotateDemo.py',
-    f'../TMCM_1140/TMCM_1140_TMCL_StallGuard2Demo.py',
+    f'../TMCM_1140/TMCL/CoolStep_demo.py',
+    f'../TMCM_1140/TMCL/rotate_demo.py',
+    f'../TMCM_1140/TMCL/StallGuard2_demo.py',
 ])
 def test(monkeypatch, example_script_path):
 
