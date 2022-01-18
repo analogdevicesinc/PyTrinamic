@@ -2,7 +2,7 @@ import argparse
 import logging
 import time
 
-from PyTrinamic.features.Feature import Feature
+from PyTrinamic.features.feature import Feature
 
 
 class StallGuard(Feature):

@@ -7,7 +7,7 @@ from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CoolStepModule import CoolStepModule
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
-from PyTrinamic.features.MotorControlModule import MotorControlModule
+from PyTrinamic.features.motor_control_module import MotorControlModule
 
 
 class TMCM_6110(TMCLModule):

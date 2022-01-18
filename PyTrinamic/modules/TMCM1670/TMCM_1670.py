@@ -42,6 +42,7 @@ class TMCM_1670(TMCLModule):
             LinearRampModule.__init__(self)
             AbsoluteEncoderModule.__init__(self)
             PIDModule.__init__(self)
+            MotorControlModule.__init__(self)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.AP.StatusFlags) & self.ENUM.FLAG_POSITION_END

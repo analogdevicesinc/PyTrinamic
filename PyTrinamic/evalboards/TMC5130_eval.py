@@ -10,7 +10,7 @@ from PyTrinamic.ic.TMC5130.TMC5130 import TMC5130
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
-from PyTrinamic.features.MotorControlModule import MotorControlModule
+from PyTrinamic.features.motor_control_module import MotorControlModule
 
 class TMC5130_eval(TMC_EvalBoard):
     """

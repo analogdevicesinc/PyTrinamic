@@ -1,5 +1,5 @@
-from PyTrinamic.features.Feature import FeatureProvider
-from PyTrinamic.features.MotorControl import MotorControl
+from PyTrinamic.features.feature import FeatureProvider
+from PyTrinamic.features.motor_control import MotorControl
 
 
 class MotorControlIC(MotorControl, FeatureProvider):

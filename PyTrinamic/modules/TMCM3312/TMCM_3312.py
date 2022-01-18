@@ -8,7 +8,7 @@ from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.features.LinearRampModule import LinearRampModule
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
-from PyTrinamic.features.MotorControlModule import MotorControlModule
+from PyTrinamic.features.motor_control_module import MotorControlModule
 from PyTrinamic.features.SRampModule import SRampModule
 from PyTrinamic.features.SixPointRampModule import SixPointRampModule
 class TMCM_3312(TMCLModule):

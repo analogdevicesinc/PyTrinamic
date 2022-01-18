@@ -1,4 +1,4 @@
-from PyTrinamic.features.Feature import FeatureProvider
+from PyTrinamic.features.feature import FeatureProvider
 from PyTrinamic.features.DigitalHall import DigitalHall
 
 

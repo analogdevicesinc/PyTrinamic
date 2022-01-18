@@ -1,4 +1,4 @@
-from PyTrinamic.features.Feature import Feature, FeatureProvider
+from PyTrinamic.features.feature import Feature, FeatureProvider
 from PyTrinamic.features.StallGuard2 import StallGuard2
 
 

@@ -1,4 +1,4 @@
-from PyTrinamic.features.Feature import Feature
+from PyTrinamic.features.feature import Feature
 
 
 class SRamp(Feature):
