@@ -1,0 +1,11 @@
+strictness: verylow
+
+inherits:
+    - no_pep8 # No PEP 8 check for now, we have more serious bugs to take care of.
+ignore-paths:
+    - examples\tools\FirmwareUpdate.py # I have a new version ready somewhere else to replace this after "the merge".
+
+pylint:
+  disable:
+    - useless-object-inheritance # Disabled because we want the code Python 2 compatible, and in Python 2 the "object-inheritance" might be necessary.
+    - consider-using-f-string # Disabled because we want the code Python 2 compatible, in Python 2 f-strings are not available.
