@@ -10,11 +10,9 @@ class TMCM_1240(TMCLModule):
     """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-
         self.name = "TMCM-1240"
         self.desc = self.__doc__
         self.motors = [self.Motor0(self, 0)]
-        self.__default_motor = 0
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
