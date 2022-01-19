@@ -101,22 +101,22 @@ class kvaser_tmclInterface(TmclInterface):
 
         return bytearray([msg.arbitration_id]) + msg.data
 
-    def printInfo(self):
+    def print_info(self):
         print("Connection: type=pcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
 
-    def enableDebug(self, enable):
-        self.__debug = enable
+    #def enableDebug(self, enable):
+    #    self.__debug = enable
 
-    @staticmethod
-    def supportsTMCL():
+    #@staticmethod
+    def supportsTMCL(self):
         return True
 
-    @staticmethod
-    def supportsCANopen():
-        return False
+    #@staticmethod
+    #def supportsCANopen():
+    #    return False
 
-    @staticmethod
-    def list():
+    #@staticmethod
+    def list(self):
         """
             Return a list of available connection ports as a list of strings.
 

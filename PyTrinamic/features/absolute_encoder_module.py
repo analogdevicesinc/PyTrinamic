@@ -1,8 +1,21 @@
-from PyTrinamic.features.feature import Feature
+from PyTrinamic.features.absolute_encoder import AbsoluteEncoder
 
 
-class AbsoluteEncoder(Feature):
+class AbsoluteEncoderModule(AbsoluteEncoder):
         
+    def __init__(self, module, axis, aps):
+        self._module = module
+        self._axis = axis
+        self._aps = aps
+
+        self._hasAbsoluteEncoderType = False
+        self._hasAbsoluteEncoderResolution = False
+
+        if hasattr(self._aps, "AbsoluteEncoderType"):
+            self._hasAbsoluteEncoderType = True
+        if hasattr(self._aps, "AbsoluteEncoderSteps"):
+            self._hasAbsoluteEncoderResolution = True
+
     def set_type(self, encoder_type):
         """
         Set absolut encoder type that is used for this axis.
@@ -11,7 +24,8 @@ class AbsoluteEncoder(Feature):
         Parameters:
         type: Absolute encoder type
         """
-        raise NotImplementedError()
+        if self._hasAbsoluteEncoderType:
+            self._module.set_axis_parameter(self._aps.AbsoluteEncoderType, self._axis, type)
 
     def get_type(self):
         """
@@ -20,32 +34,41 @@ class AbsoluteEncoder(Feature):
 
         Returns: Absolute encoder type
         """
-        raise NotImplementedError()
+        if self._hasAbsoluteEncoderType:
+            return self._module.get_axis_parameter(self._aps.AbsoluteEncoderType, self._axis)
+        else:
+            return None
 
     def set_resolution(self, resolution):
-        raise NotImplementedError()
+        """
+        Resolution is typically constant depending on the selected absolute encoder type.
+        """
+        pass
 
     def get_resolution(self):
-        raise NotImplementedError()
+        if self._hasAbsoluteEncoderResolution:
+            return self._module.get_axis_parameter(self._aps.AbsoluteEncoderSteps, self._axis)
+        else:
+            return None
 
     def set_init_mode(self, init_mode):
         """
         Sets absolute encoder init mode that is used for this axis.
-        This value is stored as AbsoluteEncoderInit axis parameter.
+        This value is stored as AbsoluteEncoderInitMode axis parameter.
 
         Parameters:
         init_mode: absolute encoder init mode
         """
-        raise NotImplementedError()
+        self._module.set_axis_parameter(self._aps.AbsoluteEncoderInitMode, self._axis, init_mode)
 
     def get_init_mode(self):
         """
-        Gets absolute encoder init mode that is used for this axis.
+        Gets absolute encoder init that is used for this axis.
         This value is stored in the  AbsoluteEncoderInit axis parameter.
 
-        Returns: absolute encoder init mode
+        Returns: absolute encoder init
         """
-        raise NotImplementedError()
+        return self._module.get_axis_parameter(self._aps.AbsoluteEncoderInitMode, self._axis)
 
     def set_direction(self, direction):
         """
@@ -53,18 +76,18 @@ class AbsoluteEncoder(Feature):
         This value is stored as AbsoluteEncoderDirection axis parameter.
 
         Parameters:
-        dir:  absolute encoder direction 
+        dir:  absolute encoder direction
         """
-        raise NotImplementedError()
+        self._module.set_axis_parameter(self._aps.AbsoluteEncoderDirection, self._axis, direction)
 
     def get_direction(self):
         """
         Gets  absolute encoder direction that is used for this axis.
         This value is stored in the  AbsoluteEncoderDirection axis parameter.
 
-        Returns:  absolute encoder direction 
+        Returns:  absolute encoder direction
         """
-        raise NotImplementedError()
+        return self._module.get_axis_parameter(self._aps.AbsoluteEncoderDirection, self._axis)
 
     def set_offset(self, offset):
         """
@@ -74,7 +97,7 @@ class AbsoluteEncoder(Feature):
         Parameters:
         offset: absolute encoder offset
         """
-        raise NotImplementedError()
+        self._module.set_axis_parameter(self._aps.AbsoluteEncoderOffset, self._axis, offset)
 
     def get_offset(self):
         """
@@ -83,7 +106,14 @@ class AbsoluteEncoder(Feature):
 
         Returns: absolute encoder offset
         """
-        raise NotImplementedError()
+        return self._module.get_axis_parameter(self._aps.AbsoluteEncoderOffset, self._axis)
+
+    # properties
+    type = property(get_type, set_type)
+    resolution = property(get_resolution, set_resolution)
+    init_mode = property(get_init_mode, set_init_mode)
+    direction = property(get_direction, set_direction)
+    offset = property(get_offset, set_offset)
 
     def __str__(self):
         values = "AbsoluteEncoder {"
@@ -96,9 +126,3 @@ class AbsoluteEncoder(Feature):
         values += "'init_mode': " + str(self.init_mode)
         values += "}"
         return values
-
-    type = property(get_type, set_type)
-    resolution = property(get_resolution, set_resolution)
-    init_mode = property(get_init_mode, set_init_mode)
-    direction = property(get_direction, set_direction)
-    offset = property(get_offset, set_offset)

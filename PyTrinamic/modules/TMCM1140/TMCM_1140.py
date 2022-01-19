@@ -1,11 +1,10 @@
-# interfaces
-from PyTrinamic.modules import TMCLModule, Motor
+from PyTrinamic.modules import TMCLModule
 
 # features
 from PyTrinamic.features.StallGuard2Module import StallGuard2Module
 from PyTrinamic.features.CoolStepModule import CoolStepModule
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
-from PyTrinamic.features.LinearRampModule import LinearRampModule
+from PyTrinamic.features.linear_ramp_module import LinearRampModule
 from PyTrinamic.features.motor_control_module import MotorControlModule
 
 
@@ -28,20 +27,22 @@ class TMCM_1140(TMCLModule):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.motors[0].LinearRamp.max_velocity = velocity
+            self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.motors[0].LinearRamp.max_velocity = velocity
+            self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(Motor, DriveSettingModule, LinearRampModule, MotorControlModule, StallGuard2Module, CoolStepModule):
+    class Motor0(MotorControlModule, StallGuard2Module, CoolStepModule):
 
         def __init__(self, module, axis):
-            Motor.__init__(self, module, axis)
-            DriveSettingModule.__init__(self)
-            LinearRampModule.__init__(self)
+            MotorControlModule.__init__(self, module, axis, self.AP)
+            self.drive_settings = DriveSettingModule(module, axis, self.AP)
+            self.linear_ramp = LinearRampModule(module, axis, self.AP)
+
+            # ToDo: rework both modules!
             StallGuard2Module.__init__(self)
             CoolStepModule.__init__(self)
 

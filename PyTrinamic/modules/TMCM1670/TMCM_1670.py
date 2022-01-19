@@ -1,9 +1,6 @@
-# interfaces
-from PyTrinamic.modules import TMCLModule, Motor
-
-# features
-from PyTrinamic.features import DriveSettingModule, LinearRampModule, AbsoluteEncoderModule
-from PyTrinamic.features import PIDModule, MotorControlModule
+from PyTrinamic.modules import TMCLModule
+from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule, AbsoluteEncoderModule
+from PyTrinamic.features import PIDModule
 
 
 class TMCM_1670(TMCLModule):
@@ -25,24 +22,22 @@ class TMCM_1670(TMCLModule):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.motors[0].LinearRamp.max_velocity = velocity
+            self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.motors[0].LinearRamp.max_velocity = velocity
+            self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(Motor, DriveSettingModule, LinearRampModule, AbsoluteEncoderModule,
-                 PIDModule, MotorControlModule):
+    class Motor0(MotorControlModule):
 
         def __init__(self, module, axis):
-            Motor.__init__(self, module, axis)
-            DriveSettingModule.__init__(self)
-            LinearRampModule.__init__(self)
-            AbsoluteEncoderModule.__init__(self)
-            PIDModule.__init__(self)
-            MotorControlModule.__init__(self)
+            MotorControlModule.__init__(self, module, axis, self.AP)
+            self.drive_settings = DriveSettingModule(module, axis, self.AP)
+            self.linear_ramp = LinearRampModule(module, axis, self.AP)
+            self.absolute_encoder = AbsoluteEncoderModule(module, axis, self.AP)
+            self.pid = PIDModule(module, axis, self.AP)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.AP.StatusFlags) & self.ENUM.FLAG_POSITION_END

@@ -29,10 +29,10 @@ class TMCLModule(object):
 
     def __str__(self):
         features = ""
-        for feature in self.list_features():
-            features += str(feature) + ", "
-        features = features[1:]
-        features = features[:-3]
+        # for feature in self.list_features():
+        #    features += str(feature) + ", "
+        # features = features[1:]
+        # features = features[:-3]
         return "{} {}".format(
                 self.name,
                 {

@@ -32,6 +32,6 @@ class ConnectionInterface(ABC):
         info += "}"
         print(info)
 
-    @abstractmethod
+    # @abstractmethod
     def list(self):
         raise NotImplementedError

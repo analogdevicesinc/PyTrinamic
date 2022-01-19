@@ -17,42 +17,42 @@ with myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration
-    motor.DriveSetting.poles = 8
-    motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.target_reached_velocity = 500
-    motor.DriveSetting.target_reached_distance = 5
+    motor.drive_settings.poles = 8
+    motor.drive_settings.max_current = 2000
+    motor.drive_settings.target_reached_velocity = 500
+    motor.drive_settings.target_reached_distance = 5
 
     # hall sensor configuration
-    motor.DigitalHall.polarity = 0
-    motor.DigitalHall.interpolation = 0
-    print(motor.DigitalHall)
+    motor.digital_hall.polarity = 0
+    motor.digital_hall.interpolation = 0
+    print(motor.digital_hall)
 
     # encoder configuration
-    motor.ABNEncoder.resolution = 4096
-    # motor.ABNEncoder.resolution = 16384
-    motor.ABNEncoder.direction = 0
-    motor.ABNEncoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_1
-    print(motor.ABNEncoder)
+    motor.abn_encoder.resolution = 4096
+    # motor.abn_encoder.resolution = 16384
+    motor.abn_encoder.direction = 0
+    motor.abn_encoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_1
+    print(motor.abn_encoder)
 
     # motion settings
-    motor.LinearRamp.max_velocity = 2048
-    motor.LinearRamp.max_acceleration = 10000
-    motor.LinearRamp.enabled = 1
-    print(motor.LinearRamp)
+    motor.linear_ramp.max_velocity = 2048
+    motor.linear_ramp.max_acceleration = 10000
+    motor.linear_ramp.enabled = 1
+    print(motor.linear_ramp)
 
     # PI configuration
-    motor.PID.torque_p = 600
-    motor.PID.torque_i = 600
-    motor.PID.velocity_p = 800
-    motor.PID.velocity_i = 500
-    motor.PID.position_p = 300
-    print(motor.PID)
+    motor.pid.torque_p = 600
+    motor.pid.torque_i = 600
+    motor.pid.velocity_p = 800
+    motor.pid.velocity_i = 500
+    motor.pid.position_p = 300
+    print(motor.pid)
 
     time.sleep(1.0)
 
     # set commutation mode to FOC based on encoder feedback
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_FOC_ENCODER
-    print(motor.DriveSetting)
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_FOC_ENCODER
+    print(motor.drive_settings)
 
     # read adc value and compute new target velocity
     while True:

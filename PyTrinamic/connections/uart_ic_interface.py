@@ -62,8 +62,8 @@ class uart_ic_interface:
         self.serial.close()
         return 0
 
-    def enable_debug(self, enable):
-        self.debugEnabled = enable
+    # def enable_debug(self, enable):
+    #    self.debugEnabled = enable
 
     def send(self, address, value):
 
@@ -96,16 +96,16 @@ class uart_ic_interface:
     def readRegisterField(self, register_address, mask, shift):
         return TMC_helpers.field_get(self.readRegister(register_address), mask, shift)
 
-    @staticmethod
-    def supportsTMCL():
+    # @staticmethod
+    def supports_tmcl(self):
         return False
 
-    @staticmethod
-    def supportsCANopen():
+    # @staticmethod
+    def supports_canopen(self):
         return False
 
-    @staticmethod
-    def list():
+    # @staticmethod
+    def list(self):
         """
             Return a list of available connection ports as a list of strings.
 

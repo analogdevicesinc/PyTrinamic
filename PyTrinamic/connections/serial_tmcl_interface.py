@@ -36,26 +36,23 @@ class serial_tmclInterface(TmclInterface):
         self.close()
 
     # override ConnectionInterface
-    def supports_tmcl(self):
-        return True
+    # def supports_tmcl(self):
+    #    return True
 
     # override ConnectionInterface
-    def supports_canopen(self):
-        return False
+    # def supports_canopen(self):
+    #    return False
 
     # override ConnectionInterface
-    def enable_debug(self, enable):
-        self._debug = enable
+    # def enable_debug(self, enable):
+    #    self._debug = enable
 
     # override ConnectionInterface
     def print_info(self):
         print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
 
-
-
-
-    @staticmethod
-    def list():
+    # @staticmethod
+    def list(self):
         """
             Return a list of available connection ports as a list of strings.
 
@@ -69,10 +66,8 @@ class serial_tmclInterface(TmclInterface):
         return connected
 
     # @staticmethod
-    def supportsTMCL():
-        return True
-
-
+    #def supportsTMCL():
+    #    return True
 
     def close(self):
         if self._debug:

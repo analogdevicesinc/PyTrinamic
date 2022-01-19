@@ -1,7 +1,7 @@
-from PyTrinamic.features import Feature
+from abc import ABC
 
 
-class DriveSetting(Feature):
+class DriveSetting(ABC):
 
     def set_commutation_mode(self, mode):
         """
@@ -11,7 +11,7 @@ class DriveSetting(Feature):
         Parameters:
         mode: commutation mode
         """
-        raise NotImplemented()
+        raise NotImplementedError
 
     def get_commutation_mode(self):
         """
@@ -20,25 +20,25 @@ class DriveSetting(Feature):
 
         Returns: commutation mode
         """
-        raise NotImplemented()
+        raise NotImplementedError
 
-    def set_motor_type(self, type):
-        raise NotImplemented
+    def set_motor_type(self, motor_type):
+        raise NotImplementedError
 
     def get_motor_type(self):
-        raise NotImplemented
-    
+        raise NotImplementedError
+
     def set_pole_pairs(self, pairs):
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_pole_pairs(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def set_poles(self, poles):
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_poles(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def set_open_loop_current(self, current):
         """
@@ -48,7 +48,7 @@ class DriveSetting(Feature):
         Parameters:
         current: open loop current
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_open_loop_current(self):
         """
@@ -57,8 +57,8 @@ class DriveSetting(Feature):
 
         Returns: open loop current
         """
-        raise NotImplemented
-    
+        raise NotImplementedError
+
     def set_max_current(self, current):
         """
         Sets motor maximum current that is used for this axis.
@@ -67,7 +67,7 @@ class DriveSetting(Feature):
         Parameters:
         current: maximum current
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_max_current(self):
         """
@@ -76,7 +76,7 @@ class DriveSetting(Feature):
 
         Returns: maximum current
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def set_position_sensor(self, sensor):
         """
@@ -86,7 +86,7 @@ class DriveSetting(Feature):
         Parameters: 
         sensor: position sensor 
         """
-        raise NotADirectoryError()
+        raise NotImplementedError
 
     def get_position_sensor(self):
         """
@@ -105,7 +105,7 @@ class DriveSetting(Feature):
         Parameters: 
         sensor: velocity sensor 
         """
-        raise NotADirectoryError()
+        raise NotImplementedError
 
     def get_velocity_sensor(self):
         """
@@ -114,7 +114,7 @@ class DriveSetting(Feature):
 
         Returns: velocity sensor
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def set_motor_halted_velocity(self, velocity): 
         """
@@ -124,8 +124,8 @@ class DriveSetting(Feature):
         Parameters:
         velocity:  motor halted velocity
         """
-        raise NotImplementedError()
-    
+        raise NotImplementedError
+
     def get_motor_halted_velocity(self): 
         """
         Gets motor halted velocity for this axis.
@@ -133,7 +133,7 @@ class DriveSetting(Feature):
 
         Returns: motor halted velocity
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def set_target_reached_distance(self, distance): 
         """
@@ -143,8 +143,8 @@ class DriveSetting(Feature):
         Parameters: 
         distance: target reached distance
         """
-        raise NotImplementedError()
-            
+        raise NotImplementedError
+
     def get_target_reached_distance(self): 
         """
         Gets target reached distance for this axis.
@@ -152,7 +152,7 @@ class DriveSetting(Feature):
 
         Returns: target reached distance
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def set_target_reached_velocity(self, velocity): 
         """
@@ -162,7 +162,7 @@ class DriveSetting(Feature):
         Parameters:
         velocity:  target reached velocity
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_target_reached_velocity(self):
         """
@@ -171,7 +171,7 @@ class DriveSetting(Feature):
 
         Returns: target reached velocity
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def __str__(self):
         return "{} {}".format(
@@ -184,9 +184,9 @@ class DriveSetting(Feature):
                     "max_current": self.max_current,
                     "velocity_sensor": self.velocity_sensor,
                     "position_sensor": self.position_sensor,
+                    "motor_halted_velocity": self.motor_halted_velocity,
                     "target_reached_velocity": self.target_reached_velocity,
-                    "target_reached_distance": self.target_reached_distance,
-                    "motor_halted_velocity": self.motor_halted_velocity
+                    "target_reached_distance": self.target_reached_distance
                 }
             )
     

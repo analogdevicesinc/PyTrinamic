@@ -14,30 +14,30 @@ with myInterface:
     motor = module.motors[0]
 
     # drive configuration
-    motor.DriveSetting.poles = 8
-    motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.target_reached_velocity = 500
-    motor.DriveSetting.target_reached_distance = 10
-    motor.DriveSetting.motor_halted_velocity = 5
-    motor.DriveSetting.open_loop_current = 1000
-    print(motor.DriveSetting)
+    motor.drive_settings.poles = 8
+    motor.drive_settings.max_current = 2000
+    motor.drive_settings.target_reached_velocity = 500
+    motor.drive_settings.target_reached_distance = 10
+    motor.drive_settings.motor_halted_velocity = 5
+    motor.drive_settings.open_loop_current = 1000
+    print(motor.drive_settings)
 
     # encoder configuration
-    print(motor.AbsoluteEncoder)
+    print(motor.absolute_encoder)
 
     # motion settings
-    motor.LinearRamp.max_velocity = 4000
-    motor.LinearRamp.max_acceleration = 4000
-    motor.LinearRamp.enabled = 1
-    print(motor.LinearRamp)
+    motor.linear_ramp.max_velocity = 4000
+    motor.linear_ramp.max_acceleration = 4000
+    motor.linear_ramp.enabled = 1
+    print(motor.linear_ramp)
 
     # PI configuration
-    motor.PID.torque_p = 1000
-    motor.PID.torque_i = 1000
-    motor.PID.velocity_p = 2000
-    motor.PID.velocity_i = 1000
-    motor.PID.position_p = 300
-    print(motor.PID)
+    motor.pid.torque_p = 1000
+    motor.pid.torque_i = 1000
+    motor.pid.velocity_p = 2000
+    motor.pid.velocity_i = 1000
+    motor.pid.position_p = 300
+    print(motor.pid)
 
     time.sleep(1.0)
 

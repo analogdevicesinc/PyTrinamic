@@ -21,7 +21,7 @@ DEFAULT_MOTOR = 0 # Axis: [0;5]
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType ="CANopen")
+connectionManager = ConnectionManager(" --interface pcan_CANopen", connection_type="CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_6212.getEdsFile(), 1, TMCM_6212.MOTORS)

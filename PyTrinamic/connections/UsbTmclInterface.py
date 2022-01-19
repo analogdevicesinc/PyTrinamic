@@ -80,3 +80,12 @@ class UsbTmclInterface(serial_tmclInterface):
         info = info[:-2]
         info += "}"
         return info
+
+
+if __name__ == "__main__":
+    interface = UsbTmclInterface("COM5")
+
+    print("version_string:" + interface.get_version_string())
+    #interface.send_boot()
+
+    interface.close()

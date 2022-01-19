@@ -62,7 +62,6 @@ class TmclInterface(ConnectionInterface):
     def supports_tmcl(self):
         return True
 
-
     def _send(self, host_id, module_id, data):
         """
         Send the bytearray [data] representing a TMCL command. The length of
@@ -80,14 +79,14 @@ class TmclInterface(ConnectionInterface):
         """
         raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
 
-    def enable_debug(self, enable):
+    #def enable_debug(self, enable):
         """
         Set the debug mode, which dumps all TMCL datagrams written and read.
         """
-        if type(enable) != bool:
-            raise TypeError("Expected boolean value")
+        #if type(enable) != bool:
+            #raise TypeError("Expected boolean value")
 
-        self._debug = enable
+        #self._debug = enable
 
     def send_request(self, request, module_id=None):
         """
@@ -157,7 +156,6 @@ class TmclInterface(ConnectionInterface):
         Request the ASCII version string.
         """
         reply = self.send(TMCL_Command.GET_FIRMWARE_VERSION, 0, 0, 0, module_id)
-
         return reply.versionString()
 
     # General parameter access functions

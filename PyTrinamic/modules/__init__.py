@@ -1,6 +1,4 @@
 from .tmcl_module import TMCLModule
-from .motor import Motor
-
 from .TMCC160.TMCC_160 import TMCC_160
 from .TMCM1140.TMCM_1140 import TMCM_1140
 from .TMCM1617.TMCM_1617 import TMCM_1617

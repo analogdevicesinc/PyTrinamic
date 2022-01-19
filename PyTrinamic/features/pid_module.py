@@ -1,68 +1,64 @@
-from PyTrinamic.features.feature import FeatureProvider
 from PyTrinamic.features.pid import PID
 
 
-class PIDModule:
+class PIDModule(PID):
 
-    def __init__(self):
-        self.PID = self.__GROUPING(self)
+    def __init__(self, module, axis, aps):
+        self._module = module
+        self._axis = axis
+        self._aps = aps
 
-    class __GROUPING(PID, FeatureProvider):
+    # torque/flux controller
 
-        def __init__(self, motor):
-            self._motor = motor
+    def set_torque_p_parameter(self, p_value):
+        self._module.set_axis_parameter(self._aps.TorqueP, self._axis, p_value)
 
-        # torque/flux controller
+    def get_torque_p_parameter(self):
+        return self._module.get_axis_parameter(self._aps.TorqueP, self._axis)
 
-        def set_torque_p_parameter(self, p_value):
-            self._motor.set_axis_parameter(self._motor.AP.TorqueP, p_value)
+    def set_torque_i_parameter(self, i_value):
+        self._module.set_axis_parameter(self._aps.TorqueI, self._axis, i_value)
 
-        def get_torque_p_parameter(self):
-            return self._motor.get_axis_parameter(self._motor.AP.TorqueP)
+    def get_torque_i_parameter(self):
+        return self._module.get_axis_parameter(self._aps.TorqueI, self._axis)
 
-        def set_torque_i_parameter(self, i_value):
-            self._motor.set_axis_parameter(self._motor.AP.TorqueI, i_value)
+    # velocity controller
 
-        def get_torque_i_parameter(self):
-            return self._motor.get_axis_parameter(self._motor.AP.TorqueI)
+    def set_velocity_p_parameter(self, p_value):
+        self._module.set_axis_parameter(self._aps.VelocityP, self._axis, p_value)
 
-        # velocity controller
+    def get_velocity_p_parameter(self):
+        return self._module.get_axis_parameter(self._aps.VelocityP, self._axis)
 
-        def set_velocity_p_parameter(self, p_value):
-            self._motor.set_axis_parameter(self._motor.AP.VelocityP, p_value)
+    def set_velocity_i_parameter(self, i_value):
+        self._module.set_axis_parameter(self._aps.VelocityI, self._axis, i_value)
 
-        def get_velocity_p_parameter(self):
-            return self._motor.get_axis_parameter(self._motor.AP.VelocityP)
+    def get_velocity_i_parameter(self):
+        return self._module.get_axis_parameter(self._aps.VelocityI, self._axis)
 
-        def set_velocity_i_parameter(self, i_value):
-            self._motor.set_axis_parameter(self._motor.AP.VelocityI, i_value)
+    # position controller
 
-        def get_velocity_i_parameter(self):
-            return self._motor.get_axis_parameter(self._motor.AP.VelocityI)
+    def set_position_p_parameter(self, p_value):
+        self._module.set_axis_parameter(self._aps.PositionP, self._axis, p_value)
 
-        # position controller
+    def get_position_p_parameter(self):
+        return self._module.get_axis_parameter(self._aps.PositionP, self._axis)
 
-        def set_position_p_parameter(self, p_value):
-            self._motor.set_axis_parameter(self._motor.AP.PositionP, p_value)
+    # properties
+    torque_p = property(get_torque_p_parameter, set_torque_p_parameter)
+    torque_i = property(get_torque_i_parameter, set_torque_i_parameter)
+    velocity_p = property(get_velocity_p_parameter, set_velocity_p_parameter)
+    velocity_i = property(get_velocity_i_parameter, set_velocity_i_parameter)
+    position_p = property(get_position_p_parameter, set_position_p_parameter)
 
-        def get_position_p_parameter(self):
-            return self._motor.get_axis_parameter(self._motor.AP.PositionP)
-
-        # properties
-        torque_p = property(get_torque_p_parameter, set_torque_p_parameter)
-        torque_i = property(get_torque_i_parameter, set_torque_i_parameter)
-        velocity_p = property(get_velocity_p_parameter, set_velocity_p_parameter)
-        velocity_i = property(get_velocity_i_parameter, set_velocity_i_parameter)
-        position_p = property(get_position_p_parameter, set_position_p_parameter)
-
-        def __str__(self):
-            return "{} {}".format(
-                "PID",
-                {
-                    "torque_p": self.torque_p,
-                    "torque_i": self.torque_i,
-                    "velocity_p": self.velocity_p,
-                    "velocity_i": self.velocity_i,
-                    "position_p": self.position_p,
-                }
-            )
+    def __str__(self):
+        return "{} {}".format(
+            "PID",
+            {
+                "torque_p": self.torque_p,
+                "torque_i": self.torque_i,
+                "velocity_p": self.velocity_p,
+                "velocity_i": self.velocity_i,
+                "position_p": self.position_p,
+            }
+        )

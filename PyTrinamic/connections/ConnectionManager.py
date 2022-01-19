@@ -140,7 +140,7 @@ class ConnectionManager():
             print("Parsed commandline arguments: {0:s}".format(str(args)))
             print()
 
-        ### Interpret given arguments
+        # ## Interpret given arguments
         # Interface
         for interface in self._INTERFACES:
             if connectionType == "tmcl" and not(interface[1].supports_tmcl()):
@@ -258,10 +258,10 @@ class ConnectionManager():
                 # the listConnections() method.
                 port = self.__port
         try:
-            if self.__interface.supportsTMCL():
+            if self.__interface.supports_tmcl(self):
                 # Open the connection to a TMCL interface
                 self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=debug_interface)
-            elif self.__interface.supportsCANopen():
+            elif self.__interface.supports_canopen(self):
                 self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
             else:
                 # Open the connection to a direct IC interface
@@ -276,7 +276,7 @@ class ConnectionManager():
 
     def listConnections(self):
         # Get the list of ports
-        portList = self.__interface.list()
+        portList = self.__interface.list(self)
 
         # Apply the port blacklist
         portList = [port for port in portList if port not in self.__no_port]
@@ -351,10 +351,10 @@ if __name__ == "__main__":
 
     print("Verifying interfaces list...\n")
     for interface in ConnectionManager._INTERFACES:
-        if not hasattr(interface[1], "supportsTMCL"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the supportsTMCL() function")
-        if not hasattr(interface[1], "supportsCANopen"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the supportsCANopen() function")
+        if not hasattr(interface[1], "supports_tmcl"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the supports_tmcl() function")
+        if not hasattr(interface[1], "supports_canopen"):
+            raise NotImplementedError("Interface " + interface[0] + " is missing the supports_canopen() function")
         if not hasattr(interface[1], "close"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
         if not hasattr(interface[1], "__enter__"):

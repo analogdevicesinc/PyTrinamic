@@ -17,7 +17,7 @@ from PyTrinamic.modules.TMCM1633.TMCM_1633 import TMCM_1633
     Choose the right bustype before starting the script
 """
 
-connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType = "CANopen")
+connectionManager = ConnectionManager(" --interface pcan_CANopen", connection_type="CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_1633.getEdsFile(), 1)

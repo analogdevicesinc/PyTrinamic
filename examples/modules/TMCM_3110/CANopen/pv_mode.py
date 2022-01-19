@@ -21,7 +21,7 @@ DEFAULT_MOTOR = 0 # Axis: [0;2]
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType="CANopen")
+connectionManager = ConnectionManager(" --interface kvaser_CANopen", connection_type="CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_3110.getEdsFile(), 1, TMCM_3110.MOTORS)

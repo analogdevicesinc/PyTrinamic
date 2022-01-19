@@ -17,7 +17,7 @@ import time
 PyTrinamic.show_info()
 
 " choose the right bustype before starting the script "
-connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType = "CANopen")
+connectionManager = ConnectionManager(" --interface kvaser_CANopen", connection_type="CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_1636.getEdsFile(), 1)

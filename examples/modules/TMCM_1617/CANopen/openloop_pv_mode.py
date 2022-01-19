@@ -18,7 +18,7 @@ PyTrinamic.show_info()
 
 " choose the right bustype before starting the script "
 #connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType = "CANopen")
-connectionManager = ConnectionManager(" --interface kvaser_CANopen", connectionType = "CANopen")
+connectionManager = ConnectionManager(" --interface kvaser_CANopen", connection_type="CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node("TMCM_1617_Hw1.2_Fw1.06.eds", 1)

@@ -61,16 +61,16 @@ class dummy_tmclInterface(TmclInterface):
     def print_info(self):
         print("Connection: type=dummy_tmcl_interface")
 
-    @staticmethod
-    def supportsTMCL():
+    # @staticmethod
+    def supports_tmcl(self):
         return True
 
-    @staticmethod
-    def supportsCANopen():
-        return False
+    # @staticmethod
+    # def supportsCANopen():
+    #    return False
 
-    @staticmethod
-    def list():
+    #@staticmethod
+    def list(self):
         """
             Return a list of available connection ports as a list of strings.
 

@@ -1,5 +1,5 @@
 from PyTrinamic.features.feature import Feature, FeatureProvider
-from PyTrinamic.features.LinearRamp import LinearRamp
+from PyTrinamic.features.linear_ramp import LinearRamp
 
 
 class LinearRampIC(LinearRamp, FeatureProvider):

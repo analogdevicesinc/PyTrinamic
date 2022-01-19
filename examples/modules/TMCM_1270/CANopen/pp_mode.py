@@ -19,7 +19,7 @@ from PyTrinamic.modules.TMCM1270.TMCM_1270 import TMCM_1270
     For further details look in our ConnectionManager and the connection interfaces.
 """
 
-connectionManager = ConnectionManager(" --interface pcan_CANopen", connectionType ="CANopen")
+connectionManager = ConnectionManager(" --interface pcan_CANopen", connection_type="CANopen")
 network = connectionManager.connect()
 
 node = network.addDs402Node(TMCM_1270.getEdsFile(), 1)
