@@ -1,57 +1,61 @@
-#!/usr/bin/env python3
-'''
-Move a motor back and forth using the TMCM-1240 module
-
-Created on 21.09.2020
-
-@author: AA
-'''
-
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1240.TMCM_1240 import TMCM_1240
+from PyTrinamic.modules import TMCM_1240
 import time
 
 PyTrinamic.show_info()
+myInterface = ConnectionManager().connect()
+print(myInterface)
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
-module = TMCM_1240(myInterface)
+with myInterface:
+    module = TMCM_1240(myInterface)
+    motor = module.motors[0]
 
-print("Preparing parameters")
-module.setMaxAcceleration(40000)
-module.setMaxCurrent(50)
+    # drive configuration
+    motor.drive_settings.max_current = 50
+    print(motor.drive_settings)
 
-" set moveBy() relative to the actual position "
-module.setAxisParameter(module.AP.relative_positioning_option, 1)
+    # motion settings
+    motor.linear_ramp.max_velocity = 20000
+    motor.linear_ramp.max_acceleration = 40000
+    print(motor.linear_ramp)
 
-print("Rotating")
-module.rotate(20000)
-time.sleep(5)
+    time.sleep(1.0)
 
-print("Stopping")
-module.stop()
-time.sleep(1);
+    # set move_by relative to the actual position
+    motor.set_axis_parameter(motor.AP.RelativePositioningOption, 1)
 
-print("Double moved distance")
-module.moveBy(module.getActualPosition(), 10000)
-module.getAxisParameter(module.AP.ActualPosition)
-while not(module.positionReached()):
-    print("target position: " + str(module.getTargetPosition()) + "   actual position: " + str(module.getActualPosition()))
-    time.sleep(0.2)
+    # clear position counter
+    motor.actual_position = 0
 
-print("Furthest point reached")
-time.sleep(3)
+    print("Rotating...")
+    motor.rotate(20000)
+    time.sleep(5)
 
-print("Moving back to 0")
-module.moveTo(0, 20000)
+    print("Stopping...")
+    motor.stop()
+    time.sleep(1)
 
-" wait until position 0 is reached "
-while not(module.positionReached()):
-    print("target position: " + str(module.getTargetPosition()) + "   actual position: " + str(module.getActualPosition()))
-    time.sleep(0.2)
+    print("Double moved distance.")
+    motor.move_by(motor.actual_position, 10000)
 
-print("Reached position 0")
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + "   actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-myInterface.close()
-print("Ready.")
+    print("Furthest point reached.")
+    time.sleep(3)
+
+    print("Moving back to 0...")
+    motor.move_to(0, 20000)
+
+    # wait until position 0 is reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + "   actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
+
+    print("Reached position 0.")
+
+    myInterface.close()
+
+print("\nReady.")
