@@ -8,3 +8,5 @@ from .DriveSettingModule import DriveSettingModule
 from .linear_ramp_module import LinearRampModule
 from .motor_control_module import MotorControlModule
 from .pid_module import PIDModule
+from .stallguard2_module import StallGuard2Module
+from .coolstep_module import CoolStepModule

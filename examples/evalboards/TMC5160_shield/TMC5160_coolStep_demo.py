@@ -32,7 +32,7 @@ from threading import Thread
 import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
-from PyTrinamic.features.CoolStep import CoolStep
+from PyTrinamic.features.coolstep import CoolStep
 
 parser = argparse.ArgumentParser(description='coolStep demo')
 parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[100000],

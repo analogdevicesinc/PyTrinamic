@@ -6,7 +6,7 @@ Created on 03.12.2019
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 from PyTrinamic.features.linear_ramp_module import LinearRampModule
-from PyTrinamic.features.StallGuard2Module import StallGuard2Module
+from PyTrinamic.features.stallguard2_module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.motor_control_module import MotorControlModule
 

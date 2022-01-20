@@ -1,5 +1,5 @@
 from PyTrinamic.features.feature import Feature, FeatureProvider
-from PyTrinamic.features.StallGuard2 import StallGuard2
+from PyTrinamic.features.stallguard2 import StallGuard2
 
 
 class StallGuard2IC(StallGuard2, FeatureProvider):

@@ -1,8 +1,8 @@
 from PyTrinamic.modules import TMCLModule
 
 # features
-from PyTrinamic.features.StallGuard2Module import StallGuard2Module
-from PyTrinamic.features.CoolStepModule import CoolStepModule
+from PyTrinamic.features.stallguard2_module import StallGuard2Module
+from PyTrinamic.features.coolstep_module import CoolStepModule
 from PyTrinamic.features.DriveSettingModule import DriveSettingModule
 from PyTrinamic.features.linear_ramp_module import LinearRampModule
 from PyTrinamic.features.motor_control_module import MotorControlModule

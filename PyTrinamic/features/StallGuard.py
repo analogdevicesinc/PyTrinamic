@@ -41,9 +41,9 @@ class StallGuard(Feature):
             time.sleep(0.2)
             sgt = self._module.getAxisParameter(self._module.AP.LoadValue, 0)
             self.__logger.info(f"SGT load: {sgt}")
+
         self._module.setAxisParameter(self._module.AP.SG2Threshold, 0, sgthresh - 1)
         print(f"Calibration done. Now release the load.")
-
         input("Press enter to continue ...")
 
         self._module.setAxisParameter(self._module.AP.smartEnergyStallVelocity, 0, self.__threshold)

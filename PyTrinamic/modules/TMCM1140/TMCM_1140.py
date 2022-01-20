@@ -2,10 +2,7 @@ from PyTrinamic.modules import TMCLModule
 
 # features
 from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
-
-# from PyTrinamic.features.StallGuard2Module import StallGuard2Module
-# from PyTrinamic.features.CoolStepModule import CoolStepModule
-# from PyTrinamic.features.linear_ramp_module import LinearRampModule
+from PyTrinamic.features import StallGuard2Module, CoolStepModule
 
 
 class TMCM_1140(TMCLModule):
@@ -42,9 +39,8 @@ class TMCM_1140(TMCLModule):
             self.drive_settings = DriveSettingModule(module, axis, self.AP)
             self.linear_ramp = LinearRampModule(module, axis, self.AP)
 
-            # ToDo: rework both modules!
-#            StallGuard2Module.__init__(self)
-#            CoolStepModule.__init__(self)
+            self.stallguard2 = StallGuard2Module(module, axis, self.AP)
+            self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
