@@ -29,7 +29,7 @@ from threading import Thread
 
 import PyTrinamic
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
-from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
+from PyTrinamic.modules.TMC_EvalShield.tmc_eval_shield import TmcEvalShield
 from PyTrinamic.features.StallGuard import StallGuard
 
 parser = argparse.ArgumentParser(description='stallGuard demo')
@@ -67,7 +67,7 @@ from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
-shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
+shields = TmcEvalShield(myInterface, TMC5160_shield).shields
 
 # Initialize all attached shields
 for shield in shields:

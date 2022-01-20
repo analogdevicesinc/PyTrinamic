@@ -11,21 +11,18 @@ Created on 18.03.2020
 '''
 
 import PyTrinamic
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.modules.TMC_EvalShield.tmc_eval_shield import TmcEvalShield
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
-from PyTrinamic.modules.TMC_EvalShield import TMC_EvalShield
 
 PyTrinamic.show_info()
-
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
-
-shields = TMC_EvalShield(myInterface, TMC5160_shield).shields
+myInterface = ConnectionManager().connect()
+shields = TmcEvalShield(myInterface, TMC5160_shield).shields
 
 for shield in shields:
     print(shield)
     for name, register in shield.registers.__dict__.items():
-        if((not name.startswith("__")) and (not name.endswith("__"))):
+        if(not name.startswith("__")) and (not name.endswith("__")):
             print("{0}: 0x{1:08X}".format(name, shield.readRegister(register)))
 
 myInterface.close()
