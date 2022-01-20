@@ -55,7 +55,7 @@ class MockTmclInterface:
 ])
 def test(monkeypatch, example_script_path):
 
-    def mock_init(self, _):
+    def mock_init(self, _=None):
         pass
 
     def mock_connect(self):
