@@ -23,26 +23,26 @@ with myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration
-    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
-    motor.DriveSetting.pole_pairs = 4
-    motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DIGITAL_HALL
-    motor.DriveSetting.target_reached_distance = 5
-    motor.DriveSetting.target_reached_velocity = 500
-    print(motor.DriveSetting)
+    motor.drive_settings.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.drive_settings.pole_pairs = 4
+    motor.drive_settings.max_current = 2000
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_DIGITAL_HALL
+    motor.drive_settings.target_reached_distance = 5
+    motor.drive_settings.target_reached_velocity = 500
+    print(motor.drive_settings)
 
     # hall sensor configuration
-    motor.DigitalHall.direction = 0
-    motor.DigitalHall.polarity = 1
-    motor.DigitalHall.offset = 0
-    motor.DigitalHall.interpolation = 1
-    print(motor.DigitalHall)
+    motor.digital_hall.direction = 0
+    motor.digital_hall.polarity = 1
+    motor.digital_hall.offset = 0
+    motor.digital_hall.interpolation = 1
+    print(motor.digital_hall)
 
     # motion settings
-    motor.LinearRamp.max_velocity = 2000
-    motor.LinearRamp.max_acceleration = 500
-    motor.LinearRamp.enabled = 1
-    print(motor.LinearRamp)
+    motor.linear_ramp.max_velocity = 2000
+    motor.linear_ramp.max_acceleration = 500
+    motor.linear_ramp.enabled = 1
+    print(motor.linear_ramp)
 
     print("Starting motor...")
     motor.rotate(1000)
@@ -57,6 +57,6 @@ with myInterface:
     time.sleep(3)
 
     # power of
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
 
 print("\nReady.")

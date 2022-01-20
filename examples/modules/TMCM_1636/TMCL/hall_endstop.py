@@ -17,18 +17,18 @@ with connectionManager.connect() as myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration
-    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
-    motor.DriveSetting.pole_pairs = 4
-    motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DIGITAL_HALL
-    print(motor.DriveSetting)
+    motor.drive_settings.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.drive_settings.pole_pairs = 4
+    motor.drive_settings.max_current = 2000
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_DIGITAL_HALL
+    print(motor.drive_settings)
 
     # hall sensor configuration
-    motor.DigitalHall.direction = 0
-    motor.DigitalHall.polarity = 1
-    motor.DigitalHall.offset = 0
-    motor.DigitalHall.interpolation = 1
-    print(motor.DigitalHall)
+    motor.digital_hall.direction = 0
+    motor.digital_hall.polarity = 1
+    motor.digital_hall.offset = 0
+    motor.digital_hall.interpolation = 1
+    print(motor.digital_hall)
 
     # enable ref switch 
     motor.set_axis_parameter(motor.AP.ReferenceSwitchEnable, 3)

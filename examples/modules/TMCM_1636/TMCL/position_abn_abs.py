@@ -17,42 +17,42 @@ with connectionManager.connect() as myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not working. 
 
     # config abn encoder 
-    motor.ABNEncoder.resolution = 4096
-    motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
-    print(motor.ABNEncoder)
-
+    motor.abn_encoder.resolution = 4096
+    motor.abn_encoder.direction = 1
+    motor.abn_encoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
+    print(motor.abn_encoder)
+    
     # config absolute encoder 
-    motor.AbsoluteEncoder.type = 1
-    motor.AbsoluteEncoder.init_mode = 0
-    motor.AbsoluteEncoder.direction = 1
-    motor.AbsoluteEncoder.offset = 0
-    print(motor.AbsoluteEncoder)
+    motor.absolute_encoder.type = 1
+    motor.absolute_encoder.init_mode = 0
+    motor.absolute_encoder.direction = 1
+    motor.absolute_encoder.offset = 0
+    print(motor.absolute_encoder)
 
     # config drive mode 
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
-    motor.DriveSetting.position_sensor = motor.ENUM.POS_SELECTION_ABS
-    motor.DriveSetting.open_loop_current = 1000
-    print(motor.DriveSetting)
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
+    motor.drive_settings.position_sensor = motor.ENUM.POS_SELECTION_ABS
+    motor.drive_settings.open_loop_current = 1000
+    print(motor.drive_settings)
     time.sleep(1)
 
     # motion settings 
-    motor.LinearRamp.max_velocity = 1000
-    motor.LinearRamp.max_acceleration = 250
-    print(motor.LinearRamp)
+    motor.linear_ramp.max_velocity = 1000
+    motor.linear_ramp.max_acceleration = 250
+    print(motor.linear_ramp)
 
     # clear actual position 
-    motor.LinearRamp.actual_position = 0
+    motor.linear_ramp.actual_position = 0
 
     # move to new target position 
     motor.move_to(1000000)
 
     while not motor.get_position_reached():
-        print("target position: " + str(motor.LinearRamp.target_position) + " actual position: "
-              + str(motor.LinearRamp.actual_position))
+        print("target position: " + str(motor.target_position) + " actual position: "
+              + str(motor.actual_position))
         time.sleep(0.2)
 
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
-    motor.DriveSetting.position_sensor = motor.ENUM.POS_SELECTION_SAME
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
+    motor.drive_settings.position_sensor = motor.ENUM.POS_SELECTION_SAME
 
 print("\nReady.")

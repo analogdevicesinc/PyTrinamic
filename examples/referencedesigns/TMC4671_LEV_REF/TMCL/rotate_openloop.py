@@ -23,20 +23,20 @@ with myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration
-    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
-    motor.DriveSetting.pole_pairs = 4
-    motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_OPENLOOP
-    motor.DriveSetting.target_reached_distance = 5
-    motor.DriveSetting.target_reached_velocity = 500
-    motor.DriveSetting.open_loop_current = 1000
-    print(motor.DriveSetting)
+    motor.drive_settings.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.drive_settings.pole_pairs = 4
+    motor.drive_settings.max_current = 2000
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_OPENLOOP
+    motor.drive_settings.target_reached_distance = 5
+    motor.drive_settings.target_reached_velocity = 500
+    motor.drive_settings.open_loop_current = 1000
+    print(motor.drive_settings)
 
     # motion settings
-    motor.LinearRamp.max_velocity = 2000
-    motor.LinearRamp.max_acceleration = 1000
-    motor.LinearRamp.enabled = 1
-    print(motor.LinearRamp)
+    motor.linear_ramp.max_velocity = 2000
+    motor.linear_ramp.max_acceleration = 1000
+    motor.linear_ramp.enabled = 1
+    print(motor.linear_ramp)
 
     print("Starting motor...")
     motor.rotate(1000)
@@ -51,6 +51,6 @@ with myInterface:
     time.sleep(3)
 
     # power of
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_DISABLED
 
 print("\nReady.")

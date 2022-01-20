@@ -17,36 +17,36 @@ with connectionManager.connect() as myInterface:
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     # drive configuration 
-    motor.DriveSetting.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
-    motor.DriveSetting.pole_pairs = 4
-    motor.DriveSetting.max_current = 2000
-    motor.DriveSetting.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
-    motor.DriveSetting.target_reached_distance = 5
-    motor.DriveSetting.target_reached_velocity = 500
-    motor.DriveSetting.open_loop_current = 1000 
-    print(motor.DriveSetting)
+    motor.drive_settings.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
+    motor.drive_settings.pole_pairs = 4
+    motor.drive_settings.max_current = 2000
+    motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
+    motor.drive_settings.target_reached_distance = 5
+    motor.drive_settings.target_reached_velocity = 500
+    motor.drive_settings.open_loop_current = 1000
+    print(motor.drive_settings)
 
     # encoder configuration 
-    motor.ABNEncoder.resolution = 4096
-    motor.ABNEncoder.direction = 1
-    motor.ABNEncoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
-    print(motor.ABNEncoder)
+    motor.abn_encoder.resolution = 4096
+    motor.abn_encoder.direction = 1
+    motor.abn_encoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
+    print(motor.abn_encoder)
 
     # motion settings 
-    motor.LinearRamp.max_velocity = 2000
-    motor.LinearRamp.max_acceleration = 1000
-    motor.LinearRamp.enabled = 1 
-    print(motor.LinearRamp)
+    motor.linear_ramp.max_velocity = 2000
+    motor.linear_ramp.max_acceleration = 1000
+    motor.linear_ramp.enabled = 1
+    print(motor.linear_ramp)
 
-    motor.set_axis_parameter(motor.AP.PositionScaler, motor.ABNEncoder.resolution)
+    motor.set_axis_parameter(motor.AP.PositionScaler, motor.abn_encoder.resolution)
 
     # PI configuration 
-    motor.PID.torque_p = 300 
-    motor.PID.torque_i = 600
-    motor.PID.velocity_p = 100
-    motor.PID.velocity_i = 100
-    motor.PID.position_p = 300
-    print(motor.PID)
+    motor.pid.torque_p = 300
+    motor.pid.torque_i = 600
+    motor.pid.velocity_p = 100
+    motor.pid.velocity_i = 100
+    motor.pid.position_p = 300
+    print(motor.pid)
 
     time.sleep(1.0)
 
@@ -54,7 +54,7 @@ with connectionManager.connect() as myInterface:
     motor.actual_position = 0
 
     # set target position 
-    motor.move_to(motor.ABNEncoder.resolution * 50)
+    motor.move_to(motor.abn_encoder.resolution * 50)
     while not(motor.get_position_reached()):
         print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
         time.sleep(0.2)

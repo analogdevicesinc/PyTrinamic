@@ -29,16 +29,16 @@ with connectionManager.connect() as myInterface:
 
     print("Preparing parameters")
     #preparing drive settings 
-    motor_0.DriveSetting.max_current= 1000
-    motor_0.DriveSetting.standby_current = 0
-    motor_0.DriveSetting.boost_current = 0
-    motor_0.DriveSetting.microstep_resolution = motor_0.ENUM.microstep_resolution_256_microsteps
-    print(motor_0.DriveSetting)
-    motor_1.DriveSetting.max_current= 1000
-    motor_1.DriveSetting.standby_current = 0
-    motor_1.DriveSetting.boost_current = 0
-    motor_1.DriveSetting.microstep_resolution = motor_0.ENUM.microstep_resolution_256_microsteps
-    print(motor_1.DriveSetting)
+    motor_0.drive_settings.max_current= 1000
+    motor_0.drive_settings.standby_current = 0
+    motor_0.drive_settings.boost_current = 0
+    motor_0.drive_settings.microstep_resolution = motor_0.ENUM.microstep_resolution_256_microsteps
+    print(motor_0.drive_settings)
+    motor_1.drive_settings.max_current= 1000
+    motor_1.drive_settings.standby_current = 0
+    motor_1.drive_settings.boost_current = 0
+    motor_1.drive_settings.microstep_resolution = motor_0.ENUM.microstep_resolution_256_microsteps
+    print(motor_1.drive_settings)
 
     #preparing linear ramp settings 
     motor_0.max_acceleration = 1000
@@ -49,8 +49,8 @@ with connectionManager.connect() as myInterface:
     motor_0.actual_position = 0
     motor_1.actual_position = 0
 
-    print(motor_0.LinearRamp)    
-    print(motor_1.LinearRamp)
+    print(motor_0.linear_ramp)    
+    print(motor_1.linear_ramp)
 
     #start rotating motor_0 and motor_1 in different directions
     print("Rotating")
