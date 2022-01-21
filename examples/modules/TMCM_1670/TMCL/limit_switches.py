@@ -1,6 +1,6 @@
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1670.TMCM_1670 import TMCM_1670
+from PyTrinamic.modules.TMCM_1670 import TMCM_1670
 import time
 
 PyTrinamic.show_info()

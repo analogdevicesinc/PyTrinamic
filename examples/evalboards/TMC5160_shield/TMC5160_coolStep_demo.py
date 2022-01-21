@@ -31,7 +31,7 @@ from threading import Thread
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMC_EvalShield.tmc_eval_shield import TmcEvalShield
+from PyTrinamic.modules.tmc_eval_shield import TmcEvalShield
 from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.features.coolstep import CoolStep
 

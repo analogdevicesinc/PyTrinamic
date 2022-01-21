@@ -9,7 +9,7 @@ Created on 22.05.2019
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1160.TMCM_1160 import TMCM_1160
+from PyTrinamic.modules.TMCM_1160 import TMCM_1160
 import time
 
 PyTrinamic.show_info()
