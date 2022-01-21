@@ -1,9 +1,7 @@
-# interfaces
-from PyTrinamic.modules import TMCLModule, Motor
+from PyTrinamic.modules import TMCLModule
 
 # features
-from PyTrinamic.features import DriveSettingModule, LinearRampModule, DigitalHallModule
-from PyTrinamic.features import PIDModule, MotorControlModule
+from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule, DigitalHallModule, PIDModule
 
 
 class TMC4671_LEV_REF(TMCLModule):
@@ -26,24 +24,24 @@ class TMC4671_LEV_REF(TMCLModule):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.motors[0].LinearRamp.max_velocity = velocity
+            self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.moveTo(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.motors[0].LinearRamp.max_velocity = velocity
+            self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.moveBy(axis, difference, self.module_id)
 
-    class Motor0(Motor, DriveSettingModule, LinearRampModule, DigitalHallModule,
-                 PIDModule, MotorControlModule):
-        def __init__(self, module, axis):
-            Motor.__init__(self, module, axis)
-            DriveSettingModule.__init__(self)
-            LinearRampModule.__init__(self)
-            DigitalHallModule.__init__(self)
-            PIDModule.__init__(self)
+    class Motor0(MotorControlModule):
 
-        class APs:
+        def __init__(self, module, axis):
+            MotorControlModule.__init__(self, module, axis, self.AP)
+            self.drive_settings = DriveSettingModule(module, axis, self.AP)
+            self.linear_ramp = LinearRampModule(module, axis, self.AP)
+            self.digital_hall = DigitalHallModule(module, axis, self.AP)
+            self.pid = PIDModule(module, axis, self.AP)
+
+        class AP:
             AdcPhaseA                       = 3
             AdcPhaseB                       = 4
             AdcOffsetPhaseA                 = 5
@@ -157,13 +155,13 @@ class TMC4671_LEV_REF(TMCLModule):
             DebugValue9                     = 249
             EnableDriver                    = 255
 
-        class ENUMs:
+        class ENUM:
             COMM_MODE_DISABLED              = 0
             COMM_MODE_OPENLOOP              = 1
             COMM_MODE_HALL                  = 2
             COMM_MODE_HALL_PEDAL_CONTROLLED = 3
 
-    class GPs:
+    class GP:
         SerialBaudRate      = 65
         SerialAddress       = 66
         CANBitRate          = 69
