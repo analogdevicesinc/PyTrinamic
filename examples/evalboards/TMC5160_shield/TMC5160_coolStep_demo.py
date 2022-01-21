@@ -30,8 +30,9 @@ import msvcrt
 from threading import Thread
 
 import PyTrinamic
-from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
 from PyTrinamic.modules.TMC_EvalShield.tmc_eval_shield import TmcEvalShield
+from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from PyTrinamic.features.coolstep import CoolStep
 
 parser = argparse.ArgumentParser(description='coolStep demo')
@@ -62,9 +63,7 @@ logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
 logger.debug(f"Maximum current: {args.current[0]}")
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+myInterface = ConnectionManager().connect()
 
 shields = TmcEvalShield(myInterface, TMC5160_shield).shields
 

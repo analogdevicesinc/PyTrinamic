@@ -7,6 +7,12 @@ Created on 20.03.2020
 @author: LK
 '''
 
+import time
+import PyTrinamic
+from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from PyTrinamic.modules.TMC_EvalShield.tmc_eval_shield import TmcEvalShield
+from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
+
 ################################################################################
 # Configuration for all motors
 
@@ -28,15 +34,7 @@ THRESHOLD_COOLSTEP = 0
 
 ################################################################################
 
-import time
-
-import PyTrinamic
-from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
-from PyTrinamic.modules.TMC_EvalShield.tmc_eval_shield import TmcEvalShield
-
 PyTrinamic.show_info()
-
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
