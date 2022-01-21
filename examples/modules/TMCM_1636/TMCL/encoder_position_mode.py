@@ -1,6 +1,6 @@
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_1636
+from PyTrinamic.modules import TMCM1636
 import time
 
 PyTrinamic.show_info()
@@ -8,7 +8,7 @@ PyTrinamic.show_info()
 connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
 with connectionManager.connect() as myInterface: 
-    module = TMCM_1636(myInterface)
+    module = TMCM1636(myInterface)
     motor = module.motors[0]
 
     # Define motor configuration for the TMCM-1636.

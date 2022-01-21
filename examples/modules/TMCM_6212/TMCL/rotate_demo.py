@@ -9,14 +9,14 @@ Created on 28.02.2019
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM_6212 import TMCM_6212
+from PyTrinamic.modules.TMCM6212 import TMCM6212
 import time
 
 PyTrinamic.show_info()
 
 connectionManager = ConnectionManager() # If no Interface is selected , the default interface is usb_tmcl
 myInterface = connectionManager.connect()
-Module_6212 = TMCM_6212(myInterface)
+Module_6212 = TMCM6212(myInterface)
 
 DEFAULT_MOTOR = 0
 

@@ -1,14 +1,14 @@
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_1640
+from PyTrinamic.modules import TMCM1640
 import time
 
 PyTrinamic.show_info()
 myInterface = ConnectionManager().connect()
 
 with myInterface:
-    module = TMCM_1640(myInterface)
+    module = TMCM1640(myInterface)
     motor = module.motors[0]
 
     # Define motor configuration for the TMCM-1640.

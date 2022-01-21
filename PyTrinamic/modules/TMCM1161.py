@@ -6,7 +6,7 @@ Created on 21.05.2019
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_1161(TMCLModule):
+class TMCM1161(TMCLModule):
 
     class AP:
         TargetPosition                 = 0
@@ -211,7 +211,7 @@ class TMCM_1161(TMCLModule):
     def getErrorFlags(self, axis):
         return self.axisParameter(self.APs.ExtendedErrorFlags, axis)
 
-    def positionReached(self):
+    def positionReached(self, axis):
         return self.axisParameter(self.APs.PositionReachedFlag, axis)
 
     # IO pin functions

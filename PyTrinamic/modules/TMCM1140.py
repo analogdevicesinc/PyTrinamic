@@ -5,7 +5,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import StallGuard2Module, CoolStepModule
 
 
-class TMCM_1140(TMCLModule):
+class TMCM1140(TMCLModule):
     """
     The TMCM-1140 is a single axis stepper motor controller/driver module for sensorless load dependent current control.
             * Supply voltage: 9 - 28V

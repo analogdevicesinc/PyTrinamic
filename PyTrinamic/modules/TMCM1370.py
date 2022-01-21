@@ -6,7 +6,7 @@ Created on 08.07.2020
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_1370(TMCLModule):
+class TMCM1370(TMCLModule):
 
     class AP():
         TargetPosition                 = 0

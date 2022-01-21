@@ -6,7 +6,8 @@ Created on 28.02.2020
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_6212(TMCLModule):
+
+class TMCM6212(TMCLModule):
 
     class AP:
         TargetPosition                 = 0
@@ -113,7 +114,7 @@ class TMCM_6212(TMCLModule):
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_6212.py", "TMCM_6212_V.3.22.eds")
+        return __file__.replace("TMCM6212.py", "TMCM_6212_V.3.22.eds")
 
     def showChipInfo(self):
         print("TMCM-6212 is a six axes controller/driver module for 2-phase bipolar stepper motors with seperate encoder (differential) and HOME / STOP switch inputes for each axis. Voltage supply: 12 - 35")

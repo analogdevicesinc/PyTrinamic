@@ -5,7 +5,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import ABNEncoderModule, DigitalHallModule, PIDModule
 
 
-class TMCC_160(TMCLModule):
+class TMCC160(TMCLModule):
     """
     The TMCC160 is designed for evaluating all features of the TMCC160-LC motionCookie. Supply voltage is 7-24V.
     """

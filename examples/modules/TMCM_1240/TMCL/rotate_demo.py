@@ -1,6 +1,6 @@
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_1240
+from PyTrinamic.modules import TMCM1240
 import time
 
 PyTrinamic.show_info()
@@ -8,7 +8,7 @@ myInterface = ConnectionManager().connect()
 print(myInterface)
 
 with myInterface:
-    module = TMCM_1240(myInterface)
+    module = TMCM1240(myInterface)
     motor = module.motors[0]
 
     print("Preparing parameters...")

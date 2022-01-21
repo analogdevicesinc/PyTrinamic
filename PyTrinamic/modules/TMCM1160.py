@@ -6,7 +6,7 @@ Created on 09.04.2019
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_1160(TMCLModule):
+class TMCM1160(TMCLModule):
 
     class AP:
         TargetPosition                 = 0
@@ -121,7 +121,7 @@ class TMCM_1160(TMCLModule):
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_1160.py", "TMCM_1160_V3.20.eds")
+        return __file__.replace("TMCM1160.py", "TMCM_1160_V3.20.eds")
 
     def showChipInfo(self):
         print("The TMCM-1160 is a single axis controller/driver module for 2-phase bipolar stepper motors with state of theart feature set. Voltage supply: 12 - 48V");

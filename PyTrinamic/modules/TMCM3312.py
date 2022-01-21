@@ -11,7 +11,7 @@ from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.motor_control_module import MotorControlModule
 from PyTrinamic.features.SRampModule import SRampModule
 from PyTrinamic.features.SixPointRampModule import SixPointRampModule
-class TMCM_3312(TMCLModule):
+class TMCM3312(TMCLModule):
 
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)

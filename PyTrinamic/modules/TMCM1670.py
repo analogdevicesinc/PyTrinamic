@@ -3,7 +3,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import PIDModule
 
 
-class TMCM_1670(TMCLModule):
+class TMCM1670(TMCLModule):
     """
     The TMCM-1670 is an easy to use and rather compact PANdrive™ smart BLDC motor. Supply voltage is 10-28V.
     """

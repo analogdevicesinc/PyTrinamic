@@ -10,7 +10,8 @@ from PyTrinamic.features.stallguard2_module import StallGuard2Module
 from PyTrinamic.features.CurrentModule import CurrentModule
 from PyTrinamic.features.motor_control_module import MotorControlModule
 
-class TMCM_1270(TMCLModule):
+
+class TMCM1270(TMCLModule):
     "TMCM-1270 module implementation"
 
     def __init__(self, connection, module_id=1):
@@ -21,7 +22,7 @@ class TMCM_1270(TMCLModule):
     @staticmethod
     def getEdsFile():
         "Returns EDS file with parameters"
-        return __file__.replace("TMCM_1270.py", "TMCM_1270_V3.22.eds")
+        return __file__.replace("TMCM1270.py", "TMCM_1270_V3.22.eds")
 
     def showChipInfo(self):
         print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")

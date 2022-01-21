@@ -5,7 +5,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import DigitalHallModule, PIDModule, AbsoluteEncoderModule
 
 
-class TMCM_1636(TMCLModule):
+class TMCM1636(TMCLModule):
     """
     The TMCM-1636 is a single axis servo drive platform for 3-phase BLDC motors and DC motors.
         * Supply Voltage: 8 - 48V

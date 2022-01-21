@@ -9,14 +9,14 @@ Created on 22.05.2019
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM_1160 import TMCM_1160
+from PyTrinamic.modules.TMCM1160 import TMCM1160
 import time
 
 PyTrinamic.show_info()
 
 connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
-Module_1160 = TMCM_1160(myInterface)
+Module_1160 = TMCM1160(myInterface)
 
 DEFAULT_MOTOR = 0
 

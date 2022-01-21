@@ -9,14 +9,14 @@ Created on 07.07.2020
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM_1260 import TMCM_1260
+from PyTrinamic.modules.TMCM1260 import TMCM1260
 import time
 
 PyTrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
-Module_1260 = TMCM_1260(myInterface)
+Module_1260 = TMCM1260(myInterface)
 
 print("Preparing parameters")
 Module_1260.setMaxAcceleration(40000)

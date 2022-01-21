@@ -4,7 +4,7 @@ from PyTrinamic.modules import TMCLModule
 from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
 
 
-class TMCM_1240(TMCLModule):
+class TMCM1240(TMCLModule):
     """
     The TMCM-1240 is a single axis controller/driver module. Supply voltage is 24V.
     """

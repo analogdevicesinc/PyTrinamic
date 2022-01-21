@@ -1,6 +1,6 @@
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_1670
+from PyTrinamic.modules import TMCM1670
 import time
 
 PyTrinamic.show_info()
@@ -10,7 +10,7 @@ PyTrinamic.show_info()
 myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 with myInterface:
-    module = TMCM_1670(myInterface)
+    module = TMCM1670(myInterface)
     print(module)
     motor = module.motors[0]
 

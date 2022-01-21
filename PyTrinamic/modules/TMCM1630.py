@@ -5,7 +5,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import ABNEncoderModule, DigitalHallModule, PIDModule
 
 
-class TMCM_1630(TMCLModule):
+class TMCM1630(TMCLModule):
     """
     The TMCM-1630 is a highly integrated single axis BLDC servo controller module with several interface options.
     Supply voltage is 14,5 - 48V.

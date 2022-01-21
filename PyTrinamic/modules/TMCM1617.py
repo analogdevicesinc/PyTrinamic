@@ -5,7 +5,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import ABNEncoderModule, DigitalHallModule, PIDModule
 
 
-class TMCM_1617(TMCLModule):
+class TMCM1617(TMCLModule):
     """
     The TMCM-1617 is a single axis servo drive platform for 3-phase BLDC motors and DC motors.
         * Supply Voltage: 8 - 28V

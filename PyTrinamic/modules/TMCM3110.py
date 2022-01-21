@@ -6,7 +6,8 @@ Created on 05.06.2020
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_3110(TMCLModule):
+
+class TMCM3110(TMCLModule):
     MOTORS = 3
 
     class AP:
@@ -78,7 +79,7 @@ class TMCM_3110(TMCLModule):
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_3110.py", "TMCM_3110_V.320.eds")
+        return __file__.replace("TMCM3110.py", "TMCM_3110_V.320.eds")
 
     def showChipInfo(self):
         print("The TMCM-3110 is a 3-Axis Stepper Controller / Driver. Voltage supply: 12 - 48V")

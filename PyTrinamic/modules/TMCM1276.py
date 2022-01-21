@@ -6,7 +6,8 @@ Created on 18.11.2019
 
 from PyTrinamic.modules.tmcl_module import TMCLModule
 
-class TMCM_1276(TMCLModule):
+
+class TMCM1276(TMCLModule):
 
     class AP:
         TargetPosition                 = 0
@@ -120,7 +121,7 @@ class TMCM_1276(TMCLModule):
 
     @staticmethod
     def getEdsFile():
-        return __file__.replace("TMCM_1276.py", "TMCM_1276_V3.22.eds")
+        return __file__.replace("TMCM1276.py", "TMCM_1276_V3.22.eds")
 
     def showChipInfo(self):
         print("The TMCM-1276 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 10 - 30V");

@@ -5,7 +5,7 @@ from PyTrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from PyTrinamic.features import ABNEncoderModule, DigitalHallModule, PIDModule
 
 
-class TMCM_1640(TMCLModule):
+class TMCM1640(TMCLModule):
     """
     The TMCM-1640 is a highly compact controller/driver module for brushless DC (BLDC) motors
     with up to 5A coil current, optional encoder and/or hall sensor feedback. Supply voltage is 15-28V.

@@ -9,14 +9,14 @@ Created on 13.07.2021
 
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM_6110
+from PyTrinamic.modules import TMCM6110
 import time
 
 PyTrinamic.show_info()
 connectionManager = ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200")
 
 with connectionManager.connect() as myInterface: 
-    module = TMCM_6110(myInterface)
+    module = TMCM6110(myInterface)
     motor_0 = module.motors[0]
     motor_1 = module.motors[1]
     motor_2 = module.motors[2]

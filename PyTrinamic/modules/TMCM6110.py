@@ -8,7 +8,7 @@ from PyTrinamic.features.linear_ramp_module import LinearRampModule
 from PyTrinamic.features.motor_control_module import MotorControlModule
 
 
-class TMCM_6110(TMCLModule):
+class TMCM6110(TMCLModule):
     """
     The TMCM-6110 is a six axis stepper motor controller/driver module for sensorless load dependent current control.
     """
