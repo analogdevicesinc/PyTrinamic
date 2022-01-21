@@ -1,12 +1,10 @@
-'''
-Created on 18.10.2019
-
-@author: JM
-'''
-
+from PyTrinamic.evalboards.tmcl_eval import TMCLEval
 from PyTrinamic.ic.TMC2209.TMC2209 import TMC2209
+from PyTrinamic.features import MotorControlModule
+from PyTrinamic.helpers import TMC_helpers
 
-class TMC2209_eval(TMC2209):
+
+class TMC2209_eval(TMCLEval, TMC2209):
     """
     This class represents a TMC2209 Evaluation board.
 
@@ -15,107 +13,95 @@ class TMC2209_eval(TMC2209):
     are provided properly. See __init__ for details on the function
     requirements.
     """
-    
-    def __init__(self, connection, moduleID=1):
+    def __init__(self, connection, module_id=1):
         """
         Parameters:
             connection:
                 Type: class
-                A class that provides the neccessary functions for communicating
+                A class that provides the necessary functions for communicating
                 with a TMC2209. The required functions are
                     connection.writeDRV(registerAddress, value, moduleID)
                     connection.readDRV(registerAddress, moduleID, signed)
                 for writing/reading to registers of the TMC2209.
-            moduleID:
+            module_id:
                 Type: int, optional, default value: 1
                 The TMCL module ID of the TMC2209. This ID is used as a
                 parameter for the writeDRV and readDRV functions.
         """
-        TMC2209.__init__(self, moduleID)
+        TMCLEval.__init__(self, connection, module_id)
+        TMC2209.__init__(self)
+        self.motors = [self.Motor0(self, 0)]
 
-        self.__connection = connection
-        self._MODULE_ID = moduleID
-        
-        self.APs = _APs
+    # Use the driver controller channel for register access
 
-    # Use the driver controller functions for register access
-    def writeRegister(self, registerAddress, value, moduleID=None):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+    def write_register(self, register_address, value):
+        return self._connection.writeDRV(register_address, value)
 
-        return self.__connection.writeDRV(registerAddress, value, moduleID)
+    def read_register(self, register_address, signed=False):
+        return self._connection.readDRV(register_address, signed)
 
-    def readRegister(self, registerAddress, moduleID=None, signed=False):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                   field[1], field[2], value))
 
-        return self.__connection.readDRV(registerAddress, moduleID, signed)
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
+    # Motion control functions
 
-        return self.__connection.axisParameter(apType, axis)
+    def rotate(self, axis, value):
+        self._connection.rotate(axis, value)
 
-    def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
+    def stop(self, axis):
+        self._connection.stop(axis)
 
-        self.__connection.setAxisParameter(apType, axis, value)
+    def move_to(self, axis, position, velocity=None):
+        if velocity:
+            self.motors[0].set_axis_parameter(self.motors[0].AP.MaxVelocity, velocity)
+        self._connection.moveTo(axis, position, self._module_id)
 
-    # Motion Control functions
-    def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
+    def move_by(self, axis, difference, velocity=None):
+        if velocity:
+            self.motors[0].set_axis_parameter(self.motors[0].AP.MaxVelocity, velocity)
+        self._connection.moveBy(axis, difference, self._module_id)
 
-        self.__connection.rotate(motor, value, moduleID=self._MODULE_ID)
-    
-    def stop(self, motor):
-        self.__connection.stop(motor, moduleID=self._MODULE_ID)
-    
-    def moveTo(self, motor, position, velocity=None):
-        if velocity and velocity != 0:
-            # Set maximum positioning velocity
-            self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
-        
-        self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
+    class Motor0(MotorControlModule):
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-class _APs():
-    TargetPosition                 = 0
-    ActualPosition                 = 1
-    TargetVelocity                 = 2
-    ActualVelocity                 = 3
-    MaxVelocity                    = 4
-    MaxAcceleration                = 5
-    MaxCurrent                     = 6
-    StandbyCurrent                 = 7
-    PositionReachedFlag            = 8
-    THIGH                          = 23
-    internal_Rsense                = 28
-    MeasuredSpeed                  = 29
-    StepDirSource                  = 50
-    StepDirFrequency               = 51
-    MicrostepResolution            = 140
-    ChopperBlankTime               = 162
-    ChopperHysteresisEnd           = 165
-    ChopperHysteresisStart         = 166
-    TOff                           = 167
-    SEIMIN                         = 168
-    SECDS                          = 169
-    smartEnergyHysteresis          = 170
-    SECUS                          = 171
-    smartEnergyHysteresisStart     = 172
-    SG2Threshold                   = 174
-    VSense                         = 179
-    smartEnergyActualCurrent       = 180
-    smartEnergyStallVelocity       = 181
-    smartEnergyThresholdSpeed      = 182
-    PWMThresholdSpeed              = 186
-    PWMGrad                        = 187
-    PWMFrequency                   = 191
-    PWMAutoscale                   = 192
-    FreewheelingMode               = 204
-    LoadValue                      = 206
+        class AP:
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxAcceleration                = 5
+            MaxCurrent                     = 6
+            StandbyCurrent                 = 7
+            PositionReachedFlag            = 8
+            THIGH                          = 23
+            internal_Rsense                = 28
+            MeasuredSpeed                  = 29
+            StepDirSource                  = 50
+            StepDirFrequency               = 51
+            MicrostepResolution            = 140
+            ChopperBlankTime               = 162
+            ChopperHysteresisEnd           = 165
+            ChopperHysteresisStart         = 166
+            TOff                           = 167
+            SEIMIN                         = 168
+            SECDS                          = 169
+            smartEnergyHysteresis          = 170
+            SECUS                          = 171
+            smartEnergyHysteresisStart     = 172
+            SG2Threshold                   = 174
+            VSense                         = 179
+            smartEnergyActualCurrent       = 180
+            smartEnergyStallVelocity       = 181
+            smartEnergyThresholdSpeed      = 182
+            PWMThresholdSpeed              = 186
+            PWMGrad                        = 187
+            PWMFrequency                   = 191
+            PWMAutoscale                   = 192
+            FreewheelingMode               = 204
+            LoadValue                      = 206

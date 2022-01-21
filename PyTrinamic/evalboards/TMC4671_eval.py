@@ -6,16 +6,18 @@ class TMC4671_eval(TMC4671):
     Use TMC4671-EVAL with Landungsbrücke/Startrampe at MC spi channel to access the TMC4671.
     """
     def __init__(self, connection, module_id=1):
-        self.connection = connection
-        TMC4671.__init__(self, connection=None)
+        self._connection = connection
+        TMC4671.__init__(self, connection)
 
-    # override TMC4671
+    # Use the motion controller channel for register access
+
+    # Override TMC4671
     def write_register(self, register_address, value):
-        return self.connection.writeMC(register_address, value)
+        return self._connection.writeMC(register_address, value)
 
-    # override TMC4671
+    # Override TMC4671
     def read_register(self, register_address, signed=False):
-        return self.connection.readMC(register_address, signed=signed)
+        return self._connection.readMC(register_address, signed)
 
     class AP:
         MaxVelocity                    = 4

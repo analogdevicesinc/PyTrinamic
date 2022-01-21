@@ -1,9 +1,3 @@
-'''
-Created on 18.10.2019
-
-@author: JM
-'''
-
 class TMC2209_register:
     """
     Define all registers of the TMC2209.
@@ -20,7 +14,11 @@ class TMC2209_register:
     TPOWERDOWN    = 0x11
     TSTEP         = 0x12
     TPWMTHRS      = 0x13
+    TCOOLTHRS     = 0x14
     VACTUAL       = 0x22
+    SGTHRS        = 0x40
+    SG_RESULT     = 0x41
+    COOLCONF      = 0x42
     MSCNT         = 0x6A
     MSCURACT      = 0x6B
     CHOPCONF      = 0x6C
