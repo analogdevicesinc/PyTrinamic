@@ -5,7 +5,7 @@ The connection to a Landungsbrücke is established over USB. TMCL commands are u
 """
 import PyTrinamic
 from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC2209_eval import TMC2209_eval
+from PyTrinamic.evalboards import TMC2209_eval
 
 PyTrinamic.show_info()
 

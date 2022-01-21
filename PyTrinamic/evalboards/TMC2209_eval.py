@@ -56,7 +56,7 @@ class TMC2209_eval(TMCLEval, TMC2209):
         self._connection.stop(axis)
 
     def move_to(self, axis, position, velocity=None):
-        if velocity:
+        if velocity and velocity != 0:
             self.motors[0].set_axis_parameter(self.motors[0].AP.MaxVelocity, velocity)
         self._connection.moveTo(axis, position, self._module_id)
 

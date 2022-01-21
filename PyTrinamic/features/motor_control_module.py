@@ -133,8 +133,9 @@ class MotorControlModule(MotorControl):
 
     def __str__(self):
         return "{} {}".format(
-            "LinearRamp",
+            "MotorControl",
             {
+                "motor": self._axis,
                 "target_position": self.target_position,
                 "actual_position": self.actual_position,
                 "target_velocity": self.target_velocity,
