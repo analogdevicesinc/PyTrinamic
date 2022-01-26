@@ -64,7 +64,7 @@ Change used IC `TMC5130` to your preferences. `X` is just a placeholder field.
 and `write_register(...)` functions implemented.
 
 ```Python
-from pytrinamic.ic.TMC5130.TMC5130 import TMC5130
+from pytrinamic2.ic.TMC5130.TMC5130 import TMC5130
 
 class Handler(object):
   def read_register(self, channel, address, signed=False):
@@ -94,7 +94,7 @@ Change used IC `TMC5130` to your preferences. `X` is just a placeholder field.
 and `write_register(...)` functions implemented.
 
 ```Python
-from pytrinamic.ic.TMC5130.TMC5130 import TMC5130
+from pytrinamic2.ic.TMC5130.TMC5130 import TMC5130
 
 class Handler(object):
   def read_register(self, channel, address, signed=False):

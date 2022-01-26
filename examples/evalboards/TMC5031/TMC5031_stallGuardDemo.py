@@ -15,9 +15,9 @@ Created on 29.01.2020
 '''
 
 import time
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.evalboards.TMC5031_eval import TMC5031_eval
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.evalboards.TMC5031_eval import TMC5031_eval
 
 connectionManager = ConnectionManager()
 
@@ -42,7 +42,7 @@ DELAY        = 1
 CHANGE_DIR   = True
 ################################################################################
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 
 # Initialization
 

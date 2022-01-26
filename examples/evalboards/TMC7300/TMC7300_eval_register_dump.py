@@ -10,12 +10,12 @@ Created on 30.03.2020
 @author: JM
 '''
 
-import pytrinamic
-from pytrinamic.evalboards.TMC7300_eval import TMC7300_eval
+import pytrinamic2
+from pytrinamic2.evalboards.TMC7300_eval import TMC7300_eval
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 
-from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic2.connections.connection_manager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC7300 = TMC7300_eval(myInterface)

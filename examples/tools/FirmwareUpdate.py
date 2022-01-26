@@ -11,15 +11,15 @@ import math
 import re
 import struct
 
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.TMCL import TMCL_Command
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.TMCL import TMCL_Command
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
 # command.
 SERIAL_BOOT_TIMEOUT = 100
 # ################################ Preparation ##################################
-pytrinamic.show_info()
+pytrinamic2.show_info()
 
 if len(sys.argv) < 2:
     print("Usage:\n\tFirmwareUpdate.py HexFilePath [connection options]")

@@ -7,12 +7,12 @@ Created on 22.05.2019
 @author: LH
 '''
 
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.TMCM1161 import TMCM1161
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.modules.TMCM1161 import TMCM1161
 import time
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

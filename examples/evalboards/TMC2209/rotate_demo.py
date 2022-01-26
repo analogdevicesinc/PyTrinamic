@@ -1,9 +1,9 @@
 import time
-import pytrinamic
-from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards import TMC2209_eval
+import pytrinamic2
+from pytrinamic2.connections import ConnectionManager
+from pytrinamic2.evalboards import TMC2209_eval
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 myInterface = ConnectionManager().connect()
 print(myInterface)
 

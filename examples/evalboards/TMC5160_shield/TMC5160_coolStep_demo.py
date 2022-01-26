@@ -29,11 +29,11 @@ import msvcrt
 
 from threading import Thread
 
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
-from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
-from pytrinamic.features.coolstep import CoolStep
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.modules.tmc_eval_shield import TmcEvalShield
+from pytrinamic2.evalboards.TMC5160_shield import TMC5160_shield
+from pytrinamic2.features.coolstep import CoolStep
 
 parser = argparse.ArgumentParser(description='coolStep demo')
 parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[100000],
@@ -57,7 +57,7 @@ formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(messag
 consoleHandler.setFormatter(formatter)
 logger.addHandler(consoleHandler)
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 
 logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")

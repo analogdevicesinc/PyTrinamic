@@ -1,9 +1,9 @@
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules import TMCM1617
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.modules import TMCM1617
 import time
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 # connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
 connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 

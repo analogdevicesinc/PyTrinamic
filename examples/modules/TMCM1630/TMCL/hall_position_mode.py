@@ -1,9 +1,9 @@
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules import TMCM1630
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.modules import TMCM1630
 import time
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 
 # please select a CAN or USB interface
 

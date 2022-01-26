@@ -32,8 +32,8 @@ work with EvalBoard on module-level.
 Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder axis parameter.
 
 ```Python
-from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic2.evalboards.TMC5130_eval import TMC5130_eval
+from pytrinamic2.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)
@@ -64,8 +64,8 @@ work with EvalBoard on motor-level.
 Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder axis parameter.
 
 ```Python
-from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic2.evalboards.TMC5130_eval import TMC5130_eval
+from pytrinamic2.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)
@@ -109,8 +109,8 @@ work with the IC on the EvalBoard directly.
 Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder field.
 
 ```Python
-from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic2.evalboards.TMC5130_eval import TMC5130_eval
+from pytrinamic2.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)
@@ -131,8 +131,8 @@ work directly with the attached motors, abstracting from the individual IC.
 Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder field.
 
 ```Python
-from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic2.evalboards.TMC5130_eval import TMC5130_eval
+from pytrinamic2.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)

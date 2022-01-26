@@ -8,10 +8,10 @@ Created on 20.03.2020
 '''
 
 import time
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
-from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
+import pytrinamic2
+from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic2.modules.tmc_eval_shield import TmcEvalShield
+from pytrinamic2.evalboards.TMC5160_shield import TMC5160_shield
 
 ################################################################################
 # Configuration for all motors
@@ -34,7 +34,7 @@ THRESHOLD_COOLSTEP = 0
 
 ################################################################################
 
-pytrinamic.show_info()
+pytrinamic2.show_info()
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
