@@ -2,12 +2,12 @@
 Turn a motor without feedback in open loop mode
 """
 
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.referencedesigns import TMC4671_LEV_REF
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.referencedesigns import TMC4671_LEV_REF
 import time
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
 # please select your CAN adapter
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()

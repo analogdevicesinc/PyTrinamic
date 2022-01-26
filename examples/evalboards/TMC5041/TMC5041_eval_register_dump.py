@@ -10,11 +10,11 @@ Created on 09.01.2019
 @author: LK
 '''
 
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.evalboards.TMC5041_eval import TMC5041_eval
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.evalboards.TMC5041_eval import TMC5041_eval
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

@@ -1,12 +1,12 @@
 
 import setuptools
-from pytrinamic2.version import __version__
+from pytrinamic.version import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pytrinamic2",
+    name="pytrinamic",
     version=__version__,
     author="Trinamic Software Team",
     author_email="tmc_info@trinamic.com",

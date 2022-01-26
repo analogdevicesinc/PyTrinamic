@@ -1,9 +1,9 @@
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.modules import TMCM1240
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.modules import TMCM1240
 import time
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 myInterface = ConnectionManager().connect()
 print(myInterface)
 

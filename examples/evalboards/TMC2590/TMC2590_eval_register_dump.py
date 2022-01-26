@@ -9,11 +9,11 @@ Created on 07.02.2020
 
 @author: JM
 '''
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.evalboards.TMC2590_eval import TMC2590_eval
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.evalboards.TMC2590_eval import TMC2590_eval
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

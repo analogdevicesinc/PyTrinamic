@@ -8,15 +8,15 @@ Created on 24.10.2019
 '''
 
 import time
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.evalboards.TMC5160_eval import TMC5160_eval
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.evalboards.TMC5160_eval import TMC5160_eval
 
 connectionManager = ConnectionManager()
 
 myInterface = connectionManager.connect()
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
 TMC5160 = TMC5160_eval(myInterface)
 TMC5160.showChipInfo()

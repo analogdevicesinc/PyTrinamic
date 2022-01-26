@@ -7,12 +7,12 @@ Created on 28.02.2019
 @author: JM
 '''
 
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.modules.TMCM6212 import TMCM6212
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.modules.TMCM6212 import TMCM6212
 import time
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
 connectionManager = ConnectionManager() # If no Interface is selected , the default interface is usb_tmcl
 myInterface = connectionManager.connect()

@@ -10,12 +10,12 @@ Created on 15.10.2019
 @author: JM
 '''
 
-import pytrinamic2
-from pytrinamic2.evalboards.TMC2100_eval import TMC2100_eval
+import pytrinamic
+from pytrinamic.evalboards.TMC2100_eval import TMC2100_eval
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
-from pytrinamic2.connections.connection_manager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC2100 = TMC2100_eval(myInterface)

@@ -1,10 +1,10 @@
 import time
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.evalboards import TMC4671_eval
-from pytrinamic2.evalboards import TMC6200_eval
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.evalboards import TMC4671_eval
+from pytrinamic.evalboards import TMC6200_eval
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 
 myInterface = ConnectionManager().connect()
 print(myInterface)

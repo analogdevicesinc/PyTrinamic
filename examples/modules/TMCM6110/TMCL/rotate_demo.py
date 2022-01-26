@@ -7,12 +7,12 @@ Created on 13.07.2021
 @author: Trinamic Software Team
 '''
 
-import pytrinamic2
-from pytrinamic2.connections.connection_manager import ConnectionManager
-from pytrinamic2.modules import TMCM6110
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.modules import TMCM6110
 import time
 
-pytrinamic2.show_info()
+pytrinamic.show_info()
 connectionManager = ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200")
 
 with connectionManager.connect() as myInterface: 

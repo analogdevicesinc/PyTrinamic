@@ -54,8 +54,8 @@ work with TMCL-Modules on module-level.
 Change `TMCM_1270` and `usb_tmcl_interface` to your preferences. `X` is just a placeholder axis parameter.
 
 ```Python
-from pytrinamic2.modules.TMCM1270 import TMCM_1270
-from pytrinamic2.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic.modules.TMCM1270 import TMCM_1270
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)
@@ -90,8 +90,8 @@ work with TMCL-Modules on motor-level.
 to show the working principle.
 
 ```Python
-from pytrinamic2.modules.TMCM1270 import TMCM_1270
-from pytrinamic2.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic.modules.TMCM1270 import TMCM_1270
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)
