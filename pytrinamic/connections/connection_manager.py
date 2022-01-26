@@ -70,13 +70,13 @@ class ConnectionManager:
     # All available interfaces
     # The tuples consist of (string representation, class type, default datarate)
     INTERFACES = [
-        ("dummy_tmcl", dummy_tmcl_interface, 0),
-        ("kvaser_tmcl", kvaser_tmcl_interface, 1000000),
-        ("pcan_tmcl", pcan_tmcl_interface, 1000000),
-        ("slcan_tmcl", slcan_tmcl_interface, 1000000),
-        ("socketcan_tmcl", socketcan_tmcl_interface, 1000000),
-        ("serial_tmcl", serial_tmcl_interface, 9600),
-        ("uart_ic", uart_ic_interface, 9600),
+        ("dummy_tmcl", DummyTmclInterface, 0),
+        ("kvaser_tmcl", KvaserTmclInterface, 1000000),
+        ("pcan_tmcl", PcanTmclInterface, 1000000),
+        ("slcan_tmcl", SlcanTmclInterface, 1000000),
+        ("socketcan_tmcl", SocketcanTmclInterface, 1000000),
+        ("serial_tmcl", SerialTmclInterface, 9600),
+        ("uart_ic", UartIcInterface, 9600),
         ("usb_tmcl", UsbTmclInterface, 115200)
     ]
 

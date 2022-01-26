@@ -1,8 +1,8 @@
 import serial.tools.list_ports
-from pytrinamic.connections.serial_tmcl_interface import serial_tmcl_interface
+from pytrinamic.connections.serial_tmcl_interface import SerialTmclInterface
 
 
-class UsbTmclInterface(serial_tmcl_interface):
+class UsbTmclInterface(SerialTmclInterface):
     """
     Opens a USB TMCL connection.
 

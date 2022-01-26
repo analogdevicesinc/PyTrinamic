@@ -3,7 +3,7 @@ import serial.tools.list_ports
 from pytrinamic.connections.tmcl_interface import TmclInterface
 
 
-class serial_tmcl_interface(TmclInterface):
+class SerialTmclInterface(TmclInterface):
     """
     Opens a serial TMCL connection
     """

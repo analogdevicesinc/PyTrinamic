@@ -5,7 +5,7 @@ from pytrinamic.connections.tmcl_interface import TmclInterface
 _CHANNELS = ["0",  "1",  "2"]
 
 
-class kvaser_tmcl_interface(TmclInterface):
+class KvaserTmclInterface(TmclInterface):
     """
     This class implements a TMCL connection for Kvaser adapter using CANLIB.
     Try 0 as default channel.

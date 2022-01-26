@@ -5,7 +5,7 @@ from pytrinamic.connections.tmcl_interface import TmclInterface
 _CHANNELS = ["can0",  "can1",  "can2",  "can3",  "can4",  "can5",  "can6",  "can7"]
 
 
-class socketcan_tmcl_interface(TmclInterface):
+class SocketcanTmclInterface(TmclInterface):
     """
     This class implements a TMCL connection over a SocketCAN adapter.
 

@@ -4,10 +4,10 @@ from serial.tools.list_ports import comports
 from pytrinamic.connections.tmcl_interface import TmclInterface
 
 
-class slcan_tmcl_interface(TmclInterface):
+class SlcanTmclInterface(TmclInterface):
     """
     This class implements a TMCL connection for CAN over Serial / SLCAN.
-    Comatible with CANable running slcan firmware and similar.
+    Compatible with CANable running slcan firmware and similar.
     Set underlying serial device as channel. (e.g. /dev/ttyUSB0, COM8, …)
     Maybe SerialBaudrate has to be changed based on adapter.
     """

@@ -29,7 +29,7 @@ _CHANNELS = [
     ]
 
 
-class pcan_tmcl_interface(TmclInterface):
+class PcanTmclInterface(TmclInterface):
     """
     This class implements a TMCL connection over a PCAN adapter.
     """

@@ -5,7 +5,7 @@ The connection to a Landungsbrücke is established over USB. TMCL commands are u
 """
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.connections.uart_ic_interface import uart_ic_interface
+from pytrinamic.connections.uart_ic_interface import UartIcInterface
 from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671 as TMC4671_IC
 
@@ -14,7 +14,7 @@ pytrinamic.show_info()
 myInterface = ConnectionManager().connect()
 print(myInterface)
 
-if isinstance(myInterface, uart_ic_interface):
+if isinstance(myInterface, UartIcInterface):
     # Create an TMC4671 IC class which communicates directly over UART
     TMC4671 = TMC4671_IC(myInterface)
 else:

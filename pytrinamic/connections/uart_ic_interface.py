@@ -30,7 +30,7 @@ class RegisterReply:
         return self.value
 
 
-class uart_ic_interface:
+class UartIcInterface:
 
     def __init__(self, com_port, datarate=9600, debug=False):
         self._debug = debug

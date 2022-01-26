@@ -1,7 +1,7 @@
 from pytrinamic.connections.tmcl_interface import TmclInterface
 
 
-class dummy_tmcl_interface(TmclInterface):
+class DummyTmclInterface(TmclInterface):
 
     def __init__(self, port, datarate=115200, host_id=2, module_id=1, debug=True):
         """
@@ -75,7 +75,7 @@ class dummy_tmcl_interface(TmclInterface):
 
 
 if __name__ == "__main__":
-    interface = dummy_tmcl_interface("dummy")
+    interface = DummyTmclInterface("dummy")
 
     interface.get_version_string()
     interface.send_boot()
