@@ -1,32 +1,25 @@
-'''
-Created on 12.09.2020
-
-@author: LK
-'''
 
 class TMCM_Python(object):
-
-    def __init__(self, connection, moduleID=1):
+    """
+    The TMCM-Python is the MicroPython TMCL Master/Slave interface.
+    """
+    def __init__(self, connection, module_id=1):
         self.connection = connection
-        self.MODULE_ID  = moduleID
-
+        self.MODULE_ID = module_id
         self.MOTORS = 0
         self.__default_motor = 0
 
-    def showChipInfo(self):
-        print("The TMCM-Python is the MicroPython TMCL Master/Slave interface.")
-
     # Global parameter access
-    def get_global_parameter(self, gpType, bank):
-        return self.connection.get_global_parameter(gpType, bank)
+    def get_global_parameter(self, gp_type, bank):
+        return self.connection.get_global_parameter(gp_type, bank)
 
-    def set_global_parameter(self, gpType, bank, value):
-        self.connection.set_global_parameter(gpType, bank, value)
+    def set_global_parameter(self, gp_type, bank, value):
+        self.connection.set_global_parameter(gp_type, bank, value)
 
-    class APs:
+    class AP:
         pass
 
-    class ENUMs:
+    class ENUM:
         # Version formats
         VERSION_FORMAT_ASCII = 0
         VERSION_FORMAT_BINARY = 1
@@ -36,7 +29,7 @@ class TMCM_Python(object):
         SUBSCRIPT_METHOD_APPEND = 1
         SUBSCRIPT_METHOD_CLEAR = 2
 
-    class GPs:
+    class GP:
         controlHost = 0
         controlModule = 1
         loggingEnabled = 2

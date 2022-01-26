@@ -1,70 +1,63 @@
-'''
-Created on 24.07.2019
-
-@author: LK
-'''
-
 from pytrinamic.TMCL import TMCL_Command
 from pytrinamic.helpers import EEPROM
 
-class Landungsbruecke():
+
+class Landungsbruecke:
     def __init__(self, connection):
-        self.GP   = _GP
         self.__connection = connection
 
         self._mcId = 0
         self._drvId = 0
 
-        self.EepromMc  = EEPROM(self._readMcEeprom, self._writeMcEeprom)
-        self.EepromDrv = EEPROM(self._readDrvEeprom, self._writeDrvEeprom)
+        self.eeprom_mc = EEPROM(self._read_mc_eeprom, self._write_mc_eeprom)
+        self.eeprom_drv = EEPROM(self._read_drv_eeprom, self._write_drv_eeprom)
 
-    def getBoardIDs(self):
-        '''
+    def get_board_ids(self):
+        """
         Read out the IDs of the detected boards.
 
         This does not start a detection.
         Returns a tuple of IDs: (drvId, mcId)
-        '''
-        value = self.__connection.get_global_parameter(self.GPs.BoardAssignment, 0)
+        """
+        value = self.__connection.get_global_parameter(self.GP.BoardAssignment, 0)
 
         drvStatus = (value >> 24) & 0xFF
         drvId     = (value >> 16) & 0xFF
         mcStatus  = (value >>  8) & 0xFF
         mcId      = (value      ) & 0xFF
 
-        if (mcStatus == 2):
+        if mcStatus == 2:
             self._mcId = mcId
-        if (drvStatus == 2):
+        if drvStatus == 2:
             self._drvId = drvId
 
-        return (self._mcId, self._drvId)
+        return self._mcId, self._drvId
 
-    def detectBoardIDs(self):
-        '''
+    def detect_board_ids(self):
+        """
         Start an IDDetection and read out the IDs of the detected boards.
-        '''
-
+        """
         while not self.__connection.send(TMCL_Command.ASSIGNMENT, 0, 0, 0).is_valid():
             pass
 
-        return self.getBoardIDs()
+        return self.get_board_ids()
 
-    def getBoardNames(self):
-        boardIDs = self.getBoardIDs()
-
-        try:
-            mcName = self.mcIdNames[boardIDs[0]]
-        except KeyError:
-            mcName = str(boardIDs[0])
+    def get_board_names(self):
+        board_ids = self.get_board_ids()
 
         try:
-            drvName = self.drvIdNames[boardIDs[1]]
+            mc_name = self.mcIdNames[board_ids[0]]
         except KeyError:
-            drvName = str(boardIDs[1])
+            mc_name = str(board_ids[0])
 
-        return (mcName, drvName)
+        try:
+            drv_name = self.drvIdNames[board_ids[1]]
+        except KeyError:
+            drv_name = str(board_ids[1])
 
-    def _readMcEeprom(self, address):
+        return mc_name, drv_name
+
+    def _read_mc_eeprom(self, address):
         reply = self.__connection.send(TMCL_Command.TMCL_UF1, 1, 0, address)
 
         if not reply.is_valid():
@@ -72,10 +65,10 @@ class Landungsbruecke():
 
         return reply.value
 
-    def _writeMcEeprom(self, address, value):
+    def _write_mc_eeprom(self, address, value):
         self.__connection.send(TMCL_Command.TMCL_UF2, 1, value, address)
 
-    def _readDrvEeprom(self, address):
+    def _read_drv_eeprom(self, address):
         reply = self.__connection.send(TMCL_Command.TMCL_UF1, 2, 0, address)
 
         if not reply.is_valid():
@@ -83,7 +76,7 @@ class Landungsbruecke():
 
         return reply.value
 
-    def _writeDrvEeprom(self, address, value):
+    def _write_drv_eeprom(self, address, value):
         self.__connection.send(TMCL_Command.TMCL_UF2, 2, value & 0xFF, address)
 
     mcIdNames = {
@@ -126,27 +119,28 @@ class Landungsbruecke():
         22 : "TMC2226",
     }
 
-class _GP:
-    VitalSignsErrorMask  = 1
-    DriversEnable        = 2
-    DebugMode            = 3
-    BoardAssignment      = 4
-    HWID                 = 5
-    PinState             = 6
+    class GP:
+        VitalSignsErrorMask  = 1
+        DriversEnable        = 2
+        DebugMode            = 3
+        BoardAssignment      = 4
+        HWID                 = 5
+        PinState             = 6
+
 
 if __name__ == "__main__":
-    from pytrinamic.connections.connection_manager import ConnectionManager
+    from pytrinamic.connections import ConnectionManager
 
     cm = ConnectionManager()
     interface = cm.connect()
     LB = Landungsbruecke(interface)
 
     print("ID EEPROM content:")
-    print("Mc: ", LB.EepromDrv.read_id_info())
-    print("Drv:", LB.EepromMc.read_id_info())
+    print("Mc: ", LB.eeprom_drv.read_id_info())
+    print("Drv:", LB.eeprom_mc.read_id_info())
 
     print("Board IDs:")
-    print(LB.getBoardIDs())
+    print(LB.get_board_ids())
 
     print("Board Names:")
-    print(LB.getBoardNames())
+    print(LB.get_board_names())
