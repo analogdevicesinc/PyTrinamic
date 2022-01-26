@@ -10,11 +10,11 @@ Created on 09.01.2019
 @author: LK
 '''
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC5041_eval import TMC5041_eval
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC5041_eval import TMC5041_eval
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

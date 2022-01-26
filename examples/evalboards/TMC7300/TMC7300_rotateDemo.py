@@ -8,14 +8,14 @@ Created on 30.03.2020
 '''
 
 import time
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC7300_eval import TMC7300_eval
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC7300_eval import TMC7300_eval
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 TMC7300 = TMC7300_eval(myInterface)
 TMC7300.showChipInfo()

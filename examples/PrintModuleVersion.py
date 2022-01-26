@@ -5,7 +5,7 @@ This uses the generic connection manager commandline to allow flexible
 module connection selection.
 """
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.ConnectionManager import ConnectionManager
 
 myInterface = ConnectionManager().connect()
 

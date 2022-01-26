@@ -9,9 +9,9 @@ if __name__ == '__main__':
     pass
 
 import time
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC4330_eval import TMC4330_eval
-from PyTrinamic.evalboards.TMC2160_eval import TMC2160_eval
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC4330_eval import TMC4330_eval
+from pytrinamic.evalboards.TMC2160_eval import TMC2160_eval
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()

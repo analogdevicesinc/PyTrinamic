@@ -1,9 +1,9 @@
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1670 import TMCM1670
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules.TMCM1670 import TMCM1670
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 # please select your CAN adapter
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()

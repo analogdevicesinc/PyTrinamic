@@ -1,9 +1,9 @@
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM1630
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules import TMCM1630
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 # please select a CAN or USB interface
 

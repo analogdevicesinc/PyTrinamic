@@ -7,12 +7,12 @@ Created on 08.07.2020
 @author: JM
 '''
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1370 import TMCM1370
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules.TMCM1370 import TMCM1370
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 connectionManager = ConnectionManager("--interface serial_tmcl")
 myInterface = connectionManager.connect()

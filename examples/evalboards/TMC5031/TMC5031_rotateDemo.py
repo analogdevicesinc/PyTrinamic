@@ -8,16 +8,16 @@ Created on 29.01.2020
 '''
 
 import time
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC5031_eval import TMC5031_eval
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC5031_eval import TMC5031_eval
 
 
 connectionManager = ConnectionManager()
 
 myInterface = connectionManager.connect()
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 TMC5031 = TMC5031_eval(myInterface)
 TMC5031.showChipInfo()

@@ -2,11 +2,11 @@
 Move a motor back and forth using velocity and position mode of the TMC5062
 """
 import time
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards import TMC5062_eval
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards import TMC5062_eval
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 myInterface = ConnectionManager().connect()
 print(myInterface)
 

@@ -1,9 +1,9 @@
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM1636
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules import TMCM1636
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 # please select your interface
 # myInterface = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200").connect()

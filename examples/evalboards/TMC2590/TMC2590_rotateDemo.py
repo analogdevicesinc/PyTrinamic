@@ -6,14 +6,14 @@ Created on 07.02.2020
 '''
 
 import time
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC2590_eval import TMC2590_eval
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC2590_eval import TMC2590_eval
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 TMC2590 = TMC2590_eval(myInterface)
 TMC2590.showChipInfo()

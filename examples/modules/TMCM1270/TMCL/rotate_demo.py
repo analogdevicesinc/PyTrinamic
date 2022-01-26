@@ -7,12 +7,12 @@ Created on 03.12.2019
 @author: JM
 '''
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.TMCM1270 import TMCM1270
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules.TMCM1270 import TMCM1270
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 connectionManager = ConnectionManager("--interface dummy_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()

@@ -2,12 +2,12 @@
 Turn a motor using hall sensors
 """
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.referencedesigns import TMC4671_LEV_REF
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.referencedesigns import TMC4671_LEV_REF
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 # please select your CAN adapter
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()

@@ -10,12 +10,12 @@ Created on 07.02.2020
 @author: JM
 '''
 
-import PyTrinamic
-from PyTrinamic.evalboards.TMC2224_eval import TMC2224_eval
+import pytrinamic
+from pytrinamic.evalboards.TMC2224_eval import TMC2224_eval
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.ConnectionManager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC2224 = TMC2224_eval(myInterface)

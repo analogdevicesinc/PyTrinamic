@@ -13,14 +13,14 @@ Created on 15.05.2019
 import time
 import math
 import matplotlib.pyplot as plot
-import PyTrinamic
+import pytrinamic
 
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC5130_eval import TMC5130_eval
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
 
 MEASURE = False
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 # These are the values from the default microstep table.
 # Set MEASURE to True to read out the values from the IC. Once this has been

@@ -27,11 +27,11 @@ import msvcrt
 
 from threading import Thread
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules.tmc_eval_shield import TmcEvalShield
-from PyTrinamic.evalboards.TMC5160_shield import TMC5160_shield
-from PyTrinamic.features.StallGuard import StallGuard
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
+from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
+from pytrinamic.features.StallGuard import StallGuard
 
 parser = argparse.ArgumentParser(description='stallGuard demo')
 parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[50000],
@@ -57,7 +57,7 @@ formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(messag
 consoleHandler.setFormatter(formatter)
 logger.addHandler(consoleHandler)
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")

@@ -8,13 +8,13 @@ Created on 20.09.2019
 '''
 
 import time
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards.TMC5072_eval import TMC5072_eval
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards.TMC5072_eval import TMC5072_eval
 
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
-PyTrinamic.show_info()
+pytrinamic.show_info()
 eval = TMC5072_eval(myInterface)
 ic = eval.IC
 

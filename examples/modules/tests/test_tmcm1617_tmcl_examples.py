@@ -7,8 +7,8 @@ import pytest
 
 
 sys.path.insert(0, '../../../..')
-from PyTrinamic.connections.ConnectionManager import ConnectionManager  # noqa: E402
-from PyTrinamic.modules import TMCM_1617  # noqa: E402
+from pytrinamic.connections.ConnectionManager import ConnectionManager  # noqa: E402
+from pytrinamic.modules import TMCM_1617  # noqa: E402
 
 
 class MockTmclInterface:

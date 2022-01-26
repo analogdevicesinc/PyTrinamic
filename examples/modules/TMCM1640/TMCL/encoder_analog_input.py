@@ -1,10 +1,10 @@
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.modules import TMCM1640
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.modules import TMCM1640
 import time
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 myInterface = ConnectionManager().connect()
 
 with myInterface:

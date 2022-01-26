@@ -2,12 +2,12 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-import PyTrinamic
-from PyTrinamic.connections.ConnectionManager import ConnectionManager
-from PyTrinamic.evalboards import TMC4671_eval
-from PyTrinamic.ic import TMC4671 as TMC4671_IC
+import pytrinamic
+from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.evalboards import TMC4671_eval
+from pytrinamic.ic import TMC4671 as TMC4671_IC
 
-PyTrinamic.show_info()
+pytrinamic.show_info()
 
 myInterface = ConnectionManager().connect()
 print(myInterface)
