@@ -4,7 +4,7 @@ Dump all register values of the TMC5062 IC.
 The connection to a Landungsbrücke is established over USB. TMCL commands are used for communicating with the IC.
 """
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards import TMC5062_eval
 
 pytrinamic.show_info()

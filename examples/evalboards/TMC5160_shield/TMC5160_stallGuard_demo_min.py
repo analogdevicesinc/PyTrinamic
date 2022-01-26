@@ -22,7 +22,7 @@ THRESHOLD_VELOCITY = 1
 import time
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 
@@ -35,14 +35,14 @@ shields = TmcEvalShield(myInterface, TMC5160_shield).shields
 # Initialize all attached shields
 for shield in shields:
     print("Rotating motor.")
-    shield.setAxisParameter(shield.AP.MaxCurrent, 0, CURRENT_MAX)
-    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, ACCELERATION)
+    shield.set_axis_parameter(shield.AP.MaxCurrent, 0, CURRENT_MAX)
+    shield.set_axis_parameter(shield.AP.MaxAcceleration, 0, ACCELERATION)
     shield.rotate(0, VELOCITY)
 
-    shield.setAxisParameter(shield.AP.SG2Threshold, 0, THRESHOLD_SG)
-    shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, 0)
+    shield.set_axis_parameter(shield.AP.SG2Threshold, 0, THRESHOLD_SG)
+    shield.set_axis_parameter(shield.AP.smartEnergyStallVelocity, 0, 0)
     time.sleep(1)
-    shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, THRESHOLD_VELOCITY)
+    shield.set_axis_parameter(shield.AP.smartEnergyStallVelocity, 0, THRESHOLD_VELOCITY)
 
 # Loop over all attached shields
 while True:

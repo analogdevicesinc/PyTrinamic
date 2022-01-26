@@ -1,14 +1,8 @@
-'''
-Created on 31.05.2019
-
-@author: LH
-'''
 
 import can
-
-from pytrinamic.connections.TmclInterface import TmclInterface
-from can.interfaces.pcan.pcan import PcanError
 from can import CanError
+from can.interfaces.pcan.pcan import PcanError
+from pytrinamic.connections.tmcl_interface import TmclInterface
 
 _CHANNELS = [
     "PCAN_USBBUS1",  "PCAN_USBBUS2",  "PCAN_USBBUS3",  "PCAN_USBBUS4",
@@ -35,79 +29,73 @@ _CHANNELS = [
     ]
 
 
-class pcan_tmclInterface(TmclInterface):
+class pcan_tmcl_interface(TmclInterface):
     """
     This class implements a TMCL connection over a PCAN adapter.
     """
-
-    def __init__(self, port, datarate=1000000, hostID=2, moduleID=1, debug=False):
+    def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False):
         if type(port) != str:
             raise TypeError
 
-        if not port in _CHANNELS:
-            raise ValueError("Invalid port")
+        if port not in _CHANNELS:
+            raise ValueError("Invalid port!")
 
-        TmclInterface.__init__(self, hostID, moduleID, debug)
-
-        self._debug = debug
-        self.__channel = port
-        self.__bitrate = datarate
+        TmclInterface.__init__(self, host_id, module_id, debug)
+        self._channel = port
+        self._bitrate = datarate
 
         try:
-            self.__connection = can.Bus(interface="pcan", channel=self.__channel, bitrate=self.__bitrate)
-
-            self.__connection.set_filters([{ "can_id": hostID, "can_mask": 0xFFFFFFFF }])
-
+            self._connection = can.Bus(interface="pcan", channel=self._channel, bitrate=self._bitrate)
+            self._connection.set_filters([{"can_id": host_id, "can_mask": 0xFFFFFFFF}])
         except PcanError as e:
-            self.__connection = None
+            self._connection = None
             raise ConnectionError("Failed to connect to PCAN bus") from e
 
         if self._debug:
-            print("Opened bus on channel " + self.__channel)
+            print("Opened bus on channel " + self._channel)
 
     def __enter__(self):
         return self
 
-    def __exit__(self, exitType, value, traceback):
+    def __exit__(self, exit_type, value, traceback):
         """
         Close the connection at the end of a with-statement block.
         """
-        del exitType, value, traceback
+        del exit_type, value, traceback
         self.close()
 
     def close(self):
         if self._debug:
             print("Closing PCAN bus")
 
-        self.__connection.shutdown()
+        self._connection.shutdown()
 
-    def _send(self, hostID, moduleID, data):
+    def _send(self, host_id, module_id, data):
         """
             Send the bytearray parameter [data].
 
-            This is a required override function for using the tmcl_interface
-            class.
+            This is a required override function for using the tmcl_interface class.
         """
-        del hostID
+        del host_id
 
-        msg = can.Message(arbitration_id=moduleID, is_extended_id=False, data=data[1:])
+        msg = can.Message(arbitration_id=module_id, is_extended_id=False, data=data[1:])
 
         try:
-            self.__connection.send(msg)
+            self._connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
-    def _recv(self, hostID, moduleID):
+    def _recv(self, host_id, module_id):
         """
             Read 9 bytes and return them as a bytearray.
 
             This is a required override function for using the tmcl_interface
             class.
         """
-        del moduleID
+        del module_id
 
         try:
-            msg = self.__connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=3)
         except CanError as e:
             raise ConnectionError("Failed to receive a TMCL message") from e
 
@@ -115,29 +103,22 @@ class pcan_tmclInterface(TmclInterface):
             # Todo: Timeout retry mechanism
             raise ConnectionError("Recv timed out")
 
-        if msg.arbitration_id != hostID:
+        if msg.arbitration_id != host_id:
             # The filter shouldn't let wrong messages through.
             # This is just a sanity check
             raise ConnectionError("Received wrong ID")
 
         return bytearray([msg.arbitration_id]) + msg.data
 
-    def print_info(self):
-        print("Connection: type=pcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
-
-    #def enableDebug(self, enable):
-    #    self._debug = enable
-
-    #@staticmethod
-    def supports_tmcl(self):
+    @staticmethod
+    def supports_tmcl():
         return True
 
-    #@staticmethod
-    #def supportsCANopen():
-    #    return False
+    def print_info(self):
+        print("Connection: type=pcan_tmcl_interface channel=" + self._channel + " bitrate=" + str(self._bitrate))
 
-    #@staticmethod
-    def list(self):
+    @staticmethod
+    def list():
         """
             Return a list of available connection ports as a list of strings.
 

@@ -25,7 +25,7 @@ class Landungsbruecke():
         This does not start a detection.
         Returns a tuple of IDs: (drvId, mcId)
         '''
-        value = self.__connection.globalParameter(self.GPs.BoardAssignment, 0)
+        value = self.__connection.get_global_parameter(self.GPs.BoardAssignment, 0)
 
         drvStatus = (value >> 24) & 0xFF
         drvId     = (value >> 16) & 0xFF
@@ -44,7 +44,7 @@ class Landungsbruecke():
         Start an IDDetection and read out the IDs of the detected boards.
         '''
 
-        while not self.__connection.send(TMCL_Command.ASSIGNMENT, 0, 0, 0).isValid():
+        while not self.__connection.send(TMCL_Command.ASSIGNMENT, 0, 0, 0).is_valid():
             pass
 
         return self.getBoardIDs()
@@ -67,7 +67,7 @@ class Landungsbruecke():
     def _readMcEeprom(self, address):
         reply = self.__connection.send(TMCL_Command.TMCL_UF1, 1, 0, address)
 
-        if not reply.isValid():
+        if not reply.is_valid():
             raise RuntimeError("Failed to read driver ID EEPROM")
 
         return reply.value
@@ -78,7 +78,7 @@ class Landungsbruecke():
     def _readDrvEeprom(self, address):
         reply = self.__connection.send(TMCL_Command.TMCL_UF1, 2, 0, address)
 
-        if not reply.isValid():
+        if not reply.is_valid():
             raise RuntimeError("Failed to read driver ID EEPROM")
 
         return reply.value
@@ -135,7 +135,7 @@ class _GP:
     PinState             = 6
 
 if __name__ == "__main__":
-    from pytrinamic.connections.ConnectionManager import ConnectionManager
+    from pytrinamic.connections.connection_manager import ConnectionManager
 
     cm = ConnectionManager()
     interface = cm.connect()

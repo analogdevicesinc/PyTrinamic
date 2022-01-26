@@ -3,7 +3,7 @@ Turn a motor using hall sensors
 """
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.referencedesigns import TMC4671_LEV_REF
 import time
 

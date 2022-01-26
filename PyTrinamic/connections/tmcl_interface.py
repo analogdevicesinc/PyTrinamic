@@ -1,10 +1,9 @@
 from abc import ABC
 from pytrinamic.TMCL import TMCL, TMCL_Request, TMCL_Command, TMCL_Reply
-from pytrinamic.connections.ConnectionInterface import ConnectionInterface
 from pytrinamic.helpers import TMC_helpers
 
 
-class TmclInterface(ConnectionInterface):
+class TmclInterface(ABC):
     """
     This class is a base class for sending TMCL commands over a communication
     interface.
@@ -58,9 +57,21 @@ class TmclInterface(ConnectionInterface):
         self._MODULE_ID = default_module_id
         self._debug = debug
 
-    # override ConnectionInterface
-    def supports_tmcl(self):
-        return True
+    def enable_debug(self, enable):
+        """
+        Set the debug mode, which dumps all TMCL datagrams written and read.
+        """
+        if type(enable) != bool:
+            raise TypeError("Expected boolean value")
+
+        self._debug = enable
+
+    def print_info(self):
+        info = "ConnectionInterface {"
+        info += "'debug_enabled':" + str(self._debug) + ", "
+        info = info[:-2]
+        info += "}"
+        print(info)
 
     def _send(self, host_id, module_id, data):
         """
@@ -79,21 +90,11 @@ class TmclInterface(ConnectionInterface):
         """
         raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
 
-    #def enable_debug(self, enable):
-        """
-        Set the debug mode, which dumps all TMCL datagrams written and read.
-        """
-        #if type(enable) != bool:
-            #raise TypeError("Expected boolean value")
-
-        #self._debug = enable
-
     def send_request(self, request, module_id=None):
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
         """
-
         if not module_id:
             module_id = self._MODULE_ID
 
@@ -113,7 +114,6 @@ class TmclInterface(ConnectionInterface):
         Send a TMCL datagram and read back a reply. This function blocks until
         the reply has been received.
         """
-
         if not(type(opcode) == type(op_type) == type(motor) == type(value) == int):
             raise TypeError("Expected integer values")
 
@@ -126,7 +126,7 @@ class TmclInterface(ConnectionInterface):
         if self._debug:
             request.dump()
 
-        self._send(self._HOST_ID, module_id, request.toBuffer())
+        self._send(self._HOST_ID, module_id, request.to_buffer())
         reply = TMCL_Reply.from_buffer(self._recv(self._HOST_ID, module_id))
 
         if self._debug:
@@ -149,71 +149,71 @@ class TmclInterface(ConnectionInterface):
             request.dump()
 
         # Send the request
-        self._send(self._HOST_ID, module_id, request.toBuffer())
+        self._send(self._HOST_ID, module_id, request.to_buffer())
 
     def get_version_string(self, module_id=None):
         """
         Request the ASCII version string.
         """
         reply = self.send(TMCL_Command.GET_FIRMWARE_VERSION, 0, 0, 0, module_id)
-        return reply.versionString()
+        return reply.version_string()
 
     # General parameter access functions
-    def parameter(self, p_command, p_type, p_axis, p_value, module_id=None, signed=False):
+    def get_parameter(self, p_command, p_type, p_axis, p_value, module_id=None, signed=False):
         value = self.send(p_command, p_type, p_axis, p_value, module_id).value
-        return TMC_helpers.toSigned32(value) if signed else value
+        return TMC_helpers.to_signed_32(value) if signed else value
 
-    def setParameter(self, p_command, p_type, p_axis, p_value, module_id=None):
+    def set_parameter(self, p_command, p_type, p_axis, p_value, module_id=None):
         return self.send(p_command, p_type, p_axis, p_value, module_id)
 
     # Axis parameter access functions
-    def axisParameter(self, command_type, axis, module_id=None, signed=False):
+    def get_axis_parameter(self, command_type, axis, module_id=None, signed=False):
         value = self.send(TMCL_Command.GAP, command_type, axis, 0, module_id).value
-        return TMC_helpers.toSigned32(value) if signed else value
+        return TMC_helpers.to_signed_32(value) if signed else value
 
-    def setAxisParameter(self, command_type, axis, value, module_id=None):
+    def set_axis_parameter(self, command_type, axis, value, module_id=None):
         return self.send(TMCL_Command.SAP, command_type, axis, value, module_id)
 
-    def storeAxisParameter(self, command_type, axis, module_id=None):
+    def store_axis_parameter(self, command_type, axis, module_id=None):
         return self.send(TMCL_Command.STAP, command_type, axis, 0, module_id)
 
-    def setAndStoreAxisParameter(self, command_type, axis, value, module_id=None):
+    def set_and_store_axis_parameter(self, command_type, axis, value, module_id=None):
         self.send(TMCL_Command.SAP, command_type, axis, value, module_id)
         self.send(TMCL_Command.STAP, command_type, axis, 0, module_id)
 
     # Global parameter access functions
-    def globalParameter(self, command_type, bank, module_id=None, signed=False):
+    def get_global_parameter(self, command_type, bank, module_id=None, signed=False):
         value = self.send(TMCL_Command.GGP, command_type, bank, 0, module_id).value
-        return TMC_helpers.toSigned32(value) if signed else value
+        return TMC_helpers.to_signed_32(value) if signed else value
 
-    def setGlobalParameter(self, command_type, bank, value, module_id=None):
+    def set_global_parameter(self, command_type, bank, value, module_id=None):
         return self.send(TMCL_Command.SGP, command_type, bank, value, module_id)
 
-    def storeGlobalParameter(self, command_type, bank, module_id=None):
+    def store_global_parameter(self, command_type, bank, module_id=None):
         return self.send(TMCL_Command.STGP, command_type, bank, 0, module_id)
 
-    def setAndStoreGlobalParameter(self, command_type, bank, value, module_id=None):
+    def set_and_store_global_parameter(self, command_type, bank, value, module_id=None):
         self.send(TMCL_Command.SGP, command_type, bank, value, module_id)
         self.send(TMCL_Command.STGP, command_type, bank, 0, module_id)
 
     # Register access functions
-    def writeMC(self, register_address, value, module_id=None):
-        return self.writeRegister(register_address, TMCL_Command.WRITE_MC, 0, value, module_id)
+    def write_mc(self, register_address, value, module_id=None):
+        return self.write_register(register_address, TMCL_Command.WRITE_MC, 0, value, module_id)
 
-    def readMC(self, register_address, module_id=None, signed=False):
-        return self.readRegister(register_address, TMCL_Command.READ_MC, 0, module_id, signed)
+    def read_mc(self, register_address, module_id=None, signed=False):
+        return self.read_register(register_address, TMCL_Command.READ_MC, 0, module_id, signed)
 
-    def writeDRV(self, register_address, value, module_id=None):
-        return self.writeRegister(register_address, TMCL_Command.WRITE_DRV, 1, value, module_id)
+    def write_drv(self, register_address, value, module_id=None):
+        return self.write_register(register_address, TMCL_Command.WRITE_DRV, 1, value, module_id)
 
-    def readDRV(self, register_address, module_id=None, signed=False):
-        return self.readRegister(register_address, TMCL_Command.READ_DRV, 1, module_id, signed)
+    def read_drv(self, register_address, module_id=None, signed=False):
+        return self.read_register(register_address, TMCL_Command.READ_DRV, 1, module_id, signed)
 
-    def readRegister(self, register_address, command, channel, module_id=None, signed=False):
+    def read_register(self, register_address, command, channel, module_id=None, signed=False):
         value = self.send(command, register_address, channel, 0, module_id).value
-        return TMC_helpers.toSigned32(value) if signed else value
+        return TMC_helpers.to_signed_32(value) if signed else value
 
-    def writeRegister(self, register_address, command, channel, value, module_id=None):
+    def write_register(self, register_address, command, channel, value, module_id=None):
         return self.send(command, register_address, channel, value, module_id)
 
     # Motion control functions
@@ -226,7 +226,7 @@ class TmclInterface(ConnectionInterface):
     def move(self, move_type, motor, position, module_id=None):
         return self.send(TMCL_Command.MVP, move_type, motor, position, module_id)
 
-    def moveTo(self, motor, position, module_id=None):
+    def move_to(self, motor, position, module_id=None):
         """
         Use the TMCL MVP command to perform an absolute movement.
 
@@ -235,7 +235,7 @@ class TmclInterface(ConnectionInterface):
         """
         return self.move(0, motor, position, module_id).value
 
-    def moveBy(self, motor, distance, module_id=None):
+    def move_by(self, motor, distance, module_id=None):
         """
         Use the TMCL MVP command to perform a relative movement.
 
@@ -245,60 +245,17 @@ class TmclInterface(ConnectionInterface):
         return self.move(1, motor, distance, module_id).value
 
     # IO pin functions
-    def analogInput(self, x, module_id=None):
+    def get_analog_input(self, x, module_id=None):
         return self.send(TMCL_Command.GIO, x, 1, 0, module_id).value
 
-    def digitalInput(self, x, module_id=None):
+    def get_digital_input(self, x, module_id=None):
         return self.send(TMCL_Command.GIO, x, 0, 0, module_id).value
 
-    def digitalOutput(self, x, module_id=None):
+    def get_digital_output(self, x, module_id=None):
         return self.send(TMCL_Command.GIO, x, 2, 0, module_id).value
 
-    def setDigitalOutput(self, x, module_id=None):
-        self.send(TMCL_Command.SIO, x, 2, 1, module_id).value
+    def set_digital_output(self, x, module_id=None):
+        self.send(TMCL_Command.SIO, x, 2, 1, module_id)
 
-    def clearDigitalOutput(self, x, module_id=None):
-        self.send(TMCL_Command.SIO, x, 2, 0, module_id).value
-
-    " testing new interface usage (ED) => "
-    # axis parameter access functions
-    def axisParameterRaw(self, module_id, axis, command_type):
-        return self.send(TMCL_Command.GAP, command_type, axis, 0, module_id).value
-
-    def setAxisParameterRaw(self, module_id, axis, command_type,  value):
-        return self.send(TMCL_Command.SAP, command_type, axis, value, module_id)
-
-    # global parameter access functions
-    def globalParameterRaw(self, module_id, bank, command_type):
-        return self.send(TMCL_Command.GGP, command_type, bank, 0, module_id).value
-
-    def setGlobalParameterRaw(self, module_id, bank, command_type, value):
-        return self.send(TMCL_Command.SGP, command_type, bank, value, module_id)
-
-    def storeGlobalParameterRaw(self, module_id, bank, command_type):
-        return self.send(TMCL_Command.STGP, command_type, bank, 0, module_id)
-
-    def setAndStoreGlobalParameterRaw(self, module_id, bank, command_type, value):
-        self.send(TMCL_Command.SGP, command_type, bank, value, module_id)
-        return self.send(TMCL_Command.STGP, command_type, bank, 0, module_id)
-
-    def restoreGlobalParameterRaw(self, module_id, bank, command_type):
-        return self.send(TMCL_Command.RSGP, command_type, bank, 0, module_id)
-
-    # IO pin functions
-    def analogInputRaw(self, module_id, x):
-        return self.send(TMCL_Command.GIO, x, 1, 0, module_id).value
-
-    def digitalInputRaw(self, module_id, x):
-        return self.send(TMCL_Command.GIO, x, 0, 0, module_id).value
-
-    def digitalOutputRaw(self, module_id, x):
-        return self.send(TMCL_Command.GIO, x, 2, 0, module_id).value
-
-    def setDigitalOutputRaw(self, module_id, x):
-        self.send(TMCL_Command.SIO, x, 2, 1, module_id).value
-
-    def clearDigitalOutputRaw(self, module_id, x):
-        self.send(TMCL_Command.SIO, x, 2, 0, module_id).value
-
-    " <= testing new interface usage (ED) "
+    def clear_digital_output(self, x, module_id=None):
+        self.send(TMCL_Command.SIO, x, 2, 0, module_id)

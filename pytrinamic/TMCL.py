@@ -1,9 +1,3 @@
-'''
-Created on 16.02.2018
-
-@author: TS, ED
-'''
-
 import struct
 
 _PACKAGE_STRUCTURE = ">BBBBIB"
@@ -12,16 +6,16 @@ _PACKAGE_STRUCTURE = ">BBBBIB"
 class TMCL(object):
     @staticmethod
     def validate_host_id(host_id):
-        if(not(type(host_id) == int)):
+        if not(type(host_id) == int):
             raise TypeError
-        if(not(0 <= host_id < 256)):
+        if not(0 <= host_id < 256):
             raise ValueError("Incorrect Host ID value. Must be between 0 and 255 inclusively.")
 
     @staticmethod
     def validate_module_id(module_id):
-        if(not(type(module_id) == int)):
+        if not(type(module_id) == int):
             raise TypeError
-        if(not(0 <= module_id < 256)):
+        if not(0 <= module_id < 256):
             raise ValueError("Incorrect Module ID value. Must be between 0 and 255 inclusively.")
 
     @staticmethod
@@ -31,6 +25,7 @@ class TMCL(object):
             checksum += d
         checksum %= 256
         return checksum
+
 
 class TMCL_Command(object):
     ROR                         = 1
@@ -99,6 +94,7 @@ class TMCL_Command(object):
     BOOT_WRITE_LENGTH           = 208
     BOOT                        = 242
 
+
 class TMCL_Status(object):
     SUCCESS               = 100
     COMMAND_LOADED        = 101
@@ -118,27 +114,29 @@ class TMCL_Status(object):
         6: "Command not Available"
     }
 
+
 class TMCL_Request(TMCL):
-    def __init__(self, address, command, commandType, motorBank, value, checksum=None):
+    def __init__(self, address, command, command_type, motor_bank, value, checksum=None):
         self.moduleAddress = address     & 0xFF
         self.command       = command     & 0xFF
-        self.commandType   = commandType & 0xFF
-        self.motorBank     = motorBank   & 0xFF
+        self.commandType   = command_type & 0xFF
+        self.motorBank     = motor_bank & 0xFF
         self.value         = value       & 0xFFFFFFFF
         self.checksum      = checksum if checksum else 0
 
-        if(checksum is None):
+        if checksum is None:
             self.calculate_checksum()
 
     @staticmethod
     def from_buffer(data):
         request_struct = struct.unpack(_PACKAGE_STRUCTURE, data)
-        return TMCL_Request(request_struct[0], request_struct[1], request_struct[2], request_struct[3], request_struct[4], request_struct[5])
+        return TMCL_Request(request_struct[0], request_struct[1], request_struct[2], request_struct[3],
+                            request_struct[4], request_struct[5])
 
     def calculate_checksum(self):
-        self.checksum = TMCL.calculate_checksum(self.toBuffer()[:-1])
+        self.checksum = TMCL.calculate_checksum(self.to_buffer()[:-1])
 
-    def toBuffer(self):
+    def to_buffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.moduleAddress, self.command,
                            self.commandType, self.motorBank, self.value, self.checksum)
 
@@ -155,6 +153,7 @@ class TMCL_Request(TMCL):
     def dump(self):
         print(self)
 
+
 class TMCL_Reply(TMCL):
     def __init__(self, reply_address, module_address, status, command, value, checksum=None, special=False):
         self.reply_address  = reply_address  & 0xFF
@@ -165,18 +164,19 @@ class TMCL_Reply(TMCL):
         self.checksum       = checksum if checksum else 0
         self.special        = special
 
-        if(checksum is None):
+        if checksum is None:
             self.calculate_checksum()
 
     @staticmethod
     def from_buffer(data):
         reply_struct = struct.unpack(_PACKAGE_STRUCTURE, data)
-        return TMCL_Reply(reply_struct[0], reply_struct[1], reply_struct[2], reply_struct[3], reply_struct[4], reply_struct[5])
+        return TMCL_Reply(reply_struct[0], reply_struct[1], reply_struct[2], reply_struct[3],
+                          reply_struct[4], reply_struct[5])
 
     def calculate_checksum(self):
-        self.checksum = TMCL.calculate_checksum(self.toBuffer()[:-1])
+        self.checksum = TMCL.calculate_checksum(self.to_buffer()[:-1])
 
-    def toBuffer(self):
+    def to_buffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.reply_address, self.module_address,
                            self.status, self.command, self.value, self.checksum)
 
@@ -196,9 +196,9 @@ class TMCL_Reply(TMCL):
     def value(self):
         return self.value
 
-    def isValid(self):
+    def is_valid(self):
         return self.status == TMCL_Status.SUCCESS
 
-    def versionString(self):
-        byteString = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
-        return str(byteString, "ascii")
+    def version_string(self):
+        byte_string = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
+        return str(byte_string, "ascii")

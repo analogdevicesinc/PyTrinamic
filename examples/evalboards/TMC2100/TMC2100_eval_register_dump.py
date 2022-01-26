@@ -15,7 +15,7 @@ from pytrinamic.evalboards.TMC2100_eval import TMC2100_eval
 
 pytrinamic.show_info()
 
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC2100 = TMC2100_eval(myInterface)

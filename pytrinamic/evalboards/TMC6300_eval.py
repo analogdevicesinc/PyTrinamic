@@ -21,13 +21,13 @@ class TMC6300_eval(TMC6300):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
 
-        return self.__connection.axisParameter(apType, axis)
+        return self.__connection.get_axis_parameter(apType, axis)
 
     def setAxisParameter(self, apType, axis, value):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
 
-        self.__connection.setAxisParameter(apType, axis, value)
+        self.__connection.set_axis_parameter(apType, axis, value)
 
     # Motion Control functions
     def rotate(self, motor, value):

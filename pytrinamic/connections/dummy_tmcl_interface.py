@@ -1,7 +1,7 @@
-from pytrinamic.connections.TmclInterface import TmclInterface
+from pytrinamic.connections.tmcl_interface import TmclInterface
 
 
-class dummy_tmclInterface(TmclInterface):
+class dummy_tmcl_interface(TmclInterface):
 
     def __init__(self, port, datarate=115200, host_id=2, module_id=1, debug=True):
         """
@@ -10,9 +10,7 @@ class dummy_tmclInterface(TmclInterface):
         if type(port) != str:
             raise TypeError
 
-        del debug
-
-        TmclInterface.__init__(self, host_id, module_id, debug=True)
+        TmclInterface.__init__(self, host_id, module_id, debug)
 
         if self._debug:
             print("Opened dummy TMCL interface on port '" + port + "'")
@@ -58,19 +56,15 @@ class dummy_tmclInterface(TmclInterface):
 
         return bytearray(9)
 
+    @staticmethod
+    def supports_tmcl():
+        return True
+
     def print_info(self):
         print("Connection: type=dummy_tmcl_interface")
 
-    # @staticmethod
-    def supports_tmcl(self):
-        return True
-
-    # @staticmethod
-    # def supportsCANopen():
-    #    return False
-
-    #@staticmethod
-    def list(self):
+    @staticmethod
+    def list():
         """
             Return a list of available connection ports as a list of strings.
 
@@ -81,9 +75,8 @@ class dummy_tmclInterface(TmclInterface):
 
 
 if __name__ == "__main__":
-    interface = dummy_tmclInterface("dummy")
+    interface = dummy_tmcl_interface("dummy")
 
     interface.get_version_string()
     interface.send_boot()
-
     interface.close()

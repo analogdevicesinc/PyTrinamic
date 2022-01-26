@@ -15,7 +15,7 @@ from pytrinamic.evalboards.TMC5160_eval import TMC5160_eval
 
 pytrinamic.show_info()
 
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC5160 = TMC5160_eval(myInterface)

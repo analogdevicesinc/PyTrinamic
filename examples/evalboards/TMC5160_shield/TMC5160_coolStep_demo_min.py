@@ -9,7 +9,7 @@ Created on 20.03.2020
 
 import time
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 
@@ -43,20 +43,20 @@ shields = TmcEvalShield(myInterface, TMC5160_shield).shields
 # Initialize all attached shields
 for shield in shields:
     print("Rotating motor.")
-    shield.setAxisParameter(shield.AP.MaxCurrent, 0, CURRENT_MAX)
-    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, ACCELERATION)
+    shield.set_axis_parameter(shield.AP.MaxCurrent, 0, CURRENT_MAX)
+    shield.set_axis_parameter(shield.AP.MaxAcceleration, 0, ACCELERATION)
     shield.rotate(0, VELOCITY)
 
     # StallGuard settings
-    shield.setAxisParameter(shield.AP.SG2Threshold, 0, THRESHOLD_SG)
+    shield.set_axis_parameter(shield.AP.SG2Threshold, 0, THRESHOLD_SG)
 
     # CoolStep settings
-    shield.setAxisParameter(shield.AP.SEIMIN, 0, CURRENT_MIN)
-    shield.setAxisParameter(shield.AP.SECDS, 0, CURRENT_DOWN_STEP)
-    shield.setAxisParameter(shield.AP.SECUS, 0, CURRENT_UP_STEP)
-    shield.setAxisParameter(shield.AP.smartEnergyHysteresis, 0, HYSTERESIS_WIDTH)
-    shield.setAxisParameter(shield.AP.smartEnergyHysteresisStart, 0, HYSTERESIS_START)
-    shield.setAxisParameter(shield.AP.smartEnergyThresholdSpeed, 0, THRESHOLD_COOLSTEP)
+    shield.set_axis_parameter(shield.AP.SEIMIN, 0, CURRENT_MIN)
+    shield.set_axis_parameter(shield.AP.SECDS, 0, CURRENT_DOWN_STEP)
+    shield.set_axis_parameter(shield.AP.SECUS, 0, CURRENT_UP_STEP)
+    shield.set_axis_parameter(shield.AP.smartEnergyHysteresis, 0, HYSTERESIS_WIDTH)
+    shield.set_axis_parameter(shield.AP.smartEnergyHysteresisStart, 0, HYSTERESIS_START)
+    shield.set_axis_parameter(shield.AP.smartEnergyThresholdSpeed, 0, THRESHOLD_COOLSTEP)
 
 # Loop over all attached shields
 while True:

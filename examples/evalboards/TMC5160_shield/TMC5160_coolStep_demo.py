@@ -30,7 +30,7 @@ import msvcrt
 from threading import Thread
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from pytrinamic.features.coolstep import CoolStep
@@ -72,8 +72,8 @@ for shield in shields:
     logger.info(f"Initializing motor at shield {shield}.")
 
     logger.info("Rotating motor.")
-    shield.setAxisParameter(shield.AP.MaxCurrent, 0, args.current[0])
-    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, args.acceleration[0])
+    shield.set_axis_parameter(shield.AP.MaxCurrent, 0, args.current[0])
+    shield.set_axis_parameter(shield.AP.MaxAcceleration, 0, args.acceleration[0])
     shield.rotate(0, args.velocity[0])
 
     CoolStep(shield, sys.argv, logger).calibrate()

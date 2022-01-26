@@ -12,7 +12,7 @@ import re
 import struct
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.TMCL import TMCL_Command
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT

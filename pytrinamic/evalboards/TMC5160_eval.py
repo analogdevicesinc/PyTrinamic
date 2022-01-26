@@ -44,27 +44,27 @@ class TMC5160_eval(TMC5160):
         if not moduleID:
             moduleID = self._MODULE_ID
 
-        return self.__connection.writeMC(registerAddress, value, moduleID)
+        return self.__connection.write_mc(registerAddress, value, moduleID)
 
     def readRegister(self, registerAddress, moduleID=None, signed=False):
         # If the moduleID argument is omitted, use the stored module ID
         if not moduleID:
             moduleID = self._MODULE_ID
 
-        return self.__connection.readMC(registerAddress, moduleID, signed)
+        return self.__connection.read_mc(registerAddress, moduleID, signed)
 
     # Axis parameter access
     def getAxisParameter(self, apType, axis):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
 
-        return self.__connection.axisParameter(apType, axis)
+        return self.__connection.get_axis_parameter(apType, axis)
 
     def setAxisParameter(self, apType, axis, value):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
 
-        self.__connection.setAxisParameter(apType, axis, value)
+        self.__connection.set_axis_parameter(apType, axis, value)
 
     # Motion Control functions
     def rotate(self, motor, value):

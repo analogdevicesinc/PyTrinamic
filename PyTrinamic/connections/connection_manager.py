@@ -1,31 +1,16 @@
-'''
-Created on 28.05.2019
-
-@author: LH
-'''
-
 import sys
 import argparse
+from pytrinamic.connections import *
 
-from pytrinamic.connections.dummy_tmcl_interface import dummy_tmclInterface
-from pytrinamic.connections.pcan_tmcl_interface import pcan_tmclInterface
-from pytrinamic.connections.socketcan_tmcl_interface import socketcan_tmclInterface
-from pytrinamic.connections.kvaser_tmcl_interface import kvaser_tmclInterface
-from pytrinamic.connections.serial_tmcl_interface import serial_tmclInterface
-from pytrinamic.connections.uart_ic_interface import uart_ic_interface
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
-from pytrinamic.connections.pcan_CANopen_interface import pcan_CANopen_interface
-from pytrinamic.connections.slcan_tmcl_interface import slcan_tmclInterface
-from pytrinamic.connections.kvaser_CANopen_interface import kvaser_CANopen_interface
 
-class ConnectionManager():
+class ConnectionManager:
     """
     This class provides a centralized way of extracting connection-specific
     arguments out of a scripts command line arguments and using these to
     initiate connections.
 
     The constructor takes a string similar to command line arguments or a list
-    of strings represeting each commandline argument. This allows to directly
+    of strings representing each commandline argument. This allows to directly
     pass the sys.argv parameter list. If nothing is passed sys.argv is used as
     default.
 
@@ -84,74 +69,59 @@ class ConnectionManager():
 
     # All available interfaces
     # The tuples consist of (string representation, class type, default datarate)
-    _INTERFACES = [
-        ("dummy_tmcl", dummy_tmclInterface, 0),
-        ("pcan_tmcl", pcan_tmclInterface, 1000000),
-        ("socketcan_tmcl", socketcan_tmclInterface, 1000000),
-        ("kvaser_tmcl", kvaser_tmclInterface, 1000000),
-        ("slcan_tmcl", slcan_tmclInterface, 1000000),
-        ("serial_tmcl", serial_tmclInterface, 9600),
-        ("uart_ic",         uart_ic_interface,          9600),
-        ("usb_tmcl", UsbTmclInterface, 115200),
-        ("pcan_CANopen",    pcan_CANopen_interface,     1000000),
-        ("kvaser_CANopen",  kvaser_CANopen_interface,   1000000)
+    INTERFACES = [
+        ("dummy_tmcl", dummy_tmcl_interface, 0),
+        ("kvaser_tmcl", kvaser_tmcl_interface, 1000000),
+        ("pcan_tmcl", pcan_tmcl_interface, 1000000),
+        ("slcan_tmcl", slcan_tmcl_interface, 1000000),
+        ("socketcan_tmcl", socketcan_tmcl_interface, 1000000),
+        ("serial_tmcl", serial_tmcl_interface, 9600),
+        ("uart_ic", uart_ic_interface, 9600),
+        ("usb_tmcl", UsbTmclInterface, 115200)
     ]
 
-    def __init__(self, argList=None, connectionType="any", debug=False):
+    def __init__(self, arg_list=None, connection_type="any", debug=False):
         # Attributes
         self.__debug = debug
 
-        parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
-        ConnectionManager.argparse(parser)
+        arg_parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
+        ConnectionManager.argparse(arg_parser)
 
-        if(not argList):
+        if not arg_list:
             if self.__debug:
                 print("Using arguments from the command line")
-            argList = sys.argv
+            arg_list = sys.argv
 
-        if type(argList) == str:
-            argList = argList.split()
+        if type(arg_list) == str:
+            arg_list = arg_list.split()
             if self.__debug:
-                print("Splitting string:", argList)
+                print("Splitting string:", arg_list)
 
-        args = parser.parse_known_args(argList)[0]
+        args = arg_parser.parse_known_args(arg_list)[0]
 
         # Argument storage - default parameters are set here
-        if connectionType == "CANopen":
-            self.__interface  = pcan_CANopen_interface
-            self.__port       = "any"
-            self.__no_port    = []
-            self.__data_rate  = 1000000
-
-            # Not used by CANopen
-            self.__host_id    = 0
-            self.__module_id  = 0
-        else:
-            self.__interface  = UsbTmclInterface
-            self.__port       = "any"
-            self.__no_port    = []
-            self.__data_rate  = 115200
-            self.__host_id    = 2
-            self.__module_id  = 1
+        self.__interface  = UsbTmclInterface
+        self.__port       = "any"
+        self.__no_port    = []
+        self.__data_rate  = 115200
+        self.__host_id    = 2
+        self.__module_id  = 1
 
         # Parse the command line
         if self.__debug:
-            print("Commandline argument list: {0:s}".format(str(argList)))
+            print("Commandline argument list: {0:s}".format(str(arg_list)))
             print("Parsed commandline arguments: {0:s}".format(str(args)))
             print()
 
         # ## Interpret given arguments
         # Interface
-        for interface in self._INTERFACES:
-            if connectionType == "tmcl" and not(interface[1].supports_tmcl()):
+        for actual_interface in self.INTERFACES:
+            if connection_type == "tmcl" and not(actual_interface[1].supports_tmcl()):
                 continue
 
-            if connectionType == "CANopen" and not(interface[1].supportsCANopen()):
-                continue
-
-            if args.interface[0] == interface[0]:
-                self.__interface = interface[1]
-                self.__data_rate = interface[2]
+            if args.interface[0] == actual_interface[0]:
+                self.__interface = actual_interface[1]
+                self.__data_rate = actual_interface[2]
                 break
         else:
             # The for loop never hit the break statement -> invalid interface
@@ -216,41 +186,42 @@ class ConnectionManager():
                 ConnectionManagers debug mode.
         """
         # If no debug selection has been passed, inherit the debug state from the connection manager
-        if debug_interface == None:
+        if debug_interface is None:
             debug_interface = self.__debug
 
         # Get all available ports
-        portList = self.listConnections()
+        port_list = self.list_connections()
 
-        ### Parse the port string
+        # ## Parse the port string
         if self.__port == "interactive":
             # Check if ports are available
-            if len(portList) == 0:
+            if len(port_list) == 0:
                 raise ConnectionError("No connections available")
 
             # "interactive" -> Show a selection dialog
-            port = self.__interactivePortSelection()
+            port = self.__interactive_port_selection()
         elif self.__port == "any":
             # Check if ports are available
-            if len(portList) == 0:
+            if len(port_list) == 0:
                 raise ConnectionError("No connections available")
 
             # "any" -> Use the first port
-            port = portList[0]
+            port = port_list[0]
         else:
             try:
                 # Check if the port string is a number
                 tmp = int(self.__port)
 
                 # Check if ports are available
-                if len(portList) == 0:
+                if len(port_list) == 0:
                     raise ConnectionError("No connections available")
 
                 # Port string is a Number -> Use the n-th port
                 try:
-                    port = portList[tmp]
+                    port = port_list[tmp]
                 except IndexError:
-                    raise ConnectionError("Couldn't connect to Port Number " + self.__port + ". Only " + str(len(portList)) +" ports available")
+                    raise ConnectionError("Couldn't connect to Port Number " + self.__port + ". Only "
+                                          + str(len(port_list)) + " ports available")
             except ValueError:
                 # Not a number -> port string gets passed to interface directly
                 # Do not check against the port list in this case. In certain
@@ -258,11 +229,10 @@ class ConnectionManager():
                 # the listConnections() method.
                 port = self.__port
         try:
-            if self.__interface.supports_tmcl(self):
+            if self.__interface.supports_tmcl():
                 # Open the connection to a TMCL interface
-                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id, debug=debug_interface)
-            elif self.__interface.supports_canopen(self):
-                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
+                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id,
+                                                     debug=debug_interface)
             else:
                 # Open the connection to a direct IC interface
                 self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
@@ -274,22 +244,22 @@ class ConnectionManager():
     def disconnect(self):
         self.__connection.close()
 
-    def listConnections(self):
+    def list_connections(self):
         # Get the list of ports
-        portList = self.__interface.list(self)
+        port_list = self.__interface.list()
 
         # Apply the port blacklist
-        portList = [port for port in portList if port not in self.__no_port]
+        port_list = [port for port in port_list if port not in self.__no_port]
 
-        return portList
+        return port_list
 
-    def __interactivePortSelection(self):
+    def __interactive_port_selection(self):
         while True:
             # Get all available ports
-            portList = self.listConnections()
+            port_list = self.list_connections()
 
             print("Available options:")
-            for i, entry in enumerate(portList, 1):
+            for i, entry in enumerate(port_list, 1):
                 print("\t{0:2d}: {1:s}".format(i, entry))
 
             print("\t x: Abort selection")
@@ -307,15 +277,15 @@ class ConnectionManager():
                 else:
                     try:
                         selection = int(selection)
-                        if not (1 <= selection <= len(portList)):
+                        if not (1 <= selection <= len(port_list)):
                             raise ValueError
 
-                        return portList[selection-1]
+                        return port_list[selection-1]
                     except ValueError:
-                        continue;
+                        continue
 
     @staticmethod
-    def argparse(parser):
+    def argparse(arg_parser):
         """
         Add ConnectionManager arguments to a argparse commandline parser
 
@@ -323,38 +293,38 @@ class ConnectionManager():
         script, this function adds the arguments of the ConnectionManager to the
         argparse parser.
         """
-        group = parser.add_argument_group("ConnectionManager options")
-        group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str, choices=[interface[0] for interface in ConnectionManager._INTERFACES], default=['usb_tmcl'],
-                            help='Connection interface (default: %(default)s)')
+        group = arg_parser.add_argument_group("ConnectionManager options")
+        group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str,
+                           choices=[actual_interface[0] for actual_interface in ConnectionManager.INTERFACES],
+                           default=['usb_tmcl'], help='Connection interface (default: %(default)s)')
         group.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
-                            help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
+                           help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
         group.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
-                            help='Exclude ports')
+                           help='Exclude ports')
         group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
-                            help='Connection data-rate (default: %(default)s)')
+                           help='Connection data-rate (default: %(default)s)')
 
-        group = parser.add_argument_group("ConnectionManager TMCL options")
+        group = arg_parser.add_argument_group("ConnectionManager TMCL options")
 
         group.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
-                            help='TMCL host-id (default: %(default)s)')
+                           help='TMCL host-id (default: %(default)s)')
         group.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
-                            help='TMCL module-id (default: %(default)s)')
+                           help='TMCL module-id (default: %(default)s)')
 
-        return parser
+        return arg_parser
 
     @staticmethod
-    def listInterfaces():
-        return [x[0] for x in ConnectionManager._INTERFACES]
+    def list_interfaces():
+        return [x[0] for x in ConnectionManager.INTERFACES]
+
 
 if __name__ == "__main__":
     # Test if everything is working correctly
 
     print("Verifying interfaces list...\n")
-    for interface in ConnectionManager._INTERFACES:
+    for interface in ConnectionManager.INTERFACES:
         if not hasattr(interface[1], "supports_tmcl"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the supports_tmcl() function")
-        if not hasattr(interface[1], "supports_canopen"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the supports_canopen() function")
         if not hasattr(interface[1], "close"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
         if not hasattr(interface[1], "__enter__"):
@@ -364,7 +334,7 @@ if __name__ == "__main__":
         if not hasattr(interface[1], "list"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
 
-    print("List of interfaces: " + str(ConnectionManager.listInterfaces()) + "\n")
+    print("List of interfaces: " + str(ConnectionManager.list_interfaces()) + "\n")
 
     print("---------------------------------------------------")
     print("Performing test run...\n")

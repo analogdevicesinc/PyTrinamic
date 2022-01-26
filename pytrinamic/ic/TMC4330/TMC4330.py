@@ -34,7 +34,7 @@ class TMC4330:
         values = struct.unpack(DATAGRAM_FORMAT, reply)
         value = values[1]
 
-        return TMC_helpers.toSigned32(value) if signed else value
+        return TMC_helpers.to_signed_32(value) if signed else value
 
     def writeRegisterField(self, field, value):
         return self.writeRegister(field[0], TMC_helpers.field_set(self.readRegister(field[0]), field[1], field[2], value))

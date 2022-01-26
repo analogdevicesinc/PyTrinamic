@@ -16,10 +16,10 @@ class TMC5062_eval(TMCLEval, TMC5062):
     # Use the motion controller channel for register access
 
     def write_register(self, register_address, value):
-        return self._connection.writeMC(register_address, value)
+        return self._connection.write_mc(register_address, value)
 
     def read_register(self, register_address, signed=False):
-        return self._connection.readMC(register_address, signed)
+        return self._connection.read_mc(register_address, signed)
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
@@ -40,7 +40,7 @@ class TMC5062_eval(TMCLEval, TMC5062):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
             self.motors[axis].set_axis_parameter(self.motors[axis].AP.MaxVelocity, velocity)
-        self._connection.moveTo(axis, position, self._module_id)
+        self._connection.move_to(axis, position, self._module_id)
 
     class Motor0(MotorControlModule):
         def __init__(self, eval_board, axis):

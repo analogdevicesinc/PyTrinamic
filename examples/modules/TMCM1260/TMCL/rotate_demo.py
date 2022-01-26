@@ -8,7 +8,7 @@ Created on 07.07.2020
 '''
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.TMCM1260 import TMCM1260
 import time
 

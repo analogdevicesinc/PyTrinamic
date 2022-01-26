@@ -55,7 +55,7 @@ Change `TMCM_1270` and `usb_tmcl_interface` to your preferences. `X` is just a p
 
 ```Python
 from pytrinamic.modules.TMCM1270 import TMCM_1270
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)
@@ -91,7 +91,7 @@ to show the working principle.
 
 ```Python
 from pytrinamic.modules.TMCM1270 import TMCM_1270
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 module = TMCM_1270(con, module_id=1)

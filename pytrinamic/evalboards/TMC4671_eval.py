@@ -13,11 +13,11 @@ class TMC4671_eval(TMC4671):
 
     # Override TMC4671
     def write_register(self, register_address, value):
-        return self._connection.writeMC(register_address, value)
+        return self._connection.write_mc(register_address, value)
 
     # Override TMC4671
     def read_register(self, register_address, signed=False):
-        return self._connection.readMC(register_address, signed)
+        return self._connection.read_mc(register_address, signed)
 
     class AP:
         MaxVelocity                    = 4

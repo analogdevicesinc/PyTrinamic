@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671 as TMC4671_IC
 

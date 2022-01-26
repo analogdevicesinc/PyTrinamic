@@ -25,12 +25,12 @@ class TMCC160(TMCLModule):
     def move_to(self, axis, position, velocity=None):
         if velocity:
             self.motors[0].linear_ramp.max_velocity = velocity
-        self.connection.moveTo(axis, position, self.module_id)
+        self.connection.move_to(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
             self.motors[0].linear_ramp.max_velocity = velocity
-        self.connection.moveBy(axis, difference, self.module_id)
+        self.connection.move_by(axis, difference, self.module_id)
 
     class Motor0(MotorControlModule):
 

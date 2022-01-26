@@ -28,7 +28,7 @@ import msvcrt
 from threading import Thread
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 from pytrinamic.features.StallGuard import StallGuard
@@ -73,8 +73,8 @@ for shield in shields:
     logger.info(f"Initializing motor at shield {shield}.")
 
     logger.info("Rotating motor.")
-    shield.setAxisParameter(shield.AP.MaxCurrent, 0, args.current[0])
-    shield.setAxisParameter(shield.AP.MaxAcceleration, 0, args.acceleration[0])
+    shield.set_axis_parameter(shield.AP.MaxCurrent, 0, args.current[0])
+    shield.set_axis_parameter(shield.AP.MaxAcceleration, 0, args.acceleration[0])
     shield.rotate(0, args.velocity[0])
 
     StallGuard(shield, sys.argv, logger).calibrate_zero()
@@ -89,9 +89,9 @@ def handle_key():
             logger.info("Resetting stall for all shields.")
             for shield in shields:
                 logger.info(f"Resetting stall for {shield}.")
-                shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, 0)
+                shield.set_axis_parameter(shield.AP.smartEnergyStallVelocity, 0, 0)
                 time.sleep(1)
-                shield.setAxisParameter(shield.AP.smartEnergyStallVelocity, 0, args.threshold[0])
+                shield.set_axis_parameter(shield.AP.smartEnergyStallVelocity, 0, args.threshold[0])
         elif ch == b'e':
             exit()
 

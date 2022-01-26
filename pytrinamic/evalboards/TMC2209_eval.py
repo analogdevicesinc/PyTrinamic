@@ -35,10 +35,10 @@ class TMC2209_eval(TMCLEval, TMC2209):
     # Use the driver controller channel for register access
 
     def write_register(self, register_address, value):
-        return self._connection.writeDRV(register_address, value)
+        return self._connection.write_drv(register_address, value)
 
     def read_register(self, register_address, signed=False):
-        return self._connection.readDRV(register_address, signed)
+        return self._connection.read_drv(register_address, signed)
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
@@ -58,12 +58,12 @@ class TMC2209_eval(TMCLEval, TMC2209):
     def move_to(self, axis, position, velocity=None):
         if velocity and velocity != 0:
             self.motors[0].set_axis_parameter(self.motors[0].AP.MaxVelocity, velocity)
-        self._connection.moveTo(axis, position, self._module_id)
+        self._connection.move_to(axis, position, self._module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
             self.motors[0].set_axis_parameter(self.motors[0].AP.MaxVelocity, velocity)
-        self._connection.moveBy(axis, difference, self._module_id)
+        self._connection.move_by(axis, difference, self._module_id)
 
     class Motor0(MotorControlModule):
         def __init__(self, eval_board, axis):

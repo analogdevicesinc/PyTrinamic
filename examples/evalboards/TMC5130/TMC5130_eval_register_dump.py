@@ -11,7 +11,7 @@ Created on 09.01.2019
 '''
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
 
 pytrinamic.show_info()

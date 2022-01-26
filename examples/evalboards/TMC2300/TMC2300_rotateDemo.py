@@ -9,7 +9,7 @@ Created on 27.03.2020
 
 import time
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC2300_eval import TMC2300_eval
 
 connectionManager = ConnectionManager()

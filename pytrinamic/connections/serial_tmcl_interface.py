@@ -1,9 +1,9 @@
 from serial import Serial, SerialException
 import serial.tools.list_ports
-from pytrinamic.connections.TmclInterface import TmclInterface
+from pytrinamic.connections.tmcl_interface import TmclInterface
 
 
-class serial_tmclInterface(TmclInterface):
+class serial_tmcl_interface(TmclInterface):
     """
     Opens a serial TMCL connection
     """
@@ -11,8 +11,7 @@ class serial_tmclInterface(TmclInterface):
         if type(com_port) != str:
             raise TypeError
 
-        super().__init__(host_id, module_id, debug)
-
+        TmclInterface.__init__(self, host_id, module_id, debug)
         self._baudrate = datarate
 
         try:
@@ -23,7 +22,7 @@ class serial_tmclInterface(TmclInterface):
         self._serial.timeout = 5
 
         if self._debug:
-            print("Open port: " + self._serial.portstr)
+            print("Opened port: " + self._serial.portstr)
 
     def __enter__(self):
         return self
@@ -35,46 +34,11 @@ class serial_tmclInterface(TmclInterface):
         del exit_type, value, traceback
         self.close()
 
-    # override ConnectionInterface
-    # def supports_tmcl(self):
-    #    return True
-
-    # override ConnectionInterface
-    # def supports_canopen(self):
-    #    return False
-
-    # override ConnectionInterface
-    # def enable_debug(self, enable):
-    #    self._debug = enable
-
-    # override ConnectionInterface
-    def print_info(self):
-        print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
-
-    # @staticmethod
-    def list(self):
-        """
-            Return a list of available connection ports as a list of strings.
-
-            This function is required for using this interface with the
-            connection manager.
-        """
-        connected = []
-        for element in sorted(serial.tools.list_ports.comports()):
-            connected.append(element.device)
-
-        return connected
-
-    # @staticmethod
-    #def supportsTMCL():
-    #    return True
-
     def close(self):
         if self._debug:
-            print("Close port: " + self._serial.portstr)
+            print("Closing port: " + self._serial.portstr)
 
         self._serial.close()
-        return 0
 
     def _send(self, host_id, module_id, data):
         """
@@ -108,3 +72,24 @@ class serial_tmclInterface(TmclInterface):
 
     def get_timeout(self):
         return self._serial.timeout
+
+    @staticmethod
+    def supports_tmcl():
+        return True
+
+    def print_info(self):
+        print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
+
+    @staticmethod
+    def list():
+        """
+            Return a list of available connection ports as a list of strings.
+
+            This function is required for using this interface with the
+            connection manager.
+        """
+        connected = []
+        for element in sorted(serial.tools.list_ports.comports()):
+            connected.append(element.device)
+
+        return connected

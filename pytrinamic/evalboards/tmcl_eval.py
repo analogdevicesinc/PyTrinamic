@@ -25,7 +25,7 @@ class TMCLEval(object):
         axis: Axis index for the parameter to be set.
         value: Value to set the axis parameter to.
         """
-        self._connection.setAxisParameter(ap_type, axis, value, self._module_id)
+        self._connection.set_axis_parameter(ap_type, axis, value, self._module_id)
 
     def get_axis_parameter(self, ap_type, axis, signed=False):
         """
@@ -39,7 +39,7 @@ class TMCLEval(object):
 
         Returns: Axis parameter value.
         """
-        return self._connection.axisParameter(ap_type, axis, self._module_id, signed=signed)
+        return self._connection.get_axis_parameter(ap_type, axis, self._module_id, signed=signed)
 
     def __str__(self):
         return "{} {}".format(

@@ -15,7 +15,7 @@ from pytrinamic.evalboards.TMC2660_eval import TMC2660_eval
 
 pytrinamic.show_info()
 
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 TMC2660 = TMC2660_eval(myInterface)

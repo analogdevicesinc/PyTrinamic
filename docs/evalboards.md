@@ -33,7 +33,7 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)
@@ -65,7 +65,7 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)
@@ -110,7 +110,7 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)
@@ -132,7 +132,7 @@ Change `TMC5130_eval` and `usb_tmcl_interface` to your preferences. `X` is just 
 
 ```Python
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
-from pytrinamic.connections.UsbTmclInterface import UsbTmclInterface
+from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
 
 con = UsbTmclInterface()
 eval = TMC5130_eval(con)

@@ -1,51 +1,38 @@
-'''
-Created on 03.01.2020
-
-@author: SW
-
-Use following command under linux to activate can socket
-sudo ip link set can0 down type can bitrate 1000000
-'''
-
 import can
-
-from pytrinamic.connections.TmclInterface import TmclInterface
 from can import CanError
+from pytrinamic.connections.tmcl_interface import TmclInterface
 
-_CHANNELS = [
-    "can0",  "can1",  "can2",  "can3",  "can4",  "can5",  "can6",  "can7"
-    ]
+_CHANNELS = ["can0",  "can1",  "can2",  "can3",  "can4",  "can5",  "can6",  "can7"]
 
 
-class socketcan_tmclInterface(TmclInterface):
+class socketcan_tmcl_interface(TmclInterface):
     """
     This class implements a TMCL connection over a SocketCAN adapter.
-    """
 
+    Use following command under linux to activate can socket
+    sudo ip link set can0 down type can bitrate 1000000
+    """
     def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False):
         if type(port) != str:
             raise TypeError
 
-        if not port in _CHANNELS:
+        if port not in _CHANNELS:
             raise ValueError("Invalid port")
 
         TmclInterface.__init__(self, host_id, module_id, debug)
-
-        self.__debug = debug
-        self.__channel = port
-        self.__bitrate = datarate
+        self._channel = port
+        self._bitrate = datarate
 
         try:
-            self.__connection = can.Bus(interface="socketcan", channel=self.__channel, bitrate=self.__bitrate)
-
-            self.__connection.set_filters([{ "can_id": host_id, "can_mask": 0x7F }])
+            self._connection = can.Bus(interface="socketcan", channel=self._channel, bitrate=self._bitrate)
+            self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
 
         except CanError as e:
-            self.__connection = None
+            self._connection = None
             raise ConnectionError("Failed to connect to SocketCAN bus") from e
 
-        if self.__debug:
-            print("Opened bus on channel " + self.__channel)
+        if self._debug:
+            print("Opened bus on channel " + self._channel)
 
     def __enter__(self):
         return self
@@ -58,10 +45,10 @@ class socketcan_tmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        if self.__debug:
+        if self._debug:
             print("Closing socketcan bus")
 
-        self.__connection.shutdown()
+        self._connection.shutdown()
 
     def _send(self, host_id, module_id, data):
         """
@@ -75,7 +62,7 @@ class socketcan_tmclInterface(TmclInterface):
         msg = can.Message(arbitration_id=module_id, is_extended_id=False, data=data[1:])
 
         try:
-            self.__connection.send(msg)
+            self._connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
@@ -89,7 +76,7 @@ class socketcan_tmclInterface(TmclInterface):
         del module_id
 
         try:
-            msg = self.__connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=3)
         except CanError as e:
             raise ConnectionError("Failed to receive a TMCL message") from e
 
@@ -104,19 +91,12 @@ class socketcan_tmclInterface(TmclInterface):
 
         return bytearray([msg.arbitration_id]) + msg.data
 
-    def printInfo(self):
-        print("Connection: type=socketcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
-
-    def enableDebug(self, enable):
-        self.__debug = enable
-
     @staticmethod
-    def supportsTMCL():
+    def supports_tmcl():
         return True
 
-    @staticmethod
-    def supportsCANopen():
-        return False
+    def print_info(self):
+        print("Connection: type=socketcan_tmcl_interface channel=" + self._channel + " bitrate=" + str(self._bitrate))
 
     @staticmethod
     def list():

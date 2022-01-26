@@ -50,7 +50,7 @@ class TMCLModule(object):
         axis: Axis index for the parameter to be set.
         value: Value to set the axis parameter to.
         """
-        self.connection.setAxisParameter(ap_type, axis, value, self.module_id)
+        self.connection.set_axis_parameter(ap_type, axis, value, self.module_id)
 
     def get_axis_parameter(self, ap_type, axis, signed=False):
         """
@@ -64,7 +64,7 @@ class TMCLModule(object):
 
         Returns: Axis parameter value.
         """
-        return self.connection.axisParameter(ap_type, axis, self.module_id, signed=signed)
+        return self.connection.get_axis_parameter(ap_type, axis, self.module_id, signed=signed)
 
     def set_global_parameter(self, gp_type, bank, value):
         """
@@ -75,7 +75,7 @@ class TMCLModule(object):
         bank: Bank number for the parameter to be set.
         value: Value to set the global parameter to.
         """
-        self.connection.setGlobalParameter(gp_type, bank, value, self.module_id)
+        self.connection.set_global_parameter(gp_type, bank, value, self.module_id)
 
     def get_global_parameter(self, gp_type, bank, signed=False):
         """
@@ -89,7 +89,7 @@ class TMCLModule(object):
 
         Returns: Global parameter value.
         """
-        return self.connection.globalParameter(gp_type, bank, self.module_id, signed=signed)
+        return self.connection.get_global_parameter(gp_type, bank, self.module_id, signed=signed)
 
     def get_analog_input(self, x):
         """
@@ -100,7 +100,7 @@ class TMCLModule(object):
 
         Returns: Analog input value.
         """
-        return self.connection.analogInput(x, self.module_id)
+        return self.connection.get_analog_input(x, self.module_id)
 
     def get_digital_input(self, x):
         """
@@ -111,7 +111,7 @@ class TMCLModule(object):
 
         Returns: Digital input value.
         """
-        return self.connection.digitalInput(x, self.module_id)
+        return self.connection.get_digital_input(x, self.module_id)
 
     def get_digital_output(self, x):
         """
@@ -122,7 +122,7 @@ class TMCLModule(object):
 
         Returns: Digital output value.
         """
-        return self.connection.digitalOutput(x, self.module_id)
+        return self.connection.get_digital_output(x, self.module_id)
 
     " write outputs "
     def set_digital_output(self, x):
@@ -132,7 +132,7 @@ class TMCLModule(object):
         Parameters:
         x: Digital output index.
         """
-        return self.connection.setDigitalOutput(x, self.module_id)
+        return self.connection.set_digital_output(x, self.module_id)
 
     def clear_digital_output(self, x):
         """
@@ -141,4 +141,4 @@ class TMCLModule(object):
         Parameters:
         x: Digital output index.
         """
-        return self.connection.clearDigitalOutput(x, self.module_id)
+        return self.connection.clear_digital_output(x, self.module_id)

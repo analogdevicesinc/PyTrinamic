@@ -4,7 +4,7 @@ Dump all register values of the TMC4671 IC.
 The connection to a Landungsbrücke is established over USB. TMCL commands are used for communication with the IC.
 """
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.connections.uart_ic_interface import uart_ic_interface
 from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671 as TMC4671_IC

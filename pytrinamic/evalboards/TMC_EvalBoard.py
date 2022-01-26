@@ -48,9 +48,9 @@ class TMC_EvalBoard(TMCLModule):
         """
         del channel
         return {
-            self.EVAL_TYPES.MOTION_CONTROLLER: self.connection.writeMC,
-            self.EVAL_TYPES.DRIVER: self.connection.writeDRV,
-            self.EVAL_TYPES.UNDEFINED: self.connection.writeMC
+            self.EVAL_TYPES.MOTION_CONTROLLER: self.connection.write_mc,
+            self.EVAL_TYPES.DRIVER: self.connection.write_drv,
+            self.EVAL_TYPES.UNDEFINED: self.connection.write_mc
         }.get(self.eval_type)(address, value, moduleID=self.module_id)
 
     def read_register(self, channel, address, signed=False):
@@ -71,9 +71,9 @@ class TMC_EvalBoard(TMCLModule):
         """
         del channel
         return {
-            self.EVAL_TYPES.MOTION_CONTROLLER: self.connection.readMC,
-            self.EVAL_TYPES.DRIVER: self.connection.readDRV,
-            self.EVAL_TYPES.UNDEFINED: self.connection.readMC
+            self.EVAL_TYPES.MOTION_CONTROLLER: self.connection.read_mc,
+            self.EVAL_TYPES.DRIVER: self.connection.read_drv,
+            self.EVAL_TYPES.UNDEFINED: self.connection.read_mc
         }.get(self.eval_type)(address, moduleID=self.module_id, signed=signed)
 
     def write_register_field(self, channel, field, value):

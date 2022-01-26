@@ -11,7 +11,7 @@ Created on 18.03.2020
 '''
 
 import pytrinamic
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 
@@ -23,6 +23,6 @@ for shield in shields:
     print(shield)
     for name, register in shield.registers.__dict__.items():
         if(not name.startswith("__")) and (not name.endswith("__")):
-            print("{0}: 0x{1:08X}".format(name, shield.readRegister(register)))
+            print("{0}: 0x{1:08X}".format(name, shield.read_register(register)))
 
 myInterface.close()

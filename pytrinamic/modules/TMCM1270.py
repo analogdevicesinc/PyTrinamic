@@ -65,7 +65,7 @@ class TMCM1270(TMCLModule):
         """
         if velocity:
             self.max_velocity = velocity
-        self.connection.moveTo(axis, position, self.module_id)
+        self.connection.move_to(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         """
@@ -82,7 +82,7 @@ class TMCM1270(TMCLModule):
         """
         if velocity:
             self.max_velocity = velocity
-        self.connection.moveBy(axis, difference, self.module_id)
+        self.connection.move_by(axis, difference, self.module_id)
 
     class MOTOR_0(TMCLModule.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
         "Motor class for the motor on axis 0."

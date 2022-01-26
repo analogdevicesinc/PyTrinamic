@@ -18,10 +18,10 @@ class TMCM_Python(object):
 
     # Global parameter access
     def get_global_parameter(self, gpType, bank):
-        return self.connection.globalParameter(gpType, bank)
+        return self.connection.get_global_parameter(gpType, bank)
 
     def set_global_parameter(self, gpType, bank, value):
-        self.connection.setGlobalParameter(gpType, bank, value)
+        self.connection.set_global_parameter(gpType, bank, value)
 
     class APs:
         pass

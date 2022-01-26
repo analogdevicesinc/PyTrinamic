@@ -149,13 +149,13 @@ class TMCM1260(TMCLModule):
         if velocity:
             self.setMaxVelocity(axis, velocity)
 
-        return self.connection.moveTo(axis, position, self.module_id)
+        return self.connection.move_to(axis, position, self.module_id)
 
     def moveBy(self, axis, distance, velocity=None):
         if velocity:
             self.setMaxVelocity(velocity)
 
-        return self.connection.moveBy(axis, distance, self.module_id)
+        return self.connection.move_by(axis, distance, self.module_id)
 
     # Current control functions
     def setMotorRunCurrent(self, axis, current):
@@ -229,7 +229,7 @@ class TMCM1260(TMCLModule):
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x, self.module_id)
+        return self.connection.get_analog_input(x, self.module_id)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x, self.module_id)
+        return self.connection.get_digital_input(x, self.module_id)

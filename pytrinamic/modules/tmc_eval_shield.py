@@ -13,10 +13,10 @@ class TmcEvalShield:
     def __init__(self, connection, shield, module_id=1):
         self.shields = []
 
-        while not(connection.globalParameter(self.GP.AttachedAxes, 0, module_id)):
+        while not(connection.get_global_parameter(self.GP.AttachedAxes, 0, module_id)):
             pass
 
-        attached_axes = connection.globalParameter(self.GP.AttachedAxes, 0, module_id)
+        attached_axes = connection.get_global_parameter(self.GP.AttachedAxes, 0, module_id)
         for i in range(attached_axes):
             self.shields.append(shield(connection, i, module_id))
 

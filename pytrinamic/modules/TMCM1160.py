@@ -225,10 +225,10 @@ class TMCM1160(TMCLModule):
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x)
+        return self.connection.get_analog_input(x)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x)
+        return self.connection.get_digital_input(x)
 
     def showMotionConfiguration(self):
         print("Motion configuration:")

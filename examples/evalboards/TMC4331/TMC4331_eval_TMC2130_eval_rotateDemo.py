@@ -9,7 +9,7 @@ if __name__ == '__main__':
     pass
 
 import time
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC4331_eval import TMC4331_eval
 from pytrinamic.evalboards.TMC2130_eval import TMC2130_eval
 

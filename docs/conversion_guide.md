@@ -66,8 +66,8 @@ eval.write_register(0, eval.IC.REGISTERS.X, 42)
 Previous:
 
 ```Python
-module.axisParameter(axis, module.AP.X)
-module.setAxisParameter(axis, module.AP.X, 42)
+module.get_axis_parameter(axis, module.AP.X)
+module.set_axis_parameter(axis, module.AP.X, 42)
 ```
 
 Now there are several ways of accessing axis parameters, each for a specific use case.

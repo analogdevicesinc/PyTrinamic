@@ -1,41 +1,36 @@
-'''
-Created on 03.01.2020
-
-@author: JH
-'''
 import can
-from pytrinamic.connections.TmclInterface import TmclInterface
 from can import CanError
 from serial.tools.list_ports import comports
+from pytrinamic.connections.tmcl_interface import TmclInterface
 
-class slcan_tmclInterface(TmclInterface):
+
+class slcan_tmcl_interface(TmclInterface):
     """
-    This class implements a TMCL connection for CAN over Serial / SLCAN. Comatible with CANable running slcan firmware and similar.
+    This class implements a TMCL connection for CAN over Serial / SLCAN.
+    Comatible with CANable running slcan firmware and similar.
     Set underlying serial device as channel. (e.g. /dev/ttyUSB0, COM8, …)
-    Maybe SerialBaudrate has to be changed based on Adapter.
+    Maybe SerialBaudrate has to be changed based on adapter.
     """
 
-    def __init__(self, comPort, datarate=1000000, hostID=2, moduleID=1, debug=True, SerialBaudrate=115200):
-        if type(comPort) != str:
+    def __init__(self, com_port, datarate=1000000, host_id=2, module_id=1, debug=True, serial_baudrate=115200):
+        if type(com_port) != str:
             raise TypeError
 
-        TmclInterface.__init__(self, hostID, moduleID, debug)
-
-        self.__debug = debug
-        self.__bitrate = datarate
-        self.__Port = comPort
-        self.__serialBaudrate = SerialBaudrate
+        TmclInterface.__init__(self, host_id, module_id, debug)
+        self._bitrate = datarate
+        self._port = com_port
+        self._serial_baudrate = serial_baudrate
 
         try:
-            self.__connection = can.Bus(interface='slcan', channel=self.__Port, bitrate=self.__bitrate,ttyBaudrate=self.__serialBaudrate)
-            self.__connection.set_filters([{ "can_id": hostID, "can_mask": 0x7F }])
-
+            self._connection = can.Bus(interface='slcan', channel=self._port, bitrate=self._bitrate,
+                                       ttyBaudrate=self._serialBaudrate)
+            self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
         except CanError as e:
             self.__connection = None
             raise ConnectionError("Failed to connect to CAN bus") from e
 
-        if self.__debug:
-            print("Opened slcan bus on channel " + self.__Port)
+        if self._debug:
+            print("Opened slcan bus on channel " + self._port)
 
     def __enter__(self):
         return self
@@ -48,10 +43,10 @@ class slcan_tmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        if self.__debug:
+        if self._debug:
             print("Closing CAN bus")
 
-        self.__connection.shutdown()
+        self._connection.shutdown()
 
     def _send(self, host_id, module_id, data):
         """
@@ -79,7 +74,7 @@ class slcan_tmclInterface(TmclInterface):
         del module_id
 
         try:
-            msg = self.__connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=3)
         except CanError as e:
             raise ConnectionError("Failed to receive a TMCL message") from e
 
@@ -94,19 +89,12 @@ class slcan_tmclInterface(TmclInterface):
 
         return bytearray([msg.arbitration_id]) + msg.data
 
-    def printInfo(self):
-        print("Connection: type=slcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
-
-    def enableDebug(self, enable):
-        self.__debug = enable
-
     @staticmethod
-    def supportsTMCL():
+    def supports_tmcl():
         return True
 
-    @staticmethod
-    def supportsCANopen():
-        return False
+    def print_info(self):
+        print("Connection: type=slcan_tmcl_interface channel=" + self._port + " bitrate=" + str(self._bitrate))
 
     @staticmethod
     def list():

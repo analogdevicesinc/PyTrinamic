@@ -12,12 +12,12 @@ class TMC_helpers(object):
         return (data & (~mask)) | ((value << shift) & mask)
 
     @staticmethod
-    def toSigned32(x):
+    def to_signed_32(x):
         m = x & 0xffffffff
         return (m ^ 0x80000000) - 0x80000000
 
     @staticmethod
-    def showInfo():
+    def show_info():
         print(name + " - " + desc)
 
 
@@ -60,19 +60,19 @@ class EEPROM:
         self._read32func = read32func
         self._write8func = write8func
 
-    def readByte(self, address):
+    def read_byte(self, address):
         return self._read32func(address) & 0xFF
 
-    def readShort(self, address):
+    def read_short(self, address):
         return self._read32func(address) & 0xFFFF
 
-    def readInt(self, address):
+    def read_int(self, address):
         return self._read32func(address)
 
-    def readASCII(self, address, length):
+    def read_ascii(self, address, length):
         text = ""
         for i in range(address, address+length, 4):
-            data = self.readInt(i)
+            data = self.read_int(i)
             text += chr((data >>  0) & 0xFF)
             text += chr((data >>  8) & 0xFF)
             text += chr((data >> 16) & 0xFF)
@@ -85,28 +85,28 @@ class EEPROM:
 
     def read_id_info(self):
         # Check magic number
-        if self.readShort(self.ADDR_MAGIC_NUMBER) != self.MAGIC_NUMBER:
+        if self.read_short(self.ADDR_MAGIC_NUMBER) != self.MAGIC_NUMBER:
             return None
 
-        desc     = self.readASCII(self.ADDR_DESCRIPTION, 16)
-        board_id = self.readShort(self.ADDR_ID)
-        hw_major = self.readByte(self.ADDR_HW_VERSION_MAJOR)
-        hw_minor = self.readByte(self.ADDR_HW_VERSION_MINOR)
+        desc     = self.read_ascii(self.ADDR_DESCRIPTION, 16)
+        board_id = self.read_short(self.ADDR_ID)
+        hw_major = self.read_byte(self.ADDR_HW_VERSION_MAJOR)
+        hw_minor = self.read_byte(self.ADDR_HW_VERSION_MINOR)
 
-        return { "description":desc.strip('\x00'), "id":board_id, "hw_major":hw_major, "hw_minor":hw_minor }
+        return {"description": desc.strip('\x00'), "id": board_id, "hw_major": hw_major, "hw_minor": hw_minor}
 
-    def writeByte(self, address, value):
+    def write_byte(self, address, value):
         self._write8func(address, value)
 
-    def writeShort(self, address, value):
+    def write_short(self, address, value):
         for i in range(2):
             self._write8func(address + i, value >> (i*8))
 
-    def writeInt(self, address, value):
+    def write_int(self, address, value):
         for i in range(4):
             self._write8func(address + i, value >> (i*8))
 
-    def writeASCII(self, address, text):
+    def write_ascii(self, address, text):
         for i, c in enumerate(text):
             self._write8func(address + i, ord(c))
 
@@ -123,8 +123,8 @@ class EEPROM:
         # Pad the string with zeros if necessary
         description += "\x00" * (16-len(description))
 
-        self.writeASCII(self.ADDR_DESCRIPTION, description)
-        self.writeShort(self.ADDR_ID, board_id)
-        self.writeByte(self.ADDR_HW_VERSION_MAJOR, hw_major_version)
-        self.writeByte(self.ADDR_HW_VERSION_MINOR, hw_minor_version)
-        self.writeShort(self.ADDR_MAGIC_NUMBER, self.MAGIC_NUMBER)
+        self.write_ascii(self.ADDR_DESCRIPTION, description)
+        self.write_short(self.ADDR_ID, board_id)
+        self.write_byte(self.ADDR_HW_VERSION_MAJOR, hw_major_version)
+        self.write_byte(self.ADDR_HW_VERSION_MINOR, hw_minor_version)
+        self.write_short(self.ADDR_MAGIC_NUMBER, self.MAGIC_NUMBER)

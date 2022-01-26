@@ -1,47 +1,38 @@
-'''
-Created on 03.01.2020
-@author: JH
-'''
 import can
-from pytrinamic.connections.TmclInterface import TmclInterface
 from can import CanError
+from pytrinamic.connections.tmcl_interface import TmclInterface
 
-_CHANNELS = [
-     "0",  "1",  "2",
-     ]
+_CHANNELS = ["0",  "1",  "2"]
 
 
-class kvaser_tmclInterface(TmclInterface):
+class kvaser_tmcl_interface(TmclInterface):
     """
     This class implements a TMCL connection for Kvaser adapter using CANLIB.
     Try 0 as default channel.
     """
-
-    def __init__(self, port=0, datarate=1000000, hostID=2, moduleID=1, debug=False):
+    def __init__(self, port=0, datarate=1000000, host_id=2, module_id=1, debug=False):
         if type(port) != str:
             raise TypeError
 
-        if not port in _CHANNELS:
-            raise ValueError("Invalid port")
+        if port not in _CHANNELS:
+            raise ValueError("Invalid port!")
 
-        TmclInterface.__init__(self, hostID, moduleID, debug)
-
-        self.__debug    = debug
-        self.__channel  = port
-        self.__bitrate  = datarate
+        TmclInterface.__init__(self, host_id, module_id, debug)
+        self._channel = port
+        self._bitrate = datarate
 
         try:
-            if self.__debug:
-                self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate)
+            if self._debug:
+                self._connection = can.Bus(interface="kvaser", channel=self._channel, bitrate=self._bitrate)
             else:
-                self.__connection = can.Bus(interface="kvaser", channel=self.__channel, bitrate=self.__bitrate, can_filters=[{ "can_id": hostID, "can_mask": 0x7F }])
-
+                self._connection = can.Bus(interface="kvaser", channel=self._channel, bitrate=self._bitrate,
+                                           can_filters=[{"can_id": host_id, "can_mask": 0x7F}])
         except CanError as e:
-            self.__connection = None
+            self._connection = None
             raise ConnectionError("Failed to connect to Kvaser CAN bus") from e
 
-        if self.__debug:
-            print("Opened bus on channel " + self.__channel)
+        if self._debug:
+            print("Opened bus on channel " + str(self._channel))
 
     def __enter__(self):
         return self
@@ -54,24 +45,23 @@ class kvaser_tmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        if self.__debug:
+        if self._debug:
             print("Closing CAN bus")
 
-        self.__connection.shutdown()
+        self._connection.shutdown()
 
     def _send(self, host_id, module_id, data):
         """
             Send the bytearray parameter [data].
 
-            This is a required override function for using the tmcl_interface
-            class.
+            This is a required override function for using the tmcl_interface class.
         """
         del host_id
 
         msg = can.Message(arbitration_id=module_id, is_extended_id=False, data=data[1:])
 
         try:
-            self.__connection.send(msg)
+            self._connection.send(msg)
         except CanError as e:
             raise ConnectionError("Failed to send a TMCL message") from e
 
@@ -85,7 +75,7 @@ class kvaser_tmclInterface(TmclInterface):
         del module_id
 
         try:
-            msg = self.__connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=3)
         except CanError as e:
             raise ConnectionError("Failed to receive a TMCL message") from e
 
@@ -96,27 +86,20 @@ class kvaser_tmclInterface(TmclInterface):
         if msg.arbitration_id != host_id:
             # The filter shouldn't let wrong messages through.
             # This is just a sanity check
-            if self.__debug:
-                print ("Received wrong ID")
+            if self._debug:
+                print("Received wrong ID")
 
         return bytearray([msg.arbitration_id]) + msg.data
 
-    def print_info(self):
-        print("Connection: type=pcan_tmcl_interface channel=" + self.__channel + " bitrate=" + str(self.__bitrate))
-
-    #def enableDebug(self, enable):
-    #    self.__debug = enable
-
-    #@staticmethod
-    def supportsTMCL(self):
+    @staticmethod
+    def supports_tmcl():
         return True
 
-    #@staticmethod
-    #def supportsCANopen():
-    #    return False
+    def print_info(self):
+        print("Connection: type=pcan_tmcl_interface channel=" + str(self._channel) + " bitrate=" + str(self._bitrate))
 
-    #@staticmethod
-    def list(self):
+    @staticmethod
+    def list():
         """
             Return a list of available connection ports as a list of strings.
 

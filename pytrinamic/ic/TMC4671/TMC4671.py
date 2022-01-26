@@ -33,7 +33,7 @@ class TMC4671:
         reply = self._connection.send_datagram(datagram, DATAGRAM_LENGTH)
         values = struct.unpack(DATAGRAM_FORMAT, reply)
         value = values[1]
-        return TMC_helpers.toSigned32(value) if signed else value
+        return TMC_helpers.to_signed_32(value) if signed else value
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),

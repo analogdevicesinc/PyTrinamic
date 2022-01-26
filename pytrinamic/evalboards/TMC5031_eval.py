@@ -21,25 +21,25 @@ class TMC5031_eval(TMC5031):
         if channel != 0:
             raise ValueError
 
-        return self.__connection.writeMC(registerAddress, value)
+        return self.__connection.write_mc(registerAddress, value)
 
     def readRegister(self, registerAddress, channel=0, signed=False):
         if channel != 0:
             raise ValueError
 
-        return self.__connection.readMC(registerAddress, signed=signed)
+        return self.__connection.read_mc(registerAddress, signed=signed)
         # Axis parameter access
     def getAxisParameter(self, apType, axis):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
 
-        return self.__connection.axisParameter(apType, axis)
+        return self.__connection.get_axis_parameter(apType, axis)
 
     def setAxisParameter(self, apType, axis, value):
         if not(0 <= axis < self.MOTORS):
             raise ValueError("Axis index out of range")
 
-        self.__connection.setAxisParameter(apType, axis, value)
+        self.__connection.set_axis_parameter(apType, axis, value)
 
     # Motion Control functions
     def rotate(self, motor, value):

@@ -55,21 +55,21 @@ class TMC5160_shield(TMC5160):
         if not moduleID:
             moduleID = self._MODULE_ID
 
-        return self.__connection.writeRegister(registerAddress, TMCL_Command.WRITE_MC, self.__channel, value, moduleID)
+        return self.__connection.write_register(registerAddress, TMCL_Command.WRITE_MC, self.__channel, value, moduleID)
 
     def readRegister(self, registerAddress, moduleID=None, signed=False):
         # If the moduleID argument is omitted, use the stored module ID
         if not moduleID:
             moduleID = self._MODULE_ID
 
-        return self.__connection.readRegister(registerAddress, TMCL_Command.READ_MC, self.__channel, moduleID, signed)
+        return self.__connection.read_register(registerAddress, TMCL_Command.READ_MC, self.__channel, moduleID, signed)
 
     # Axis parameter access
     def getAxisParameter(self, apType, axis):
-        return self.__connection.axisParameter(apType, self.__channel)
+        return self.__connection.get_axis_parameter(apType, self.__channel)
 
     def setAxisParameter(self, apType, axis, value):
-        self.__connection.setAxisParameter(apType, self.__channel, value)
+        self.__connection.set_axis_parameter(apType, self.__channel, value)
 
     # Motion Control functions
     def rotate(self, motor, value):

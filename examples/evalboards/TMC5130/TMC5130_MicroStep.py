@@ -15,7 +15,7 @@ import math
 import matplotlib.pyplot as plot
 import pytrinamic
 
-from pytrinamic.connections.ConnectionManager import ConnectionManager
+from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
 
 MEASURE = False

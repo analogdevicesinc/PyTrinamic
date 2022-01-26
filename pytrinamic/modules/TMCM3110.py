@@ -183,7 +183,7 @@ class TMCM3110(TMCLModule):
 
     # IO pin functions
     def analogInput(self, x):
-        return self.connection.analogInput(x, self.module_id)
+        return self.connection.get_analog_input(x, self.module_id)
 
     def digitalInput(self, x):
-        return self.connection.digitalInput(x, self.module_id)
+        return self.connection.get_digital_input(x, self.module_id)
