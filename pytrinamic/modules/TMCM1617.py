@@ -1,8 +1,8 @@
 from pytrinamic.modules import TMCLModule
-
-# features
+from pytrinamic.ic import TMC4671, TMC6200
 from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
 from pytrinamic.features import ABNEncoderModule, DigitalHallModule, PIDModule
+from pytrinamic.helpers import TMC_helpers
 
 
 class TMCM1617(TMCLModule):
@@ -16,6 +16,7 @@ class TMCM1617(TMCLModule):
         self.name = "TMCM-1617"
         self.desc = self.__doc__
         self.motors = [self.Motor0(self, 0)]
+        self.ics = [TMC4671(), TMC6200()]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -32,6 +33,19 @@ class TMCM1617(TMCLModule):
         if velocity:
             self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
+
+    def write_register(self, ic_id, register_address, value):
+        return self.connection.write_mc_by_id(ic_id, register_address, value, self.module_id)
+
+    def read_register(self, ic_id, register_address, signed=False):
+        return self.connection.read_mc_by_id(ic_id, register_address, self.module_id, signed)
+
+    def write_register_field(self, ic_id, field, value):
+        return self.write_register(ic_id, field[0], TMC_helpers.field_set(self.read_register(ic_id, field[0]),
+                                   field[1], field[2], value))
+
+    def read_register_field(self, ic_id, field):
+        return TMC_helpers.field_get(self.read_register(ic_id, field[0]), field[1], field[2])
 
     class Motor0(MotorControlModule):
 

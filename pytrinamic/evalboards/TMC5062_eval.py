@@ -1,25 +1,25 @@
-from pytrinamic.evalboards.tmcl_eval import TMCLEval
-from pytrinamic.ic.TMC5062.TMC5062 import TMC5062
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC5062
 from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
 
 
-class TMC5062_eval(TMCLEval, TMC5062):
+class TMC5062_eval(TMCLEval):
     """
     This class represents a TMC5062 Evaluation board
     """
     def __init__(self, connection, module_id=1):
         TMCLEval.__init__(self, connection, module_id)
-        TMC5062.__init__(self)
         self.motors = [self.Motor0(self, 0), self.Motor0(self, 1)]
+        self.ics = [TMC5062()]
 
     # Use the motion controller channel for register access
 
     def write_register(self, register_address, value):
-        return self._connection.write_mc(register_address, value)
+        return self._connection.write_mc(register_address, value, self._module_id)
 
     def read_register(self, register_address, signed=False):
-        return self._connection.read_mc(register_address, signed)
+        return self._connection.read_mc(register_address, self._module_id, signed)
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),

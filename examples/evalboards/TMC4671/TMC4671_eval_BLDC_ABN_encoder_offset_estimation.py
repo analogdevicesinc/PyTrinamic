@@ -1,22 +1,24 @@
 import time
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval
-from pytrinamic.ic import TMC4671 as TMC4671_IC
+from pytrinamic.ic import TMC4671
 
 pytrinamic.show_info()
-
 myInterface = ConnectionManager().connect()
 print(myInterface)
 
 with myInterface:
 
     if myInterface.supports_tmcl():
-        # Create an TMC4671-EVAL class which communicates over the Landungsbrücke via TMCL
-        TMC4671 = TMC4671_eval(myInterface)
+        # Create an TMC4671 IC class which communicates over the Landungsbrücke via TMCL
+        eval_board = TMC4671_eval(myInterface)
+        mc = eval_board.ics[0]
     else:
         # Create an TMC4671 IC class which communicates directly over UART
-        TMC4671 = TMC4671_IC(myInterface)
+        mc = TMC4671(myInterface)
+        # Use IC like an "EVAL" to use this example for both access variants
+        eval_board = mc
 
     # ===== 1) Base configuration =====
 
@@ -24,72 +26,72 @@ with myInterface:
     encoder_resolution = 4096
 
     # Motor type & PWM configuration
-    TMC4671.write_register_field(TMC4671.fields.MOTOR_TYPE, TMC4671.ENUMs.MOTOR_TYPE_BLDC)
-    TMC4671.write_register_field(TMC4671.fields.N_POLE_PAIRS, pole_pairs)
-    TMC4671.write_register(TMC4671.registers.PWM_POLARITIES, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.PWM_MAXCNT, int(0x00000F9F))
-    TMC4671.write_register(TMC4671.registers.PWM_BBM_H_BBM_L, 0x00000A0A)
-    TMC4671.write_register_field(TMC4671.fields.PWM_CHOP, TMC4671.ENUMs.PWM_CENTERED_FOR_FOC)
-    TMC4671.write_register_field(TMC4671.fields.PWM_SV, 1)
+    eval_board.write_register_field(TMC4671.FIELD.MOTOR_TYPE, TMC4671.ENUM.MOTOR_TYPE_BLDC)
+    eval_board.write_register_field(TMC4671.FIELD.N_POLE_PAIRS, pole_pairs)
+    eval_board.write_register(TMC4671.REG.PWM_POLARITIES, 0x00000000)
+    eval_board.write_register(TMC4671.REG.PWM_MAXCNT, int(0x00000F9F))
+    eval_board.write_register(TMC4671.REG.PWM_BBM_H_BBM_L, 0x00000A0A)
+    eval_board.write_register_field(TMC4671.FIELD.PWM_CHOP, TMC4671.ENUM.PWM_CENTERED_FOR_FOC)
+    eval_board.write_register_field(TMC4671.FIELD.PWM_SV, 1)
 
     # ADC configuration
-    TMC4671.write_register(TMC4671.registers.ADC_I_SELECT, 0x18000100)
-    TMC4671.write_register(TMC4671.registers.dsADC_MCFG_B_MCFG_A, 0x00100010)
-    TMC4671.write_register(TMC4671.registers.dsADC_MCLK_A, 0x20000000)
-    TMC4671.write_register(TMC4671.registers.dsADC_MCLK_B, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-#    TMC4671.write_register(TMC4671.registers.ADC_I0_SCALE_OFFSET, 0x01008218)
-#    TMC4671.write_register(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0x0100820A)
-    TMC4671.write_register(TMC4671.registers.ADC_I0_SCALE_OFFSET, 0x01005D87)
-    TMC4671.write_register(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0x01005E0B)
+    eval_board.write_register(TMC4671.REG.ADC_I_SELECT, 0x18000100)
+    eval_board.write_register(TMC4671.REG.dsADC_MCFG_B_MCFG_A, 0x00100010)
+    eval_board.write_register(TMC4671.REG.dsADC_MCLK_A, 0x20000000)
+    eval_board.write_register(TMC4671.REG.dsADC_MCLK_B, 0x00000000)
+    eval_board.write_register(TMC4671.REG.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
+    eval_board.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0x01008218)
+    eval_board.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0x0100820A)
+    # eval_board.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0x01005D87)
+    # eval_board.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0x01005E0B)
 
     # ABN encoder settings
-    TMC4671.write_register(TMC4671.registers.ABN_DECODER_MODE, 0x00001000)
-    TMC4671.write_register(TMC4671.registers.ABN_DECODER_PPR, encoder_resolution)
-    TMC4671.write_register(TMC4671.registers.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0)
+    eval_board.write_register(TMC4671.REG.ABN_DECODER_MODE, 0x00001000)
+    eval_board.write_register(TMC4671.REG.ABN_DECODER_PPR, encoder_resolution)
+    eval_board.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0)
 
     # Open loop settings
-    TMC4671.write_register(TMC4671.registers.OPENLOOP_MODE, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.OPENLOOP_ACCELERATION, 100)
+    eval_board.write_register(TMC4671.REG.OPENLOOP_MODE, 0x00000000)
+    eval_board.write_register(TMC4671.REG.OPENLOOP_ACCELERATION, 100)
 
     # Limits
-    TMC4671.write_register(TMC4671.registers.PID_TORQUE_FLUX_LIMITS, 1000)
+    eval_board.write_register(TMC4671.REG.PID_TORQUE_FLUX_LIMITS, 1000)
 
     # PI settings
-    TMC4671.write_register(TMC4671.registers.PID_TORQUE_P_TORQUE_I, 0x01000100)
-    TMC4671.write_register(TMC4671.registers.PID_FLUX_P_FLUX_I, 0x01000100)
+    eval_board.write_register(TMC4671.REG.PID_TORQUE_P_TORQUE_I, 0x01000100)
+    eval_board.write_register(TMC4671.REG.PID_FLUX_P_FLUX_I, 0x01000100)
 
     # ===== 2) Estimate the encoder offset =====
 
     # Init encoder (mode 0)
     # Put a voltage on the motor and wait 1 second for alignment
-    TMC4671.write_register(TMC4671.registers.MODE_RAMP_MODE_MOTION, 0x00000008)
-    TMC4671.write_register(TMC4671.registers.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.PHI_E_SELECTION, TMC4671.ENUMs.PHI_E_EXTERNAL)
-    TMC4671.write_register(TMC4671.registers.PHI_E_EXT, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.UQ_UD_EXT, 2000)
+    eval_board.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, 0x00000008)
+    eval_board.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000)
+    eval_board.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_EXTERNAL)
+    eval_board.write_register(TMC4671.REG.PHI_E_EXT, 0x00000000)
+    eval_board.write_register(TMC4671.REG.UQ_UD_EXT, 2000)
     time.sleep(1)
 
     # Clear abn_decoder_count
-    TMC4671.write_register(TMC4671.registers.ABN_DECODER_COUNT, 0)
+    eval_board.write_register(TMC4671.REG.ABN_DECODER_COUNT, 0)
 
-    print("abn_decoder_count:" + str(TMC4671.read_register(TMC4671.registers.ABN_DECODER_COUNT)))
+    print("abn_decoder_count:" + str(eval_board.read_register(TMC4671.REG.ABN_DECODER_COUNT)))
 
     # Switch to open loop velocity mode
-    TMC4671.write_register(TMC4671.registers.PHI_E_SELECTION, TMC4671.ENUMs.PHI_E_OPEN_LOOP)
-    TMC4671.write_register(TMC4671.registers.OPENLOOP_VELOCITY_TARGET, 60)
+    eval_board.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_OPEN_LOOP)
+    eval_board.write_register(TMC4671.REG.OPENLOOP_VELOCITY_TARGET, 60)
 
     start_time = time.time()
     while True:
-        print("dec: " + str(TMC4671.read_register(TMC4671.registers.ABN_DECODER_COUNT)) +
-              " dec_n: " + str(TMC4671.read_register(TMC4671.registers.ABN_DECODER_COUNT_N)))
+        print("dec: " + str(eval_board.read_register(TMC4671.REG.ABN_DECODER_COUNT)) +
+              " dec_n: " + str(eval_board.read_register(TMC4671.REG.ABN_DECODER_COUNT_N)))
 
         # Stop after 3 seconds
         if (time.time() - start_time) > 3:
             break
 
     # Read encoder offset at N channel
-    decoder_count_n = TMC4671.read_register(TMC4671.registers.ABN_DECODER_COUNT_N)
+    decoder_count_n = eval_board.read_register(TMC4671.REG.ABN_DECODER_COUNT_N)
     decoder_count_n_offset = decoder_count_n % (encoder_resolution / pole_pairs)
 
     print("abn_decoder_count_n:" + str(decoder_count_n))
@@ -98,16 +100,16 @@ with myInterface:
     # ===== 3) Use the estimated offset =====
 
     # Write offset
-    TMC4671.write_register(TMC4671.registers.ABN_DECODER_PHI_E_PHI_M_OFFSET, int(decoder_count_n_offset))
+    eval_board.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, int(decoder_count_n_offset))
 
     #  ===== 4) Go to encoder mode =====
 
     # Feedback selection
-    TMC4671.write_register(TMC4671.registers.PHI_E_SELECTION, TMC4671.ENUMs.PHI_E_ABN)
-    TMC4671.write_register(TMC4671.registers.VELOCITY_SELECTION, TMC4671.ENUMs.VELOCITY_PHI_M_ABN)
+    eval_board.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_ABN)
+    eval_board.write_register(TMC4671.REG.VELOCITY_SELECTION, TMC4671.ENUM.VELOCITY_PHI_M_ABN)
 
     # Switch to torque mode
-    TMC4671.write_register(TMC4671.registers.MODE_RAMP_MODE_MOTION, TMC4671.ENUMs.MOTION_MODE_TORQUE)
+    eval_board.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_TORQUE)
 
     # ===== 5) Make a test drive =====
 
@@ -115,11 +117,11 @@ with myInterface:
     min_velocity = 0
 
     print("Rotate right...")
-    TMC4671.write_register_field(TMC4671.fields.PID_TORQUE_TARGET, 1000)
+    eval_board.write_register_field(TMC4671.FIELD.PID_TORQUE_TARGET, 1000)
 
     start_time = time.time()
     while True:
-        velocity = TMC4671.read_register(TMC4671.registers.PID_VELOCITY_ACTUAL, signed=True)
+        velocity = eval_board.read_register(TMC4671.REG.PID_VELOCITY_ACTUAL, signed=True)
         print("velocity: " + str(velocity))
         if velocity > max_velocity:
             max_velocity = velocity
@@ -129,11 +131,11 @@ with myInterface:
             break
 
     print("Rotate left...")
-    TMC4671.write_register_field(TMC4671.fields.PID_TORQUE_TARGET, -1000)
+    eval_board.write_register_field(TMC4671.FIELD.PID_TORQUE_TARGET, -1000)
 
     start_time = time.time()
     while True:
-        velocity = TMC4671.read_register(TMC4671.registers.PID_VELOCITY_ACTUAL, signed=True)
+        velocity = eval_board.read_register(TMC4671.REG.PID_VELOCITY_ACTUAL, signed=True)
         print("velocity: " + str(velocity))
         if velocity < min_velocity:
             min_velocity = velocity
@@ -143,7 +145,7 @@ with myInterface:
             break
 
     print("Stop motor")
-    TMC4671.write_register(TMC4671.registers.PID_TORQUE_FLUX_TARGET, 0)
+    eval_board.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, 0)
 
     # ===== 6) Short summary =====
 

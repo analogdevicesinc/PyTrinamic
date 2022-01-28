@@ -3,51 +3,54 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.connections import UartIcInterface
 from pytrinamic.evalboards import TMC4671_eval
-from pytrinamic.ic import TMC4671 as TMC4671_IC
+from pytrinamic.ic import TMC4671
 
 pytrinamic.show_info()
-
 myInterface = ConnectionManager().connect()
 print(myInterface)
 
-if myInterface.supports_tmcl():
-    # Create an TMC4671-Eval class which communicates over the Landungsbrücke via TMCL
-    TMC4671 = TMC4671_eval(myInterface)
+if isinstance(myInterface, UartIcInterface):
+    # Create an TMC4671 IC class which communicates directly over UART
+    mc = TMC4671(myInterface)
+    # Use IC like an "EVAL" to use this example for both access variants
+    eval_board = mc
 else:
-    # Create an TMC4671 IC class which communicates directly with the IC over UART
-    TMC4671 = TMC4671_IC(myInterface)
+    # Create an TMC4671 IC class which communicates over the Landungsbrücke via TMCL
+    eval_board = TMC4671_eval(myInterface)
+    mc = eval_board.ics[0]
 
 with myInterface:
 
     # Configure TMC4671 for a BLDC motor in open loop mode
 
     # Motor type &  PWM configuration
-    TMC4671.write_register_field(TMC4671.fields.MOTOR_TYPE, TMC4671.ENUMs.MOTOR_TYPE_BLDC)
-    TMC4671.write_register_field(TMC4671.fields.N_POLE_PAIRS, 4)
-    TMC4671.write_register(TMC4671.registers.PWM_POLARITIES, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.PWM_MAXCNT, int(0x00000F9F))
-    TMC4671.write_register(TMC4671.registers.PWM_BBM_H_BBM_L, 0x00000505)
-    TMC4671.write_register_field(TMC4671.fields.PWM_CHOP, TMC4671.ENUMs.PWM_CENTERED_FOR_FOC)
-    TMC4671.write_register_field(TMC4671.fields.PWM_SV, 1)
+    eval_board.write_register_field(mc.FIELD.MOTOR_TYPE, mc.ENUM.MOTOR_TYPE_BLDC)
+    eval_board.write_register_field(mc.FIELD.N_POLE_PAIRS, 4)
+    eval_board.write_register(mc.REG.PWM_POLARITIES, 0x00000000)
+    eval_board.write_register(mc.REG.PWM_MAXCNT, int(0x00000F9F))
+    eval_board.write_register(mc.REG.PWM_BBM_H_BBM_L, 0x00000505)
+    eval_board.write_register_field(mc.FIELD.PWM_CHOP, mc.ENUM.PWM_CENTERED_FOR_FOC)
+    eval_board.write_register_field(mc.FIELD.PWM_SV, 1)
 
     # ADC configuration
-    TMC4671.write_register(TMC4671.registers.ADC_I_SELECT, 0x18000100)
-    TMC4671.write_register(TMC4671.registers.dsADC_MCFG_B_MCFG_A, 0x00100010)
-    TMC4671.write_register(TMC4671.registers.dsADC_MCLK_A, 0x20000000)
-    TMC4671.write_register(TMC4671.registers.dsADC_MCLK_B, 0x00000000)
-    TMC4671.write_register(TMC4671.registers.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-    TMC4671.write_register(TMC4671.registers.ADC_I0_SCALE_OFFSET, 0x01008218)
-    TMC4671.write_register(TMC4671.registers.ADC_I1_SCALE_OFFSET, 0x0100820A)
+    eval_board.write_register(mc.REG.ADC_I_SELECT, 0x18000100)
+    eval_board.write_register(mc.REG.dsADC_MCFG_B_MCFG_A, 0x00100010)
+    eval_board.write_register(mc.REG.dsADC_MCLK_A, 0x20000000)
+    eval_board.write_register(mc.REG.dsADC_MCLK_B, 0x00000000)
+    eval_board.write_register(mc.REG.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
+    eval_board.write_register(mc.REG.ADC_I0_SCALE_OFFSET, 0x01008218)
+    eval_board.write_register(mc.REG.ADC_I1_SCALE_OFFSET, 0x0100820A)
 
     # Switch to stopped mode
-    TMC4671.write_register(TMC4671.registers.MODE_RAMP_MODE_MOTION, TMC4671.ENUMs.MOTION_MODE_STOPPED)
+    eval_board.write_register(mc.REG.MODE_RAMP_MODE_MOTION, mc.ENUM.MOTION_MODE_STOPPED)
 
     # Feedback selection
-    TMC4671.write_register(TMC4671.registers.PHI_E_SELECTION, TMC4671.ENUMs.PHI_E_EXTERNAL)
-    TMC4671.write_register(TMC4671.registers.PHI_E_EXT, 0)
-    TMC4671.write_register(TMC4671.registers.UQ_UD_EXT, 0)
+    eval_board.write_register(mc.REG.PHI_E_SELECTION, mc.ENUM.PHI_E_EXTERNAL)
+    eval_board.write_register(mc.REG.PHI_E_EXT, 0)
+    eval_board.write_register(mc.REG.UQ_UD_EXT, 0)
 
     print("Start calibration...")
 
@@ -66,14 +69,14 @@ with myInterface:
     startTime = time.time()
 
     # select the use of ADC_RAW in ADC_RAW_DATA
-    TMC4671.write_register(TMC4671.registers.ADC_RAW_ADDR, 0)
+    eval_board.write_register(mc.REG.ADC_RAW_ADDR, 0)
 
     while (time.time() - startTime) <= measurementTime:
         measurements += 1
 
         # Read adc values
-        adc_i0 = TMC4671.read_register_field(TMC4671.fields.ADC_I0_RAW)
-        adc_i1 = TMC4671.read_register_field(TMC4671.fields.ADC_I1_RAW)
+        adc_i0 = eval_board.read_register_field(mc.FIELD.ADC_I0_RAW)
+        adc_i1 = eval_board.read_register_field(mc.FIELD.ADC_I1_RAW)
         print("ADC_I0_Value: %d" % adc_i0)
         print("ADC_I1_Value: %d" % adc_i1)
         lAdcI0Raw.append(adc_i0)
@@ -86,15 +89,15 @@ with myInterface:
         lAdcI1Filt.append(adcI1Mean)
 
         # update offsets
-        TMC4671.write_register_field(TMC4671.fields.ADC_I0_OFFSET, int(adcI0Mean))
-        TMC4671.write_register_field(TMC4671.fields.ADC_I1_OFFSET, int(adcI1Mean))
+        eval_board.write_register_field(mc.FIELD.ADC_I0_OFFSET, int(adcI0Mean))
+        eval_board.write_register_field(mc.FIELD.ADC_I1_OFFSET, int(adcI1Mean))
     
         " read offsets "
-        lAdcI0Offset.append(TMC4671.read_register_field(TMC4671.fields.ADC_I0_OFFSET))
-        lAdcI1Offset.append(TMC4671.read_register_field(TMC4671.fields.ADC_I1_OFFSET))
+        lAdcI0Offset.append(eval_board.read_register_field(mc.FIELD.ADC_I0_OFFSET))
+        lAdcI1Offset.append(eval_board.read_register_field(mc.FIELD.ADC_I1_OFFSET))
 
-        print("ADC_I0_Offset: %d" % TMC4671.read_register_field(TMC4671.fields.ADC_I0_OFFSET))
-        print("ADC_I1_Offset: %d" % TMC4671.read_register_field(TMC4671.fields.ADC_I1_OFFSET))
+        print("ADC_I0_Offset: %d" % eval_board.read_register_field(mc.FIELD.ADC_I0_OFFSET))
+        print("ADC_I1_Offset: %d" % eval_board.read_register_field(mc.FIELD.ADC_I1_OFFSET))
 
     myInterface.close()
     print("ready.")

@@ -3,7 +3,7 @@ Move a motor back and forth using velocity and position mode of the TMC5062
 """
 import time
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5062_eval
 
 pytrinamic.show_info()
@@ -13,6 +13,7 @@ print(myInterface)
 with myInterface:
     # Create TMC5062-EVAL class which communicates over the Landungsbrücke via TMCL
     eval_board = TMC5062_eval(myInterface)
+    mc = eval_board.ics[0]
     motor0 = eval_board.motors[0]
     print(motor0)
     motor1 = eval_board.motors[1]
@@ -20,13 +21,13 @@ with myInterface:
 
     for i in range(2):
         print("Preparing parameter for motor" + str(i) + "...")
-        eval_board.write_register(eval_board.registers.A1[i], 1000)
-        eval_board.write_register(eval_board.registers.V1[i], 50000)
-        eval_board.write_register(eval_board.registers.D1[i], 500)
-        eval_board.write_register(eval_board.registers.DMAX[i], 500)
-        eval_board.write_register(eval_board.registers.VSTART[i], 0)
-        eval_board.write_register(eval_board.registers.VSTOP[i], 10)
-        eval_board.write_register(eval_board.registers.AMAX[i], 1000)
+        eval_board.write_register(mc.REG.A1[i], 1000)
+        eval_board.write_register(mc.REG.V1[i], 50000)
+        eval_board.write_register(mc.REG.D1[i], 500)
+        eval_board.write_register(mc.REG.DMAX[i], 500)
+        eval_board.write_register(mc.REG.VSTART[i], 0)
+        eval_board.write_register(mc.REG.VSTOP[i], 10)
+        eval_board.write_register(mc.REG.AMAX[i], 1000)
 
     # Clear actual positions
     motor0.actual_position = 0

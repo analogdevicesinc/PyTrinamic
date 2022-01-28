@@ -314,7 +314,7 @@ class ConnectionManager:
         return arg_parser
 
     @staticmethod
-    def list_interfaces():
+    def list_supported_interfaces():
         return [x[0] for x in ConnectionManager.INTERFACES]
 
 
@@ -334,7 +334,7 @@ if __name__ == "__main__":
         if not hasattr(interface[1], "list"):
             raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
 
-    print("List of interfaces: " + str(ConnectionManager.list_interfaces()) + "\n")
+    print("List of interfaces: " + str(ConnectionManager.list_supported_interfaces()) + "\n")
 
     print("---------------------------------------------------")
     print("Performing test run...\n")

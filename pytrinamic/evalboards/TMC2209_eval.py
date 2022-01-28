@@ -1,10 +1,10 @@
-from pytrinamic.evalboards.tmcl_eval import TMCLEval
-from pytrinamic.ic.TMC2209.TMC2209 import TMC2209
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC2209
 from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
 
 
-class TMC2209_eval(TMCLEval, TMC2209):
+class TMC2209_eval(TMCLEval):
     """
     This class represents a TMC2209 Evaluation board.
 
@@ -29,16 +29,16 @@ class TMC2209_eval(TMCLEval, TMC2209):
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        TMC2209.__init__(self)
         self.motors = [self.Motor0(self, 0)]
+        self.ics = [TMC2209()]
 
     # Use the driver controller channel for register access
 
     def write_register(self, register_address, value):
-        return self._connection.write_drv(register_address, value)
+        return self._connection.write_drv(register_address, value, self._module_id)
 
     def read_register(self, register_address, signed=False):
-        return self._connection.read_drv(register_address, signed)
+        return self._connection.read_drv(register_address, self._module_id, signed)
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),

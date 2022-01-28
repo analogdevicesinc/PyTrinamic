@@ -13,7 +13,7 @@ import struct
 
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.TMCL import TMCL_Command
+from pytrinamic.tmcl import TMCLCommand
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
 # command.
@@ -202,11 +202,11 @@ print("Firmware version:   " + found.group(0))
 print()
 
 # Get the memory parameters
-reply = myInterface.send(TMCL_Command.BOOT_GET_INFO, 0, 0, 0)
+reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 0, 0, 0)
 mem_page_size = reply.value
-reply = myInterface.send(TMCL_Command.BOOT_GET_INFO, 1, 0, 0)
+reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 1, 0, 0)
 mem_start_address = reply.value
-reply = myInterface.send(TMCL_Command.BOOT_GET_INFO, 2, 0, 0)
+reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 2, 0, 0)
 mem_size = reply.value
 
 # Check if the page size is a power of two
@@ -224,7 +224,7 @@ if start_address != mem_start_address:
 
 # Erase the old firmware
 print("Erasing the old firmware")
-reply = myInterface.send(TMCL_Command.BOOT_ERASE_ALL, 0, 0, 0)
+reply = myInterface.send(TMCLCommand.BOOT_ERASE_ALL, 0, 0, 0)
 
 # Calculate the starting page
 current_page = math.floor(start_address/mem_page_size) * mem_page_size
@@ -238,7 +238,7 @@ def writePage(page):
         raise ValueError
 
     print("Writing page 0x{0:08X}".format(page))
-    myInterface.send(TMCL_Command.BOOT_WRITE_PAGE, 0, 0, current_page)
+    myInterface.send(TMCLCommand.BOOT_WRITE_PAGE, 0, 0, current_page)
 
 
 # Helper function: Write a 32 bit data block
@@ -256,7 +256,7 @@ def write32Bit(address, write_data):
         current_page_dirty = False
 
     # print("Writing {0:08X} to offset {1:04X} on page {2:08X}".format(writeData, offset, page))
-    myInterface.send(TMCL_Command.BOOT_WRITE_BUFFER, math.floor(offset/4) % 256, math.floor(math.floor(offset/4) / 256), write_data)
+    myInterface.send(TMCLCommand.BOOT_WRITE_BUFFER, math.floor(offset / 4) % 256, math.floor(math.floor(offset / 4) / 256), write_data)
     current_page_dirty = True
 
 
@@ -272,7 +272,7 @@ if current_page_dirty:
 print()
 
 # Checksum verification
-reply = myInterface.send(TMCL_Command.BOOT_GET_CHECKSUM, 0, 0, end_address-1)
+reply = myInterface.send(TMCLCommand.BOOT_GET_CHECKSUM, 0, 0, end_address - 1)
 if reply.value != checksum:
     print("Error: Checksums don't match! (Checksum: 0x{0:08X}, received: 0x{1:08X}".format(checksum, reply.value))
     exit(1)
@@ -280,10 +280,10 @@ if reply.value != checksum:
 print("Checksum of the uploaded firmware matches")
 print("Finalizing upload (Writing length and checksum)")
 # Write firmware length
-myInterface.send(TMCL_Command.BOOT_WRITE_LENGTH, 0, 0, length)
+myInterface.send(TMCLCommand.BOOT_WRITE_LENGTH, 0, 0, length)
 # Write firmware checksum
-myInterface.send(TMCL_Command.BOOT_WRITE_LENGTH, 1, 0, checksum)
+myInterface.send(TMCLCommand.BOOT_WRITE_LENGTH, 1, 0, checksum)
 
 # Restart the firmware
 print("Starting the firmware")
-myInterface.send(TMCL_Command.BOOT_START_APPL, 0, 0, 0)
+myInterface.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0)

@@ -1,4 +1,4 @@
-from pytrinamic.TMCL import TMCL_Command
+from pytrinamic.tmcl import TMCLCommand
 from pytrinamic.helpers import EEPROM
 
 
@@ -37,7 +37,7 @@ class Landungsbruecke:
         """
         Start an IDDetection and read out the IDs of the detected boards.
         """
-        while not self.__connection.send(TMCL_Command.ASSIGNMENT, 0, 0, 0).is_valid():
+        while not self.__connection.send(TMCLCommand.ASSIGNMENT, 0, 0, 0).is_valid():
             pass
 
         return self.get_board_ids()
@@ -58,7 +58,7 @@ class Landungsbruecke:
         return mc_name, drv_name
 
     def _read_mc_eeprom(self, address):
-        reply = self.__connection.send(TMCL_Command.TMCL_UF1, 1, 0, address)
+        reply = self.__connection.send(TMCLCommand.TMCL_UF1, 1, 0, address)
 
         if not reply.is_valid():
             raise RuntimeError("Failed to read driver ID EEPROM")
@@ -66,10 +66,10 @@ class Landungsbruecke:
         return reply.value
 
     def _write_mc_eeprom(self, address, value):
-        self.__connection.send(TMCL_Command.TMCL_UF2, 1, value, address)
+        self.__connection.send(TMCLCommand.TMCL_UF2, 1, value, address)
 
     def _read_drv_eeprom(self, address):
-        reply = self.__connection.send(TMCL_Command.TMCL_UF1, 2, 0, address)
+        reply = self.__connection.send(TMCLCommand.TMCL_UF1, 2, 0, address)
 
         if not reply.is_valid():
             raise RuntimeError("Failed to read driver ID EEPROM")
@@ -77,7 +77,7 @@ class Landungsbruecke:
         return reply.value
 
     def _write_drv_eeprom(self, address, value):
-        self.__connection.send(TMCL_Command.TMCL_UF2, 2, value & 0xFF, address)
+        self.__connection.send(TMCLCommand.TMCL_UF2, 2, value & 0xFF, address)
 
     mcIdNames = {
         0  : "None",
