@@ -43,7 +43,7 @@ with myInterface:
     motor1.stop()
     time.sleep(1)
 
-    print("Moving back to 0")
+    print("Moving back to 0...")
     motor0.move_to(0, 100000)
     motor1.move_to(0, 100000)
 

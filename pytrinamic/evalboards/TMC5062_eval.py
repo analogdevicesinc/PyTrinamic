@@ -30,17 +30,17 @@ class TMC5062_eval(TMCLEval):
 
     # Motion control functions
 
-    def rotate(self, axis, value):
-        self._connection.rotate(axis, value)
+    def rotate(self, motor, value):
+        self._connection.rotate(motor, value)
 
-    def stop(self, axis):
-        self._connection.stop(axis)
+    def stop(self, motor):
+        self._connection.stop(motor)
 
-    def move_to(self, axis, position, velocity=None):
+    def move_to(self, motor, position, velocity=None):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
-            self.motors[axis].set_axis_parameter(self.motors[axis].AP.MaxVelocity, velocity)
-        self._connection.move_to(axis, position, self._module_id)
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
 
     class Motor0(MotorControlModule):
         def __init__(self, eval_board, axis):

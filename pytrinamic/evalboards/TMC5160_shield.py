@@ -4,7 +4,7 @@ Created on 18.03.2020
 @author: LK
 '''
 
-from pytrinamic.ic.TMC5160.TMC5160 import TMC5160
+from pytrinamic.ic.TMC5160 import TMC5160
 from pytrinamic.tmcl import TMCLCommand
 
 class TMC5160_shield(TMC5160):
