@@ -1,17 +1,17 @@
 """
-Dump all register values of the TMC2209 IC.
+Dump all register values of the TMC2225 IC.
 
 The connection to a Landungsbrücke is established over USB. TMCL commands are used for communicating with the IC.
 """
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards import TMC2209_eval
+from pytrinamic.evalboards import TMC2225_eval
 
 pytrinamic.show_info()
 
 myInterface = ConnectionManager().connect()
 print(myInterface)
-eval_board = TMC2209_eval(myInterface)
+eval_board = TMC2225_eval(myInterface)
 drv = eval_board.ics[0]
 print("Driver info: " + str(drv.get_info()))
 print("Register dump for " + str(drv.get_name()) + ":")
@@ -24,18 +24,11 @@ print("IHOLD_IRUN:  0x{0:08X}".format(eval_board.read_register(drv.REG.IHOLD_IRU
 print("TPOWERDOWN:  0x{0:08X}".format(eval_board.read_register(drv.REG.TPOWERDOWN)))
 print("TSTEP:       0x{0:08X}".format(eval_board.read_register(drv.REG.TSTEP)))
 print("TPWMTHRS:    0x{0:08X}".format(eval_board.read_register(drv.REG.TPWMTHRS)))
-print("TCOOLTHRS:   0x{0:08X}".format(eval_board.read_register(drv.REG.TCOOLTHRS)))
-print("VACTUAL:     0x{0:08X}".format(eval_board.read_register(drv.REG.VACTUAL)))
-print("SGTHRS:      0x{0:08X}".format(eval_board.read_register(drv.REG.SGTHRS)))
-print("SG_RESULT:   0x{0:08X}".format(eval_board.read_register(drv.REG.SG_RESULT)))
-print("COOLCONF:    0x{0:08X}".format(eval_board.read_register(drv.REG.COOLCONF)))
 print("MSCNT:       0x{0:08X}".format(eval_board.read_register(drv.REG.MSCNT)))
 print("MSCURACT:    0x{0:08X}".format(eval_board.read_register(drv.REG.MSCURACT)))
 print("CHOPCONF:    0x{0:08X}".format(eval_board.read_register(drv.REG.CHOPCONF)))
 print("DRV_STATUS:  0x{0:08X}".format(eval_board.read_register(drv.REG.DRV_STATUS)))
 print("PWMCONF:     0x{0:08X}".format(eval_board.read_register(drv.REG.PWMCONF)))
-print("PWMSCALE:    0x{0:08X}".format(eval_board.read_register(drv.REG.PWM_SCALE)))
-print("PWMAUTO:     0x{0:08X}".format(eval_board.read_register(drv.REG.PWM_AUTO)))
 
 myInterface.close()
 

@@ -6,7 +6,7 @@ from pytrinamic.helpers import TMC_helpers
 
 class TMC5062_eval(TMCLEval):
     """
-    This class represents a TMC5062 Evaluation board
+    This class represents a TMC5062 Evaluation board.
     """
     def __init__(self, connection, module_id=1):
         TMCLEval.__init__(self, connection, module_id)
