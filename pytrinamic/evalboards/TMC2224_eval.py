@@ -48,7 +48,7 @@ class TMC2224_eval(TMCLEval):
     def read_register_field(self, field):
         return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    # Motion Control functions
+    # Motion control functions
 
     def rotate(self, motor, value):
         self._connection.rotate(motor, value)

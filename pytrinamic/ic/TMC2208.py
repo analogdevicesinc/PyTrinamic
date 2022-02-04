@@ -35,7 +35,7 @@ class TMC2208(TMCIc):
         PWM_SCALE     = 0x71
         PWM_AUTO      = 0x72
 
-    class FIELD(object):
+    class FIELD:
         """
         Define all register bitfields of the TMC2208.
 
