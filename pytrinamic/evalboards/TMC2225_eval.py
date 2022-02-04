@@ -1,5 +1,5 @@
 from pytrinamic.evalboards import TMCLEval
-from pytrinamic.ic.TMC2225 import TMC2225
+from pytrinamic.ic import TMC2225
 from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
 
@@ -71,7 +71,6 @@ class TMC2225_eval(TMCLEval):
 #        self.moveTo(motor, position + distance, velocity)
 
 #        return position + distance
-
 
     class Motor0(MotorControlModule):
         def __init__(self, eval_board, axis):

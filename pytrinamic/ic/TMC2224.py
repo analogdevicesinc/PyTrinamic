@@ -1,19 +1,18 @@
 from pytrinamic.ic.tmc_ic import TMCIc
 
 
-class TMC2225(TMCIc):
+class TMC2224(TMCIc):
     """
-    The TMC2225 is an ultra-silent motor driver IC for two-phase stepper motors. TMC2225 pinning is compatible to a
-    number of legacy drivers. Supply voltage: 4,75 - 36V.
+    The TMC2224 is an ultra-silent motor driver IC for two-phase stepper motors. Supply voltage: 4,75 - 36V.
     """
     def __init__(self):
         TMCIc.__init__(self)
-        self._name = "TMC2225"
+        self._name = "TMC2224"
         self._info = self.__doc__
 
     class REG:
         """
-        Define all registers of the TMC2225.
+        Define all registers of the TMC2224.
         """
         GCONF         = 0x00
         GSTAT         = 0x01
@@ -38,7 +37,7 @@ class TMC2225(TMCIc):
 
     class FIELD:
         """
-        Define all register bitfields of the TMC2225.
+        Define all register bitfields of the TMC2224.
 
         Each field is defined as a tuple consisting of ( Address, Mask, Shift ).
 
@@ -82,14 +81,14 @@ class TMC2225(TMCIc):
         OTP2_BYTE_2_READ_DATA  = (0x05, 0x00FF0000, 16)
 
         # IOIN
-        ENN                    = (0x06, 0x00000001,  0)
-        MS1                    = (0x06, 0x00000004,  2)
-        MS2                    = (0x06, 0x00000008,  3)
-        DIAG                   = (0x06, 0x00000010,  4)
-        PDN_UART               = (0x06, 0x00000040,  6)
-        STEP                   = (0x06, 0x00000080,  7)
+        PDN_UART               = (0x06, 0x00000002,  1)
+        SPREAD                 = (0x06, 0x00000004,  2)
+        DIR                    = (0x06, 0x00000008,  3)
+        ENN                    = (0x06, 0x00000010,  4)
+        STEP                   = (0x06, 0x00000020,  5)
+        MS1                    = (0x06, 0x00000040,  6)
+        MS2                    = (0x06, 0x00000080,  7)
         SEL_A                  = (0x06, 0x00000100,  8)
-        DIR                    = (0x06, 0x00000200,  9)
         VERSION                = (0x06, 0xFF000000, 24)
 
         # FACTORY_CONF

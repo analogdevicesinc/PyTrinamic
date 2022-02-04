@@ -1,18 +1,18 @@
 """
-Dump all register values of the TMC2225 IC.
+Dump all register values of the TMC2224 IC.
 
 The connection to a Landungsbrücke is established over USB. TMCL commands are used for communicating with the IC.
 """
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards import TMC2225_eval
+from pytrinamic.evalboards import TMC2224_eval
 
 pytrinamic.show_info()
 
 myInterface = ConnectionManager().connect()
 print(myInterface)
 
-eval_board = TMC2225_eval(myInterface)
+eval_board = TMC2224_eval(myInterface)
 drv = eval_board.ics[0]
 print("Driver info: " + str(drv.get_info()))
 print("Register dump for " + str(drv.get_name()) + ":")
