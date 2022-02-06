@@ -8,7 +8,7 @@ import pytest
 
 sys.path.insert(0, '../../../..')
 from pytrinamic.connections.connection_manager import ConnectionManager  # noqa: E402
-from pytrinamic.modules import TMCM_1617  # noqa: E402
+from pytrinamic.modules import TMCM1617  # noqa: E402
 
 
 class MockTmclInterface:
@@ -22,11 +22,11 @@ class MockTmclInterface:
     def __exit__(self, exitType, value, traceback):
         del exitType, value, traceback
 
-    def setAxisParameter(self, type, axis, value, module_id):
+    def set_axis_parameter(self, type, axis, value, module_id):
         pass
 
-    def axisParameter(self, type, axis, module_id, signed):
-        if type == TMCM_1617.Motor0.AP.PositionReachedFlag:
+    def get_axis_parameter(self, type, axis, module_id, signed):
+        if type == TMCM1617.Motor0.AP.PositionReachedFlag:
             self._position_reached_toggle ^= True
             if self._position_reached_toggle:
                 return 1
@@ -35,13 +35,13 @@ class MockTmclInterface:
         else:
             return 0
 
-    def moveTo(self, axis, position, module_id):
+    def move_to(self, axis, position, module_id):
         pass
 
     def rotate(self, axis, velocity, module_id):
         pass
 
-    def digitalInput(self, x, module_id):
+    def get_digital_input(self, x, module_id):
         self._digital_input_toggle ^= True
         if self._digital_input_toggle:
             return 1
@@ -50,9 +50,9 @@ class MockTmclInterface:
 
 
 @pytest.mark.parametrize('example_script_path', [
-    f'../TMCM_1617/TMCL/encoder_position_mode.py',
-    f'../TMCM_1617/TMCL/hall_digital_input.py',
-    f'../TMCM_1617/TMCL/hall_position_mode.py',
+    f'../TMCM1617/TMCL/encoder_position_mode.py',
+    f'../TMCM1617/TMCL/hall_digital_input.py',
+    f'../TMCM1617/TMCL/hall_position_mode.py',
 ])
 def test(monkeypatch, example_script_path):
 

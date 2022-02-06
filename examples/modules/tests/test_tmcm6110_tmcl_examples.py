@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, '../../../..')
 from pytrinamic.connections.connection_manager import ConnectionManager  # noqa: E402
-from pytrinamic.modules import TMCM_6110  # noqa: E402
+from pytrinamic.modules import TMCM6110  # noqa: E402
 
 
 class MockTmclInterface:
@@ -22,11 +22,11 @@ class MockTmclInterface:
     def __exit__(self, exitType, value, traceback):
         del exitType, value, traceback
 
-    def setAxisParameter(self, type, axis, value, module_id):
+    def set_axis_parameter(self, type, axis, value, module_id):
         pass
 
-    def axisParameter(self, type, axis, module_id, signed):
-        if type == TMCM_6110.Motor0.APs.PositionReachedFlag:
+    def get_axis_parameter(self, type, axis, module_id, signed):
+        if type == TMCM6110.Motor0.APs.PositionReachedFlag:
             self._position_reached_toggle[axis] ^= True
             if self._position_reached_toggle[axis]:
                 return 1
@@ -35,10 +35,10 @@ class MockTmclInterface:
         else:
             return 0
 
-    def moveTo(self, axis, position, module_id):
+    def move_to(self, axis, position, module_id):
         pass
 
-    def moveBy(self, axis, difference, module_id):
+    def move_by(self, axis, difference, module_id):
         pass
 
     def rotate(self, axis, velocity, module_id):
@@ -49,7 +49,7 @@ class MockTmclInterface:
 
 
 @pytest.mark.parametrize('example_script_path', [
-    f'../TMCM_6110/TMCL/rotate_demo.py',
+    f'../TMCM6110/TMCL/rotate_demo.py',
 ])
 def test(monkeypatch, example_script_path):
 
