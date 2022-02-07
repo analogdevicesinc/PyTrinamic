@@ -12,7 +12,7 @@ class CurrentModule(Current, FeatureProvider):
             Constructor for the feature grouping instance.
 
             Parameters:
-            parent: Parent instance. This is the Feature itself aswell as its
+            parent: Parent instance. This is the Feature itself as well as its
             descendants.
             """
             self.parent = parent

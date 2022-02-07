@@ -1,45 +1,82 @@
-'''
-Created on 09.01.2019
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC5072
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
-@author: LK, ED, LH
-'''
+#from pytrinamic.features.linear_ramp_module import LinearRampModule
+#from pytrinamic.features.stallguard2_module import StallGuard2Module
+#from pytrinamic.features.CurrentModule import CurrentModule
 
-from pytrinamic.evalboards.TMC_EvalBoard import TMC_EvalBoard
-from pytrinamic.modules.tmcl_module import TMCLModule
-from pytrinamic.ic.TMC5072.TMC5072 import TMC5072
-from pytrinamic.features.linear_ramp_module import LinearRampModule
-from pytrinamic.features.stallguard2_module import StallGuard2Module
-from pytrinamic.features.CurrentModule import CurrentModule
-from pytrinamic.features.motor_control_module import MotorControlModule
 
-class TMC5072_eval(TMC_EvalBoard):
+class TMC5072_eval(TMCLEval):
     """
     This class represents a TMC5072 Evaluation board
     """
-
     def __init__(self, connection, module_id=1):
         """
         Constructor for the TMC5130 evalboard instance.
 
         Parameters:
-        connection: TMCL connection interface instance.
-        module_id: Module ID to identify the evalboard module. This is used to differentiate
-        between different modules on shared busses. Default is set to 1, different
-        values have to be configured with the module first.
+            connection: TMCL connection interface instance.
+            module_id: Module ID to identify the evalboard module. This is used to differentiate
+                       between different modules on shared busses. Default is set to 1, different
+            values have to be configured with the module first.
         """
-        super().__init__(connection, module_id, TMC5072(self, 0), self.EVAL_TYPES.MOTION_CONTROLLER)
-        self.MOTORS = [ self.MOTOR(self, 0), self.MOTOR(self, 1) ]
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self.Motor0(self, 0), self.Motor0(self, 1)]
+        self.ics = [TMC5072()]
 
-    class MOTOR(TMCLModule.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
-        "Motor class for the generic motor."
+    # Use the driver controller functions for register access
 
-        def __init__(self, module, axis):
-            TMCLModule.Motor.__init__(self, module, axis)
-            LinearRampModule.__init__(self)
-            StallGuard2Module.__init__(self)
-            CurrentModule.__init__(self)
+    def write_register(self, register_address, value):
+        return self._connection.write_mc(register_address, value, self._module_id)
 
-        class APs:
+    def read_register(self, register_address, signed=False):
+        return self._connection.read_mc(register_address, self._module_id, signed)
+
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                                                   field[1], field[2], value))
+
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
+
+    # Motion Control functions
+
+    def rotate(self, motor, value):
+        self._connection.rotate(motor, value)
+
+    def stop(self, motor):
+        self._connection.stop(motor)
+
+    def move_to(self, motor, position, velocity=None):
+        if velocity and velocity != 0:
+            # Set maximum positioning velocity
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
+
+#    def moveBy(self, motor, distance, velocity):
+#        if not(0 <= motor < self.MOTORS):
+#            raise ValueError
+
+#        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
+
+#        self.moveTo(motor, position + distance, velocity)
+
+#        return position + distance
+
+    class Motor0(MotorControlModule):
+        """
+        Motor class for the generic motor.
+        """
+
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
+            #LinearRampModule.__init__(self)
+            #StallGuard2Module.__init__(self)
+            #CurrentModule.__init__(self)
+
+        class AP:
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2

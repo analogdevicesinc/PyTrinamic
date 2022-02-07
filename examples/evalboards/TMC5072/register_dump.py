@@ -1,87 +1,88 @@
-#!/usr/bin/env python3
-'''
-Dump all register values of the TMC5072 IC.
+"""
+Dump all register values of the TMC5072 mc.
 
-The connection to a Landungsbrücke is established over USB. TMCL commands are
-used for communicating with the IC.
-
-Created on 20.09.2019
-
-@author: JM
-'''
+The connection to a Landungsbrücke is established over USB. TMCL commands are used for communicating with the mc.
+"""
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.evalboards.TMC5072_eval import TMC5072_eval
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.evalboards import TMC5072_eval
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
-eval = TMC5072_eval(myInterface)
-ic = eval.IC
+myInterface = ConnectionManager().connect()
+print(myInterface)
 
-print("GCONF:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.GCONF)))
-print("GSTAT:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.GSTAT)))
-print("SLAVECONF:      0x{0:08X}".format(ic.read_register(ic.REGISTERS.SLAVECONF)))
-print("INPUT:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.INPUT___OUTPUT)))
-print("X_COMPARE:      0x{0:08X}".format(ic.read_register(ic.REGISTERS.X_COMPARE)))
+eval_board = TMC5072_eval(myInterface)
+mc = eval_board.ics[0]
+print("Motion controller info: " + str(mc.get_info()))
+print("Register dump for " + str(mc.get_name()) + ":")
 
-print("PWMCONF_M1:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.PWMCONF_M1)))
-print("PWM_STATUS_M1:  0x{0:08X}".format(ic.read_register(ic.REGISTERS.PWM_STATUS_M1)))
-print("PWMCONF_M2:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.PWMCONF_M2)))
-print("PWM_STATUS_M2:  0x{0:08X}".format(ic.read_register(ic.REGISTERS.PWM_STATUS_M2)))
+print("GCONF:          0x{0:08X}".format(eval_board.read_register(mc.REG.GCONF)))
+print("GSTAT:          0x{0:08X}".format(eval_board.read_register(mc.REG.GSTAT)))
+print("SLAVECONF:      0x{0:08X}".format(eval_board.read_register(mc.REG.SLAVECONF)))
+print("INPUT:          0x{0:08X}".format(eval_board.read_register(mc.REG.INPUT___OUTPUT)))
+print("X_COMPARE:      0x{0:08X}".format(eval_board.read_register(mc.REG.X_COMPARE)))
 
-print("RAMPMODE_M1:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.RAMPMODE_M1)))
-print("XACTUAL_M1:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.XACTUAL_M1)))
-print("VACTUAL_M1:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.VACTUAL_M1)))
-print("VSTART_M1:      0x{0:08X}".format(ic.read_register(ic.REGISTERS.VSTART_M1)))
-print("A1_M1:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.A1_M1)))
-print("V1_M1:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.V1_M1)))
-print("AMAX_M1:        0x{0:08X}".format(ic.read_register(ic.REGISTERS.AMAX_M1)))
-print("VMAX_M1:        0x{0:08X}".format(ic.read_register(ic.REGISTERS.VMAX_M1)))
-print("DMAX_M1:        0x{0:08X}".format(ic.read_register(ic.REGISTERS.DMAX_M1)))
-print("D1_M1:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.D1_M1)))
-print("VSTOP_M1:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.VSTOP_M1)))
-print("TZEROWAIT_M1:   0x{0:08X}".format(ic.read_register(ic.REGISTERS.TZEROWAIT_M1)))
-print("XTARGET_M1:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.XTARGET_M1)))
-print("IHOLD_IRUN_M1:  0x{0:08X}".format(ic.read_register(ic.REGISTERS.IHOLD_IRUN_M1)))
-print("VCOOLTHRS_M1:   0x{0:08X}".format(ic.read_register(ic.REGISTERS.VCOOLTHRS_M1)))
-print("VHIGH_M1:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.VHIGH_M1)))
-print("RAMPMODE_M2:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.RAMPMODE_M2)))
-print("XACTUAL_M2:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.XACTUAL_M2)))
-print("VACTUAL_M2:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.VACTUAL_M2)))
-print("VSTART_M2:      0x{0:08X}".format(ic.read_register(ic.REGISTERS.VSTART_M2)))
-print("A1_M2:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.A1_M2)))
-print("V1_M2:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.V1_M2)))
-print("AMAX_M2:        0x{0:08X}".format(ic.read_register(ic.REGISTERS.AMAX_M2)))
-print("VMAX_M2:        0x{0:08X}".format(ic.read_register(ic.REGISTERS.VMAX_M2)))
-print("DMAX_M2:        0x{0:08X}".format(ic.read_register(ic.REGISTERS.DMAX_M2)))
-print("D1_M2:          0x{0:08X}".format(ic.read_register(ic.REGISTERS.D1_M2)))
-print("VSTOP_M2:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.VSTOP_M2)))
-print("TZEROWAIT_M2:   0x{0:08X}".format(ic.read_register(ic.REGISTERS.TZEROWAIT_M2)))
-print("XTARGET_M2:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.XTARGET_M2)))
-print("IHOLD_IRUN_M2:  0x{0:08X}".format(ic.read_register(ic.REGISTERS.IHOLD_IRUN_M2)))
-print("VCOOLTHRS_M2:   0x{0:08X}".format(ic.read_register(ic.REGISTERS.VCOOLTHRS_M2)))
-print("VHIGH_M2:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.VHIGH_M2)))
+print("PWMCONF_M1:     0x{0:08X}".format(eval_board.read_register(mc.REG.PWMCONF_M1)))
+print("PWM_STATUS_M1:  0x{0:08X}".format(eval_board.read_register(mc.REG.PWM_STATUS_M1)))
+print("PWMCONF_M2:     0x{0:08X}".format(eval_board.read_register(mc.REG.PWMCONF_M2)))
+print("PWM_STATUS_M2:  0x{0:08X}".format(eval_board.read_register(mc.REG.PWM_STATUS_M2)))
 
-print("MSLUT0:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_0)))
-print("MSLUT1:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_1)))
-print("MSLUT2:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_2)))
-print("MSLUT3:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_3)))
-print("MSLUT4:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_4)))
-print("MSLUT5:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_5)))
-print("MSLUT6:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_6)))
-print("MSLUT7:         0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUT_7)))
-print("MSLUTSEL:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUTSEL)))
-print("MSLUTSTART:     0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUTSTART)))
+print("RAMPMODE_M1:    0x{0:08X}".format(eval_board.read_register(mc.REG.RAMPMODE_M1)))
+print("XACTUAL_M1:     0x{0:08X}".format(eval_board.read_register(mc.REG.XACTUAL_M1)))
+print("VACTUAL_M1:     0x{0:08X}".format(eval_board.read_register(mc.REG.VACTUAL_M1)))
+print("VSTART_M1:      0x{0:08X}".format(eval_board.read_register(mc.REG.VSTART_M1)))
+print("A1_M1:          0x{0:08X}".format(eval_board.read_register(mc.REG.A1_M1)))
+print("V1_M1:          0x{0:08X}".format(eval_board.read_register(mc.REG.V1_M1)))
+print("AMAX_M1:        0x{0:08X}".format(eval_board.read_register(mc.REG.AMAX_M1)))
+print("VMAX_M1:        0x{0:08X}".format(eval_board.read_register(mc.REG.VMAX_M1)))
+print("DMAX_M1:        0x{0:08X}".format(eval_board.read_register(mc.REG.DMAX_M1)))
+print("D1_M1:          0x{0:08X}".format(eval_board.read_register(mc.REG.D1_M1)))
+print("VSTOP_M1:       0x{0:08X}".format(eval_board.read_register(mc.REG.VSTOP_M1)))
+print("TZEROWAIT_M1:   0x{0:08X}".format(eval_board.read_register(mc.REG.TZEROWAIT_M1)))
+print("XTARGET_M1:     0x{0:08X}".format(eval_board.read_register(mc.REG.XTARGET_M1)))
+print("IHOLD_IRUN_M1:  0x{0:08X}".format(eval_board.read_register(mc.REG.IHOLD_IRUN_M1)))
+print("VCOOLTHRS_M1:   0x{0:08X}".format(eval_board.read_register(mc.REG.VCOOLTHRS_M1)))
+print("VHIGH_M1:       0x{0:08X}".format(eval_board.read_register(mc.REG.VHIGH_M1)))
 
-print("MSCNT_M1:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSCNT_M1)))
-print("MSCURACT_M1:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSCURACT_M1)))
-print("CHOPCONF_M1:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.CHOPCONF_M1)))
-print("COOLCONF_M1:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.COOLCONF_M1)))
-print("MSCNT_M2:       0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSCNT_M2)))
-print("MSCURACT_M2:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSCURACT_M2)))
-print("CHOPCONF_M2:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.CHOPCONF_M2)))
-print("COOLCONF_M2:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.COOLCONF_M2)))
+print("RAMPMODE_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.RAMPMODE_M2)))
+print("XACTUAL_M2:     0x{0:08X}".format(eval_board.read_register(mc.REG.XACTUAL_M2)))
+print("VACTUAL_M2:     0x{0:08X}".format(eval_board.read_register(mc.REG.VACTUAL_M2)))
+print("VSTART_M2:      0x{0:08X}".format(eval_board.read_register(mc.REG.VSTART_M2)))
+print("A1_M2:          0x{0:08X}".format(eval_board.read_register(mc.REG.A1_M2)))
+print("V1_M2:          0x{0:08X}".format(eval_board.read_register(mc.REG.V1_M2)))
+print("AMAX_M2:        0x{0:08X}".format(eval_board.read_register(mc.REG.AMAX_M2)))
+print("VMAX_M2:        0x{0:08X}".format(eval_board.read_register(mc.REG.VMAX_M2)))
+print("DMAX_M2:        0x{0:08X}".format(eval_board.read_register(mc.REG.DMAX_M2)))
+print("D1_M2:          0x{0:08X}".format(eval_board.read_register(mc.REG.D1_M2)))
+print("VSTOP_M2:       0x{0:08X}".format(eval_board.read_register(mc.REG.VSTOP_M2)))
+print("TZEROWAIT_M2:   0x{0:08X}".format(eval_board.read_register(mc.REG.TZEROWAIT_M2)))
+print("XTARGET_M2:     0x{0:08X}".format(eval_board.read_register(mc.REG.XTARGET_M2)))
+print("IHOLD_IRUN_M2:  0x{0:08X}".format(eval_board.read_register(mc.REG.IHOLD_IRUN_M2)))
+print("VCOOLTHRS_M2:   0x{0:08X}".format(eval_board.read_register(mc.REG.VCOOLTHRS_M2)))
+print("VHIGH_M2:       0x{0:08X}".format(eval_board.read_register(mc.REG.VHIGH_M2)))
+
+print("MSLUT0:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_0)))
+print("MSLUT1:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_1)))
+print("MSLUT2:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_2)))
+print("MSLUT3:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_3)))
+print("MSLUT4:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_4)))
+print("MSLUT5:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_5)))
+print("MSLUT6:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_6)))
+print("MSLUT7:         0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT_7)))
+print("MSLUTSEL:       0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUTSEL)))
+print("MSLUTSTART:     0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUTSTART)))
+
+print("MSCNT_M1:       0x{0:08X}".format(eval_board.read_register(mc.REG.MSCNT_M1)))
+print("MSCURACT_M1:    0x{0:08X}".format(eval_board.read_register(mc.REG.MSCURACT_M1)))
+print("CHOPCONF_M1:    0x{0:08X}".format(eval_board.read_register(mc.REG.CHOPCONF_M1)))
+print("COOLCONF_M1:    0x{0:08X}".format(eval_board.read_register(mc.REG.COOLCONF_M1)))
+
+print("MSCNT_M2:       0x{0:08X}".format(eval_board.read_register(mc.REG.MSCNT_M2)))
+print("MSCURACT_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.MSCURACT_M2)))
+print("CHOPCONF_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.CHOPCONF_M2)))
+print("COOLCONF_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.COOLCONF_M2)))
 
 myInterface.close()
+
+print("\nReady.")
