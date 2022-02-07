@@ -1,8 +1,9 @@
-from pytrinamic.features.feature import FeatureProvider
 from pytrinamic.features.motor_control import MotorControl
 
 
-class MotorControlIC(MotorControl, FeatureProvider):
+class MotorControlIC(MotorControl):
+
+    def __init__(self, ic, axis, ):
 
     def rotate(self, velocity):
         self.ic.rotate(self.axis, velocity)

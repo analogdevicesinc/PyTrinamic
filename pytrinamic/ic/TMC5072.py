@@ -1,10 +1,11 @@
 from pytrinamic.ic.tmc_ic import TMCIc
 
 # Features
-from pytrinamic.features.MotorControlIC import MotorControlIC
+from pytrinamic.features.motor_control import MotorControl
 from pytrinamic.features.LinearRampIC import LinearRampIC
 from pytrinamic.features.CurrentIC import CurrentIC
 from pytrinamic.features.StallGuard2IC import StallGuard2IC
+from pytrinamic.helpers import TMC_helpers
 
 
 class TMC5072(TMCIc):
@@ -12,13 +13,7 @@ class TMC5072(TMCIc):
     The TMC5072 is a high-performance stepper motor controller and driver IC with serial communication interfaces.
     Supply voltage: 5 - 28V."
     """
-    def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC5072"
-        self._info = self.__doc__
-
-
-#   def __init__(self, handler, channel):
+    def __init__(self, parent_eval):
         """
         Constructor for the TMC_IC instance.
 
@@ -30,116 +25,142 @@ class TMC5072(TMCIc):
         write_register and read_register functions of the handler to differentiate
         between multiple ICs.
         """
-#        super().__init__(handler, channel)
-#        self.MOTORS = [ self.MOTOR(self, 0), self.MOTOR(self, 1) ]
+        TMCIc.__init__(self)
+        self._parent = parent_eval
+        self._name = "TMC5072"
+        self._info = self.__doc__
+        self.motors = [self.Motor(parent_eval, self, 0), self.Motor(parent_eval, self, 1)]
 
-#    def write_axis_field(self, axis, field, value):
+    class Motor(MotorControl):
         """
-        Writes the given value to the axis-dependent register field.
-        On multi-axis ICs, this wraps the process of resolving the actual target
-        register field to be used for the given axis, when multiple fields with
-        same meaning for different axes are available.
-
-        Parameters:
-        axis: Axis index.
-        field: Base register field for any axis.
-        value: Value to write to the target register field for this axis.
+        Motor class for the generic motor.
         """
-#        return self.write_register_field(field[axis] if type(field) == list else field, value)
-
-#    def read_axis_field(self, axis, field):
-        """
-        Reads the value of the axis-dependent register field.
-        On multi-axis ICs, this wraps the process of resolving the actual target
-        register field to be used for the given axis, when multiple fields with
-        same meaning for different axes are available.
-
-        Parameters:
-        axis: Axis index.
-        field: Base register field for any axis.
-
-        Returns: Value of the target register field for the given axis.
-        """
-#        return self.read_register_field(field[axis] if type(field) == list else field)
-
-    # Motion Control functions
-#    def rotate(self, axis, value):
-        """
-        Rotates the motor on the given axis with the given velocity.
-
-        Parameters:
-        axis: Axis index.
-        velocity: Target velocity to rotate the motor with. Units are IC specific.
-
-        Returns: None
-        """
-#        self.write_axis_field(axis, self.FIELDS.AMAX, 1000)
-
-#        if value >= 0:
-#            self.write_axis_field(axis, self.FIELDS.VMAX, value)
-#            self.write_axis_field(axis, self.FIELDS.RAMPMODE, 1)
-#        else:
-#            self.write_axis_field(axis, self.FIELDS.VMAX, -value)
-#            self.write_axis_field(axis, self.FIELDS.RAMPMODE, 2)
-
-#    def stop(self, axis):
-        """
-        Stops the motor on the given axis.
-
-        Parameters:
-        axis: Axis index.
-
-        Returns: None
-        """
- #       self.rotate(axis, 0)
-
- #   def move_to(self, axis, position, velocity):
-        """
-        Moves the motor on the given axis to the given target position.
-
-        Parameters:
-        axis: Axis index.
-        position: Target position to move the motor to. Units are IC specific.
-        velocity: Maximum position velocity to position the motor. Units are IC specific.
-        If no velocity is given, the previously configured maximum positioning velocity (VMAX register)
-        will be used.
-
-        Returns: None
-        """
-#        self.write_axis_field(axis, self.FIELDS.RAMPMODE, 0)
-
-#        if velocity != 0:
-#            self.write_axis_field(axis, self.FIELDS.VMAX, velocity)
-
-#        self.write_axis_field(axis, self.FIELDS.XTARGET, position)
-
-#    def move_by(self, axis, distance, velocity):
-        """
-        Moves the motor on the given axis by the given distance.
-
-        Parameters:
-        axis: Axis index.
-        distance: Position difference to move the motor by. Units are IC specific.
-        velocity: Maximum position velocity to position the motor. Units are IC specific.
-        If no velocity is given, the previously configured maximum positioning velocity (VMAX register)
-        will be used.
-
-        Returns: None
-        """
-#        position = self.read_axis_field(axis, self.FIELDS.XACTUAL)
-
-#        self.move_to(motor, position + distance, velocity)
-
-#        return position + distance
-
-#    class MOTOR(TMC_IC.Motor, LinearRampIC, CurrentIC, StallGuard2IC, MotorControlIC):
-#        "Motor class for the generic motor."
-
-#        def __init__(self, ic, axis):
-#            TMC_IC.Motor.__init__(self, ic, axis)
+        def __init__(self, parent_eval, ic, axis):
+            self._parent = parent_eval
+            self._ic = ic
+            self._axis = axis
 #            LinearRampIC.__init__(self)
 #            CurrentIC.__init__(self)
 #            StallGuard2IC.__init__(self)
+            pass
+
+        def read_axis_field(self, field, signed=False):
+            """
+            Reads the value of the axis-dependent register field.
+            On multi-axis ICs, this wraps the process of resolving the actual target
+            register field to be used for the given axis, when multiple fields with
+            same meaning for different axes are available.
+
+            Parameters:
+            axis: Axis index.
+            field: Base register field for any axis.
+
+            Returns: Value of the target register field for the given axis.
+            """
+            value = self._parent.read_register_field(field[self._axis] if type(field) == list else field)
+            return TMC_helpers.to_signed_32(value) if signed else value
+
+        def write_axis_field(self, field, value):
+            """
+            Writes the given value to the axis-dependent register field.
+            On multi-axis ICs, this wraps the process of resolving the actual target
+            register field to be used for the given axis, when multiple fields with
+            same meaning for different axes are available.
+
+            Parameters:
+            axis: Axis index.
+            field: Base register field for any axis.
+            value: Value to write to the target register field for this axis.
+            """
+            return self._parent.write_register_field(field[self._axis] if type(field) == list else field, value)
+
+        # Motion control functions
+
+        def rotate(self, velocity):
+            """
+            Rotates the motor with the given velocity.
+
+            Parameters:
+                velocity: Target velocity to rotate the motor with. Units are IC specific.
+
+            Returns: None
+            """
+            self.write_axis_field(self._ic.FIELD.AMAX, 1000)
+
+            if velocity >= 0:
+                self.write_axis_field(self._ic.FIELD.VMAX, velocity)
+                self.write_axis_field(self._ic.FIELD.RAMPMODE, 1)
+            else:
+                self.write_axis_field(self._ic.FIELD.VMAX, -velocity)
+                self.write_axis_field(self._ic.FIELD.RAMPMODE, 2)
+
+        def stop(self):
+            """
+            Stops the motor.
+
+            Returns: None
+            """
+            self.rotate(0)
+
+        def move_to(self, position, velocity=None):
+            """
+            Moves the motor to the given target position.
+
+            Parameters:
+            position: Target position to move the motor to. Units are IC specific.
+            velocity: Maximum position velocity to position the motor. Units are IC specific.
+            If no velocity is given, the previously configured maximum positioning velocity (VMAX register)
+            will be used.
+
+            Returns: None
+            """
+            self.write_axis_field(self._ic.FIELD.RAMPMODE, 0)
+
+            if velocity and velocity != 0:
+                self.write_axis_field(self._ic.FIELD.VMAX, velocity)
+
+            self.write_axis_field(self._ic.FIELD.XTARGET, position)
+
+        def move_by(self, distance, velocity=None):
+            """
+            Moves the motor by the given distance.
+
+            Parameters:
+            distance: Position difference to move the motor by. Units are IC specific.
+            velocity: Maximum position velocity to position the motor. Units are IC specific.
+            If no velocity is given, the previously configured maximum positioning velocity (VMAX register)
+            will be used.
+
+            Returns: None
+            """
+            self.move_to(self.actual_position + distance, velocity)
+
+        def get_target_position(self):
+            return self.read_axis_field(self._ic.FIELD.XTARGET, True)
+
+        def set_target_position(self, position):
+            self.move_to(position)
+
+        def get_actual_position(self):
+            return self.read_axis_field(self._ic.FIELD.XACTUAL, True)
+
+        def set_actual_position(self, position):
+            self.write_axis_field(self._ic.FIELD.XACTUAL, position)
+
+        def get_target_velocity(self):
+            return self.read_axis_field(self._ic.FIELD.VMAX, True)
+
+        def set_target_velocity(self, velocity):
+            self.rotate(velocity)
+
+        def get_actual_velocity(self):
+            return self.read_axis_field(self._ic.FIELD.VACTUAL, True)
+
+        # Properties
+        target_position = property(get_target_position, set_target_position)
+        actual_position = property(get_actual_position, set_actual_position)
+        target_velocity = property(get_target_velocity, set_target_velocity)
+        actual_velocity = property(get_actual_velocity)
 
     class REG:
         """

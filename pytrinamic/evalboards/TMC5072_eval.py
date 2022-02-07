@@ -24,7 +24,7 @@ class TMC5072_eval(TMCLEval):
         """
         TMCLEval.__init__(self, connection, module_id)
         self.motors = [self.Motor0(self, 0), self.Motor0(self, 1)]
-        self.ics = [TMC5072()]
+        self.ics = [TMC5072(self)]
 
     # Use the driver controller functions for register access
 
@@ -69,7 +69,6 @@ class TMC5072_eval(TMCLEval):
         """
         Motor class for the generic motor.
         """
-
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
             #LinearRampModule.__init__(self)

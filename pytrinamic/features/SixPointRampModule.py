@@ -4,7 +4,7 @@ from pytrinamic.features.SixPointRamp import SixPointRamp
 class SixPointRampModule(SixPointRamp, FeatureProvider):
     "SixPointRamp feature implementation"
 
-    class __GROUPING(SixPointRamp,FeatureProvider):     
+    class __GROUPING(SixPointRamp, FeatureProvider):
         def __init__(self, parent):
             self.parent = parent
 

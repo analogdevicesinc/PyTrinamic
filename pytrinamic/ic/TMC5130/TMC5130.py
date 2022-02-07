@@ -32,7 +32,7 @@ class TMC5130(TMC_IC):
 
     def write_axis_field(self, axis, field, value):
         """
-        Writes the given value to the axis-dependend register field.
+        Writes the given value to the axis-dependent register field.
         On multi-axis ICs, this wraps the process of resolving the actual target
         register field to be used for the given axis, when multiple fields with
         same meaning for different axes are available.
@@ -48,7 +48,7 @@ class TMC5130(TMC_IC):
 
     def read_axis_field(self, axis, field):
         """
-        Reads the value of the axis-dependend register field.
+        Reads the value of the axis-dependent register field.
         On multi-axis ICs, this wraps the process of resolving the actual target
         register field to be used for the given axis, when multiple fields with
         same meaning for different axes are available.

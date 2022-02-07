@@ -5,11 +5,11 @@ class MotorControl(ABC):
 
     # velocity mode
 
-    def set_axis_parameter(self, ap_type, value):
-        raise NotImplementedError
+#    def set_axis_parameter(self, ap_type, value):
+#        raise NotImplementedError
 
-    def get_axis_parameter(self, ap_type, signed=False):
-        raise NotImplementedError
+#    def get_axis_parameter(self, ap_type, signed=False):
+#        raise NotImplementedError
 
     def rotate(self, velocity):
         raise NotImplementedError()
@@ -22,7 +22,7 @@ class MotorControl(ABC):
     def move_to(self, position, velocity=None):
         raise NotImplementedError()
 
-    def move_by(self, difference, velocity=None):
+    def move_by(self, distance, velocity=None):
         raise NotImplementedError()
 
     @abstractmethod

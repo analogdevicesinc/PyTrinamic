@@ -20,14 +20,6 @@ with myInterface:
     print(motor1)
 
     print("Preparing parameter for motor 0...")
-#    eval_board.write_register(mc.REG.A1_M1, 1000)
-#    eval_board.write_register(mc.REG.V1_M1, 50000)
-#    eval_board.write_register(mc.REG.D1_M1, 500)
-#    eval_board.write_register(mc.REG.DMAX_M1, 500)
-#    eval_board.write_register(mc.REG.VSTART_M1, 0)
-#    eval_board.write_register(mc.REG.VSTOP_M1, 10)
-#    eval_board.write_register(mc.REG.AMAX_M1, 1000)
-
     motor0.set_axis_parameter(motor0.AP.MaxVelocity, 100000)
     motor0.set_axis_parameter(motor0.AP.MaxAcceleration, 1000)
     motor0.set_axis_parameter(motor0.AP.A1, 1000)
@@ -39,14 +31,6 @@ with myInterface:
     motor0.set_axis_parameter(motor0.AP.RampWaitTime, 0)
 
     print("Preparing parameter for motor 1...")
-#    eval_board.write_register(mc.REG.A1_M2, 1000)
-#    eval_board.write_register(mc.REG.V1_M2, 50000)
-#    eval_board.write_register(mc.REG.D1_M2, 500)
-#    eval_board.write_register(mc.REG.DMAX_M2, 500)
-#    eval_board.write_register(mc.REG.VSTART_M2, 0)
-#    eval_board.write_register(mc.REG.VSTOP_M2, 10)
-#    eval_board.write_register(mc.REG.AMAX_M2, 1000)
-
     motor1.set_axis_parameter(motor1.AP.MaxVelocity, 100000)
     motor1.set_axis_parameter(motor1.AP.MaxAcceleration, 1000)
     motor1.set_axis_parameter(motor1.AP.A1, 1000)
