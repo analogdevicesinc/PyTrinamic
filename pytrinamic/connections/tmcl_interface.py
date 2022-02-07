@@ -16,13 +16,13 @@ class TmclInterface(ABC):
     bus.
 
     A subclass is required to override the following functions:
-        _send(self, hostID, moduleID, data)
-        _recv(self, hostID, moduleID)
+        _send(self, host_id, module_id, data)
+        _recv(self, host_id, module_id)
 
     A subclass may use the boolean _debug attribute to toggle printing further
     debug output.
 
-    A subclass may read the _HOST_ID and _MODULE_ID parameters.
+    A subclass may read the _host_id and _module_id parameters.
     """
 
     def __init__(self, host_id=2, default_module_id=1, debug=False):
@@ -53,8 +53,8 @@ class TmclInterface(ABC):
         if not type(debug) == bool:
             raise TypeError
 
-        self._HOST_ID = host_id
-        self._MODULE_ID = default_module_id
+        self._host_id = host_id
+        self._module_id = default_module_id
         self._debug = debug
 
     def enable_debug(self, enable):
@@ -96,13 +96,13 @@ class TmclInterface(ABC):
         the reply has been received.
         """
         if not module_id:
-            module_id = self._MODULE_ID
+            module_id = self._module_id
 
         if self._debug:
             request.dump()
 
-        self._send(self._HOST_ID, module_id, request.to_buffer())
-        reply = TMCLReply.from_buffer(self._recv(self._HOST_ID, module_id))
+        self._send(self._host_id, module_id, request.to_buffer())
+        reply = TMCLReply.from_buffer(self._recv(self._host_id, module_id))
 
         if self._debug:
             reply.dump()
@@ -119,15 +119,15 @@ class TmclInterface(ABC):
 
         # If no module ID is given, use the default one
         if not module_id:
-            module_id = self._MODULE_ID
+            module_id = self._module_id
 
         request = TMCLRequest(module_id, opcode, op_type, motor, value)
 
         if self._debug:
             request.dump()
 
-        self._send(self._HOST_ID, module_id, request.to_buffer())
-        reply = TMCLReply.from_buffer(self._recv(self._HOST_ID, module_id))
+        self._send(self._host_id, module_id, request.to_buffer())
+        reply = TMCLReply.from_buffer(self._recv(self._host_id, module_id))
 
         if self._debug:
             reply.dump()
@@ -141,7 +141,7 @@ class TmclInterface(ABC):
         """
         # If no module ID is given, use the default one
         if not module_id:
-            module_id = self._MODULE_ID
+            module_id = self._module_id
 
         request = TMCLRequest(module_id, TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6)
 
@@ -149,7 +149,7 @@ class TmclInterface(ABC):
             request.dump()
 
         # Send the request
-        self._send(self._HOST_ID, module_id, request.to_buffer())
+        self._send(self._host_id, module_id, request.to_buffer())
 
     def get_version_string(self, module_id=None):
         """
