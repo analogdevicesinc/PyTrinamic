@@ -1,21 +1,16 @@
 from pytrinamic.modules import TMCLModule
 
 # features
-from pytrinamic.features.stallguard2_module import StallGuard2Module
-from pytrinamic.features.coolstep_module import CoolStepModule
-from pytrinamic.features.DriveSettingModule import DriveSettingModule
-from pytrinamic.features.linear_ramp_module import LinearRampModule
-from pytrinamic.features.motor_control_module import MotorControlModule
+from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
+from pytrinamic.features import StallGuard2Module, CoolStepModule
 
 
 class TMCM6110(TMCLModule):
     """
     The TMCM-6110 is a six axis stepper motor controller/driver module for sensorless load dependent current control.
     """
-
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-
         self.name = "TMCM-6110"
         self.desc = self.__doc__
         self.motors = [self.Motor0(self, 0), self.Motor0(self, 1), self.Motor0(self, 2),
@@ -37,16 +32,15 @@ class TMCM6110(TMCLModule):
             self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class Motor0(MotorControlModule, StallGuard2Module, CoolStepModule):
+    class Motor0(MotorControlModule):
 
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)
             self.drive_settings = DriveSettingModule(module, axis, self.AP)
             self.linear_ramp = LinearRampModule(module, axis, self.AP)
 
-            # ToDo: rework both modules!
-            StallGuard2Module.__init__(self)
-            CoolStepModule.__init__(self)
+            self.stallguard2 = StallGuard2Module(module, axis, self.AP)
+            self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
 
         def get_position_reached(self):
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
@@ -124,19 +118,69 @@ class TMCM6110(TMCLModule):
             microstep_resolution_128_microsteps = 7
             microstep_resolution_256_microsteps = 8
 
-    class GP:
+    class GP0:
         SerialBaudRate      = 65
         SerialAddress       = 66
+        SerialHearbeat      = 68
         CANBitRate          = 69
         CANsendID           = 70
         CANreceiveID        = 71
         TelegramPauseTime   = 75
         SerialHostAddress   = 76
         AutoStartMode       = 77
+        EndSwitchPolarity   = 79
+        TMCLCodeProtection  = 81
+        CANHeartbeat        = 82
+        CANSecondaryAddress = 83
+        eepromCoordinateStore          = 84
+        zeroUserVariables              = 85
+        serialSecondaryAddress         = 87
+        reverseShaftDirection          = 90
         ApplicationStatus   = 128
         ProgramCounter      = 130
         TickTimer           = 132
+        RandomNumber        = 133
+        SuppressReply       = 255
 
+    class GP3:
+        timer_0                        = 0
+        timer_1                        = 1
+        timer_2                        = 2
+        stopLeft_0                     = 27
+        stopRight_0                    = 28
+        stopLeft_1                     = 29
+        stopRight_1                    = 30
+        stopLeft_2                     = 31
+        stopRight_2                    = 32
+        stopLeft_3                     = 33
+        stopRight_3                    = 34
+        stopLeft_4                     = 35
+        stopRight_4                    = 36
+        stopLeft_5                     = 37
+        stopRight_5                    = 38
+        input_0                        = 39
+        input_1                        = 40
+        input_2                        = 41
+        input_3                        = 42
+        input_4                        = 43
+        input_5                        = 44
+        input_6                        = 45
+        input_7                        = 46
+    
     class IO:
         OUT0   = 0
         OUT1   = 1
+        OUT2   = 2
+        OUT3   = 3
+        OUT4   = 4
+        OUT5   = 5
+        OUT6   = 6
+        OUT7   = 7
+        AIN0   = 0
+        IN1    = 1
+        IN2    = 2
+        IN3    = 3
+        AIN4   = 4
+        IN5    = 5
+        IN6    = 6
+        IN7    = 7

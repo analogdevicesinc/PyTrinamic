@@ -1,234 +1,166 @@
-'''
-Created on 18.11.2019
+from pytrinamic.modules import TMCLModule
 
-@author: JM
-'''
-
-from pytrinamic.modules.tmcl_module import TMCLModule
-
+# features
+from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
+from pytrinamic.features import StallGuard2Module, CoolStepModule
 
 class TMCM1276(TMCLModule):
+    """
+    The TMCM-1276 is a single axis controller/driver module. Supply voltage is 24V.
+    """
+    def __init__(self, connection, module_id=1):
+        super().__init__(connection, module_id)
+        self.name = "TMCM-1276"
+        self.desc = self.__doc__
+        self.motors = [self.Motor0(self, 0)]
 
-    class AP:
-        TargetPosition                 = 0
-        ActualPosition                 = 1
-        TargetVelocity                 = 2
-        ActualVelocity                 = 3
-        MaxVelocity                    = 4
-        MaxAcceleration                = 5
-        MaxCurrent                     = 6
-        StandbyCurrent                 = 7
-        PositionReachedFlag            = 8
-        HomeSwitch                     = 9
-        RightEndstop                   = 10
-        LeftEndstop                    = 11
-        AutomaticRightStop             = 12
-        AutomaticLeftStop              = 13
-        swapSwitchInputs               = 14
-        A1                             = 15
-        V1                             = 16
-        MaxDeceleration                = 17
-        D1                             = 18
-        StartVelocity                  = 19
-        StopVelocity                   = 20
-        RampWaitTime                   = 21
-        THIGH                          = 22
-        VDCMIN                         = 23
-        rightSwitchPolarity            = 24
-        leftSwitchPolarity             = 25
-        softstop                       = 26
-        HighSpeedChopperMode           = 27
-        HighSpeedFullstepMode          = 28
-        MeasuredSpeed                  = 29
-        PowerDownRamp                  = 31
-        RelativePositioningOptionCode  = 127
-        MicrostepResolution            = 140
-        ChopperBlankTime               = 162
-        ConstantTOffMode               = 163
-        DisableFastDecayComparator     = 164
-        ChopperHysteresisEnd           = 165
-        ChopperHysteresisStart         = 166
-        TOff                           = 167
-        SEIMIN                         = 168
-        SECDS                          = 169
-        smartEnergyHysteresis          = 170
-        SECUS                          = 171
-        smartEnergyHysteresisStart     = 172
-        SG2FilterEnable                = 173
-        SG2Threshold                   = 174
-        ShortToGroundProtection        = 177
-        smartEnergyActualCurrent       = 180
-        smartEnergyStallVelocity       = 181
-        smartEnergyThresholdSpeed      = 182
-        RandomTOffMode                 = 184
-        ChopperSynchronization         = 185
-        PWMThresholdSpeed              = 186
-        PWMGrad                        = 187
-        PWMAmplitude                   = 188
-        PWMScale                       = 189
-        pwmMode                        = 190
-        PWMFrequency                   = 191
-        PWMAutoscale                   = 192
-        ReferenceSearchMode            = 193
-        ReferenceSearchSpeed           = 194
-        RefSwitchSpeed                 = 195
-        RightLimitSwitchPosition       = 196
-        LastReferencePosition          = 197
-        encoderMode                    = 201
-        MotorFullStepResolution        = 202
-        pwmSymmetric                   = 203
-        FreewheelingMode               = 204
-        LoadValue                      = 206
-        extendedErrorFlags             = 207
-        DrvStatusFlags                 = 208
-        EncoderPosition                = 209
-        EncoderResolution              = 210
-        max_EncoderDeviation           = 212
-        PowerDownDelay                 = 214
-        UnitMode                       = 255
+    def rotate(self, axis, velocity):
+        self.connection.rotate(axis, velocity, self.module_id)
 
-    class ENUM():
-        pass
+    def stop(self, axis):
+        self.connection.stop(axis, self.module_id)
 
-    class GP():
-        timer_0                        = 0
-        timer_1                        = 1
-        timer_2                        = 2
-        stopLeft_0                     = 27
-        stopRight_0                    = 28
-        input_0                        = 39
-        input_1                        = 40
-        input_2                        = 41
+    def move_to(self, axis, position, velocity=None):
+        if velocity:
+            self.motors[0].linear_ramp.max_velocity = velocity
+        self.connection.move_to(axis, position, self.module_id)
+
+    def move_by(self, axis, difference, velocity=None):
+        if velocity:
+            self.motors[0].linear_ramp.max_velocity = velocity
+        return self.connection.move_by(axis, difference, self.module_id)
+
+    class Motor0(MotorControlModule):
+
+        def __init__(self, module, axis):
+            MotorControlModule.__init__(self, module, axis, self.AP)
+            self.drive_settings = DriveSettingModule(module, axis, self.AP)
+            self.linear_ramp = LinearRampModule(module, axis, self.AP)
+
+            self.stallguard2 = StallGuard2Module(module, axis, self.AP)
+            self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
+
+        def get_position_reached(self):
+            return self.get_axis_parameter(self.AP.PositionReachedFlag)
+
+        class AP:
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxAcceleration                = 5
+            MaxCurrent                     = 6
+            StandbyCurrent                 = 7
+            PositionReachedFlag            = 8
+            HomeSwitch                     = 9
+            RightEndstop                   = 10
+            LeftEndstop                    = 11
+            AutomaticRightStop             = 12
+            AutomaticLeftStop              = 13
+            SwapSwitchInputs               = 14
+            A1                             = 15
+            V1                             = 16
+            MaxDeceleration                = 17
+            D1                             = 18
+            StartVelocity                  = 19
+            StopVelocity                   = 20
+            RampWaitTime                   = 21
+            HighSpeedTheshold              = 22
+            MinDcStepSpeed                 = 23
+            RightSwitchPolarity            = 24
+            LeftSwitchPolarity             = 25
+            SoftStop                       = 26
+            HighSpeedChopperMode           = 27
+            HighSpeedFullstepMode          = 28
+            MeasuredSpeed                  = 29
+            PowerDownRamp                  = 31
+            DcStepTime                     = 32
+            DcStepStallGuard               = 33
+            RelativePositioningOptionCode  = 127
+            MicrostepResolution            = 140
+            ChopperBlankTime               = 162
+            ConstantTOffMode               = 163
+            DisableFastDecayComparator     = 164
+            ChopperHysteresisEnd           = 165
+            ChopperHysteresisStart         = 166
+            TOff                           = 167
+            SEIMIN                         = 168
+            SECDS                          = 169
+            SmartEnergyHysteresis          = 170
+            SECUS                          = 171
+            SmartEnergyHysteresisStart     = 172
+            SG2FilterEnable                = 173
+            SG2Threshold                   = 174
+            ShortToGroundProtection        = 177
+            SmartEnergyActualCurrent       = 180
+            SmartEnergyStallVelocity       = 181
+            SmartEnergyThresholdSpeed      = 182
+            RandomTOffMode                 = 184
+            ChopperSynchronization         = 185
+            PWMThresholdSpeed              = 186
+            PWMGrad                        = 187
+            PWMAmplitude                   = 188
+            PWMScale                       = 189
+            pwmMode                        = 190
+            PWMFrequency                   = 191
+            PWMAutoscale                   = 192
+            ReferenceSearchMode            = 193
+            ReferenceSearchSpeed           = 194
+            RefSwitchSpeed                 = 195
+            RightLimitSwitchPosition       = 196
+            LastReferencePosition          = 197
+            EncoderMode                    = 201
+            MotorFullStepResolution        = 202
+            FreewheelingMode               = 204
+            LoadValue                      = 206
+            ExtendedErrorFlags             = 207
+            DrvStatusFlags                 = 208
+            EncoderPosition                = 209
+            EncoderResolution              = 210
+            MaxEncoderDeviation            = 212
+            PowerDownDelay                 = 214
+            UnitMode                       = 255
+    
+        class ENUM:
+            MicrostepResolutionFullstep      = 0
+            MicrostepResolutionHalfstep      = 1
+            MicrostepResolution4Microsteps   = 2
+            MicrostepResolution8Microsteps   = 3
+            MicrostepResolution16Microsteps  = 4
+            MicrostepResolution32Microsteps  = 5
+            MicrostepResolution64Microsteps  = 6
+            MicrostepResolution128Microsteps = 7
+            MicrostepResolution256Microsteps = 8
+
+    class GP0:
         CANBitrate                     = 69
         CANSendId                      = 70
         CANReceiveId                   = 71
         CANSecondaryId                 = 72
-        autoStartMode                  = 77
-        protectionMode                 = 81
-        eepromCoordinateStore          = 84
-        zeroUserVariables              = 85
-        applicationStatus              = 128
-        programCounter                 = 130
-        lastTmclError                  = 131
-        tickTimer                      = 132
-        randomNumber                   = 133
+        AutoStartMode                  = 77
+        ProtectionMode                 = 81
+        CANHeartbeat                   = 82
+        CANSecondaryAddress            = 83
+        EepromCoordinateStore          = 84
+        ZeroUserVariables              = 85
+        ApplicationStatus              = 128
+        ProgramCounter                 = 130
+        TickTimer                      = 132
+        RandomNumber                   = 133
+        SuppressReply                  = 255
 
-    def __init__(self, connection, module_id=1):
-        super().__init__(connection, module_id)
+    class GP3:
+        Timer_0                        = 0
+        Timer_1                        = 1
+        Timer_2                        = 2
+        StopLeft_0                     = 27
+        StopRight_0                    = 28
+        Input_0                        = 39
+        Input_1                        = 40
+        Input_2                        = 41
 
-        self.MOTORS = 1
-        self.__default_motor = 0
-
-    @staticmethod
-    def getEdsFile():
-        return __file__.replace("TMCM1276.py", "TMCM_1276_V3.22.eds")
-
-    def showChipInfo(self):
-        print("The TMCM-1276 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 10 - 30V");
-
-    # Motion Control functions
-    def rotate(self, axis, velocity):
-        self.setTargetVelocity(axis, velocity)
-
-    def stop(self, axis):
-        self.rotate(axis, 0)
-
-    def moveTo(self, axis, position, velocity=None):
-        if velocity:
-            self.setMaxVelocity(axis, velocity)
-
-        self.connection.move(0, self.__default_motor, position)
-        self.setTargetPosition(axis, position)
-
-    def moveBy(self, axis, difference, velocity=None):
-        position = difference + self.getActualPosition(axis)
-
-        self.moveTo(axis, position, velocity)
-
-        return position
-
-    # Current control functions
-    def setMotorRunCurrent(self, axis, current):
-        self.setMaxCurrent(axis, current)
-
-    def setMotorStandbyCurrent(self, axis, current):
-        self.setAxisParameter(self.APs.StandbyCurrent, axis, current)
-
-    def getMaxCurrent(self, axis):
-        return self.axisParameter(self.APs.MaxCurrent, axis)
-
-    def setMaxCurrent(self, axis, current):
-        self.setAxisParameter(self.APs.MaxCurrent, axis, current)
-
-    # StallGuard2 Functions
-    def setStallguard2Filter(self, axis, enableFilter):
-        self.setAxisParameter(self.APs.StallGuard2FilterEnable, axis, enableFilter)
-
-    def setStallguard2Threshold(self, axis, threshold):
-        self.setAxisParameter(self.APs.StallGuard2Threshold, axis, threshold)
-
-    def setStopOnStallVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.StopOnStall, axis, velocity)
-
-    # Motion parameter functions
-    def getTargetPosition(self, axis):
-        return self.axisParameter(self.APs.TargetPosition, axis)
-
-    def setTargetPosition(self, axis, position):
-        self.setAxisParameter(self.APs.TargetPosition, axis, position)
-
-    def getActualPosition(self, axis):
-        return self.axisParameter(self.APs.ActualPosition, axis)
-
-    def setActualPosition(self, axis, position):
-        return self.setAxisParameter(self.APs.ActualPosition, axis, position)
-
-    def getTargetVelocity(self, axis):
-        return self.axisParameter(self.APs.TargetVelocity, axis)
-
-    def setTargetVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.TargetVelocity, axis, velocity)
-
-    def getActualVelocity(self, axis):
-        return self.axisParameter(self.APs.ActualVelocity, axis)
-
-    def getMaxVelocity(self, axis):
-        return self.axisParameter(self.APs.MaxVelocity, axis)
-
-    def setMaxVelocity(self, axis, velocity):
-        self.setAxisParameter(self.APs.MaxVelocity, axis, velocity)
-
-    def getMaxAcceleration(self, axis):
-        return self.axisParameter(self.APs.MaxAcceleration, axis)
-
-    def setMaxAcceleration(self, axis, acceleration):
-        self.setAxisParameter(self.APs.MaxAcceleration, axis, acceleration)
-
-    def getRampMode(self, axis):
-        return self.axisParameter(self.APs.RampMode, axis)
-
-    def setRampMode(self, axis, mode):
-        return self.setAxisParameter(self.APs.RampMode, axis, mode)
-
-    # Status functions
-    def getStatusFlags(self, axis):
-        return self.axisParameter(self.APs.TMC262ErrorFlags, axis)
-
-    def getErrorFlags(self, axis):
-        return self.axisParameter(self.APs.ExtendedErrorFlags, axis)
-
-    def positionReached(self, axis):
-        return self.axisParameter(self.APs.PositionReachedFlag, axis)
-
-    " IO pin functions "
-    def analogInput(self, x):
-        return self.connection.get_analog_input(x, self.module_id)
-
-    def digitalInput(self, x):
-        return self.connection.get_digital_input(x, self.module_id)
-
-    def showMotionConfiguration(self):
-        print("Motion configuration:")
-        print("\tMax velocity: " + str(self.getMaxVelocity(self.__default_motor)))
-        print("\tAcceleration: " + str(self.getMaxAcceleration(self.__default_motor)))
-        print("\tRamp mode: " + ("position" if (self.getRampMode(self.__default_motor) == 0) else "velocity"))
+    class IO:
+        IN0 = 0
+        IN1 = 1
+        IN2 = 2

@@ -1,31 +1,19 @@
-'''
-Created on 03.12.2019
+from pytrinamic.modules import TMCLModule
 
-@author: JM
-'''
-
-from pytrinamic.modules.tmcl_module import TMCLModule
-from pytrinamic.features.linear_ramp_module import LinearRampModule
-from pytrinamic.features.stallguard2_module import StallGuard2Module
-from pytrinamic.features.CurrentModule import CurrentModule
-from pytrinamic.features.motor_control_module import MotorControlModule
+# features
+from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
+from pytrinamic.features import StallGuard2Module, CoolStepModule
 
 
 class TMCM1270(TMCLModule):
-    "TMCM-1270 module implementation"
-
+    """
+    The TMCM-1240 is a single axis controller/driver module. Supply voltage is 24V.
+    """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-
-        self.MOTORS = [self.MOTOR_0(self, 0)]
-
-    @staticmethod
-    def getEdsFile():
-        "Returns EDS file with parameters"
-        return __file__.replace("TMCM1270.py", "TMCM_1270_V3.22.eds")
-
-    def showChipInfo(self):
-        print("The TMCM-1270 is a smart stepper motor driver module. The module is controlled via a CAN bus interface. Voltage supply: 6 - 24V")
+        self.name = "TMCM-1270"
+        self.desc = self.__doc__
+        self.motors = [self.Motor0(self, 0)]
 
     def rotate(self, axis, velocity):
         """
@@ -84,14 +72,16 @@ class TMCM1270(TMCLModule):
             self.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class MOTOR_0(TMCLModule.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
+    class Motor0(MotorControlModule):
         "Motor class for the motor on axis 0."
 
         def __init__(self, module, axis):
-            TMCLModule.Motor.__init__(self, module, axis)
-            LinearRampModule.__init__(self)
-            StallGuard2Module.__init__(self)
-            CurrentModule.__init__(self)
+            MotorControlModule.__init__(self, module, axis, self.AP)
+            self.drive_settings = DriveSettingModule(module, axis, self.AP)
+            self.linear_ramp = LinearRampModule(module, axis, self.AP)
+
+            self.stallguard2 = StallGuard2Module(module, axis, self.AP)
+            self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
 
         def get_position_reached(self):
             """
@@ -117,9 +107,9 @@ class TMCM1270(TMCLModule):
             HomeSwitch                     = 9
             RightEndstop                   = 10
             LeftEndstop                    = 11
-            AutomaticRightStop             = 12
-            AutomaticLeftStop              = 13
-            swapSwitchInputs               = 14
+            RightLimitSwitchDisable        = 12
+            LeftLimitSwitchDisable         = 13
+            SwapLimitSwitches              = 14
             A1                             = 15
             V1                             = 16
             MaxDeceleration                = 17
@@ -127,8 +117,8 @@ class TMCM1270(TMCLModule):
             StartVelocity                  = 19
             StopVelocity                   = 20
             RampWaitTime                   = 21
-            THIGH                          = 22
-            VDCMIN                         = 23
+            HighSpeedTheshold              = 22
+            MinDcStepSpeed                 = 23
             RightSwitchPolarity            = 24
             LeftSwitchPolarity             = 25
             Softstop                       = 26
@@ -136,6 +126,8 @@ class TMCM1270(TMCLModule):
             HighSpeedFullstepMode          = 28
             MeasuredSpeed                  = 29
             PowerDownRamp                  = 31
+            DcStepTime                     = 32
+            DcStepStallGuard               = 33
             RelativePositioningOptionCode  = 127
             MicrostepResolution            = 140
             ChopperBlankTime               = 162
@@ -172,7 +164,6 @@ class TMCM1270(TMCLModule):
             LastReferencePosition          = 197
             EncoderMode                    = 201
             MotorFullStepResolution        = 202
-            PWMSymmetric                   = 203
             FreewheelingMode               = 204
             LoadValue                      = 206
             ErrorFlags                     = 207
@@ -183,11 +174,19 @@ class TMCM1270(TMCLModule):
             PowerDownDelay                 = 214
             UnitMode                       = 255
 
-    class ENUM():
-        "Constant enums for parameters of this module."
-        pass
+        class ENUM:
+            "Constant enums for parameters of this module."
+            MicrostepResolutionFullstep      = 0
+            MicrostepResolutionHalfstep      = 1
+            MicrostepResolution4Microsteps   = 2
+            MicrostepResolution8Microsteps   = 3
+            MicrostepResolution16Microsteps  = 4
+            MicrostepResolution32Microsteps  = 5
+            MicrostepResolution64Microsteps  = 6
+            MicrostepResolution128Microsteps = 7
+            MicrostepResolution256Microsteps = 8
 
-    class GP():
+    class GP0:
         "Global parameter map for this module."
         CANBitrate                    = 69
         CANSendId                     = 70
@@ -195,10 +194,27 @@ class TMCM1270(TMCLModule):
         CANSecondaryId                = 72
         AutoStartMode                 = 77
         ProtectionMode                = 81
+        CANHeartbeat                  = 82
+        CANSecondaryAddress           = 83
         EepromCoordinateStore         = 84
         ZeroUserVariables             = 85
         ApplicationStatus             = 128
         ProgramCounter                = 130
-        LastTmclError                 = 131
         TickTimer                     = 132
         RandomNumber                  = 133
+        SuppressReply                 = 255
+
+    class GP3:
+        Timer_0                        = 0
+        Timer_1                        = 1
+        Timer_2                        = 2
+        StopLeft_0                     = 27
+        StopRight_0                    = 28
+        Input_0                        = 39
+        Input_1                        = 40
+        Input_2                        = 41
+
+    class IO:
+        IN0 = 0
+        IN1 = 1
+        IN2 = 2

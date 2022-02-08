@@ -1,26 +1,19 @@
-'''
-Created on 03.12.2019
+from pytrinamic.modules import TMCLModule
 
-@author: JM
-'''
+# features
+from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
+from pytrinamic.features import StallGuard2Module, CoolStepModule
 
-from pytrinamic.modules.tmcl_module import TMCLModule
-from pytrinamic.features.linear_ramp_module import LinearRampModule
-from pytrinamic.features.stallguard2_module import StallGuard2Module
-from pytrinamic.features.CurrentModule import CurrentModule
-from pytrinamic.features.motor_control_module import MotorControlModule
-from pytrinamic.features.SRampModule import SRampModule
-from pytrinamic.features.SixPointRampModule import SixPointRampModule
+
 class TMCM3312(TMCLModule):
-
+    """
+    The TMCM-3312 is a three axis stepper motor controller/driver module for sensorless load dependent current control.
+    """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-
-        self.MOTORS = [self.MOTOR_0(self, 0),self.MOTOR_0(self, 1),self.MOTOR_0(self, 2)]
-
-
-    def showChipInfo(self):
-        print("The TMCM-3312 is a triple axis stepper motor controller/driver module for sensorless load dependent current control. ")
+        self.name = "TMCM-3312"
+        self.desc = self.__doc__
+        self.motors = [self.Motor0(self, 0), self.Motor0(self, 1), self.Motor0(self, 2)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -30,26 +23,26 @@ class TMCM3312(TMCLModule):
 
     def move_to(self, axis, position, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_to(axis, position, self.module_id)
 
     def move_by(self, axis, difference, velocity=None):
         if velocity:
-            self.max_velocity = velocity
+            self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class MOTOR_0(TMCLModule.Motor, LinearRampModule, StallGuard2Module, SRampModule, SixPointRampModule, CurrentModule, MotorControlModule):
+    class Motor0(MotorControlModule):
 
         def __init__(self, module, axis):
-            TMCLModule.Motor.__init__(self, module, axis)
-            LinearRampModule.__init__(self)
-            StallGuard2Module.__init__(self)
-            SRampModule.__init__(self)
-            CurrentModule.__init__(self)
-            SixPointRampModule.__init__(self)
+            MotorControlModule.__init__(self, module, axis, self.AP)
+            self.drive_settings = DriveSettingModule(module, axis, self.AP)
+            self.linear_ramp = LinearRampModule(module, axis, self.AP)
+
+            self.stallguard2 = StallGuard2Module(module, axis, self.AP)
+            self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
 
         def get_position_reached(self):
-            return self.get_axis_parameter(self.APs.PositionReachedFlag)
+            return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
         class AP:
             TargetPosition                 = 0
@@ -148,43 +141,75 @@ class TMCM3312(TMCLModule):
             RefSwitchSpeed                 = 195
             RightLimitSwitchPosition       = 196
             LastReferencePosition          = 197
+            BoostCurrent                   = 200
             EncoderMode                    = 201
             MotorFullStepResolution        = 202
-            PWMSymmetric                   = 203
             FreewheelingMode               = 204
             LoadValue                      = 206
             ErrorFlags                     = 207
             StatusFlags                    = 208
             EncoderPosition                = 209
             EncoderResolution              = 210
-            EncoderDeviationMax            = 212
+            MaxPositionEncoderDeviation    = 212
+            MaxVelocityEncoderDeviation    = 213
             PowerDownDelay                 = 214
-            GroupIndex                     = 219
+            GroupIndex                     = 249
             ReverseShaft                   = 251
-        
 
-    class ENUM():
-        pass
+        class ENUM:
+            microstep_resolution_fullstep = 0
+            microstep_resolution_halfstep = 1
+            microstep_resolution_4_microsteps = 2
+            microstep_resolution_8_microsteps = 3
+            microstep_resolution_16_microsteps = 4
+            microstep_resolution_32_microsteps = 5
+            microstep_resolution_64_microsteps = 6
+            microstep_resolution_128_microsteps = 7
+            microstep_resolution_256_microsteps = 8
 
-    class GP():
-        RS485Baudrate                 = 65
-        SerialAddress                 = 66
-        SerialHeartbeat               = 68
-        CANBitrate                    = 69
-        CANSendId                     = 70
-        CANReceiveId                  = 71
-        TelegramPauseTime             = 75
-        SerialHostAddress             = 76
-        AutoStartMode                 = 77
-        ProtectionMode                = 81
-        CANHeartbeat                  = 82
-        CANSecondaryId                = 83
-        EepromCoordinateStore         = 84
-        ZeroUserVariables             = 85
-        ApplicationStatus             = 128
-        DownloadMode                  = 129
-        ProgramCounter                = 130
-        LastTmclError                 = 131
-        TickTimer                     = 132
-        RandomNumber                  = 133
-        SuppressReply                 = 255
+    class GP0:
+        SerialBaudRate      = 65
+        SerialAddress       = 66
+        SerialHearbeat      = 68
+        CANBitRate          = 69
+        CANsendID           = 70
+        CANreceiveID        = 71
+        TelegramPauseTime   = 75
+        SerialHostAddress   = 76
+        AutoStartMode       = 77
+        TMCLCodeProtection  = 81
+        CANHeartbeat        = 82
+        CANSecondaryAddress = 83
+        eepromCoordinateStore          = 84
+        zeroUserVariables              = 85
+        serialSecondaryAddress         = 87
+        ApplicationStatus   = 128
+        ProgramCounter      = 130
+        TickTimer           = 132
+        RandomNumber        = 133
+        SuppressReply       = 255
+
+    class GP3:
+        timer_0                        = 0
+        timer_1                        = 1
+        timer_2                        = 2
+        stopLeft_0                     = 27
+        stopRight_0                    = 28
+        stopLeft_1                     = 29
+        stopRight_1                    = 30
+        stopLeft_2                     = 31
+        stopRight_2                    = 32
+        input_0                        = 39
+        input_1                        = 40
+        input_2                        = 41
+        input_3                        = 42
+
+    class IO:
+        OUT0   = 0
+        OUT1   = 1
+        OUT2   = 2
+        OUT3   = 3
+        IN0    = 0
+        IN1    = 1
+        IN2    = 2
+        IN3    = 3

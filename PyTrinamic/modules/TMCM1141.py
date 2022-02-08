@@ -5,14 +5,14 @@ from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRa
 from pytrinamic.features import StallGuard2Module, CoolStepModule
 
 
-class TMCM1140(TMCLModule):
+class TMCM1141(TMCLModule):
     """
-    The TMCM-1140 is a single axis stepper motor controller/driver module for sensorless load dependent current control.
+    The TMCM-1141 is a single axis stepper motor controller/driver module for sensorless load dependent current control.
             * Supply voltage: 9 - 28V
     """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-        self.name = "TMCM-1140"
+        self.name = "TMCM-1141"
         self.desc = self.__doc__
         self.motors = [self.Motor0(self, 0)]
 
@@ -50,8 +50,8 @@ class TMCM1140(TMCLModule):
             ActualPosition              = 1
             TargetVelocity              = 2
             ActualVelocity              = 3
-            MaxVelocity                 =  4
-            MaxAcceleration             =  5
+            MaxVelocity                 = 4
+            MaxAcceleration             = 5
             MaxCurrent                  = 6
             StandbyCurrent              = 7
             PositionReachedFlag         = 8
@@ -104,14 +104,7 @@ class TMCM1140(TMCLModule):
             LoadValue                   = 206
             ExtendedErrorFlags          = 207
             DrvStatusFlags              = 208
-            EncoderPosition             = 209
-            EncoderPrescaler            = 210
-            MaxEncoderDeviation         = 212
             PowerDownDelay              = 214
-            AbsoluteResolverValue       = 215
-            ExternalEncoderPosition     = 216
-            ExternalEncoderPrescaler    = 217
-            ExternalEncoderMaxDeviation = 218
 
         class ENUM:
             MicrostepResolutionFullstep      = 0
@@ -125,28 +118,26 @@ class TMCM1140(TMCLModule):
             MicrostepResolution256Microsteps = 8
 
     class GP0:
-        SerialBaudRate    = 65
-        SerialAddress     = 66
-        SerialHeartbeat   = 68
-        CANBitRate        = 69
-        CANsendID         = 70
-        CANreceiveID      = 71
-        TelegramPauseTime = 75
-        SerialHostAddress = 76
-        AutoStartMode     = 77
-        EndSwitchPolarity = 79
-        TMCLCodeProtection = 81
-        CANHeartbeat      = 82
-        CANSecondaryAddress  = 83
+        serialBaudRate                 = 65
+        serialAddress                  = 66
+        ASCIIMode                      = 67
+        serialHeartbeat                = 68
+        telegramPauseTime              = 75
+        serialHostAddress              = 76
+        autoStartMode                  = 77
+        limitSwitchPolarity            = 79
+        protectionMode                 = 81
         eepromCoordinateStore          = 84
         zeroUserVariables              = 85
         serialSecondaryAddress         = 87
         reverseShaftDirection          = 90
-        ApplicationStatus = 128
-        ProgramCounter    = 130
-        TickTimer         = 132
-        randomNumber      = 133
-        SuppressReply       = 255
+        applicationStatus              = 128
+        downloadMode                   = 129
+        programCounter                 = 130
+        lastTmclError                  = 131
+        tickTimer                      = 132
+        randomNumber                   = 133
+        SuppressReply                  = 255
 
     class GP3:
         timer_0                        = 0
@@ -158,11 +149,12 @@ class TMCM1140(TMCLModule):
         input_1                        = 40
         input_2                        = 41
         input_3                        = 42
-
+    
     class IO:
         OUT0 = 0
         OUT1 = 1
         IN0  = 0
         IN1  = 1
         IN2  = 2
-        IN3  = 3
+        IN3  = 4
+        

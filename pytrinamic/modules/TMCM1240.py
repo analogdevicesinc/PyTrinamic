@@ -2,6 +2,7 @@ from pytrinamic.modules import TMCLModule
 
 # features
 from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
+from pytrinamic.features import StallGuard2Module, CoolStepModule
 
 
 class TMCM1240(TMCLModule):
@@ -37,6 +38,9 @@ class TMCM1240(TMCLModule):
             self.drive_settings = DriveSettingModule(module, axis, self.AP)
             self.linear_ramp = LinearRampModule(module, axis, self.AP)
 
+            self.stallguard2 = StallGuard2Module(module, axis, self.AP)
+            self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
+
         def get_position_reached(self):
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
@@ -63,7 +67,7 @@ class TMCM1240(TMCLModule):
             StartVelocity                  = 19
             StopVelocity                   = 20
             RampWaitTime                   = 21
-            THIGH                          = 22
+            HighSpeedTheshold              = 22
             MinDcStepSpeed                 = 23
             RightLimitSwitchPolarity       = 24
             LeftLimitSwitchPolarity        = 25
@@ -88,7 +92,7 @@ class TMCM1240(TMCLModule):
             SECDS                          = 169
             SmartEnergyHysteresis          = 170
             SECUS                          = 171
-            smartEnergyHysteresisStart     = 172
+            SmartEnergyHysteresisStart     = 172
             SG2FilterEnable                = 173
             SG2Threshold                   = 174
             GlobalCurrentScaler            = 178
@@ -115,7 +119,7 @@ class TMCM1240(TMCLModule):
             ErrorFlags                     = 207  # ExtendedErrorFlags
             StatusFlags                    = 208  # DrvStatusFlags
             EncoderPosition                = 209
-            EncoderCleat                   = 210
+            EncoderClearOnNull             = 210
             MaxEncoderDeviation            = 212
             PowerDownDelay                 = 214
             AbsoluteResolverValue          = 215
@@ -124,49 +128,55 @@ class TMCM1240(TMCLModule):
             ExternalEncoderMaxDeviation    = 218
             ReverseShaft                   = 251
             StepDirectionMode              = 254
-            UnitMoode                      = 255
+            UnitMode                       = 255
 
         class ENUM:
-            FLAG_POSITION_END = 0x00004000
+            MicrostepResolutionFullstep      = 0
+            MicrostepResolutionHalfstep      = 1
+            MicrostepResolution4Microsteps   = 2
+            MicrostepResolution8Microsteps   = 3
+            MicrostepResolution16Microsteps  = 4
+            MicrostepResolution32Microsteps  = 5
+            MicrostepResolution64Microsteps  = 6
+            MicrostepResolution128Microsteps = 7
+            MicrostepResolution256Microsteps = 8
 
-    class GP:
+    class GP0:
+        SerialBaudRate                 = 65
+        SerialAddress                  = 66
+        SerialHeartbeat                = 68
+        CANBitRate                     = 69
+        CANsendID                      = 70
+        CANreceiveID                   = 71
+        TelegramPauseTime              = 75
+        SerialHostAddress              = 76
+        AutoStartMode                  = 77
+        ProtectionMode                 = 81
+        CANHeartbeat                   = 82
+        CANSecondaryAddress            = 83
+        EepromCoordinateStore          = 84
+        ZeroUserVariables              = 85
+        SerialSecondaryAddress         = 87
+        ApplicationStatus              = 128
+        DownloadMode                   = 129
+        ProgramCounter                 = 130
+        TickTimer                      = 132
+        RandomNumber                   = 133
+        SuppressReply                  = 255
+
+    class GP3:
         Timer_0                        = 0
         Timer_1                        = 1
         Timer_2                        = 2
         StopLeft_0                     = 27
         StopRight_0                    = 28
-        input_0                        = 39
+        Input_0                        = 39
         Input_1                        = 40
         Input_2                        = 41
         Input_3                        = 42
-        SerialBaudRate                 = 65
-        SerialAddress                  = 66
-        ASCIIMode                      = 67
-        SerialHeartbeat                = 68
-        TelegramPauseTime              = 75
-        SerialHostAddress              = 76
-        AutoStartMode                  = 77
-        LimitSwitchPolarity            = 79
-        ProtectionMode                 = 81
-        EepromCoordinateStore          = 84
-        ZeroUserVariables              = 85
-        SerialSecondaryAddress         = 87
-        ReverseShaftDirection          = 90
-        ApplicationStatus              = 128
-        DownloadMode                   = 129
-        ProgramCounter                 = 130
-        LastTmclError                  = 131
-        TickTimer                      = 132
-        RandomNumber                   = 133
-        Intpol                         = 255
 
-
-#    " StallGuard2 functions "
-#    def setStallguard2Filter(self, axis, enableFilter):
-#        self.setAxisParameter(self.APs.SG2FilterEnable, axis, enableFilter)
-
-#    def setStallguard2Threshold(self, axis, threshold):
-#        self.setAxisParameter(self.APs.SG2Threshold, axis, threshold)
-
-#    def setStopOnStallVelocity(self, axis, velocity):
-#        self.setAxisParameter(self.APs.smartEnergyStallVelocity, axis, velocity)
+    class IO:
+        OUT0 = 0
+        OUT1 = 1
+        IN0  = 0
+        IN1  = 1
