@@ -22,7 +22,7 @@ class TMC2209_eval(TMCLEval):
                 with a TMC2209. The required functions are
                     connection.writeDRV(registerAddress, value, moduleID)
                     connection.readDRV(registerAddress, moduleID, signed)
-                for writing/reading to registers of the TMC2209.
+                for writing/reading to register of the TMC2209.
             module_id:
                 Type: int, optional, default value: 1
                 The TMCL module ID of the TMC2209. This ID is used as a
@@ -32,7 +32,7 @@ class TMC2209_eval(TMCLEval):
         self.motors = [self.Motor0(self, 0)]
         self.ics = [TMC2209()]
 
-    # Use the driver controller channel for register access
+    # Use the driver controller functions for register access
 
     def write_register(self, register_address, value):
         return self._connection.write_drv(register_address, value, self._module_id)
@@ -49,21 +49,21 @@ class TMC2209_eval(TMCLEval):
 
     # Motion control functions
 
-    def rotate(self, axis, value):
-        self._connection.rotate(axis, value)
+    def rotate(self, motor, value):
+        self._connection.rotate(motor, value)
 
-    def stop(self, axis):
-        self._connection.stop(axis)
+    def stop(self, motor):
+        self._connection.stop(motor)
 
-    def move_to(self, axis, position, velocity=None):
+    def move_to(self, motor, position, velocity=None):
         if velocity and velocity != 0:
-            self.motors[axis].set_axis_parameter(self.motors[axis].AP.MaxVelocity, velocity)
-        self._connection.move_to(axis, position, self._module_id)
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
 
-    def move_by(self, axis, difference, velocity=None):
+    def move_by(self, motor, distance, velocity=None):
         if velocity:
-            self.motors[0].set_axis_parameter(self.motors[axis].AP.MaxVelocity, velocity)
-        self._connection.move_by(axis, difference, self._module_id)
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_by(motor, distance, self._module_id)
 
     class Motor0(MotorControlModule):
         def __init__(self, eval_board, axis):

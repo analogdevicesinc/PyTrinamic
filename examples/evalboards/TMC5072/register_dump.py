@@ -9,10 +9,10 @@ from pytrinamic.evalboards import TMC5072_eval
 
 pytrinamic.show_info()
 
-myInterface = ConnectionManager().connect()
-print(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
 
-eval_board = TMC5072_eval(myInterface)
+eval_board = TMC5072_eval(my_interface)
 mc = eval_board.ics[0]
 print("Motion controller info: " + str(mc.get_info()))
 print("Register dump for " + str(mc.get_name()) + ":")
@@ -83,6 +83,6 @@ print("MSCURACT_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.MSCURAC
 print("CHOPCONF_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.CHOPCONF_M2)))
 print("COOLCONF_M2:    0x{0:08X}".format(eval_board.read_register(mc.REG.COOLCONF_M2)))
 
-myInterface.close()
+my_interface.close()
 
 print("\nReady.")

@@ -8,14 +8,14 @@ pytrinamic.show_info()
 # please select a CAN or USB interface
 
 # CAN
-# myInterface = ConnectionManager("--interface pcan_tmcl").connect()
-# myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
+# my_interface = ConnectionManager("--interface pcan_tmcl").connect()
+# my_interface = ConnectionManager("--interface kvaser_tmcl").connect()
 
 # USB
-myInterface = ConnectionManager().connect()
+my_interface = ConnectionManager().connect()
 
-with myInterface:
-    module = TMCM1630(myInterface)
+with my_interface:
+    module = TMCM1630(my_interface)
     motor = module.motors[0]
 
     # Define motor configuration for the TMCM-1630.

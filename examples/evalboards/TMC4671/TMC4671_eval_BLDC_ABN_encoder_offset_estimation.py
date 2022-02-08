@@ -5,18 +5,17 @@ from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
 
-with myInterface:
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
 
-    if myInterface.supports_tmcl():
+    if my_interface.supports_tmcl():
         # Create an TMC4671 IC class which communicates over the Landungsbrücke via TMCL
-        eval_board = TMC4671_eval(myInterface)
+        eval_board = TMC4671_eval(my_interface)
         mc = eval_board.ics[0]
     else:
         # Create an TMC4671 IC class which communicates directly over UART
-        mc = TMC4671(myInterface)
+        mc = TMC4671(my_interface)
         # Use IC like an "EVAL" to use this example for both access variants
         eval_board = mc
 
@@ -154,7 +153,5 @@ with myInterface:
     print("estimated_encoder_offset: " + str(decoder_count_n_offset))
     print("max_velocity:" + str(max_velocity))
     print("min_velocity:" + str(min_velocity))
-
-    myInterface.close()
 
 print("\nReady.")

@@ -23,14 +23,14 @@ class TMC2300_eval(TMCLEval):
                 with a TMC2300. The required functions are
                     connection.writeDRV(registerAddress, value, moduleID)
                     connection.readDRV(registerAddress, moduleID, signed)
-                for writing/reading to registers of the TMC2300.
+                for writing/reading to register of the TMC2300.
             module_id:
                 Type: int, optional, default value: 1
                 The TMCL module ID of the TMC2300. This ID is used as a
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self.MotorTypeA(self, 0)]
         self.ics = [TMC2300()]
 
     # Use the driver controller functions for register access
@@ -43,7 +43,7 @@ class TMC2300_eval(TMCLEval):
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
-                                                                   field[1], field[2], value))
+                                   field[1], field[2], value))
 
     def read_register_field(self, field):
         return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
@@ -62,7 +62,7 @@ class TMC2300_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move(motor, position, self._module_id)
 
-    class Motor0(MotorControlModule):
+    class MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

@@ -9,10 +9,10 @@ from pytrinamic.evalboards import TMC5160_eval
 
 pytrinamic.show_info()
 
-myInterface = ConnectionManager().connect()
-print(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
 
-eval_board = TMC5160_eval(myInterface)
+eval_board = TMC5160_eval(my_interface)
 mc = eval_board.ics[0]
 
 print("GCONF:         0x{0:08X}".format(eval_board.read_register(mc.REG.GCONF)))
@@ -77,6 +77,6 @@ print("PWM_SCALE:     0x{0:08X}".format(eval_board.read_register(mc.REG.PWM_SCAL
 print("PWM_AUTO:      0x{0:08X}".format(eval_board.read_register(mc.REG.PWM_AUTO)))
 print("LOST_STEPS:    0x{0:08X}".format(eval_board.read_register(mc.REG.LOST_STEPS)))
 
-myInterface.close()
+my_interface.close()
 
 print("\nReady.")

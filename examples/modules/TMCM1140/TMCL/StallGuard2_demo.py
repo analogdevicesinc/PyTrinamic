@@ -6,15 +6,15 @@ import time
 pytrinamic.show_info()
 
 # for serial interface
-# myInterface = ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200").connect()
+# my_interface = ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200").connect()
 
 # for usb interface
-myInterface = ConnectionManager().connect()
+my_interface = ConnectionManager().connect()
 
-print(myInterface)
+print(my_interface)
 
-with myInterface:
-    module = TMCM1140(myInterface)
+with my_interface:
+    module = TMCM1140(my_interface)
     motor = module.motors[0]
 
     # The configuration is based on our PD42-1-1140-TMCL

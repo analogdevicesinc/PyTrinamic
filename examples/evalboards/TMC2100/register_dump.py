@@ -9,16 +9,16 @@ from pytrinamic.evalboards import TMC2100_eval
 
 pytrinamic.show_info()
 
-myInterface = ConnectionManager().connect()
-print(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
 
-eval_board = TMC2100_eval(myInterface)
+eval_board = TMC2100_eval(my_interface)
 drv = eval_board.ics[0]
 print("Driver info: " + str(drv.get_info()))
 print("Register dump for " + str(drv.get_name()) + ":")
 
 print("GCONF:       0x{0:08X}".format(eval_board.read_register(drv.REG.GCONF)))
 
-myInterface.close()
+my_interface.close()
 
 print("\nReady.")

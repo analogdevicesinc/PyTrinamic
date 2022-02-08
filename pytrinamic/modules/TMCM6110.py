@@ -13,8 +13,8 @@ class TMCM6110(TMCLModule):
         super().__init__(connection, module_id)
         self.name = "TMCM-6110"
         self.desc = self.__doc__
-        self.motors = [self.Motor0(self, 0), self.Motor0(self, 1), self.Motor0(self, 2),
-                       self.Motor0(self, 3), self.Motor0(self, 4), self.Motor0(self, 5)]
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1), self._MotorTypeA(self, 2),
+                       self._MotorTypeA(self, 3), self._MotorTypeA(self, 4), self._MotorTypeA(self, 5)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -33,7 +33,6 @@ class TMCM6110(TMCLModule):
         self.connection.move_by(axis, difference, self.module_id)
 
     class Motor0(MotorControlModule):
-
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)
             self.drive_settings = DriveSettingModule(module, axis, self.AP)

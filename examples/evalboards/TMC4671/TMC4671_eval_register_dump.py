@@ -10,17 +10,17 @@ from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
 
-if isinstance(myInterface, UartIcInterface):
+if isinstance(my_interface, UartIcInterface):
     # Create an TMC4671 IC class which communicates directly over UART
-    mc = TMC4671(myInterface)
+    mc = TMC4671(my_interface)
     # Use IC like an "EVAL" to use this example for both access variants
     eval_board = mc
 else:
     # Create an TMC4671 IC class which communicates over the Landungsbrücke via TMCL
-    eval_board = TMC4671_eval(myInterface)
+    eval_board = TMC4671_eval(my_interface)
     mc = eval_board.ics[0]
 
 print("CHIPINFO_DATA:                     0x{0:08X}".format(eval_board.read_register(mc.REG.CHIPINFO_DATA)))
@@ -133,4 +133,4 @@ print("GPIO_dsADCI_CONFIG:                0x{0:08X}".format(eval_board.read_regi
 print("STATUS_FLAGS:                      0x{0:08X}".format(eval_board.read_register(mc.REG.STATUS_FLAGS)))
 print("STATUS_MASK:                       0x{0:08X}".format(eval_board.read_register(mc.REG.STATUS_MASK)))
 
-myInterface.close()
+my_interface.close()
