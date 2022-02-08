@@ -1,5 +1,6 @@
 from .tmcl_eval import TMCLEval
 from .TMC2100_eval import TMC2100_eval
+from .TMC2130_eval import TMC2130_eval
 from .TMC2208_eval import TMC2208_eval
 from .TMC2209_eval import TMC2209_eval
 from .TMC2224_eval import TMC2224_eval
