@@ -7,12 +7,12 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5160_eval
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
 
-with myInterface:
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
+
     # Create TMC5160-EVAL class which communicates over the Landungsbrücke via TMCL
-    eval_board = TMC5160_eval(myInterface)
+    eval_board = TMC5160_eval(my_interface)
     mc = eval_board.ics[0]
     motor = eval_board.motors[0]
 

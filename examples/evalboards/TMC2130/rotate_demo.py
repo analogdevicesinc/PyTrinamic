@@ -7,12 +7,12 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC2130_eval
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
 
-with myInterface:
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
+
     # Create TMC2209-EVAL class which communicates over the Landungsbrücke via TMCL
-    eval_board = TMC2130_eval(myInterface)
+    eval_board = TMC2130_eval(my_interface)
     motor = eval_board.motors[0]
 
     print("Rotating...")
@@ -23,7 +23,7 @@ with myInterface:
     motor.stop()
     time.sleep(1)
 
-    print("Moving back to 0")
+    print("Moving back to 0...")
     motor.move_to(0, 10000)
 
     # Wait until position 0 is reached

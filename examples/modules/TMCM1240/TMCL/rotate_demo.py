@@ -4,11 +4,11 @@ from pytrinamic.modules import TMCM1240
 import time
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
 
-with myInterface:
-    module = TMCM1240(myInterface)
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
+
+    module = TMCM1240(my_interface)
     motor = module.motors[0]
 
     print("Preparing parameters...")

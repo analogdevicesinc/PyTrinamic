@@ -1,5 +1,6 @@
 from .TMC2100 import TMC2100
 from .TMC2130 import TMC2130
+from .TMC2160 import TMC2160
 from .TMC2208 import TMC2208
 from .TMC2209 import TMC2209
 from .TMC2224 import TMC2224

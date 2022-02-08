@@ -4,12 +4,12 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC2209_eval
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
 
-with myInterface:
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
+
     # Create TMC2209-EVAL class which communicates over the Landungsbrücke via TMCL
-    eval_board = TMC2209_eval(myInterface)
+    eval_board = TMC2209_eval(my_interface)
     motor = eval_board.motors[0]
 
     print("Rotating...")

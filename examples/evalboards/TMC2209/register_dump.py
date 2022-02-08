@@ -9,9 +9,9 @@ from pytrinamic.evalboards import TMC2209_eval
 
 pytrinamic.show_info()
 
-myInterface = ConnectionManager().connect()
-print(myInterface)
-eval_board = TMC2209_eval(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
+eval_board = TMC2209_eval(my_interface)
 drv = eval_board.ics[0]
 print("Driver info: " + str(drv.get_info()))
 print("Register dump for " + str(drv.get_name()) + ":")
@@ -37,6 +37,6 @@ print("PWMCONF:     0x{0:08X}".format(eval_board.read_register(drv.REG.PWMCONF))
 print("PWMSCALE:    0x{0:08X}".format(eval_board.read_register(drv.REG.PWM_SCALE)))
 print("PWMAUTO:     0x{0:08X}".format(eval_board.read_register(drv.REG.PWM_AUTO)))
 
-myInterface.close()
+my_interface.close()
 
 print("\nReady.")

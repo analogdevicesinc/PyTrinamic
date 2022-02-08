@@ -10,11 +10,11 @@ import time
 pytrinamic.show_info()
 
 # please select your CAN adapter
-# myInterface = ConnectionManager("--interface pcan_tmcl").connect()
-myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
+# my_interface = ConnectionManager("--interface pcan_tmcl").connect()
+my_interface = ConnectionManager("--interface kvaser_tmcl").connect()
 
-with myInterface:
-    module = TMC4671_LEV_REF(myInterface)
+with my_interface:
+    module = TMC4671_LEV_REF(my_interface)
     motor = module.motors[0]
 
     # Define motor configuration for the TMC4671-LEV-REF.

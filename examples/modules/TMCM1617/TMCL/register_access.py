@@ -3,13 +3,13 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1617
 
 pytrinamic.show_info()
-# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
+# connection_manager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connection_manager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-with connectionManager.connect() as myInterface:
+with connection_manager.connect() as my_interface:
 
     # the module
-    module = TMCM1617(myInterface)
+    module = TMCM1617(my_interface)
 
     # axis parameter based feature access
     motor = module.motors[0]

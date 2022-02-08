@@ -4,11 +4,11 @@ from pytrinamic.modules import TMCM1617
 import time
 
 pytrinamic.show_info()
-# connectionManager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-connectionManager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
+# connection_manager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
+connection_manager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
-with connectionManager.connect() as myInterface: 
-    module = TMCM1617(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM1617(my_interface)
     motor = module.motors[0]
 
     # Define motor configuration for the TMCM-1617.

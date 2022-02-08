@@ -9,10 +9,10 @@ from pytrinamic.evalboards import TMC5062_eval
 
 pytrinamic.show_info()
 
-myInterface = ConnectionManager().connect()
-print(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
 
-eval_board = TMC5062_eval(myInterface)
+eval_board = TMC5062_eval(my_interface)
 mc = eval_board.ics[0]
 print("Driver info: " + str(mc.get_info()))
 print("Register dump for " + str(mc.get_name()) + ":")
@@ -69,6 +69,6 @@ for i in range(2):
     print("\tCOOLCONF:    0x{0:08X}".format(eval_board.read_register(mc.REG.COOLCONF[i])))
     print("\tDRV_STATUS:  0x{0:08X}".format(eval_board.read_register(mc.REG.DRV_STATUS[i])))
 
-myInterface.close()
+my_interface.close()
 
 print("\nReady.")

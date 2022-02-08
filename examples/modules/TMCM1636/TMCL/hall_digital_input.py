@@ -6,11 +6,11 @@ import time
 pytrinamic.show_info()
 
 # please select your interface
-# myInterface = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200").connect()
-myInterface = ConnectionManager("--interface kvaser_tmcl --module-id 1").connect()
+# my_interface = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200").connect()
+my_interface = ConnectionManager("--interface kvaser_tmcl --module-id 1").connect()
 
-with myInterface:
-    module = TMCM1636(myInterface)
+with my_interface:
+    module = TMCM1636(my_interface)
     motor = module.motors[0]
 
     # Define motor configuration for the TMCM-1636.

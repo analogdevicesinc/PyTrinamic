@@ -10,13 +10,12 @@ from pytrinamic.evalboards import TMC2130_eval
 
 pytrinamic.show_info()
 
-myInterface = ConnectionManager().connect()
-print(myInterface)
-eval_board = TMC2130_eval(myInterface)
+my_interface = ConnectionManager().connect()
+print(my_interface)
+eval_board = TMC2130_eval(my_interface)
 drv = eval_board.ics[0]
 print("Driver info: " + str(drv.get_info()))
 print("Register dump for " + str(drv.get_name()) + ":")
-
 
 print("GCONF:       0x{0:08X}".format(eval_board.read_register(drv.REG.GCONF)))
 print("GSTAT:       0x{0:08X}".format(eval_board.read_register(drv.REG.GSTAT)))
@@ -43,6 +42,6 @@ print("PWM_SCALE:   0x{0:08X}".format(eval_board.read_register(drv.REG.PWM_SCALE
 print("ENCM_CTRL:   0x{0:08X}".format(eval_board.read_register(drv.REG.ENCM_CTRL)))
 print("LOST_STEPS:  0x{0:08X}".format(eval_board.read_register(drv.REG.LOST_STEPS)))
 
-myInterface.close()
+my_interface.close()
 
 print("\nReady.")

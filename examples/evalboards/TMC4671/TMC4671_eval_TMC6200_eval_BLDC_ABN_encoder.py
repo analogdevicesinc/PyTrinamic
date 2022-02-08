@@ -5,13 +5,13 @@ from pytrinamic.evalboards import TMC4671_eval, TMC6200_eval
 from pytrinamic.ic import TMC4671, TMC6200
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-print(myInterface)
 
-with myInterface:
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
+
     # Create TMC4671-EVAL and TMC6200-EVAL class which communicate over the Landungsbrücke via TMCL
-    mc_eval = TMC4671_eval(myInterface)
-    drv_eval = TMC6200_eval(myInterface)
+    mc_eval = TMC4671_eval(my_interface)
+    drv_eval = TMC6200_eval(my_interface)
 
     # Configure TMC6100 pwm for use with TMC4671 (disable singleline)
     drv_eval.write_register_field(TMC6200.FIELD.SINGLELINE, 0)
@@ -82,7 +82,5 @@ with myInterface:
     # Stop
     print("Stop...")
     mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, 0)
-
-    myInterface.close()
 
 print("\nReady.")
