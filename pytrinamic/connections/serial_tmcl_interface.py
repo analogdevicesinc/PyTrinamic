@@ -8,7 +8,7 @@ class SerialTmclInterface(TmclInterface):
     Opens a serial TMCL connection
     """
     def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False):
-        if type(com_port) != str:
+        if not isinstance(com_port, str):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, debug)

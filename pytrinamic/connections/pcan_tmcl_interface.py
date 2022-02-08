@@ -34,7 +34,7 @@ class PcanTmclInterface(TmclInterface):
     This class implements a TMCL connection over a PCAN adapter.
     """
     def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False):
-        if type(port) != str:
+        if not isinstance(port, str):
             raise TypeError
 
         if port not in _CHANNELS:

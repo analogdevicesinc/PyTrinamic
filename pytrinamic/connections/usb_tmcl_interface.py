@@ -48,9 +48,6 @@ class UsbTmclInterface(SerialTmclInterface):
         }
     ]
 
-    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False):
-        super().__init__(com_port, datarate, host_id, module_id, debug)
-
     @staticmethod
     def list():
         """

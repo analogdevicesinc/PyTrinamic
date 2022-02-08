@@ -13,7 +13,7 @@ class SocketcanTmclInterface(TmclInterface):
     sudo ip link set can0 down type can bitrate 1000000
     """
     def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False):
-        if type(port) != str:
+        if not isinstance(port, str):
             raise TypeError
 
         if port not in _CHANNELS:

@@ -11,7 +11,7 @@ class KvaserTmclInterface(TmclInterface):
     Try 0 as default channel.
     """
     def __init__(self, port=0, datarate=1000000, host_id=2, module_id=1, debug=False):
-        if type(port) != str:
+        if not isinstance(port, str):
             raise TypeError
 
         if port not in _CHANNELS:

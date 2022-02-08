@@ -1,6 +1,14 @@
 import sys
 import argparse
-from pytrinamic.connections import *
+
+from pytrinamic.connections import DummyTmclInterface
+from pytrinamic.connections import PcanTmclInterface
+from pytrinamic.connections import SocketcanTmclInterface
+from pytrinamic.connections import KvaserTmclInterface
+from pytrinamic.connections import SerialTmclInterface
+from pytrinamic.connections import UartIcInterface
+from pytrinamic.connections import UsbTmclInterface
+from pytrinamic.connections import SlcanTmclInterface
 
 
 class ConnectionManager:
@@ -83,6 +91,7 @@ class ConnectionManager:
     def __init__(self, arg_list=None, connection_type="any", debug=False):
         # Attributes
         self.__debug = debug
+        self.__connection = None
 
         arg_parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
         ConnectionManager.argparse(arg_parser)
@@ -92,7 +101,7 @@ class ConnectionManager:
                 print("Using arguments from the command line")
             arg_list = sys.argv
 
-        if type(arg_list) == str:
+        if isinstance(arg_list, str):
             arg_list = arg_list.split()
             if self.__debug:
                 print("Splitting string:", arg_list)
@@ -139,8 +148,8 @@ class ConnectionManager:
         # Data rate
         try:
             self.__data_rate = int(args.data_rate[0])
-        except ValueError:
-            raise ValueError("Invalid data rate: " + args.data_rate[0])
+        except ValueError as exc:
+            raise ValueError("Invalid data rate: " + args.data_rate[0]) from exc
         except TypeError:
             # No data rate has been set -> keep old value
             pass
@@ -148,14 +157,14 @@ class ConnectionManager:
         # Host ID
         try:
             self.__host_id = int(args.host_id[0])
-        except ValueError:
-            raise ValueError("Invalid host id: " + args.host_id[0])
+        except ValueError as exc:
+            raise ValueError("Invalid host id: " + args.host_id[0]) from exc
 
         # Module ID
         try:
             self.__module_id = int(args.module_id[0])
-        except ValueError:
-            raise ValueError("Invalid module id: " + args.module_id[0])
+        except ValueError as exc:
+            raise ValueError("Invalid module id: " + args.module_id[0]) from exc
 
         if self.__debug:
             print("Connection parameters:")
@@ -219,9 +228,9 @@ class ConnectionManager:
                 # Port string is a Number -> Use the n-th port
                 try:
                     port = port_list[tmp]
-                except IndexError:
+                except IndexError as exc:
                     raise ConnectionError("Couldn't connect to Port Number " + self.__port + ". Only "
-                                          + str(len(port_list)) + " ports available")
+                                          + str(len(port_list)) + " ports available") from exc
             except ValueError:
                 # Not a number -> port string gets passed to interface directly
                 # Do not check against the port list in this case. In certain
@@ -272,17 +281,16 @@ class ConnectionManager:
                 if selection == "r":
                     # Break out of the inner while True loop
                     break
-                elif selection == "x":
+                if selection == "x":
                     raise ConnectionError("Port selection aborted by user")
-                else:
-                    try:
-                        selection = int(selection)
-                        if not (1 <= selection <= len(port_list)):
-                            raise ValueError
+                try:
+                    selection = int(selection)
+                    if not (1 <= selection <= len(port_list)):
+                        raise ValueError
 
-                        return port_list[selection-1]
-                    except ValueError:
-                        continue
+                    return port_list[selection-1]
+                except ValueError:
+                    continue
 
     @staticmethod
     def argparse(arg_parser):

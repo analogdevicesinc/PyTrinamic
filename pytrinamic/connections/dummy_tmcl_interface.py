@@ -7,7 +7,7 @@ class DummyTmclInterface(TmclInterface):
         """
         Opens a dummy TMCL connection
         """
-        if type(port) != str:
+        if not isinstance(port, str):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, debug)

@@ -50,7 +50,7 @@ class TmclInterface(ABC):
         TMCL.validate_host_id(host_id)
         TMCL.validate_module_id(default_module_id)
 
-        if not type(debug) == bool:
+        if not isinstance(debug, bool):
             raise TypeError
 
         self._host_id = host_id
@@ -61,7 +61,7 @@ class TmclInterface(ABC):
         """
         Set the debug mode, which dumps all TMCL datagrams written and read.
         """
-        if type(enable) != bool:
+        if not isinstance(enable, bool):
             raise TypeError("Expected boolean value")
 
         self._debug = enable
@@ -114,8 +114,8 @@ class TmclInterface(ABC):
         Send a TMCL datagram and read back a reply. This function blocks until
         the reply has been received.
         """
-        if not(type(opcode) == type(op_type) == type(motor) == type(value) == int):
-            raise TypeError("Expected integer values")
+        if any(not isinstance(arg, int) for arg in [opcode, op_type, motor, value]):
+            raise TypeError("Expected integer values!")
 
         # If no module ID is given, use the default one
         if not module_id:

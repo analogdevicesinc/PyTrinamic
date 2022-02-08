@@ -13,7 +13,7 @@ class SlcanTmclInterface(TmclInterface):
     """
 
     def __init__(self, com_port, datarate=1000000, host_id=2, module_id=1, debug=True, serial_baudrate=115200):
-        if type(com_port) != str:
+        if not isinstance(com_port, str):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, debug)
