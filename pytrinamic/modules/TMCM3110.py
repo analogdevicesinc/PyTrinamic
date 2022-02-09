@@ -37,7 +37,6 @@ class TMCM3110(TMCLModule):
             MotorControlModule.__init__(self, module, axis, self.AP)
             self.drive_settings = DriveSettingModule(module, axis, self.AP)
             self.linear_ramp = LinearRampModule(module, axis, self.AP)
-
             self.stallguard2 = StallGuard2Module(module, axis, self.AP)
             self.coolstep = CoolStepModule(module, axis, self.AP, self.stallguard2)
 
