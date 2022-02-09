@@ -4,41 +4,41 @@ from pytrinamic.ic.tmc_ic import TMCIc
 class TMC5031(TMCIc):
     """
     The TMC5031 is a cost-effective dual stepper motion controller and driver IC with serial communication interface.
-    Supply voltage: 4,75 - 16V
+    Supply voltage: 4,75-16V
     """
     def __init__(self):
         TMCIc.__init__(self)
         self._name = "TMC5031"
         self._info = self.__doc__
 
-    #   # Motion Control functions
+#   # Motion Control functions
 
-    #    def rotate(self, motor, value):
-    #        if not(0 <= motor < self.MOTORS):
-    #            raise ValueError
+#    def rotate(self, motor, value):
+#        if not(0 <= motor < self.MOTORS):
+#            raise ValueError
 
-    #        self.writeRegister(self.registers.AMAX[motor], 1000, self.__channel)
+#        self.writeRegister(self.registers.AMAX[motor], 1000, self.__channel)
 
-    #        if value >= 0:
-    #            self.writeRegister(self.registers.VMAX[motor], value, self.__channel)
-    #            self.writeRegister(self.registers.RAMPMODE[motor], 1, self.__channel)
-    #        else:
-    #            self.writeRegister(self.registers.VMAX[motor], -value, self.__channel)
-    #            self.writeRegister(self.registers.RAMPMODE[motor], 2, self.__channel)
+#        if value >= 0:
+#            self.writeRegister(self.registers.VMAX[motor], value, self.__channel)
+#            self.writeRegister(self.registers.RAMPMODE[motor], 1, self.__channel)
+#        else:
+#            self.writeRegister(self.registers.VMAX[motor], -value, self.__channel)
+#            self.writeRegister(self.registers.RAMPMODE[motor], 2, self.__channel)
 
-    #    def stop(self, motor):
-    #        self.rotate(motor, 0)
+#    def stop(self, motor):
+#        self.rotate(motor, 0)
 
-    #    def moveTo(self, motor, position, velocity):
-    #        if not(0 <= motor < self.MOTORS):
-    #            raise ValueError
+#    def moveTo(self, motor, position, velocity):
+#        if not(0 <= motor < self.MOTORS):
+#            raise ValueError
 
-    #       self.writeRegister(self.registers.RAMPMODE[motor], 0, self.__channel)
+#        self.writeRegister(self.registers.RAMPMODE[motor], 0, self.__channel)
 
-    #        if velocity != 0:
-    #           self.writeRegister(self.registers.VMAX[motor], velocity, self.__channel)
+#        if velocity != 0:
+#            self.writeRegister(self.registers.VMAX[motor], velocity, self.__channel)
 
-    #        self.writeRegister(self.registers.XTARGET[motor], position, self.__channel)
+#        self.writeRegister(self.registers.XTARGET[motor], position, self.__channel)
 
     class REG:
         """
