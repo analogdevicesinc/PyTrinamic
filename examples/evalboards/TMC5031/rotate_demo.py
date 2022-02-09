@@ -1,10 +1,10 @@
 """
-Move a motor back and forth using velocity and position mode of the TMC5062
+Move a motor back and forth using velocity and position mode of the TMC5031
 """
 import time
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards import TMC5062_eval
+from pytrinamic.evalboards import TMC5031_eval
 
 pytrinamic.show_info()
 
@@ -12,7 +12,7 @@ with ConnectionManager().connect() as my_interface:
     print(my_interface)
 
     # Create TMC5062-EVAL class which communicates over the Landungsbrücke via TMCL
-    eval_board = TMC5062_eval(my_interface)
+    eval_board = TMC5031_eval(my_interface)
     mc = eval_board.ics[0]
     motor0 = eval_board.motors[0]
     print(motor0)
@@ -34,9 +34,9 @@ with ConnectionManager().connect() as my_interface:
     motor1.actual_position = 0
 
     print("Rotating...")
-    motor0.rotate(2 * 25600)
-    motor1.rotate(-4 * 25600)
-    time.sleep(5)
+    motor0.rotate(10 * 25600)
+    motor1.rotate(-15 * 25600)
+    time.sleep(3)
 
     print("Stopping...")
     motor0.stop()
@@ -44,7 +44,7 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(1)
 
     print("Moving back to 0...")
-    motor0.move_to(0, 100000)
+    motor0.move_to(0, 30000)
     motor1.move_to(0, 100000)
 
     # Wait until position 0 is reached by both motors

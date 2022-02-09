@@ -10,7 +10,7 @@ class TMC5062_eval(TMCLEval):
     """
     def __init__(self, connection, module_id=1):
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0), self.Motor0(self, 1)]
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1)]
         self.ics = [TMC5062()]
 
     # Use the motion controller channel for register access
@@ -42,7 +42,7 @@ class TMC5062_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

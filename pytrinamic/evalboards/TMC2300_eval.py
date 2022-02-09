@@ -33,7 +33,7 @@ class TMC2300_eval(TMCLEval):
         self.motors = [self.MotorTypeA(self, 0)]
         self.ics = [TMC2300()]
 
-    # Use the driver controller functions for register access
+    # Use the driver controller channel for register access
 
     def write_register(self, register_address, value):
         return self._connection.write_drv(register_address, value, self._module_id)

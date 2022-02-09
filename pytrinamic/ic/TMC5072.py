@@ -42,7 +42,6 @@ class TMC5072(TMCIc):
 #            LinearRampIC.__init__(self)
 #            CurrentIC.__init__(self)
 #            StallGuard2IC.__init__(self)
-            pass
 
         def read_axis_field(self, field, signed=False):
             """

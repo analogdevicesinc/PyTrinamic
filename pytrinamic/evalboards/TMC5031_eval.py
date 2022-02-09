@@ -1,109 +1,101 @@
-'''
-Created on 29.01.2020
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC5031
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
-@author: JM
-'''
 
-from pytrinamic.ic.TMC5031.TMC5031 import TMC5031
-
-class TMC5031_eval(TMC5031):
+class TMC5031_eval(TMCLEval):
     """
     This class represents a TMC5031 Evaluation board
+
+    Communication is done over the TMCL commands writeMC and readMC. An
+    implementation without TMCL may still use this class if these two functions
+    are provided properly.
     """
-    def __init__(self, connection):
-        TMC5031.__init__(self, channel=0)
-        self.__connection = connection
+    def __init__(self, connection, module_id=1):
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1)]
+        self.ics = [TMC5031()]
 
-        self.APs = _APs
-        
     # Use the motion controller channel for register access
-    def writeRegister(self, registerAddress, value, channel=0):
-        if channel != 0:
-            raise ValueError
 
-        return self.__connection.write_mc(registerAddress, value)
+    def write_register(self, register_address, value):
+        return self._connection.write_mc(register_address, value, self._module_id)
 
-    def readRegister(self, registerAddress, channel=0, signed=False):
-        if channel != 0:
-            raise ValueError
+    def read_register(self, register_address, signed=False):
+        return self._connection.read_mc(register_address, self._module_id, signed)
 
-        return self.__connection.read_mc(registerAddress, signed=signed)
-        # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                   field[1], field[2], value))
 
-        return self.__connection.get_axis_parameter(apType, axis)
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
+    # Motion control functions
 
-        self.__connection.set_axis_parameter(apType, axis, value)
-
-    # Motion Control functions
     def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.__connection.rotate(motor, value)
+        self._connection.rotate(motor, value)
 
     def stop(self, motor):
-        self.__connection.stop(motor)
+        self._connection.stop(motor)
 
-    def moveTo(self, motor, position, velocity=None):
+    def move_to(self, motor, position, velocity=None):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
-            self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
 
-        self.__connection.move(0, motor, position)
+    class _MotorTypeA(MotorControlModule):
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-class _APs():
-    TargetPosition                 = 0
-    ActualPosition                 = 1
-    TargetVelocity                 = 2
-    ActualVelocity                 = 3
-    MaxVelocity                    = 4
-    MaxAcceleration                = 5
-    MaxCurrent                     = 6
-    StandbyCurrent                 = 7
-    PositionReachedFlag            = 8
-    RightEndstop                   = 10
-    LeftEndstop                    = 11
-    AutomaticRightStop             = 12
-    AutomaticLeftStop              = 13
-    SW_MODE                        = 14
-    A1                             = 15
-    V1                             = 16
-    MaxDeceleration                = 17
-    D1                             = 18
-    StartVelocity                  = 19
-    StopVelocity                   = 20
-    RampWaitTime                   = 21
-    smartEnergyThresholdSpeed      = 22
-    THIGH                          = 23
-    VDCMIN                         = 24
-    HighSpeedFullstepMode          = 28
-    MicrostepResolution            = 140
-    ChopperBlankTime               = 162
-    ConstantTOffMode               = 163
-    DisableFastDecayComparator     = 164
-    ChopperHysteresisEnd           = 165
-    ChopperHysteresisStart         = 166
-    TOff                           = 167
-    SEIMIN                         = 168
-    SECDS                          = 169
-    smartEnergyHysteresis          = 170
-    SECUS                          = 171
-    smartEnergyHysteresisStart     = 172
-    SG2FilterEnable                = 173
-    SG2Threshold                   = 174
-    VSense                         = 179
-    smartEnergyActualCurrent       = 180
-    smartEnergyStallVelocity       = 181
-    RandomTOffMode                 = 184
-    ChopperSynchronization         = 185
-    LoadValue                      = 206
-    EncoderPosition                = 209
-    EncoderResolution              = 210
-    resetStall                     = 181
+        class AP:
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxAcceleration                = 5
+            MaxCurrent                     = 6
+            StandbyCurrent                 = 7
+            PositionReachedFlag            = 8
+            RightEndstop                   = 10
+            LeftEndstop                    = 11
+            AutomaticRightStop             = 12
+            AutomaticLeftStop              = 13
+            SW_MODE                        = 14
+            A1                             = 15
+            V1                             = 16
+            MaxDeceleration                = 17
+            D1                             = 18
+            StartVelocity                  = 19
+            StopVelocity                   = 20
+            RampWaitTime                   = 21
+            smartEnergyThresholdSpeed      = 22
+            THIGH                          = 23
+            VDCMIN                         = 24
+            HighSpeedFullstepMode          = 28
+            MicrostepResolution            = 140
+            ChopperBlankTime               = 162
+            ConstantTOffMode               = 163
+            DisableFastDecayComparator     = 164
+            ChopperHysteresisEnd           = 165
+            ChopperHysteresisStart         = 166
+            TOff                           = 167
+            SEIMIN                         = 168
+            SECDS                          = 169
+            smartEnergyHysteresis          = 170
+            SECUS                          = 171
+            smartEnergyHysteresisStart     = 172
+            SG2FilterEnable                = 173
+            SG2Threshold                   = 174
+            VSense                         = 179
+            smartEnergyActualCurrent       = 180
+            smartEnergyStallVelocity       = 181
+            RandomTOffMode                 = 184
+            ChopperSynchronization         = 185
+            LoadValue                      = 206
+            EncoderPosition                = 209
+            EncoderResolution              = 210
+            resetStall                     = 181

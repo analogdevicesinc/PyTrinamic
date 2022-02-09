@@ -8,6 +8,7 @@ from .TMC2225 import TMC2225
 from .TMC2300 import TMC2300
 from .TMC2590 import TMC2590
 from .TMC4671 import TMC4671
+from .TMC5031 import TMC5031
 from .TMC5062 import TMC5062
 from .TMC5072 import TMC5072
 from .TMC5160 import TMC5160

@@ -1,18 +1,18 @@
 """
-Dump all register values of the TMC5062 IC.
+Dump all register values of the TMC5031 IC.
 
 The connection to a Landungsbrücke is established over USB. TMCL commands are used for communicating with the IC.
 """
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards import TMC5062_eval
+from pytrinamic.evalboards import TMC5031_eval
 
 pytrinamic.show_info()
 
 my_interface = ConnectionManager().connect()
 print(my_interface)
 
-eval_board = TMC5062_eval(my_interface)
+eval_board = TMC5031_eval(my_interface)
 mc = eval_board.ics[0]
 print("Motion controller info: " + str(mc.get_info()))
 print("Register dump for " + str(mc.get_name()) + ":")
@@ -20,7 +20,7 @@ print("Register dump for " + str(mc.get_name()) + ":")
 print("GCONF:           0x{0:08X}".format(eval_board.read_register(mc.REG.GCONF)))
 print("GSTAT:           0x{0:08X}".format(eval_board.read_register(mc.REG.GSTAT)))
 print("SLAVECONF:       0x{0:08X}".format(eval_board.read_register(mc.REG.SLAVECONF)))
-print("INPUT:           0x{0:08X}".format(eval_board.read_register(mc.REG.INPUT_OUTPUT)))
+print("INPUT:           0x{0:08X}".format(eval_board.read_register(mc.REG.INPUT)))
 print("X_COMPARE:       0x{0:08X}".format(eval_board.read_register(mc.REG.X_COMPARE)))
 
 for i in range(2):
@@ -41,16 +41,9 @@ for i in range(2):
     print("\tIHOLD_IRUN:  0x{0:08X}".format(eval_board.read_register(mc.REG.IHOLD_IRUN[i])))
     print("\tVCOOLTHRS:   0x{0:08X}".format(eval_board.read_register(mc.REG.VCOOLTHRS[i])))
     print("\tVHIGH:       0x{0:08X}".format(eval_board.read_register(mc.REG.VHIGH[i])))
-    print("\tVDCMIN:      0x{0:08X}".format(eval_board.read_register(mc.REG.VDCMIN[i])))
     print("\tSW_MODE:     0x{0:08X}".format(eval_board.read_register(mc.REG.SW_MODE[i])))
     print("\tRAMP_STAT:   0x{0:08X}".format(eval_board.read_register(mc.REG.RAMP_STAT[i])))
     print("\tXLATCH:      0x{0:08X}".format(eval_board.read_register(mc.REG.XLATCH[i])))
-
-    print("\tENCMODE:     0x{0:08X}".format(eval_board.read_register(mc.REG.ENCMODE[i])))
-    print("\tX_ENC:       0x{0:08X}".format(eval_board.read_register(mc.REG.X_ENC[i])))
-    print("\tENC_CONST:   0x{0:08X}".format(eval_board.read_register(mc.REG.ENC_CONST[i])))
-    print("\tENC_STATUS:  0x{0:08X}".format(eval_board.read_register(mc.REG.ENC_STATUS[i])))
-    print("\tENC_LATCH:   0x{0:08X}".format(eval_board.read_register(mc.REG.ENC_LATCH[i])))
 
     print("\tMSLUT0:      0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT0[i])))
     print("\tMSLUT1:      0x{0:08X}".format(eval_board.read_register(mc.REG.MSLUT1[i])))
