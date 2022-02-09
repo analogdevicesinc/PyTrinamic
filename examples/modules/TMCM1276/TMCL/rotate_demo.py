@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-'''
-Move a motor back and forth using the TMCM1276 module
-
-Created on 18.11.2019
-
-@author: JM
-'''
-
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.TMCM1276 import TMCM1276
@@ -14,43 +5,41 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager()
+connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
-Module_1276 = TMCM1276(myInterface)
-
-DEFAULT_MOTOR = 0
+module = TMCM1276(myInterface)
+motor = module.motors[0]
 
 print("Preparing parameters")
-Module_1276.setMaxAcceleration(9000)
+motor.max_acceleration = 20000
 
 print("Rotating")
-Module_1276.rotate(40000)
+motor.rotate(50000)
 
-time.sleep(5);
+time.sleep(5)
 
 print("Stopping")
-Module_1276.stop()
+motor.stop()
 
-print("ActualPostion") 
-print(Module_1276.getActualPosition())
-time.sleep(5);
+print("ActualPostion = {}".format(motor.actual_position))
+
+time.sleep(5)
 
 print("Doubling moved distance")
-Module_1276.moveBy(Module_1276.getActualPosition(), 50000)
-Module_1276.getAxisParameter(Module_1276.AP.ActualPosition)
-while not(Module_1276.positionReached()):
+motor.move_by(motor.actual_position, 50000)
+while not(motor.get_position_reached()):
     pass
 
 print("Furthest point reached")
-print(Module_1276.getActualPosition())
+print("ActualPostion = {}".format(motor.actual_position))
 
 time.sleep(5)
 
 print("Moving back to 0")
-Module_1276.moveTo(0, 100000)
+motor.move_to(0, 100000)
 
 # Wait until position 0 is reached
-while not(Module_1276.positionReached()):
+while not(motor.get_position_reached()):
     pass
 
 print("Reached Position 0")

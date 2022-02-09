@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-'''
-Move a motor back and forth using the TMCM1370 module
-
-Created on 08.07.2020
-
-@author: JM
-'''
-
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.TMCM1370 import TMCM1370
@@ -14,46 +5,65 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager("--interface serial_tmcl")
+connectionManager = ConnectionManager("--interface serial_tmcl --port COM10 --data_rate 9600")
 myInterface = connectionManager.connect()
-Module_1370 = TMCM1370(myInterface)
+module = TMCM1370(myInterface)
+motor = module.motors[0]
 
-DEFAULT_MOTOR = 0
+# preparing drive settings
+motor.drive_settings.max_current = 50
+motor.drive_settings.standby_current = 0
+motor.drive_settings.boost_current = 0
+motor.drive_settings.microstep_resolution = motor.ENUM.MicrostepResolution256Microsteps
+print(motor.drive_settings)
 
-print("Preparing parameters")
-Module_1370.setMaxAcceleration(10000)
+# preparing linear ramp settings
+motor.linear_ramp.max_velocity = 20000
+motor.linear_ramp.max_acceleration = 40000
+print(motor.linear_ramp)
 
-print("Rotating")
-Module_1370.rotate(50000)
+time.sleep(1.0)
 
-time.sleep(2);
+# set move_by relative to the actual position
+motor.set_axis_parameter(motor.AP.RelativePositioningOption, 1)
 
-print("Stopping")
-Module_1370.stop()
+# clear position counter
+motor.actual_position = 0
 
-time.sleep(1);
+# start rotating motor for 5 sek
+print("Rotating...")
+motor.rotate(20000)
+time.sleep(5)
 
-print("Doubling moved distance")
-Module_1370.moveBy(Module_1370.getActualPosition(), 10000)
-while not(Module_1370.positionReached()):
-    print ("ActualPosition: %d" % Module_1370.getActualPosition())
-    print ("TargetPosition: %d" % Module_1370.getTargetPosition())
-    time.sleep(1)
-    pass
+# stop rotating motor
+print("Stopping...")
+motor.stop()
 
-print("Furthest point reached")
+# read actual position
+print("ActualPosition = {}".format(motor.actual_position))
+time.sleep(2)
 
-time.sleep(1)
+print("Doubling moved distance.")
+motor.move_by(motor.actual_position, 10000)
 
-print("Moving back to 0")
-Module_1370.moveTo(0, 10000)
+# wait till position_reached
+while not motor.get_position_reached():
+    print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+    time.sleep(0.2)
 
-# Wait until position 0 is reached
-while not(Module_1370.positionReached()):
-    pass
+print("Furthest point reached.")
+print("ActualPosition = {}".format(motor.actual_position))
 
-print("Reached Position 0")
+# short delay and move back to start
+time.sleep(3)
+print("Moving back to 0...")
+motor.move_to(0, 20000)
 
-print()
+# wait until position 0 is reached
+while not motor.get_position_reached():
+    print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+    time.sleep(0.2)
 
-myInterface.close()
+print("Reached position 0.")
+
+print("\nReady.")

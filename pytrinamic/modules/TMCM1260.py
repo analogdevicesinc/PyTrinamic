@@ -77,7 +77,7 @@ class TMCM1260(TMCLModule):
             MeasuredSpeed                  = 29
             PowerDownRamp                  = 31
             DcStepTime                     = 32
-            DcStepStallGuar d              = 33
+            DcStepStallGuard               = 33
             RelativePositioningOption      = 127
             MicrostepResolution            = 140
             Intpol                         = 160

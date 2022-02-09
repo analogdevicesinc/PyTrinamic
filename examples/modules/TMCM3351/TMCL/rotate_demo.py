@@ -1,16 +1,16 @@
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.TMCM6212 import TMCM6212
+from pytrinamic.modules.TMCM3351 import TMCM3351
 import time
 
 pytrinamic.show_info()
 
 connectionManager = ConnectionManager() # If no Interface is selected , the default interface is usb_tmcl
 with connectionManager.connect() as myInterface: 
-    module = TMCM6212(myInterface)
-    motor_0 = module.motors[0]  #Using motors 0, 3, and 5; change here to use different motors
-    motor_1 = module.motors[3]
-    motor_2 = module.motors[5]
+    module = TMCM3351(myInterface)
+    motor_0 = module.motors[0]
+    motor_1 = module.motors[1]
+    motor_2 = module.motors[2]
 
     # Please be sure not to use a too high current setting for your motor.
 

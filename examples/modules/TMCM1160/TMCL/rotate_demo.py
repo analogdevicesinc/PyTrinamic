@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-'''
-Move a motor back and forth using the TMCM1160 module
-
-Created on 22.05.2019
-
-@author: LH
-'''
-
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.TMCM1160 import TMCM1160
@@ -14,44 +5,75 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+#Using CAN interface (PEAK CAN interface)
+#for USB interface just comment out the next line
+connectionManager = ConnectionManager("--interface pcan_tmcl")
+
 myInterface = connectionManager.connect()
-Module_1160 = TMCM1160(myInterface)
 
-DEFAULT_MOTOR = 0
 
-print("Preparing parameters")
-Module_1160.setMaxAcceleration(1000)
+print(myInterface)
 
-print("Rotating")
-Module_1160.rotate(500)
+with myInterface:
+    module = TMCM1160(myInterface)
+    motor = module.motors[0]
 
-time.sleep(2);
+    # The configuration is based on our PD42-1-1160-TMCL
+    # If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
 
-print("Stopping")
-Module_1160.stop()
+    print("Preparing parameters...")
 
-time.sleep(1);
+    # preparing drive settings
+    motor.drive_settings.max_current = 1000
+    motor.drive_settings.standby_current = 0
+    motor.drive_settings.boost_current = 0
+    motor.drive_settings.microstep_resolution = motor.ENUM.MicrostepResolution256Microsteps
+    print(motor.drive_settings)
 
-print("Doubling moved distance")
-Module_1160.moveBy(Module_1160.getActualPosition(), 500)
-Module_1160.getAxisParameter(Module_1160.AP.ActualPosition)
-while not(Module_1160.positionReached()):
-    pass
+    # preparing linear ramp settings
+    motor.linear_ramp.max_acceleration = 1000
+    motor.linear_ramp.max_velocity = 1000
+    print(motor.linear_ramp)
 
-print("Furthest point reached")
+    time.sleep(1.0)
 
-time.sleep(1)
+    # clear position counter
+    motor.actual_position = 0
 
-print("Moving back to 0")
-Module_1160.moveTo(0, 1000)
+    # start rotating motor for 5 sek
+    print("Rotating...")
+    motor.rotate(1000)
+    time.sleep(5)
 
-# Wait until position 0 is reached
-while not(Module_1160.positionReached()):
-    pass
+    # stop rotating motor
+    print("Stopping...")
+    motor.stop()
 
-print("Reached Position 0")
+    # read actual position
+    print("ActualPosition = {}".format(motor.actual_position))
+    time.sleep(2)
 
-print()
+    print("Doubling moved distance.")
+    motor.move_by(motor.actual_position)
 
-myInterface.close()
+    # wait till position_reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
+
+    print("Furthest point reached.")
+    print("ActualPosition = {}".format(motor.actual_position))
+
+    # short delay and move back to start
+    time.sleep(3)
+    print("Moving back to 0...")
+    motor.move_to(0)
+
+    # wait until position 0 is reached
+    while not motor.get_position_reached():
+        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
+
+    print("Reached position 0.")
+
+print("\nReady.")

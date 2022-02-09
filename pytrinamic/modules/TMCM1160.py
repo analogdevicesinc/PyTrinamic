@@ -162,7 +162,7 @@ class TMCM1160(TMCLModule):
         input_1                        = 40
 
     class IO:
-				OUT0 = 0
-				OUT1 = 1
-				IN0  = 0
-				IN1  = 1
+        OUT0 = 0
+        OUT1 = 1
+        IN0  = 0
+        IN1  = 1

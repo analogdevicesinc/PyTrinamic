@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-'''
-Move a motor back and forth using the TMCM1270 module
-
-Created on 03.12.2019
-
-@author: JM
-'''
-
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.TMCM1270 import TMCM1270
@@ -14,10 +5,10 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager("--interface dummy_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
 myInterface = connectionManager.connect()
 module = TMCM1270(myInterface)
-motor = module.MOTORS[0]
+motor = module.motors[0]
 
 print("Preparing parameters")
 motor.max_acceleration = 20000
