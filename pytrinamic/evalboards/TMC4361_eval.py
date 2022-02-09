@@ -1,94 +1,75 @@
-'''
-Created on 06.02.2020
-
-@author: JM
-'''
-
-from pytrinamic.ic.TMC4331.TMC4331 import TMC4331
-
-class TMC4331_eval(TMC4331):
-
-    def __init__(self, connection, moduleID=1):
-        self.__connection = connection
-        self._MODULE_ID   = moduleID
-        self.APs          = _APs
-        
-        TMC4331.__init__(self, connection, channel=0)
-
-    def register(self):
-        return self.TMC4331.register()
-
-    def variants(self):
-        return self.TMC4331.variants()
-
-    def maskShift(self):
-        return self.TMC4331.maskShift()
-
-    def ic(self):
-        return self.TMC4331
-
-    " register access: use Landungsbrücke/Startrampe with MC channel"
-    def writeRegister(self, registerAddress, value , channel=0):
-        if channel != 0:
-            raise ValueError
-        return self.__connection.write_mc(registerAddress, value)
-
-    def readRegister(self, registerAddress, channel=0, signed=False):
-        if channel != 0:
-            raise ValueError
-        return self.__connection.read_mc(registerAddress, signed=signed)
-
-    # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        return self.__connection.get_axis_parameter(apType, axis)
-
-    def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        self.__connection.set_axis_parameter(apType, axis, value)
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC4361
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
 
-    # Motion Control functions
+class TMC4361_eval(TMCLEval):
+    """
+    This class represents a TMC4361 Evaluation board
+
+    Communication is done over the TMCL commands writeMC and readMC. An
+    implementation without TMCL may still use this class if these two functions
+    are provided properly.
+    """
+    def __init__(self, connection, module_id=1):
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self._MotorTypeA(self, 0)]
+        self.ics = [TMC4361()]
+
+    # Use the motion controller channel for register access
+
+    def write_register(self, register_address, value):
+        return self._connection.write_mc(register_address, value, self._module_id)
+
+    def read_register(self, register_address, signed=False):
+        return self._connection.read_mc(register_address, self._module_id, signed)
+
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                   field[1], field[2], value))
+
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
+
+    # Motion control functions
+
     def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.__connection.rotate(motor, value)
+        self._connection.rotate(motor, value)
 
     def stop(self, motor):
-        self.__connection.stop(motor)
+        self._connection.stop(motor)
 
-    def moveTo(self, motor, position, velocity=None):
+    def move_to(self, motor, position, velocity=None):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
-            self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
 
-        self.__connection.move(0, motor, position)
+    class _MotorTypeA(MotorControlModule):
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-class _APs():
-    TargetPosition                 = 0
-    ActualPosition                 = 1
-    TargetVelocity                 = 2
-    ActualVelocity                 = 3
-    MaxVelocity                    = 4
-    MaxAcceleration                = 5
-    PositionReachedFlag            = 8
-    RampType                       = 14
-    StartVelocity                  = 15
-    AStart                         = 16
-    MaxDeceleration                = 17
-    VBreak                         = 18
-    DFinal                         = 19
-    StopVelocity                   = 20
-    DSTOP                          = 21
-    BOW1                           = 22
-    BOW2                           = 23
-    BOW3                           = 24
-    BOW4                           = 25
-    VirtualStopLeft                = 26
-    VirtualStopRight               = 27
-    PowerDownDelay                 = 214
+        class AP:
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxAcceleration                = 5
+            PositionReachedFlag            = 8
+            RampType                       = 14
+            StartVelocity                  = 15
+            AStart                         = 16
+            MaxDeceleration                = 17
+            VBreak                         = 18
+            DFinal                         = 19
+            StopVelocity                   = 20
+            DSTOP                          = 21
+            BOW1                           = 22
+            BOW2                           = 23
+            BOW3                           = 24
+            BOW4                           = 25
+            VirtualStopLeft                = 26
+            VirtualStopRight               = 27
+            PowerDownDelay                 = 214
