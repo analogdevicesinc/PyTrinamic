@@ -1,40 +1,34 @@
-'''
-Created on 09.01.2019
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC5130
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
-@author: LK, ED, LH
-'''
+# from pytrinamic.features.linear_ramp_module import LinearRampModule
+# from pytrinamic.features.stallguard2_module import StallGuard2Module
+# from pytrinamic.features.CurrentModule import CurrentModule
 
-from pytrinamic.evalboards.TMC_EvalBoard import TMC_EvalBoard
-from pytrinamic.modules.tmcl_module import TMCLModule
-from pytrinamic.ic.TMC5130.TMC5130 import TMC5130
-from pytrinamic.features.linear_ramp_module import LinearRampModule
-from pytrinamic.features.stallguard2_module import StallGuard2Module
-from pytrinamic.features.CurrentModule import CurrentModule
-from pytrinamic.features.motor_control_module import MotorControlModule
 
-class TMC5130_eval(TMC_EvalBoard):
+class TMC5130_eval(TMCLEval):
     """
     This class represents a TMC5130 Evaluation board.
-
-    This can be used directly with the Landungsbruecke evaluation platform.
     """
 
-    __PIN_MAP = [
-        # (pin_ic, pin_board)
-        (2, 15),
-        (3, 22),
-        (4, 23),
-        (5, 24),
-        (7, 25),
-        (8, 9),
-        (9, 10),
-        (23, 4),
-        (24, 6),
-        (25, 5),
-        (26, 30),
-        (27, 29),
-        (28, 28)
-    ]
+#    __PIN_MAP = [
+#        # (pin_ic, pin_board)
+#        (2, 15),
+#        (3, 22),
+#        (4, 23),
+#        (5, 24),
+#        (7, 25),
+#        (8, 9),
+#        (9, 10),
+#        (23, 4),
+#        (24, 6),
+#        (25, 5),
+#        (26, 30),
+#        (27, 29),
+#        (28, 28)
+#    ]
 
     def __init__(self, connection, module_id=1):
         """
@@ -46,20 +40,50 @@ class TMC5130_eval(TMC_EvalBoard):
         between different modules on shared busses. Default is set to 1, different
         values have to be configured with the module first.
         """
-        super().__init__(connection, module_id, TMC5130(self, 0), self.EVAL_TYPES.MOTION_CONTROLLER)
-        self.MOTORS = [self.MOTOR_0(self, 0)]
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self.MotorTypeA(self, 0)]
+        self.ics = [TMC5130(self)]
 
-    class MOTOR_0(TMCLModule.Motor, LinearRampModule, StallGuard2Module, CurrentModule, MotorControlModule):
-        "Motor class for the motor on axis 0."
+    # Use the driver controller functions for register access
 
-        def __init__(self, module, axis):
-            TMCLModule.Motor.__init__(self, module, axis)
-            LinearRampModule.__init__(self)
-            StallGuard2Module.__init__(self)
-            CurrentModule.__init__(self)
+    def write_register(self, register_address, value):
+        return self._connection.write_mc(register_address, value, self._module_id)
 
-        class APs():
-            "Axis parameter map for this axis."
+    def read_register(self, register_address, signed=False):
+        return self._connection.read_mc(register_address, self._module_id, signed)
+
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                                                   field[1], field[2], value))
+
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
+
+    # Motion control functions
+
+    def rotate(self, motor, value):
+        self._connection.rotate(motor, value)
+
+    def stop(self, motor):
+        self._connection.stop(motor)
+
+    def move_to(self, motor, position, velocity=None):
+        if velocity and velocity != 0:
+            # Set maximum positioning velocity
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
+
+    class MotorTypeA(MotorControlModule):
+        """
+        Motor class for the generic motor.
+        """
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
+            # LinearRampModule.__init__(self)
+            # StallGuard2Module.__init__(self)
+            # CurrentModule.__init__(self)
+
+        class AP:
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2

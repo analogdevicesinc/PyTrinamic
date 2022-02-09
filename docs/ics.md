@@ -64,15 +64,18 @@ Change used IC `TMC5130` to your preferences. `X` is just a placeholder field.
 and `write_register(...)` functions implemented.
 
 ```Python
-from pytrinamic.ic.TMC5130.TMC5130 import TMC5130
+from pytrinamic.ic.TMC5130 import TMC5130
+
 
 class Handler(object):
-  def read_register(self, channel, address, signed=False):
-    # Platform specific implementation (SPI, UART, ...)
-    pass
-  def write_register(self, channel, address, value):
-    # Platform specific implementation (SPI, UART, ...)
-    pass
+    def read_register(self, channel, address, signed=False):
+        # Platform specific implementation (SPI, UART, ...)
+        pass
+
+    def write_register(self, channel, address, value):
+        # Platform specific implementation (SPI, UART, ...)
+        pass
+
 
 handler = Handler()
 channel = 0
@@ -94,15 +97,18 @@ Change used IC `TMC5130` to your preferences. `X` is just a placeholder field.
 and `write_register(...)` functions implemented.
 
 ```Python
-from pytrinamic.ic.TMC5130.TMC5130 import TMC5130
+from pytrinamic.ic.TMC5130 import TMC5130
+
 
 class Handler(object):
-  def read_register(self, channel, address, signed=False):
-    # Platform specific implementation (SPI, UART, ...)
-    pass
-  def write_register(self, channel, address, value):
-    # Platform specific implementation (SPI, UART, ...)
-    pass
+    def read_register(self, channel, address, signed=False):
+        # Platform specific implementation (SPI, UART, ...)
+        pass
+
+    def write_register(self, channel, address, value):
+        # Platform specific implementation (SPI, UART, ...)
+        pass
+
 
 handler = Handler()
 channel = 0

@@ -14,6 +14,7 @@ from .TMC5031_eval import TMC5031_eval
 from .TMC5041_eval import TMC5041_eval
 from .TMC5062_eval import TMC5062_eval
 from .TMC5072_eval import TMC5072_eval
+from .TMC5130_eval import TMC5130_eval
 from .TMC5160_eval import TMC5160_eval
 from .TMC6100_eval import TMC6100_eval
 from .TMC6200_eval import TMC6200_eval

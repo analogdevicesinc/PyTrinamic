@@ -13,6 +13,7 @@ from .TMC5031 import TMC5031
 from .TMC5041 import TMC5041
 from .TMC5062 import TMC5062
 from .TMC5072 import TMC5072
+from .TMC5130 import TMC5130
 from .TMC5160 import TMC5160
 from .TMC6100 import TMC6100
 from .TMC6200 import TMC6200

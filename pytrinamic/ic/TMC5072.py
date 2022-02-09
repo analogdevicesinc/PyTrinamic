@@ -1,6 +1,6 @@
 from pytrinamic.ic.tmc_ic import TMCIc
 
-# Features
+# features
 from pytrinamic.features.motor_control import MotorControl
 from pytrinamic.features.LinearRampIC import LinearRampIC
 from pytrinamic.features.CurrentIC import CurrentIC
@@ -11,7 +11,7 @@ from pytrinamic.helpers import TMC_helpers
 class TMC5072(TMCIc):
     """
     The TMC5072 is a high-performance stepper motor controller and driver IC with serial communication interfaces.
-    Supply voltage: 5 - 28V."
+    Supply voltage: 5-28V
     """
     def __init__(self, parent_eval):
         """
@@ -29,9 +29,9 @@ class TMC5072(TMCIc):
         self._parent = parent_eval
         self._name = "TMC5072"
         self._info = self.__doc__
-        self.motors = [self.Motor(parent_eval, self, 0), self.Motor(parent_eval, self, 1)]
+        self.motors = [self.MotorTypeA(parent_eval, self, 0), self.MotorTypeA(parent_eval, self, 1)]
 
-    class Motor(MotorControl):
+    class MotorTypeA(MotorControl):
         """
         Motor class for the generic motor.
         """
@@ -51,7 +51,6 @@ class TMC5072(TMCIc):
             same meaning for different axes are available.
 
             Parameters:
-            axis: Axis index.
             field: Base register field for any axis.
 
             Returns: Value of the target register field for the given axis.
@@ -67,7 +66,6 @@ class TMC5072(TMCIc):
             same meaning for different axes are available.
 
             Parameters:
-            axis: Axis index.
             field: Base register field for any axis.
             value: Value to write to the target register field for this axis.
             """
@@ -80,7 +78,7 @@ class TMC5072(TMCIc):
             Rotates the motor with the given velocity.
 
             Parameters:
-                velocity: Target velocity to rotate the motor with. Units are IC specific.
+            velocity: Target velocity to rotate the motor with. Units are IC specific.
 
             Returns: None
             """
@@ -96,6 +94,8 @@ class TMC5072(TMCIc):
         def stop(self):
             """
             Stops the motor.
+
+            Parameters:
 
             Returns: None
             """
@@ -155,7 +155,7 @@ class TMC5072(TMCIc):
         def get_actual_velocity(self):
             return self.read_axis_field(self._ic.FIELD.VACTUAL, True)
 
-        # Properties
+        # properties
         target_position = property(get_target_position, set_target_position)
         actual_position = property(get_actual_position, set_actual_position)
         target_velocity = property(get_target_velocity, set_target_velocity)

@@ -3,27 +3,27 @@ from pytrinamic.ic import TMC5072
 from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
 
-#from pytrinamic.features.linear_ramp_module import LinearRampModule
-#from pytrinamic.features.stallguard2_module import StallGuard2Module
-#from pytrinamic.features.CurrentModule import CurrentModule
+# from pytrinamic.features.linear_ramp_module import LinearRampModule
+# from pytrinamic.features.stallguard2_module import StallGuard2Module
+# from pytrinamic.features.CurrentModule import CurrentModule
 
 
 class TMC5072_eval(TMCLEval):
     """
-    This class represents a TMC5072 Evaluation board
+    This class represents a TMC5072 Evaluation board.
     """
     def __init__(self, connection, module_id=1):
         """
         Constructor for the TMC5130 evalboard instance.
 
         Parameters:
-            connection: TMCL connection interface instance.
-            module_id: Module ID to identify the evalboard module. This is used to differentiate
-                       between different modules on shared busses. Default is set to 1, different
-            values have to be configured with the module first.
+        connection: TMCL connection interface instance.
+        module_id: Module ID to identify the evalboard module. This is used to differentiate
+        between different modules on shared busses. Default is set to 1, different
+        values have to be configured with the module first.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0), self.Motor0(self, 1)]
+        self.motors = [self.MotorTypeA(self, 0), self.MotorTypeA(self, 1)]
         self.ics = [TMC5072(self)]
 
     # Use the driver controller functions for register access
@@ -41,7 +41,7 @@ class TMC5072_eval(TMCLEval):
     def read_register_field(self, field):
         return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    # Motion Control functions
+    # Motion control functions
 
     def rotate(self, motor, value):
         self._connection.rotate(motor, value)
@@ -55,25 +55,15 @@ class TMC5072_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-#    def moveBy(self, motor, distance, velocity):
-#        if not(0 <= motor < self.MOTORS):
-#            raise ValueError
-
-#        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
-
-#        self.moveTo(motor, position + distance, velocity)
-
-#        return position + distance
-
-    class Motor0(MotorControlModule):
+    class MotorTypeA(MotorControlModule):
         """
         Motor class for the generic motor.
         """
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
-            #LinearRampModule.__init__(self)
-            #StallGuard2Module.__init__(self)
-            #CurrentModule.__init__(self)
+            # LinearRampModule.__init__(self)
+            # StallGuard2Module.__init__(self)
+            # CurrentModule.__init__(self)
 
         class AP:
             TargetPosition                 = 0
