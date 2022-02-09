@@ -59,6 +59,19 @@ class TMCM_3110():
 
         return position
 
+    def startReferenceSearch(self, motor, mode=None):
+        """Start the reference search for `motor` in `mode`."""
+        if mode:
+            self.setReferenceSearchMode(motor, mode)
+        self.connection.referenceSearch(0, motor)
+
+    def stopReferenceSearch(self, motor):
+        self.connection.referenceSearch(1, motor)
+
+    def getReferenceSearchStatus(self, motor):
+        """Get the status, whether reference search is active."""
+        return self.connection.referenceSearch(2, motor)
+
     # Current control functions
     def setMotorRunCurrent(self, motor, current):
         self.setMaxCurrent(motor, current)
@@ -121,6 +134,15 @@ class TMCM_3110():
 
     def setRampMode(self, motor, mode):
         return self.setAxisParameter(self.APs.RampMode, motor, mode)
+
+    def setReferenceSearchMode(self, motor, mode):
+        return self.setAxisParameter(self.APs.ReferenceSearchMode, motor, mode)
+
+    def setReferenceSearchSpeed(self, motor, speed):
+        return self.setAxisParameter(self.APs.ReferenceSearchSpeed, motor, speed)
+
+    def setReferenceSwitchSpeed(self, motor, speed):
+        return self.setAxisParameter(self.APs.ReferenceSwitchSpeed, motor, speed)
 
     # Status functions
     def getStatusFlags(self, motor):
