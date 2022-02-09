@@ -12,24 +12,6 @@ class TMC5130_eval(TMCLEval):
     """
     This class represents a TMC5130 Evaluation board.
     """
-
-#    __PIN_MAP = [
-#        # (pin_ic, pin_board)
-#        (2, 15),
-#        (3, 22),
-#        (4, 23),
-#        (5, 24),
-#        (7, 25),
-#        (8, 9),
-#        (9, 10),
-#        (23, 4),
-#        (24, 6),
-#        (25, 5),
-#        (26, 30),
-#        (27, 29),
-#        (28, 28)
-#    ]
-
     def __init__(self, connection, module_id=1):
         """
         Constructor for the TMC5130 evalboard instance.
@@ -41,7 +23,7 @@ class TMC5130_eval(TMCLEval):
         values have to be configured with the module first.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC5130(self)]
 
     # Use the driver controller functions for register access
@@ -73,7 +55,7 @@ class TMC5130_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-    class MotorTypeA(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         """
         Motor class for the generic motor.
         """

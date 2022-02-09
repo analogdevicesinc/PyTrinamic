@@ -11,10 +11,9 @@ class TMC4671_LEV_REF(TMCLModule):
     """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-
         self.name = "TMC4671-LEV-REF"
         self.desc = self.__doc__
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -32,7 +31,7 @@ class TMC4671_LEV_REF(TMCLModule):
             self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
 
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)

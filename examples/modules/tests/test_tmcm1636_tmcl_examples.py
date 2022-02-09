@@ -25,13 +25,13 @@ class MockTmclInterface:
         pass
 
     def get_axis_parameter(self, type, axis, module_id, signed):
-        if type == TMCM1636.Motor0.AP.PositionReachedFlag:
+        if type == TMCM1636._MotorTypeA.AP.PositionReachedFlag:
             self._position_reached_toggle ^= True
             if self._position_reached_toggle:
                 return 1
             else:
                 return 0
-        elif type == TMCM1636.Motor0.AP.RightStopSwitch or type == TMCM1636.Motor0.AP.LeftStopSwitch:
+        elif type == TMCM1636._MotorTypeA.AP.RightStopSwitch or type == TMCM1636._MotorTypeA.AP.LeftStopSwitch:
             self._position_reached_toggle ^= True
             if self._digital_input_toggle:
                 return 1

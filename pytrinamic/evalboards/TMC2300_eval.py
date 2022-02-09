@@ -30,7 +30,7 @@ class TMC2300_eval(TMCLEval):
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC2300()]
 
     # Use the driver controller channel for register access
@@ -62,7 +62,7 @@ class TMC2300_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-    class MotorTypeA(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

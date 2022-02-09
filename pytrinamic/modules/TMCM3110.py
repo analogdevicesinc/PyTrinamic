@@ -13,7 +13,7 @@ class TMCM3110(TMCLModule):
         super().__init__(connection, module_id)
         self.name = "TMCM-3110"
         self.desc = self.__doc__
-        self.motors = [self.Motor0(self, 0), self.Motor0(self, 1), self.Motor0(self, 2)]
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1), self._MotorTypeA(self, 2)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -31,7 +31,7 @@ class TMCM3110(TMCLModule):
             self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
 
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)

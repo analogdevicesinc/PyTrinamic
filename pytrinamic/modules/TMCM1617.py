@@ -15,7 +15,7 @@ class TMCM1617(TMCLModule):
 
         self.name = "TMCM-1617"
         self.desc = self.__doc__
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC4671(), TMC6200()]
 
     def rotate(self, axis, velocity):
@@ -47,7 +47,7 @@ class TMCM1617(TMCLModule):
     def read_register_field(self, ic_id, field):
         return TMC_helpers.field_get(self.read_register(ic_id, field[0]), field[1], field[2])
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
 
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)

@@ -7,7 +7,7 @@ from pytrinamic.helpers import TMC_helpers
 class TMC6300_eval(TMCLEval):
     def __init__(self, connection, module_id=1):
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC6300()]
 
     # Motion control functions
@@ -18,7 +18,7 @@ class TMC6300_eval(TMCLEval):
     def stop(self, motor):
         self._connection.stop(motor)
 
-    class MotorTypeA(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

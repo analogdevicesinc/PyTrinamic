@@ -26,7 +26,7 @@ class MockTmclInterface:
         pass
 
     def get_axis_parameter(self, type, axis, module_id, signed):
-        if type == TMCM1617.Motor0.AP.PositionReachedFlag:
+        if type == TMCM1617._MotorTypeA.AP.PositionReachedFlag:
             self._position_reached_toggle ^= True
             if self._position_reached_toggle:
                 return 1

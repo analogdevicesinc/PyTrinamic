@@ -14,7 +14,7 @@ class TMCC160(TMCLModule):
 
         self.name = "TMCC-160"
         self.desc = self.__doc__
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)
@@ -32,7 +32,7 @@ class TMCC160(TMCLModule):
             self.motors[0].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
 
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)

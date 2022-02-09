@@ -30,7 +30,7 @@ class TMC7300_eval(TMCLEval):
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC7300(connection)]
 
     # Use the driver controller channel for register access
@@ -56,7 +56,7 @@ class TMC7300_eval(TMCLEval):
     def stop(self, motor):
         self._connection.stop(motor)
 
-    class MotorTypeA(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

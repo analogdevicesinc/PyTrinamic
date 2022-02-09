@@ -29,7 +29,7 @@ class TMC5160_eval(TMCLEval):
                 parameter for the writeMC and readMC functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC5160()]
 
     # Use the motion controller functions for register access
@@ -61,7 +61,7 @@ class TMC5160_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

@@ -19,18 +19,18 @@ class TMC2224_eval(TMCLEval):
         Parameters:
             connection:
                 Type: class
-                A class that provides the neccessary functions for communicating
+                A class that provides the necessary functions for communicating
                 with a TMC2224. The required functions are
                     connection.writeDRV(registerAddress, value, moduleID)
                     connection.readDRV(registerAddress, moduleID, signed)
-                for writing/reading to registers of the TMC2224.
+                for writing/reading to register of the TMC2224.
             module_id:
                 Type: int, optional, default value: 1
                 The TMCL module ID of the TMC2224. This ID is used as a
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC2224()]
 
     # Use the driver controller functions for register access
@@ -62,17 +62,7 @@ class TMC2224_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move(motor, position, self._module_id)
 
-#    def moveBy(self, motor, distance, velocity):
-#        if not(0 <= motor < self.MOTORS):
-#            raise ValueError
-
-#        position = self.readRegister(self.registers.XACTUAL, self.__channel, signed=True)
-
-#        self.moveTo(motor, position + distance, velocity)
-
-#        return position + distance
-
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

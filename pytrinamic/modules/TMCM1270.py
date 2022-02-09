@@ -13,7 +13,7 @@ class TMCM1270(TMCLModule):
         super().__init__(connection, module_id)
         self.name = "TMCM-1270"
         self.desc = self.__doc__
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0)]
 
     def rotate(self, axis, velocity):
         """
@@ -72,7 +72,7 @@ class TMCM1270(TMCLModule):
             self.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
-    class Motor0(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         "Motor class for the motor on axis 0."
 
         def __init__(self, module, axis):

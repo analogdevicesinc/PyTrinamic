@@ -23,7 +23,7 @@ class TMC5072_eval(TMCLEval):
         values have to be configured with the module first.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.MotorTypeA(self, 0), self.MotorTypeA(self, 1)]
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1)]
         self.ics = [TMC5072(self)]
 
     # Use the driver controller functions for register access
@@ -55,7 +55,7 @@ class TMC5072_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-    class MotorTypeA(MotorControlModule):
+    class _MotorTypeA(MotorControlModule):
         """
         Motor class for the generic motor.
         """
