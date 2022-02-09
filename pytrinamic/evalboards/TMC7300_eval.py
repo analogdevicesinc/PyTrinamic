@@ -1,12 +1,10 @@
-'''
-Created on 30.03.2020
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC7300
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
-@author: JM
-'''
 
-from pytrinamic.ic.TMC7300.TMC7300 import TMC7300
-
-class TMC7300_eval(TMC7300):
+class TMC7300_eval(TMCLEval):
     """
     This class represents a TMC7300 Evaluation board.
 
@@ -16,78 +14,62 @@ class TMC7300_eval(TMC7300):
     requirements.
     """
     
-    def __init__(self, connection, moduleID=1):
+    def __init__(self, connection, module_id=1):
         """
         Parameters:
             connection:
                 Type: class
-                A class that provides the neccessary functions for communicating
+                A class that provides the necessary functions for communicating
                 with a TMC7300. The required functions are
                     connection.writeDRV(registerAddress, value, moduleID)
                     connection.readDRV(registerAddress, moduleID, signed)
-                for writing/reading to registers of the TMC7300.
-            moduleID:
+                for writing/reading to register of the TMC7300.
+            module_id:
                 Type: int, optional, default value: 1
                 The TMCL module ID of the TMC7300. This ID is used as a
                 parameter for the writeDRV and readDRV functions.
         """
-        TMC7300.__init__(self, moduleID)
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self.MotorTypeA(self, 0)]
+        self.ics = [TMC7300(connection)]
 
-        self.__connection = connection
-        self._MODULE_ID = moduleID
-        
-        self.APs = _APs
+    # Use the driver controller channel for register access
 
-    # Use the driver controller functions for register access
-    def writeRegister(self, registerAddress, value, moduleID=None):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+    def write_register(self, register_address, value):
+        return self._connection.write_drv(register_address, value, self._module_id)
 
-        return self.__connection.write_drv(registerAddress, value, moduleID)
+    def read_register(self, register_address, signed=False):
+        return self._connection.read_drv(register_address, self._module_id, signed)
 
-    def readRegister(self, registerAddress, moduleID=None, signed=False):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                   field[1], field[2], value))
 
-        return self.__connection.read_drv(registerAddress, moduleID, signed)
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
+    # Motion control functions
 
-        return self.__connection.get_axis_parameter(apType, axis)
-
-    def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        self.__connection.set_axis_parameter(apType, axis, value)
-
-    # Motion Control functions
     def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.__connection.rotate(motor, value, moduleID=self._MODULE_ID)
+        self._connection.rotate(motor, value)
     
     def stop(self, motor):
-        self.__connection.stop(motor, moduleID=self._MODULE_ID)
-    
-    def ICStandby(self, motor, value):
-        self.setAxisParameter(self.APs.ICStandby, motor, value)
-        
+        self._connection.stop(motor)
 
+    class MotorTypeA(MotorControlModule):
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-class _APs():
-    PWMDutyA                       = 0
-    PWMDutyB                       = 1
-    MaxCurrent                     = 6
-    ICStandby                      = 7
-    PWMTwoMotors                   = 8
-    ChopperBlankTime               = 162
-    PWMFrequency                   = 191
-    PWMAutoscale                   = 192
-    FreewheelingMode               = 204
+        def set_standby_current(self, motor, value):
+            self.set_axis_parameter(self.AP.ICStandby, value)
+
+        class AP:
+            PWMDutyA                       = 0
+            PWMDutyB                       = 1
+            MaxCurrent                     = 6
+            ICStandby                      = 7
+            PWMTwoMotors                   = 8
+            ChopperBlankTime               = 162
+            PWMFrequency                   = 191
+            PWMAutoscale                   = 192
+            FreewheelingMode               = 204

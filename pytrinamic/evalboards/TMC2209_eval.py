@@ -29,7 +29,7 @@ class TMC2209_eval(TMCLEval):
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self.MotorTypeA(self, 0)]
         self.ics = [TMC2209()]
 
     # Use the driver controller functions for register access
@@ -65,7 +65,7 @@ class TMC2209_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_by(motor, distance, self._module_id)
 
-    class Motor0(MotorControlModule):
+    class MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

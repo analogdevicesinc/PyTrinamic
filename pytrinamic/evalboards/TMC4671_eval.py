@@ -10,7 +10,7 @@ class TMC4671_eval(TMCLEval):
     """
     def __init__(self, connection, module_id=1):
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self.MotorTypeA(self, 0)]
         self.ics = [TMC4671(connection)]
 
     # Use the motion controller channel for register access
@@ -28,7 +28,7 @@ class TMC4671_eval(TMCLEval):
     def read_register_field(self, field):
         return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    class Motor0(MotorControlModule):
+    class MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

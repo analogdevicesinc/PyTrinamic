@@ -38,7 +38,7 @@ class TMC4671(TMCIc):
 
     class REG:
         """
-        Defines all registers of the TMC4671.
+        Define all register of the TMC4671.
         """
         CHIPINFO_DATA                       = 0x00
         CHIPINFO_ADDR                       = 0x01

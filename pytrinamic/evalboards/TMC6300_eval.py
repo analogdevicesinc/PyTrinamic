@@ -1,68 +1,51 @@
-'''
-Created on 17.04.2020
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC6300
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
-@author: JM
-'''
 
-from pytrinamic.ic.TMC6300.TMC6300 import TMC6300
+class TMC6300_eval(TMCLEval):
+    def __init__(self, connection, module_id=1):
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self.MotorTypeA(self, 0)]
+        self.ics = [TMC6300()]
 
-class TMC6300_eval(TMC6300):
-    def __init__(self, connection, moduleID=1):
+    # Motion control functions
 
-        TMC6300.__init__(self, moduleID)
-
-        self.__connection = connection
-        self._MODULE_ID = moduleID
-
-        self.APs = _APs
-
-    # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        return self.__connection.get_axis_parameter(apType, axis)
-
-    def setAxisParameter(self, apType, axis, value):
-        if not(0 <= axis < self.MOTORS):
-            raise ValueError("Axis index out of range")
-
-        self.__connection.set_axis_parameter(apType, axis, value)
-
-    # Motion Control functions
     def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.__connection.rotate(motor, value, moduleID=self._MODULE_ID)
-
-    def setTargetPWM(self, motor, value):
-        self.setAxisParameter(self.APs.TargetPWM, motor, value)
+        self._connection.rotate(motor, value)
 
     def stop(self, motor):
-        self.__connection.stop(motor, moduleID=self._MODULE_ID)
+        self._connection.stop(motor)
 
-    def setCommutationMode(self, motor, value):
-        self.setAxisParameter(self.APs.CommutationMode, motor, value)
+    class MotorTypeA(MotorControlModule):
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-    def ICStandby(self, motor, value):
-        self.setAxisParameter(self.APs.ICStandby, motor, value)
+        def set_target_pwm(self, value):
+            self.set_axis_parameter(self.AP.TargetPWM, value)
 
-    def setHallDirection(self, motor, value):
-        self.setAxisParameter(self.APs.HallDirection, motor, value)
+        def set_commutation_mode(self, value):
+            self.set_axis_parameter(self.AP.CommutationMode, value)
 
-    def setHallOrder(self, motor, value):
-        self.setAxisParameter(self.APs.HallOrder, motor, value)
+        def set_standby_current(self, value):
+            self.set_axis_parameter(self.AP.ICStandby, value)
 
-class _APs():
-    ActualControlledAngle          = 1
-    ActualHallAngle                = 2
-    ActualPWM                      = 3
-    TargetPWM                      = 4
-    CommutationMode                = 5
-    OpenLoopStepTime               = 6
-    Current                        = 7
-    HallDirection                  = 8
-    HallOrder                      = 9
-    ICStandby                      = 10
-    VMMeasurement                  = 11
+        def set_hall_direction(self, value):
+            self.set_axis_parameter(self.AP.HallDirection, value)
+
+        def set_hall_order(self, value):
+            self.set_axis_parameter(self.AP.HallOrder, value)
+
+        class AP:
+            ActualControlledAngle          = 1
+            ActualHallAngle                = 2
+            ActualPWM                      = 3
+            TargetPWM                      = 4
+            CommutationMode                = 5
+            OpenLoopStepTime               = 6
+            Current                        = 7
+            HallDirection                  = 8
+            HallOrder                      = 9
+            ICStandby                      = 10
+            VMMeasurement                  = 11

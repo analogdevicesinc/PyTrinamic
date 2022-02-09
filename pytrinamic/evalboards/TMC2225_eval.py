@@ -30,10 +30,10 @@ class TMC2225_eval(TMCLEval):
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self.Motor0(self, 0)]
+        self.motors = [self.MotorTypeA(self, 0)]
         self.ics = [TMC2225()]
 
-    # Use the driver controller functions for register access
+    # Use the driver controller channel for register access
 
     def write_register(self, register_address, value):
         return self._connection.write_drv(register_address, value, self._module_id)
@@ -48,7 +48,7 @@ class TMC2225_eval(TMCLEval):
     def read_register_field(self, field):
         return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    # Motion Control functions
+    # Motion control functions
 
     def rotate(self, motor, value):
         self._connection.rotate(motor, value)
@@ -72,7 +72,7 @@ class TMC2225_eval(TMCLEval):
 
 #        return position + distance
 
-    class Motor0(MotorControlModule):
+    class MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 

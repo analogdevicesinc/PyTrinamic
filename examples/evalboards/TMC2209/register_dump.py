@@ -11,6 +11,7 @@ pytrinamic.show_info()
 
 my_interface = ConnectionManager().connect()
 print(my_interface)
+
 eval_board = TMC2209_eval(my_interface)
 drv = eval_board.ics[0]
 print("Driver info: " + str(drv.get_info()))
