@@ -9,6 +9,7 @@ from .TMC2225_eval import TMC2225_eval
 from .TMC2300_eval import TMC2300_eval
 from .TMC2590_eval import TMC2590_eval
 from .TMC2660_eval import TMC2660_eval
+from .TMC4361_eval import TMC4361_eval
 from .TMC4671_eval import TMC4671_eval
 from .TMC5031_eval import TMC5031_eval
 from .TMC5041_eval import TMC5041_eval

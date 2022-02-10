@@ -1,61 +1,52 @@
-#!/usr/bin/env python3
-'''
-Created on 06.02.2020
-
-@author: JM
-'''
-
-if __name__ == '__main__':
-    pass
-
 import time
+
+import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.evalboards.TMC4331_eval import TMC4331_eval
-from pytrinamic.evalboards.TMC2130_eval import TMC2130_eval
+from pytrinamic.evalboards import TMC4361_eval, TMC2130_eval
 
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+pytrinamic.show_info()
 
-# Create an TMC4331-Eval class which communicates over the Landungsbruecke via TMCL
-TMC4331 = TMC4331_eval(myInterface)
+with ConnectionManager().connect() as my_interface:
+    print(my_interface)
 
-# Create an TMC2130-Eval class which communicates over the Landungsbruecke via TMCL
-TMC2130 = TMC2130_eval(myInterface)
+    # Create an TMC4361-Eval class which communicates over the Landungsbruecke via TMCL
+    eval_mc = TMC4361_eval(my_interface)
+    motor = eval_mc.motors[0]
+    mc = eval_mc.ics[0]
+    print("Motion controller: " + str(mc.get_info()))
 
-" read ChipInfo "
+    # Create an TMC2130-Eval class which communicates over the Landungsbruecke via TMCL
+    eval_drv = TMC2130_eval(my_interface)
+    drv = eval_drv.ics[0]
+    print("Driver: " + str(drv.get_info()))
 
-TMC4331.showChipInfo()
-TMC2130.showChipInfo()
+    # configure TMC2130 pwm for use with TMC4361 (disable singleline)"
+    # eval_drv.write_register(drv.REG.DRVCTRL, 0x00)
+    # eval_drv.write_register(drv.REG.CHOPCONF, 0x0C)
+    # eval_drv.write_register(drv.REG.SMARTEN, 0x0D)
+    # eval_drv.write_register(drv.REG.SGCSCONF, 0x0E)
+    # eval_drv.write_register(drv.REG.DRVCONF, 0x0F)
 
-" configure TMC2130 pwm for use with TMC4331 (disable singleline)"
-#TMC2130.writeRegister(TMC2130.registers.DRVCTRL,   0x00)
-#TMC2130.writeRegister(TMC2130.registers.CHOPCONF,  0x0C)
-#TMC2130.writeRegister(TMC2130.registers.SMARTEN,   0x0D)
-#TMC2130.writeRegister(TMC2130.registers.SGCSCONF,  0x0E)
-#TMC2130.writeRegister(TMC2130.registers.DRVCONF,   0x0F)
+    motor.set_axis_parameter(motor.AP.MaxVelocity, 1000)
+    motor.set_axis_parameter(motor.AP.MaxAcceleration, 10000)
 
-DEFAULT_MOTOR = 0
+    print("Rotating...")
+    motor.rotate(30 * 25600)
+    time.sleep(10)
 
-#TMC4331.setAxisParameter(TMC4331.APs.MaxVelocity,     DEFAULT_MOTOR, 1000)
-TMC4331.setAxisParameter(TMC4331.APs.MaxAcceleration, DEFAULT_MOTOR, 10000)
+    print("Stopping...")
+    motor.stop()
+    time.sleep(1)
 
-print("Rotating")
-TMC4331.rotate(DEFAULT_MOTOR, 30*25600)
+    print("Moving back to 0...")
+    motor.move_to(0, 30 * 25600)
 
-time.sleep(10)
+    # Wait until position 0 is reached
+    while motor.actual_position != 0:
+        print("Actual position: " + str(motor.actual_position))
+        time.sleep(0.2)
 
-print("Stopping")
-TMC4331.stop(DEFAULT_MOTOR)
+    print("Reached position 0")
 
-time.sleep(1)
 
-print("Moving back to 0")
-TMC4331.moveTo(DEFAULT_MOTOR, 0, 30*25600)
- 
-# Wait until position 0 is reached
-while TMC4331.getAxisParameter(TMC4331.APs.ActualPosition, DEFAULT_MOTOR) != 0:
-    pass
-
-print("Reached Position 0") 
-
-myInterface.close()
+print("\nReady.")
