@@ -12,9 +12,8 @@ class TMC4671(TMCIc):
     and 2-phase Stepper motors as well as DC motor support.
     """
     def __init__(self, connection=None):
+        super().__init__("TMC4671", self.__doc__)
         self._connection = connection
-        self._name = "TMC4671"
-        self._info = self.__doc__
 
     # Only used for direct UART access without EvalSystem
     def write_register(self, register_address, value):

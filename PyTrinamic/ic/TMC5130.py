@@ -25,10 +25,8 @@ class TMC5130(TMCIc):
         write_register and read_register functions of the handler to differentiate
         between multiple ICs.
         """
-        TMCIc.__init__(self)
+        super().__init__("TMC5130", self.__doc__)
         self._parent = parent_eval
-        self._name = "TMC5130"
-        self._info = self.__doc__
         self.motors = [self.MotorTypeA(parent_eval, self, 0)]
 
     class MotorTypeA(MotorControl):

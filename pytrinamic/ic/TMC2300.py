@@ -6,9 +6,7 @@ class TMC2300(TMCIc):
     The TMC2300 is a low voltage driver for two-phase stepper motors up to 1.2A RMS. Supply voltage: 2 - 11V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2300"
-        self._info = self.__doc__
+        super().__init__("TMC2300", self.__doc__)
 
     class REG:
         GCONF      = 0x00

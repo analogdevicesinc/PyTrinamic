@@ -6,9 +6,7 @@ class TMC2100(TMCIc):
     The TMC2100 is a standalone driver IC for two-phase stepper motors. Supply voltage: 4.75 - 46V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2100"
-        self._info = self.__doc__
+        super().__init__("TMC2100", self.__doc__)
 
     class REG:
         """

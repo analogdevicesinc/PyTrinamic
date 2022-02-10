@@ -7,9 +7,7 @@ class TMC5062(TMCIc):
     Supply voltage is 4,75-20V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC5062"
-        self._info = self.__doc__
+        super().__init__("TMC5062", self.__doc__)
 
     class REG:
         """

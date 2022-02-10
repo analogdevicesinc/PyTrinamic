@@ -6,9 +6,7 @@ class TMC4361(TMCIc):
     The TMC4361 is a miniaturized high-performance motion controller for stepper motor drivers.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC4361"
-        self._info = self.__doc__
+        super().__init__("TMC4361", self.__doc__)
 
     class REG:
         """

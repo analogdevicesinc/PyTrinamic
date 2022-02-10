@@ -6,9 +6,7 @@ class TMC6100(TMCIc):
     The TMC6100 is a high-power gate-driver for PMSM servo or BLDC motors. Supply voltage: 8 - 60V
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC6100"
-        self._info = self.__doc__
+        super().__init__("TMC6100", self.__doc__)
 
     class REG:
 

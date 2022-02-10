@@ -12,9 +12,8 @@ class TMC7300(TMCIc):
     velocity. Supply voltage: 2-11V
     """
     def __init__(self, connection=None):
+        super().__init__("TMC7300", self.__doc__)
         self._connection = connection
-        self._name = "TMC7300"
-        self._info = self.__doc__
 
     # Only used for direct UART access without EvalSystem
     def write_register(self, register_address, value):

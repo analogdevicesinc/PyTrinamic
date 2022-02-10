@@ -6,9 +6,7 @@ class TMC2660(TMCIc):
     The TMC2660 is a driver for two-phase stepper motors. Supply voltage: up to 30V
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2660"
-        self._info = self.__doc__
+        super().__init__("TMC2660", self.__doc__)
 
     class REG:
         """

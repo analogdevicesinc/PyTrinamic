@@ -3,25 +3,13 @@ from abc import ABC, abstractmethod
 
 class MotorControl(ABC):
 
-    # velocity mode
-
-#    def set_axis_parameter(self, ap_type, value):
-#        raise NotImplementedError
-
-#    def get_axis_parameter(self, ap_type, signed=False):
-#        raise NotImplementedError
-
-    def rotate(self, velocity):
-        raise NotImplementedError()
-
-    def stop(self):
-        raise NotImplementedError()
-
     # position mode
 
+    @abstractmethod
     def move_to(self, position, velocity=None):
         raise NotImplementedError()
 
+    @abstractmethod
     def move_by(self, distance, velocity=None):
         raise NotImplementedError()
 
@@ -31,8 +19,6 @@ class MotorControl(ABC):
         Gets the target position of this axis.
 
         Parameters:
-        axis: Axis index.
-
         Returns: Target position for this axis.
         """
         raise NotImplementedError
@@ -43,7 +29,6 @@ class MotorControl(ABC):
         Sets the target position of this axis.
 
         Parameters:
-        axis: Axis index.
         position: Target position.
         """
         raise NotImplementedError
@@ -54,7 +39,6 @@ class MotorControl(ABC):
         Gets the actual position of this axis.
 
         Parameters:
-        axis: Axis index.
 
         Returns: Actual position for this axis.
         """
@@ -66,10 +50,19 @@ class MotorControl(ABC):
         Sets the actual position of this axis.
 
         Parameters:
-        axis: Axis index.
         position: Actual position.
         """
         raise NotImplementedError
+
+    # velocity mode
+
+    @abstractmethod
+    def rotate(self, velocity):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def stop(self):
+        raise NotImplementedError()
 
     @abstractmethod
     def get_target_velocity(self):
@@ -77,7 +70,6 @@ class MotorControl(ABC):
         Gets the target velocity of this axis.
 
         Parameters:
-        axis: Axis index.
 
         Returns: Target velocity for this axis.
         """
@@ -89,7 +81,6 @@ class MotorControl(ABC):
         Sets the target velocity of this axis.
 
         Parameters:
-        axis: Axis index.
         velocity: Target velocity.
         """
         raise NotImplementedError
@@ -100,7 +91,6 @@ class MotorControl(ABC):
         Gets the actual velocity of this axis.
 
         Parameters:
-        axis: Axis index.
 
         Returns: Actual velocity for this axis.
         """

@@ -7,9 +7,7 @@ class TMC5041(TMCIc):
     Supply voltage: 4,75-26V
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC5041"
-        self._info = self.__doc__
+        super().__init__("TMC5041", self.__doc__)
 
 #   # Motion Control functions
 

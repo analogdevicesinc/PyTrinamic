@@ -6,9 +6,7 @@ class TMC2224(TMCIc):
     The TMC2224 is an ultra-silent motor driver IC for two-phase stepper motors. Supply voltage: 4,75 - 36V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2224"
-        self._info = self.__doc__
+        super().__init__("TMC2224", self.__doc__)
 
     class REG:
         """

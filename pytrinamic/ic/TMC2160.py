@@ -6,9 +6,7 @@ class TMC2160(TMCIc):
     The TMC2160 is a high-power stepper motor driver IC with SPI interface. Supply voltage: 8-60V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2160"
-        self._info = self.__doc__
+        super().__init__("TMC2160", self.__doc__)
 
     class REG:
         """

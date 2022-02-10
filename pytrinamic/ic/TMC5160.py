@@ -7,9 +7,7 @@ class TMC5160(TMCIc):
     Supply voltage: 8-60V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC5160"
-        self._info = self.__doc__
+        super().__init__("TMC5160", self.__doc__)
 
     class REG:
         """

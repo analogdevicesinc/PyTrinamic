@@ -7,9 +7,7 @@ class TMC2225(TMCIc):
     number of legacy drivers. Supply voltage: 4,75 - 36V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2225"
-        self._info = self.__doc__
+        super().__init__("TMC2225", self.__doc__)
 
     class REG:
         """

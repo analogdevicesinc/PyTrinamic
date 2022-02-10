@@ -7,6 +7,4 @@ class TMC6300(TMCIc):
     up to 2A. Supply voltage: 2-11V
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC6300"
-        self._info = self.__doc__
+        super().__init__("TMC6300", self.__doc__)

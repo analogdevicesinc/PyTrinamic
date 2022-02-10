@@ -1,27 +1,25 @@
 class TMCIc(object):
 
-    def __init__(self):
-        self._name = "Unknown"
-        self._info = "..."
+    def __init__(self, name, info):
+        self.__name = name
+        self.__info = info
 
     def get_name(self):
-        return self._name
+        return self.__name
 
     def get_info(self):
-        return self._info
+        return self.__info
 
-#    @abc.abstractmethod
-#    def writeRegister(self, registerAddress, value):
-#        pass
+    # Only used for direct UART access without EvalSystem
 
-#    @abc.abstractmethod
-#    def readRegister(self, registerAddress):
-#        pass
+    def write_register(self, register_address, value):
+        raise NotImplementedError()
 
-#    @abc.abstractmethod
-#    def writeRegisterField(self, registerAddress, value, mask, shift):
-#        pass
+    def read_register(self, register_address, signed=False):
+        raise NotImplementedError()
 
-#    @abc.abstractmethod
-#    def readRegisterField(self, registerAddress, mask, shift):
-#        pass
+    def write_register_field(self, field, value):
+        raise NotImplementedError()
+
+    def read_register_field(self, field):
+        raise NotImplementedError()

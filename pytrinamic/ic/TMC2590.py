@@ -7,9 +7,7 @@ class TMC2590(TMCIc):
     sensorless mechanical load measurement and low-resonance chopper operation. Supply voltage: 5-60V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2590"
-        self._info = self.__doc__
+        super().__init__("TMC2590", self.__doc__)
 
     class REG:
         """

@@ -7,9 +7,7 @@ class TMC2130(TMCIc):
     communication. Supply voltage: 4.75-46V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2130"
-        self._info = self.__doc__
+        super().__init__("TMC2130", self.__doc__)
 
     class REG:
         """

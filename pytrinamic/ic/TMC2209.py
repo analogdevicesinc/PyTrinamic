@@ -7,9 +7,7 @@ class TMC2209(TMCIc):
     number of legacy drivers as well as to the TMC2208. Supply voltage is 4,75 - 29V.
     """
     def __init__(self):
-        TMCIc.__init__(self)
-        self._name = "TMC2209"
-        self._info = self.__doc__
+        super().__init__("TMC2209", self.__doc__)
 
     class REG:
         """

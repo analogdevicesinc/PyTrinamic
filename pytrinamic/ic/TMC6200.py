@@ -5,11 +5,8 @@ class TMC6200(TMCIc):
     """
     The TMC6200 is a high-power gate-driver for PMSM servo or BLDC motors. Supply voltage: 8 - 60V
     """
-    def __init__(self, ic_id=0):
-        TMCIc.__init__(self)
-        self._id_id = ic_id
-        self._name = "TMC6200"
-        self._info = self.__doc__
+    def __init__(self):
+        super().__init__("TMC6200", self.__doc__)
 
     class REG:
 
