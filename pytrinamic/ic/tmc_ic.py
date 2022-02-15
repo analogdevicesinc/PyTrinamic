@@ -12,14 +12,14 @@ class TMCIc(object):
 
     # Only used for direct UART access without EvalSystem
 
-    def write_register(self, register_address, value):
-        raise NotImplementedError()
+    # def write_register(self, register_address, value):
+    #    raise NotImplementedError()
 
-    def read_register(self, register_address, signed=False):
-        raise NotImplementedError()
+    # def read_register(self, register_address, signed=False):
+    #    raise NotImplementedError()
 
-    def write_register_field(self, field, value):
-        raise NotImplementedError()
+    # def write_register_field(self, field, value):
+    #    raise NotImplementedError()
 
-    def read_register_field(self, field):
-        raise NotImplementedError()
+    # def read_register_field(self, field):
+    #    raise NotImplementedError()

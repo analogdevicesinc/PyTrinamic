@@ -3,7 +3,9 @@ from abc import ABC, abstractmethod
 
 class MotorControl(ABC):
 
-    # position mode
+    def __init__(self, parent, axis):
+        self._parent = parent
+        self._axis = axis
 
     @abstractmethod
     def move_to(self, position, velocity=None):
@@ -12,6 +14,24 @@ class MotorControl(ABC):
     @abstractmethod
     def move_by(self, distance, velocity=None):
         raise NotImplementedError()
+
+    @abstractmethod
+    def rotate(self, velocity):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def stop(self):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def set_target_position(self, position):
+        """
+        Sets the target position of this axis.
+
+        Parameters:
+        position: Target position.
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def get_target_position(self):
@@ -24,12 +44,12 @@ class MotorControl(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def set_target_position(self, position):
+    def set_actual_position(self, position):
         """
-        Sets the target position of this axis.
+        Sets the actual position of this axis.
 
         Parameters:
-        position: Target position.
+        position: Actual position.
         """
         raise NotImplementedError
 
@@ -45,24 +65,14 @@ class MotorControl(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def set_actual_position(self, position):
+    def set_target_velocity(self, velocity):
         """
-        Sets the actual position of this axis.
+        Sets the target velocity of this axis.
 
         Parameters:
-        position: Actual position.
+        velocity: Target velocity.
         """
         raise NotImplementedError
-
-    # velocity mode
-
-    @abstractmethod
-    def rotate(self, velocity):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def stop(self):
-        raise NotImplementedError()
 
     @abstractmethod
     def get_target_velocity(self):
@@ -72,16 +82,6 @@ class MotorControl(ABC):
         Parameters:
 
         Returns: Target velocity for this axis.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def set_target_velocity(self, velocity):
-        """
-        Sets the target velocity of this axis.
-
-        Parameters:
-        velocity: Target velocity.
         """
         raise NotImplementedError
 
