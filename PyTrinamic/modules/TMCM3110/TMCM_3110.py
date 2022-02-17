@@ -7,8 +7,9 @@ Created on 05.06.2020
 class TMCM_3110():
     MOTORS = 3
 
-    def __init__(self, connection):
+    def __init__(self, connection, signed=False):
         self.connection = connection
+        self.signed = signed
 
         #self.GPs   = _GPs
         self.APs   = _APs
@@ -23,14 +24,14 @@ class TMCM_3110():
 
     # Axis parameter access
     def getAxisParameter(self, apType, motor):
-        return self.connection.axisParameter(apType, motor)
+        return self.connection.axisParameter(apType, motor, signed=self.signed)
 
     def setAxisParameter(self, apType, motor, value):
         self.connection.setAxisParameter(apType, motor, value)
 
     # Global parameter access
     def getGlobalParameter(self, gpType, bank):
-        return self.connection.globalParameter(gpType, bank)
+        return self.connection.globalParameter(gpType, bank, signed=self.signed)
 
     def setGlobalParameter(self, gpType, bank, value):
         self.connection.setGlobalParameter(gpType, bank, value)
