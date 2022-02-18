@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-'''
-Created on 13 May 2019
-
-@author: LH
-'''
-
 import sys
 import time
 import math

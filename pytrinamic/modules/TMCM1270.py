@@ -175,7 +175,9 @@ class TMCM1270(TMCLModule):
             UnitMode                       = 255
 
         class ENUM:
-            "Constant enums for parameters of this module."
+            """
+            Constant enums for parameters of this module.
+            """
             MicrostepResolutionFullstep      = 0
             MicrostepResolutionHalfstep      = 1
             MicrostepResolution4Microsteps   = 2
@@ -187,7 +189,9 @@ class TMCM1270(TMCLModule):
             MicrostepResolution256Microsteps = 8
 
     class GP0:
-        "Global parameter map for this module."
+        """
+        Global parameter map for this module.
+        """
         CANBitrate                    = 69
         CANSendId                     = 70
         CANReceiveId                  = 71

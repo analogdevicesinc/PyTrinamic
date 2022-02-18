@@ -49,8 +49,8 @@ class TMCM1140(TMCLModule):
             ActualPosition              = 1
             TargetVelocity              = 2
             ActualVelocity              = 3
-            MaxVelocity                 =  4
-            MaxAcceleration             =  5
+            MaxVelocity                 = 4
+            MaxAcceleration             = 5
             MaxCurrent                  = 6
             StandbyCurrent              = 7
             PositionReachedFlag         = 8

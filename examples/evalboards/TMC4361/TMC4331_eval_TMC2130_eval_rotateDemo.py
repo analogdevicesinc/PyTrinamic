@@ -1,7 +1,7 @@
 import time
 
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4361_eval, TMC2130_eval
 
 pytrinamic.show_info()

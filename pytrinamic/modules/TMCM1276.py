@@ -4,6 +4,7 @@ from pytrinamic.modules import TMCLModule
 from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
 from pytrinamic.features import StallGuard2Module, CoolStepModule
 
+
 class TMCM1276(TMCLModule):
     """
     The TMCM-1276 is a single axis controller/driver module. Supply voltage is 24V.

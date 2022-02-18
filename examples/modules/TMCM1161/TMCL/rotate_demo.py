@@ -1,11 +1,11 @@
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.TMCM1161 import TMCM1161
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.modules import TMCM1161
 import time
 
 pytrinamic.show_info()
 
-#using USB interface
+# using USB interface
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 

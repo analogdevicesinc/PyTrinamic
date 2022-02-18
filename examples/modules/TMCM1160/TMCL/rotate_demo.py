@@ -1,12 +1,12 @@
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.TMCM1160 import TMCM1160
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.modules import TMCM1160
 import time
 
 pytrinamic.show_info()
 
-#Using CAN interface (PEAK CAN interface)
-#for USB interface just comment out the next line
+# Using CAN interface (PEAK CAN interface)
+# for USB interface just comment out the next line
 connectionManager = ConnectionManager("--interface pcan_tmcl")
 
 myInterface = connectionManager.connect()

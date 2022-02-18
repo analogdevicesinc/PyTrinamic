@@ -1,6 +1,6 @@
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.TMCM1370 import TMCM1370
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.modules import TMCM1370
 import time
 
 pytrinamic.show_info()

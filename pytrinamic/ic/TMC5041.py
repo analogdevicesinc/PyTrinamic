@@ -9,35 +9,6 @@ class TMC5041(TMCIc):
     def __init__(self):
         super().__init__("TMC5041", self.__doc__)
 
-#   # Motion Control functions
-
-#    def rotate(self, motor, value):
-#        if not(0 <= motor < self.MOTORS):
-#            raise ValueError
-
-#        self.writeRegister(self.registers.AMAX[motor], 1000, self.__channel)
-
-#        if value >= 0:
-#            self.writeRegister(self.registers.VMAX[motor], value, self.__channel)
-#            self.writeRegister(self.registers.RAMPMODE[motor], 1, self.__channel)
-#        else:
-#            self.writeRegister(self.registers.VMAX[motor], -value, self.__channel)
-#            self.writeRegister(self.registers.RAMPMODE[motor], 2, self.__channel)
-
-#    def stop(self, motor):
-#        self.rotate(motor, 0)
-
-#    def moveTo(self, motor, position, velocity):
-#        if not(0 <= motor < self.MOTORS):
-#            raise ValueError
-
-#        self.writeRegister(self.registers.RAMPMODE[motor], 0, self.__channel)
-
-#        if velocity != 0:
-#            self.writeRegister(self.registers.VMAX[motor], velocity, self.__channel)
-
-#        self.writeRegister(self.registers.XTARGET[motor], position, self.__channel)
-
     class REG:
         """
         Define all registers of the TMC5041.

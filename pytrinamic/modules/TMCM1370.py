@@ -44,7 +44,7 @@ class TMCM1370(TMCLModule):
         def get_position_reached(self):
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
-        class AP():
+        class AP:
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2

@@ -1,11 +1,12 @@
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.TMCM1270 import TMCM1270
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.modules import TMCM1270
 import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager("--interface pcan_tmcl") #This setting is configurated for PCAN , if you want to use another Connection please change this line
+# This example uses PCAN, if you want to use another connection please change this line.
+connectionManager = ConnectionManager("--interface pcan_tmcl")
 myInterface = connectionManager.connect()
 module = TMCM1270(myInterface)
 motor = module.motors[0]
