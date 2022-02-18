@@ -4,10 +4,8 @@ from pytrinamic.features.absolute_encoder import AbsoluteEncoder
 class AbsoluteEncoderModule(AbsoluteEncoder):
         
     def __init__(self, module, axis, aps):
-        self._module = module
-        self._axis = axis
+        super().__init__(module, axis)
         self._aps = aps
-
         self._hasAbsoluteEncoderType = False
         self._hasAbsoluteEncoderResolution = False
 
@@ -25,7 +23,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
         type: Absolute encoder type
         """
         if self._hasAbsoluteEncoderType:
-            self._module.set_axis_parameter(self._aps.AbsoluteEncoderType, self._axis, type)
+            self._parent.set_axis_parameter(self._aps.AbsoluteEncoderType, self._axis, type)
 
     def get_type(self):
         """
@@ -35,7 +33,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
         Returns: Absolute encoder type
         """
         if self._hasAbsoluteEncoderType:
-            return self._module.get_axis_parameter(self._aps.AbsoluteEncoderType, self._axis)
+            return self._parent.get_axis_parameter(self._aps.AbsoluteEncoderType, self._axis)
         else:
             return None
 
@@ -47,7 +45,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
 
     def get_resolution(self):
         if self._hasAbsoluteEncoderResolution:
-            return self._module.get_axis_parameter(self._aps.AbsoluteEncoderSteps, self._axis)
+            return self._parent.get_axis_parameter(self._aps.AbsoluteEncoderSteps, self._axis)
         else:
             return None
 
@@ -59,7 +57,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
         Parameters:
         init_mode: absolute encoder init mode
         """
-        self._module.set_axis_parameter(self._aps.AbsoluteEncoderInitMode, self._axis, init_mode)
+        self._parent.set_axis_parameter(self._aps.AbsoluteEncoderInitMode, self._axis, init_mode)
 
     def get_init_mode(self):
         """
@@ -68,7 +66,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
 
         Returns: absolute encoder init
         """
-        return self._module.get_axis_parameter(self._aps.AbsoluteEncoderInitMode, self._axis)
+        return self._parent.get_axis_parameter(self._aps.AbsoluteEncoderInitMode, self._axis)
 
     def set_direction(self, direction):
         """
@@ -78,7 +76,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
         Parameters:
         dir:  absolute encoder direction
         """
-        self._module.set_axis_parameter(self._aps.AbsoluteEncoderDirection, self._axis, direction)
+        self._parent.set_axis_parameter(self._aps.AbsoluteEncoderDirection, self._axis, direction)
 
     def get_direction(self):
         """
@@ -87,7 +85,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
 
         Returns:  absolute encoder direction
         """
-        return self._module.get_axis_parameter(self._aps.AbsoluteEncoderDirection, self._axis)
+        return self._parent.get_axis_parameter(self._aps.AbsoluteEncoderDirection, self._axis)
 
     def set_offset(self, offset):
         """
@@ -97,7 +95,7 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
         Parameters:
         offset: absolute encoder offset
         """
-        self._module.set_axis_parameter(self._aps.AbsoluteEncoderOffset, self._axis, offset)
+        self._parent.set_axis_parameter(self._aps.AbsoluteEncoderOffset, self._axis, offset)
 
     def get_offset(self):
         """
@@ -106,9 +104,9 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
 
         Returns: absolute encoder offset
         """
-        return self._module.get_axis_parameter(self._aps.AbsoluteEncoderOffset, self._axis)
+        return self._parent.get_axis_parameter(self._aps.AbsoluteEncoderOffset, self._axis)
 
-    # properties
+    # Properties
     type = property(get_type, set_type)
     resolution = property(get_resolution, set_resolution)
     init_mode = property(get_init_mode, set_init_mode)

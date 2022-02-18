@@ -1,11 +1,15 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class CoolStep(ABC):
     """
     StallGuard2 feature implementation
     """
+    def __init__(self, parent, axis):
+        self._parent = parent
+        self._axis = axis
 
+    @abstractmethod
     def set_current_minimum(self, current):
         """
         Sets the smartEnergy current minimum.
@@ -15,6 +19,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_current_minimum(self):
         """
         Gets the smartEnergy current minimum.
@@ -24,6 +29,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_current_down_step(self, step):
         """
         Sets the smartEnergy current down step.
@@ -33,6 +39,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_current_down_step(self):
         """
         Gets the smartEnergy current down step.
@@ -42,6 +49,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_current_up_step(self, step):
         """
         Sets the smartEnergy current up step.
@@ -51,6 +59,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_current_up_step(self):
         """
         Gets the smartEnergy current up step.
@@ -60,6 +69,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_hysteresis(self, hysteresis):
         """
         Sets the smartEnergy hysteresis.
@@ -69,6 +79,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_hysteresis(self):
         """
         Gets the smartEnergy hysteresis.
@@ -78,6 +89,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_hysteresis_start(self, hysteresis_start):
         """
         Sets the smartEnergy hysteresis start.
@@ -87,6 +99,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_hysteresis_start(self):
         """
         Gets the smartEnergy hysteresis start.
@@ -96,6 +109,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_threshold_speed(self, speed):
         """
         Sets the smartEnergy speed threshold.
@@ -105,6 +119,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_threshold_speed(self):
         """
         Gets the smartEnergy speed threshold.
@@ -114,6 +129,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_slow_run_current(self, current):
         """
         Sets the smartEnergy slow run current.
@@ -123,6 +139,7 @@ class CoolStep(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_slow_run_current(self):
         """
         Gets the smartEnergy slow run current.
@@ -130,4 +147,8 @@ class CoolStep(ABC):
         Returns:
         smartEnergy slow run current
         """
+        raise NotImplementedError
+
+    @abstractmethod
+    def calibrate(self, threshold):
         raise NotImplementedError

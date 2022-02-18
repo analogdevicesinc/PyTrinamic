@@ -2,7 +2,11 @@ from abc import ABC, abstractmethod
 
 
 class PID(ABC):
- 
+
+    def __init__(self, parent, axis):
+        self._parent = parent
+        self._axis = axis
+
     # torque/flux controller
 
     @abstractmethod

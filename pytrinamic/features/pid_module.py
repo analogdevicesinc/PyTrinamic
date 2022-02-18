@@ -4,45 +4,44 @@ from pytrinamic.features.pid import PID
 class PIDModule(PID):
 
     def __init__(self, module, axis, aps):
-        self._module = module
-        self._axis = axis
+        super().__init__(module, axis)
         self._aps = aps
 
     # torque/flux controller
 
     def set_torque_p_parameter(self, p_value):
-        self._module.set_axis_parameter(self._aps.TorqueP, self._axis, p_value)
+        self._parent.set_axis_parameter(self._aps.TorqueP, self._axis, p_value)
 
     def get_torque_p_parameter(self):
-        return self._module.get_axis_parameter(self._aps.TorqueP, self._axis)
+        return self._parent.get_axis_parameter(self._aps.TorqueP, self._axis)
 
     def set_torque_i_parameter(self, i_value):
-        self._module.set_axis_parameter(self._aps.TorqueI, self._axis, i_value)
+        self._parent.set_axis_parameter(self._aps.TorqueI, self._axis, i_value)
 
     def get_torque_i_parameter(self):
-        return self._module.get_axis_parameter(self._aps.TorqueI, self._axis)
+        return self._parent.get_axis_parameter(self._aps.TorqueI, self._axis)
 
     # velocity controller
 
     def set_velocity_p_parameter(self, p_value):
-        self._module.set_axis_parameter(self._aps.VelocityP, self._axis, p_value)
+        self._parent.set_axis_parameter(self._aps.VelocityP, self._axis, p_value)
 
     def get_velocity_p_parameter(self):
-        return self._module.get_axis_parameter(self._aps.VelocityP, self._axis)
+        return self._parent.get_axis_parameter(self._aps.VelocityP, self._axis)
 
     def set_velocity_i_parameter(self, i_value):
-        self._module.set_axis_parameter(self._aps.VelocityI, self._axis, i_value)
+        self._parent.set_axis_parameter(self._aps.VelocityI, self._axis, i_value)
 
     def get_velocity_i_parameter(self):
-        return self._module.get_axis_parameter(self._aps.VelocityI, self._axis)
+        return self._parent.get_axis_parameter(self._aps.VelocityI, self._axis)
 
     # position controller
 
     def set_position_p_parameter(self, p_value):
-        self._module.set_axis_parameter(self._aps.PositionP, self._axis, p_value)
+        self._parent.set_axis_parameter(self._aps.PositionP, self._axis, p_value)
 
     def get_position_p_parameter(self):
-        return self._module.get_axis_parameter(self._aps.PositionP, self._axis)
+        return self._parent.get_axis_parameter(self._aps.PositionP, self._axis)
 
     # properties
     torque_p = property(get_torque_p_parameter, set_torque_p_parameter)

@@ -70,24 +70,69 @@ class MotorControlIc(MotorControl):
         self.rotate(0)
 
     def set_target_position(self, position):
+        """
+        Sets the target position of this axis.
+        This value is stored in the XTARGET field of the IC.
+
+        Parameters:
+        position: Target position.
+        """
         self.move_to(position)
 
     def get_target_position(self):
+        """
+        Gets the target position of this axis.
+        This value is stored in the XTARGET field of the IC.
+
+        Returns: Target position for this axis.
+        """
         return self.read_axis_field(self._ic.FIELD.XTARGET, True)
 
     def set_actual_position(self, position):
+        """
+        Sets the actual position of this axis.
+        This value is stored in the XACTUAL field of the IC.
+
+        Parameters:
+        position: Actual position.
+        """
         self.write_axis_field(self._ic.FIELD.XACTUAL, position)
 
     def get_actual_position(self):
+        """
+        Gets the actual position of this axis.
+        This value is stored in the XACTUAL field of the IC.
+
+        Returns: Actual position for this axis.
+        """
         return self.read_axis_field(self._ic.FIELD.XACTUAL, True)
 
     def set_target_velocity(self, velocity):
+        """
+        Sets the target velocity of this axis.
+        This value is stored in the VMAX field of the IC.
+
+        Parameters:
+        velocity: Target velocity.
+        """
         self.rotate(velocity)
 
     def get_target_velocity(self):
+        """
+        Gets the target velocity of this axis.
+        This value is stored in the VMAX field of the IC.
+
+        Returns: Target velocity for this axis.
+        """
         return self.read_axis_field(self._ic.FIELD.VMAX, True)
 
     def get_actual_velocity(self):
+        """
+        Gets the actual velocity of this axis.
+        This value is stored in the VACTUAL field of the IC.
+
+        Returns: Actual velocity for this axis.
+        """
         return self.read_axis_field(self._ic.FIELD.VACTUAL, True)
 
     # ic specific functions

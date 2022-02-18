@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
-'''
+"""
 Demonstration of the stallGuard feature of the TMC5160.
-The sensorless stallGaurd technology calculates the remaining available load for
+The sensorless stallGuard technology calculates the remaining available load for
 a motor and detects incoming stalls. If such a stall is detected, the motor
 driver will automatically stop to prevent damage and miscalculations.
 
@@ -10,12 +9,8 @@ sensitivity and thresholds. After that you are free to play around with this
 feature.
 
 All actions will be performed on all attached shields simultaneously, so you can
-try it with multiple axes aswell.
-
-Created on 20.03.2020
-
-@author: LK
-'''
+try it with multiple axes as well.
+"""
 
 import argparse
 import os
@@ -31,7 +26,7 @@ import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
-from pytrinamic.features.StallGuard import StallGuard
+from examples.evalboards.TMC5160_shield.StallGuard import StallGuard
 
 parser = argparse.ArgumentParser(description='stallGuard demo')
 parser.add_argument('-t', '--target-velocity', dest='velocity', action='store', nargs=1, type=int, default=[50000],
@@ -42,7 +37,9 @@ parser.add_argument('-c', '--current', dest='current', action='store', nargs=1, 
                     help='Current Scaler value while motor is running. Default: %(default)s.')
 parser.add_argument('-e', '--threshold-velocity', dest='threshold', action='store', nargs=1, type=int, default=[1],
                     help='Velocity threshold, above which stallGuard is enabled. Default: %(default)s.')
-parser.add_argument('-v', '--verbosity', dest='verbosity', action='store', nargs=1, type=int, choices=[logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL], default=[logging.INFO],
+parser.add_argument('-v', '--verbosity', dest='verbosity', action='store', nargs=1, type=int,
+                    choices=[logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL],
+                    default=[logging.INFO],
                     help=f'Verbosity level (default: %(default)s, {logging.DEBUG}: DEBUG, {logging.INFO}: INFO, {logging.WARNING}: WARNING, {logging.ERROR}: ERROR, {logging.CRITICAL}: CRITICAL)')
 
 args = parser.parse_known_args()[0]
@@ -81,6 +78,7 @@ for shield in shields:
 
 print("Initialization is done. You can now play around with applying loads and see if the motor stops.")
 input("Press enter to continue ...")
+
 
 def handle_key():
     while True:

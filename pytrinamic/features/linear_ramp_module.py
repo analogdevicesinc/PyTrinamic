@@ -4,10 +4,8 @@ from pytrinamic.features.linear_ramp import LinearRamp
 class LinearRampModule(LinearRamp):
 
     def __init__(self, module, axis, aps):
-        self._module = module
-        self._axis = axis
+        super().__init__(module, axis)
         self._aps = aps
-
         self._hasRampEnable = False
 
         if hasattr(self._aps, "EnableRamp"):
@@ -21,7 +19,7 @@ class LinearRampModule(LinearRamp):
         Parameters:
         velocity: Maximum positioning velocity.
         """
-        self._module.set_axis_parameter(self._aps.MaxVelocity, self._axis, velocity)
+        self._parent.set_axis_parameter(self._aps.MaxVelocity, self._axis, velocity)
 
     def get_max_velocity(self):
         """
@@ -30,7 +28,7 @@ class LinearRampModule(LinearRamp):
 
         Returns: Maximum positioning velocity for this axis.
         """
-        return self._module.get_axis_parameter(self._aps.MaxVelocity, self._axis)
+        return self._parent.get_axis_parameter(self._aps.MaxVelocity, self._axis)
 
     def set_max_acceleration(self, acceleration):
         """
@@ -40,7 +38,7 @@ class LinearRampModule(LinearRamp):
         Parameters:
         acceleration: Maximum acceleration.
         """
-        self._module.set_axis_parameter(self._aps.MaxAcceleration, self._axis, acceleration)
+        self._parent.set_axis_parameter(self._aps.MaxAcceleration, self._axis, acceleration)
 
     def get_max_acceleration(self):
         """
@@ -49,7 +47,7 @@ class LinearRampModule(LinearRamp):
 
         Returns: Maximum acceleration for this axis.
         """
-        return self._module.get_axis_parameter(self._aps.MaxAcceleration, self._axis)
+        return self._parent.get_axis_parameter(self._aps.MaxAcceleration, self._axis)
 
     def set_ramp_enabled(self, enabled):
         """
@@ -60,7 +58,7 @@ class LinearRampModule(LinearRamp):
         enabled: ramp enable
         """
         if self._hasRampEnable:
-            self._module.set_axis_parameter(self._aps.EnableRamp, self._axis, enabled)
+            self._parent.set_axis_parameter(self._aps.EnableRamp, self._axis, enabled)
 
     def get_ramp_enabled(self):
         """
@@ -70,7 +68,7 @@ class LinearRampModule(LinearRamp):
         Returns: ramp enable
         """
         if self._hasRampEnable:
-            return self._module.get_axis_parameter(self._aps.EnableRamp, self._axis)
+            return self._parent.get_axis_parameter(self._aps.EnableRamp, self._axis)
         else:
             return None
 

@@ -1,8 +1,13 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class AbsoluteEncoder(ABC):
 
+    def __init__(self, parent, axis):
+        self._parent = parent
+        self._axis = axis
+
+    @abstractmethod
     def set_type(self, encoder_type):
         """
         Set absolut encoder type that is used for this axis.
@@ -13,6 +18,7 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_type(self):
         """
         Gets absolut encoder type that is used for this axis.
@@ -22,12 +28,15 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_resolution(self, resolution):
         raise NotImplementedError
 
+    @abstractmethod
     def get_resolution(self):
         raise NotImplementedError
 
+    @abstractmethod
     def set_init_mode(self, init_mode):
         """
         Sets absolute encoder init mode that is used for this axis.
@@ -38,6 +47,7 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_init_mode(self):
         """
         Gets absolute encoder init mode that is used for this axis.
@@ -47,6 +57,7 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_direction(self, direction):
         """
         Sets absolute encoder direction that is used for this axis.
@@ -57,6 +68,7 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_direction(self):
         """
         Gets  absolute encoder direction that is used for this axis.
@@ -66,6 +78,7 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_offset(self, offset):
         """
         Sets absolute encoder offset that is used for this axis.
@@ -76,6 +89,7 @@ class AbsoluteEncoder(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_offset(self):
         """
         Gets absolute encoder offset that is used for this axis.

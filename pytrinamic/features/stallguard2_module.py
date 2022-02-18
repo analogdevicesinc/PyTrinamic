@@ -10,8 +10,7 @@ class StallGuard2Module(StallGuard2):
         """
         Constructor for the feature grouping instance.
         """
-        self._module = module
-        self._axis = axis
+        super().__init__(module, axis)
         self._aps = aps
 
     def set_filter(self, enable_filter):
@@ -24,7 +23,7 @@ class StallGuard2Module(StallGuard2):
         0 - Disable StallGuard2 filter
         1 - Enable StallGuard2 filter
         """
-        self._module.set_axis_parameter(self._aps.SG2FilterEnable, self._axis, filter)
+        self._parent.set_axis_parameter(self._aps.SG2FilterEnable, self._axis, filter)
 
     def get_filter(self):
         """
@@ -35,7 +34,7 @@ class StallGuard2Module(StallGuard2):
         0 - StallGuard2 filter disabled
         1 - StallGuard2 filter enabled
         """
-        return self._module.get_axis_parameter(self._aps.SG2FilterEnable, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SG2FilterEnable, self._axis)
 
     def set_threshold(self, threshold):
         """
@@ -45,7 +44,7 @@ class StallGuard2Module(StallGuard2):
         Parameters:
         threshold: StallGuard2 threshold. Default 0. Lower values mean higher sensibility.
         """
-        self._module.set_axis_parameter(self._aps.SG2Threshold, self._axis, threshold)
+        self._parent.set_axis_parameter(self._aps.SG2Threshold, self._axis, threshold)
 
     def get_threshold(self):
         """
@@ -54,7 +53,7 @@ class StallGuard2Module(StallGuard2):
 
         Returns: StallGuard2 threshold.
         """
-        return self._module.get_axis_parameter(self._aps.SG2Threshold, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SG2Threshold, self._axis)
 
     def set_stop_velocity(self, velocity):
         """
@@ -65,7 +64,7 @@ class StallGuard2Module(StallGuard2):
         Parameters:
         velocity: Velocity threshold.
         """
-        self._module.set_axis_parameter(self._aps.SmartEnergyStallVelocity, self._axis, velocity)
+        self._parent.set_axis_parameter(self._aps.SmartEnergyStallVelocity, self._axis, velocity)
 
     def get_stop_velocity(self):
         """
@@ -75,7 +74,7 @@ class StallGuard2Module(StallGuard2):
 
         Returns: Velocity threshold.
         """
-        return self._module.get_axis_parameter(self._aps.SmartEnergyStallVelocity, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SmartEnergyStallVelocity, self._axis)
 
     def get_load_value(self):
         """
@@ -84,7 +83,7 @@ class StallGuard2Module(StallGuard2):
 
         Returns: LoadValue
         """
-        return self._module.get_axis_parameter(self._aps.LoadValue, self._axis)
+        return self._parent.get_axis_parameter(self._aps.LoadValue, self._axis)
 
     # module based calibration routine
     def calibrate_zero(self, threshold=1):
@@ -153,6 +152,12 @@ class StallGuard2Module(StallGuard2):
         self.threshold = sgthresh - 1
         print("StallGuard2 calibration done.")
 
+    # Properties
+    filter = property(get_filter, set_filter)
+    threshold = property(get_threshold, set_threshold)
+    stop_velocity = property(get_stop_velocity, set_stop_velocity)
+    load_value = property(get_load_value)
+
     def __str__(self):
         return "{} {}".format(
             "StallGuard2",
@@ -162,9 +167,3 @@ class StallGuard2Module(StallGuard2):
                 "stop_velocity": self.stop_velocity
             }
         )
-
-    # Properties
-    filter = property(get_filter, set_filter)
-    threshold = property(get_threshold, set_threshold)
-    stop_velocity = property(get_stop_velocity, set_stop_velocity)
-    load_value = property(get_load_value)

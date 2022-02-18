@@ -4,10 +4,8 @@ from pytrinamic.features.digital_hall import DigitalHall
 class DigitalHallModule(DigitalHall):
     
     def __init__(self, module, axis, aps):
-        self._module = module
-        self._axis = axis
+        super().__init__(module, axis)
         self._aps = aps
-
         self._hasHallSensorDirection = False
         self._hasHallSensorPolarity = False
         self._hasHallSensorOffset = False
@@ -24,43 +22,49 @@ class DigitalHallModule(DigitalHall):
 
     def set_direction(self, direction):
         if self._hasHallSensorDirection:
-            self._module.set_axis_parameter(self._aps.HallSensorDirection, self._axis, direction)
+            self._parent.set_axis_parameter(self._aps.HallSensorDirection, self._axis, direction)
 
     def get_direction(self):
         if self._hasHallSensorDirection:
-            return self._module.get_axis_parameter(self._aps.HallSensorDirection, self._axis)
+            return self._parent.get_axis_parameter(self._aps.HallSensorDirection, self._axis)
         else:
             return None
 
     def set_polarity(self, invert):
         if self._hasHallSensorPolarity:
-            self._module.set_axis_parameter(self._aps.HallSensorPolarity, self._axis, invert)
+            self._parent.set_axis_parameter(self._aps.HallSensorPolarity, self._axis, invert)
 
     def get_polarity(self):
         if self._hasHallSensorPolarity:
-            return self._module.get_axis_parameter(self._aps.HallSensorPolarity, self._axis)
+            return self._parent.get_axis_parameter(self._aps.HallSensorPolarity, self._axis)
         else:
             return None
 
     def set_offset(self, offset):
         if self._hasHallSensorOffset:
-            self._module.set_axis_parameter(self._aps.HallSensorOffset, self._axis, offset)
+            self._parent.set_axis_parameter(self._aps.HallSensorOffset, self._axis, offset)
 
     def get_offset(self):
         if self._hasHallSensorOffset:
-            return self._module.get_axis_parameter(self._aps.HallSensorOffset, self._axis)
+            return self._parent.get_axis_parameter(self._aps.HallSensorOffset, self._axis)
         else:
             return None
 
     def set_interpolation(self, enable_interpolation):
         if self._hasHallSensorInterpolation:
-            self._module.set_axis_parameter(self._aps.HallSensorInterpolation, self._axis, enable_interpolation)
+            self._parent.set_axis_parameter(self._aps.HallSensorInterpolation, self._axis, enable_interpolation)
 
     def get_interpolation(self):
         if self._hasHallSensorInterpolation:
-            return self._module.get_axis_parameter(self._aps.HallSensorInterpolation, self._axis)
+            return self._parent.get_axis_parameter(self._aps.HallSensorInterpolation, self._axis)
         else:
             return None
+
+    # Properties
+    direction = property(get_direction, set_direction)
+    polarity = property(get_polarity, set_polarity)
+    offset = property(get_offset, set_offset)
+    interpolation = property(get_interpolation, set_interpolation)
 
     def __str__(self):
         values = "DigitalHall {"
@@ -79,8 +83,3 @@ class DigitalHallModule(DigitalHall):
         values = values[:-2]
         values += "}"
         return values
-
-    direction = property(get_direction, set_direction)
-    polarity = property(get_polarity, set_polarity)
-    offset = property(get_offset, set_offset)
-    interpolation = property(get_interpolation, set_interpolation)

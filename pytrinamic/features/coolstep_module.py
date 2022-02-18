@@ -10,8 +10,7 @@ class CoolStepModule(CoolStep):
         """
         Constructor for the feature grouping instance.
         """
-        self._module = module
-        self._axis = axis
+        super().__init__(module, axis)
         self._aps = aps
         self._stall_guard = stall_guard
 
@@ -22,7 +21,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         current: smartEnergy current minimum.
         """
-        self._module.set_axis_parameter(self._aps.SEIMIN, self._axis, current)
+        self._parent.set_axis_parameter(self._aps.SEIMIN, self._axis, current)
 
     def get_current_minimum(self):
         """
@@ -32,7 +31,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy current minimum.
         """
-        return self._module.get_axis_parameter(self._aps.SEIMIN, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SEIMIN, self._axis)
 
     def set_current_down_step(self, step):
         """
@@ -41,7 +40,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         step: smartEnergy current down step.
         """
-        self._module.set_axis_parameter(self._aps.SECDS, self._axis, step)
+        self._parent.set_axis_parameter(self._aps.SECDS, self._axis, step)
 
     def get_current_down_step(self):
         """
@@ -50,7 +49,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy current down step.
         """
-        return self._module.get_axis_parameter(self._aps.SECDS, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SECDS, self._axis)
 
     def set_current_up_step(self, step):
         """
@@ -59,7 +58,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         step: smartEnergy current up step.
         """
-        self._module.set_axis_parameter(self._aps.SECUS, self._axis, step)
+        self._parent.set_axis_parameter(self._aps.SECUS, self._axis, step)
 
     def get_current_up_step(self):
         """
@@ -68,7 +67,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy current up step.
         """
-        return self._module.get_axis_parameter(self._aps.SECUS, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SECUS, self._axis)
 
     def set_hysteresis(self, hysteresis):
         """
@@ -77,7 +76,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         hysteresis: smartEnergy hysteresis.
         """
-        self._module.set_axis_parameter(self._aps.SmartEnergyHysteresis, self._axis, hysteresis)
+        self._parent.set_axis_parameter(self._aps.SmartEnergyHysteresis, self._axis, hysteresis)
 
     def get_hysteresis(self):
         """
@@ -86,7 +85,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy hysteresis.
         """
-        return self._module.get_axis_parameter(self._aps.SmartEnergyHysteresis, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SmartEnergyHysteresis, self._axis)
 
     def set_hysteresis_start(self, hysteresis_start):
         """
@@ -95,7 +94,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         hysteresis_start: smartEnergy hysteresis start .
         """
-        self._module.set_axis_parameter(self._aps.SmartEnergyHysteresisStart, self._axis, hysteresis_start)
+        self._parent.set_axis_parameter(self._aps.SmartEnergyHysteresisStart, self._axis, hysteresis_start)
 
     def get_hysteresis_start(self):
         """
@@ -104,7 +103,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy hysteresis start .
         """
-        return self._module.get_axis_parameter(self._aps.SmartEnergyHysteresisStart, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SmartEnergyHysteresisStart, self._axis)
 
     def set_threshold_speed(self, speed):
         """
@@ -113,7 +112,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         speed: smartEnergy threshold speed.
         """
-        self._module.set_axis_parameter(self._aps.SmartEnergyThresholdSpeed, self._axis, speed)
+        self._parent.set_axis_parameter(self._aps.SmartEnergyThresholdSpeed, self._axis, speed)
 
     def get_threshold_speed(self):
         """
@@ -122,7 +121,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy threshold speed.
         """
-        return self._module.get_axis_parameter(self._aps.SmartEnergyThresholdSpeed, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SmartEnergyThresholdSpeed, self._axis)
 
     def set_slow_run_current(self, current):
         """
@@ -131,7 +130,7 @@ class CoolStepModule(CoolStep):
         Parameters:
         current: smartEnergy slow run current
         """
-        self._module.set_axis_parameter(self._aps.SmartEnergySlowRunCurrent, self._axis, current)
+        self._parent.set_axis_parameter(self._aps.SmartEnergySlowRunCurrent, self._axis, current)
 
     def get_slow_run_current(self):
         """
@@ -140,7 +139,7 @@ class CoolStepModule(CoolStep):
         Returns:
         smartEnergy slow run current
         """
-        return self._module.get_axis_parameter(self._aps.SmartEnergySlowRunCurrent, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SmartEnergySlowRunCurrent, self._axis)
 
     def calibrate(self, threshold=0):
         """
@@ -174,6 +173,15 @@ class CoolStepModule(CoolStep):
         self.hysteresis_start = hstart
         self.threshold_speed = threshold
 
+    # Properties
+    current_minimum = property(get_current_minimum, set_current_minimum)
+    current_down_step = property(get_current_down_step, set_current_down_step)
+    current_up_step = property(get_current_up_step, set_current_up_step)
+    hysteresis = property(get_hysteresis, set_hysteresis)
+    hysteresis_start = property(get_hysteresis_start, set_hysteresis_start)
+    threshold_speed = property(get_threshold_speed, set_threshold_speed)
+    slow_run_current = property(get_slow_run_current, set_slow_run_current)
+
     def __str__(self):
         return "{} {}".format(
             "CoolStep",
@@ -187,12 +195,3 @@ class CoolStepModule(CoolStep):
                 "slow_run_current": self.slow_run_current,
             }
         )
-
-    # properties
-    current_minimum = property(get_current_minimum, set_current_minimum)
-    current_down_step = property(get_current_down_step, set_current_down_step)
-    current_up_step = property(get_current_up_step, set_current_up_step)
-    hysteresis = property(get_hysteresis, set_hysteresis)
-    hysteresis_start = property(get_hysteresis_start, set_hysteresis_start)
-    threshold_speed = property(get_threshold_speed, set_threshold_speed)
-    slow_run_current = property(get_slow_run_current, set_slow_run_current)

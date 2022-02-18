@@ -1,11 +1,15 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class StallGuard2(ABC):
     """
     StallGuard2 feature implementation
     """
+    def __init__(self, parent, axis):
+        self._parent = parent
+        self._axis = axis
 
+    @abstractmethod
     def set_filter(self, enable_filter):
         """
         Enable/Disable hardware StallGuard2 filter.
@@ -17,6 +21,7 @@ class StallGuard2(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_filter(self):
         """
         Gets the StallGuard2 filter status.
@@ -29,6 +34,7 @@ class StallGuard2(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_threshold(self, threshold):
         """
         Sets the StallGuard2 threshold / sensibility.
@@ -38,6 +44,7 @@ class StallGuard2(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_threshold(self):
         """
         Gets the StallGuard2 threshold / sensibility.
@@ -48,6 +55,7 @@ class StallGuard2(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def set_stop_velocity(self, velocity):
         """
         Sets the minimum velocity, at which stop on stall becomes active.
@@ -58,6 +66,7 @@ class StallGuard2(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_stop_velocity(self):
         """
         Gets the minimum velocity, at which stop on stall becomes active.
@@ -69,6 +78,7 @@ class StallGuard2(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_load_value(self):
         """
         Gets the load value for monitoring smart energy current scaling or automatic current scaling.

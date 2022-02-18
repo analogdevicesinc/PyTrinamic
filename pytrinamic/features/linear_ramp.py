@@ -3,6 +3,10 @@ from abc import ABC, abstractmethod
 
 class LinearRamp(ABC):
 
+    def __init__(self, parent, axis):
+        self._parent = parent
+        self._axis = axis
+
     @abstractmethod
     def set_max_velocity(self, velocity):
         """
