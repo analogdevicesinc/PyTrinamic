@@ -2,6 +2,7 @@ from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import TMC5160
 from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
+from pytrinamic.tmcl import TMCLCommand
 
 class TMC5160_shield(TMCLEval):
     """
@@ -39,11 +40,11 @@ class TMC5160_shield(TMCLEval):
         self.ics = [TMC5160()]
 
     # Use the motion controller functions for register access
-    def writeRegister(self, registerAddress, value):
-        return self.__connection.write_register(registerAddress, TMCLCommand.WRITE_MC, self.__channel, value, self._module_id)
+    def write_register(self, registerAddress, value):
+        return self._connection.write_register(registerAddress, TMCLCommand.WRITE_MC, self.__channel, value, self._module_id)
 
-    def readRegister(self, registerAddress, signed=False):
-        return self.__connection.read_register(registerAddress, TMCLCommand.READ_MC, self.__channel, self._module_id, signed)
+    def read_register(self, registerAddress, signed=False):
+        return self._connection.read_register(registerAddress, TMCLCommand.READ_MC, self.__channel, self._module_id, signed)
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
