@@ -14,7 +14,7 @@ class TMC5160_shield(TMCLEval):
     this class if these two functions are provided properly. See __init__ for
     details on the function requirements.
     """
-    def __init__(self, connection, module_id=1):
+    def __init__(self, connection, channel=0, module_id=1):
         """
         Parameters:
             connection:
@@ -28,12 +28,13 @@ class TMC5160_shield(TMCLEval):
                 Type: int
                 IC index for the given module. It is used to distinguish between
                 multiple ICs of the same type on a single module.
-            moduleID:
+            module_id:
                 Type: int, optional, default value: 1
                 The TMCL module ID of the TMC5160. This ID is used as a
                 parameter for the writeRegister and readRegister functions.
         """
         TMCLEval.__init__(self, connection, module_id)
+        self.__channel = channel
         self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC5160()]
 
