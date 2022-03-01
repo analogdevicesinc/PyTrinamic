@@ -1,13 +1,9 @@
-'''
-Created on 18.03.2020
+from pytrinamic.evalboards import TMCLEval
+from pytrinamic.ic import TMC5160
+from pytrinamic.features import MotorControlModule
+from pytrinamic.helpers import TMC_helpers
 
-@author: LK
-'''
-
-from pytrinamic.ic.TMC5160 import TMC5160
-from pytrinamic.tmcl import TMCLCommand
-
-class TMC5160_shield(TMC5160):
+class TMC5160_shield(TMCLEval):
     """
     This class represents a TMC5160 Evaluation Shield.
 
@@ -18,8 +14,7 @@ class TMC5160_shield(TMC5160):
     this class if these two functions are provided properly. See __init__ for
     details on the function requirements.
     """
-
-    def __init__(self, connection, channel, moduleID=1):
+    def __init__(self, connection, module_id=1):
         """
         Parameters:
             connection:
@@ -38,110 +33,96 @@ class TMC5160_shield(TMC5160):
                 The TMCL module ID of the TMC5160. This ID is used as a
                 parameter for the writeRegister and readRegister functions.
         """
-        TMC5160.__init__(self, moduleID)
-
-        self.__connection = connection
-        self.__channel = channel
-        self._MODULE_ID = moduleID
-
-        self.APs = _APs
-
-    def __str__(self):
-        return "{}[{}]".format(self.__class__.__name__, self.__channel)
+        TMCLEval.__init__(self, connection, module_id)
+        self.motors = [self._MotorTypeA(self, 0)]
+        self.ics = [TMC5160()]
 
     # Use the motion controller functions for register access
-    def writeRegister(self, registerAddress, value, moduleID=None):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+    def writeRegister(self, registerAddress, value):
+        return self.__connection.write_register(registerAddress, TMCLCommand.WRITE_MC, self.__channel, value, self._module_id)
 
-        return self.__connection.write_register(registerAddress, TMCLCommand.WRITE_MC, self.__channel, value, moduleID)
+    def readRegister(self, registerAddress, signed=False):
+        return self.__connection.read_register(registerAddress, TMCLCommand.READ_MC, self.__channel, self._module_id, signed)
 
-    def readRegister(self, registerAddress, moduleID=None, signed=False):
-        # If the moduleID argument is omitted, use the stored module ID
-        if not moduleID:
-            moduleID = self._MODULE_ID
+    def write_register_field(self, field, value):
+        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
+                                                                   field[1], field[2], value))
 
-        return self.__connection.read_register(registerAddress, TMCLCommand.READ_MC, self.__channel, moduleID, signed)
+    def read_register_field(self, field):
+        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
 
-    # Axis parameter access
-    def getAxisParameter(self, apType, axis):
-        return self.__connection.get_axis_parameter(apType, self.__channel)
+    # Motion control functions
 
-    def setAxisParameter(self, apType, axis, value):
-        self.__connection.set_axis_parameter(apType, self.__channel, value)
-
-    # Motion Control functions
     def rotate(self, motor, value):
-        if not(0 <= motor < self.MOTORS):
-            raise ValueError
-
-        self.__connection.rotate(self.__channel, value, moduleID=self._MODULE_ID)
+        self._connection.rotate(motor, value)
 
     def stop(self, motor):
-        self.__connection.stop(self.__channel, moduleID=self._MODULE_ID)
+        self._connection.stop(motor)
 
-    def moveTo(self, motor, position, velocity=None):
+    def move_to(self, motor, position, velocity=None):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
-            self.setAxisParameter(self.APs.MaxVelocity, motor, velocity)
+            self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
+        self._connection.move_to(motor, position, self._module_id)
 
-        self.__connection.move(0, motor, position, moduleID=self._MODULE_ID)
+    class _MotorTypeA(MotorControlModule):
+        def __init__(self, eval_board, axis):
+            MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-class _APs():
-    TargetPosition                 = 0
-    ActualPosition                 = 1
-    TargetVelocity                 = 2
-    ActualVelocity                 = 3
-    MaxVelocity                    = 4
-    MaxAcceleration                = 5
-    MaxCurrent                     = 6
-    StandbyCurrent                 = 7
-    PositionReachedFlag            = 8
-    RightEndstop                   = 10
-    LeftEndstop                    = 11
-    AutomaticRightStop             = 12
-    AutomaticLeftStop              = 13
-    SW_MODE                        = 14
-    A1                             = 15
-    V1                             = 16
-    MaxDeceleration                = 17
-    D1                             = 18
-    StartVelocity                  = 19
-    StopVelocity                   = 20
-    RampWaitTime                   = 21
-    THIGH                          = 23
-    VDCMIN                         = 24
-    HighSpeedChopperMode           = 27
-    HighSpeedFullstepMode          = 28
-    MeasuredSpeed                  = 29
-    I_scale_analog                 = 33
-    internal_Rsense                = 34
-    MicrostepResolution            = 140
-    ChopperBlankTime               = 162
-    ConstantTOffMode               = 163
-    DisableFastDecayComparator     = 164
-    ChopperHysteresisEnd           = 165
-    ChopperHysteresisStart         = 166
-    TOff                           = 167
-    SEIMIN                         = 168
-    SECDS                          = 169
-    smartEnergyHysteresis          = 170
-    SECUS                          = 171
-    smartEnergyHysteresisStart     = 172
-    SG2FilterEnable                = 173
-    SG2Threshold                   = 174
-    smartEnergyActualCurrent       = 180
-    smartEnergyStallVelocity       = 181
-    smartEnergyThresholdSpeed      = 182
-    RandomTOffMode                 = 184
-    ChopperSynchronization         = 185
-    PWMThresholdSpeed              = 186
-    PWMGrad                        = 187
-    PWMAmplitude                   = 188
-    PWMFrequency                   = 191
-    PWMAutoscale                   = 192
-    FreewheelingMode               = 204
-    LoadValue                      = 206
-    EncoderPosition                = 209
-    EncoderResolution              = 210
+        class AP:
+            TargetPosition                 = 0
+            ActualPosition                 = 1
+            TargetVelocity                 = 2
+            ActualVelocity                 = 3
+            MaxVelocity                    = 4
+            MaxAcceleration                = 5
+            MaxCurrent                     = 6
+            StandbyCurrent                 = 7
+            PositionReachedFlag            = 8
+            RightEndstop                   = 10
+            LeftEndstop                    = 11
+            AutomaticRightStop             = 12
+            AutomaticLeftStop              = 13
+            SW_MODE                        = 14
+            A1                             = 15
+            V1                             = 16
+            MaxDeceleration                = 17
+            D1                             = 18
+            StartVelocity                  = 19
+            StopVelocity                   = 20
+            RampWaitTime                   = 21
+            THIGH                          = 23
+            VDCMIN                         = 24
+            HighSpeedChopperMode           = 27
+            HighSpeedFullstepMode          = 28
+            MeasuredSpeed                  = 29
+            I_scale_analog                 = 33
+            internal_Rsense                = 34
+            MicrostepResolution            = 140
+            ChopperBlankTime               = 162
+            ConstantTOffMode               = 163
+            DisableFastDecayComparator     = 164
+            ChopperHysteresisEnd           = 165
+            ChopperHysteresisStart         = 166
+            TOff                           = 167
+            SEIMIN                         = 168
+            SECDS                          = 169
+            smartEnergyHysteresis          = 170
+            SECUS                          = 171
+            smartEnergyHysteresisStart     = 172
+            SG2FilterEnable                = 173
+            SG2Threshold                   = 174
+            smartEnergyActualCurrent       = 180
+            smartEnergyStallVelocity       = 181
+            smartEnergyThresholdSpeed      = 182
+            RandomTOffMode                 = 184
+            ChopperSynchronization         = 185
+            PWMThresholdSpeed              = 186
+            PWMGrad                        = 187
+            PWMAmplitude                   = 188
+            PWMFrequency                   = 191
+            PWMAutoscale                   = 192
+            FreewheelingMode               = 204
+            LoadValue                      = 206
+            EncoderPosition                = 209
+            EncoderResolution              = 210
