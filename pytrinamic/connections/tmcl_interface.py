@@ -1,5 +1,5 @@
 from abc import ABC
-from pytrinamic.tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply
+from pytrinamic.tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
 from pytrinamic.helpers import TMC_helpers
 
 
@@ -90,6 +90,17 @@ class TmclInterface(ABC):
         """
         raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
 
+    def _reply_check(self, reply):
+        """
+        Interface specific check of the reply.
+
+        For Serial-TMCL we need to check the checksum.
+        Per default no check is implemented.
+
+        :param reply: The TMCLReply received in during _recv().
+        """
+        pass
+
     def send_request(self, request):
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
@@ -103,6 +114,11 @@ class TmclInterface(ABC):
 
         if self._debug:
             reply.dump()
+
+        self._reply_check(reply)
+
+        if reply.status < 100:  # status codes below 100 indicate an error response
+            raise TMCLReplyStatusError(reply)
 
         return reply
 

@@ -1,6 +1,7 @@
 from serial import Serial, SerialException
 import serial.tools.list_ports
 from pytrinamic.connections.tmcl_interface import TmclInterface
+from pytrinamic.tmcl import TMCLReplyChecksumError
 
 
 class SerialTmclInterface(TmclInterface):
@@ -66,6 +67,10 @@ class SerialTmclInterface(TmclInterface):
             raise RuntimeError("TMCL datagram timed out")
 
         return data
+
+    def _reply_check(self, reply):
+        if not reply.is_checksum_correct():
+            raise TMCLReplyChecksumError(reply)
 
     def set_timeout(self, timeout):
         self._serial.timeout = timeout if timeout != 0 else None

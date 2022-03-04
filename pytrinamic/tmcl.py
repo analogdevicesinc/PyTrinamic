@@ -176,6 +176,9 @@ class TMCLReply:
     def calculate_checksum(self):
         self.checksum = TMCL.calculate_checksum(self.to_buffer()[:-1])
 
+    def is_checksum_correct(self):
+        return TMCL.calculate_checksum(self.to_buffer()[:-1]) == self.checksum
+
     def to_buffer(self):
         return struct.pack(_PACKAGE_STRUCTURE, self.reply_address, self.module_address,
                            self.status, self.command, self.value, self.checksum)
@@ -202,3 +205,24 @@ class TMCLReply:
     def version_string(self):
         byte_string = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
         return str(byte_string, "ascii")
+
+
+class TMCLReplyError(Exception):
+    def __init__(self, reply):
+        self.reply = reply
+
+
+class TMCLReplyChecksumError(TMCLReplyError):
+    pass
+
+
+class TMCLReplyStatusError(TMCLReplyError):
+
+    def __get_status_code(self):
+        return self.reply.status
+
+    def __get_error_description(self):
+        return TMCLStatus.messages[self.reply.status]
+
+    status_code = property(__get_status_code)
+    error_description = property(__get_error_description)
