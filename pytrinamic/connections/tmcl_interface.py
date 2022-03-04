@@ -90,19 +90,16 @@ class TmclInterface(ABC):
         """
         raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
 
-    def send_request(self, request, module_id=None):
+    def send_request(self, request):
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
         """
-        if not module_id:
-            module_id = self._module_id
-
         if self._debug:
             request.dump()
 
-        self._send(self._host_id, module_id, request.to_buffer())
-        reply = TMCLReply.from_buffer(self._recv(self._host_id, module_id))
+        self._send(self._host_id, request.moduleAddress, request.to_buffer())
+        reply = TMCLReply.from_buffer(self._recv(self._host_id, request.moduleAddress))
 
         if self._debug:
             reply.dump()
@@ -123,16 +120,7 @@ class TmclInterface(ABC):
 
         request = TMCLRequest(module_id, opcode, op_type, motor, value)
 
-        if self._debug:
-            request.dump()
-
-        self._send(self._host_id, module_id, request.to_buffer())
-        reply = TMCLReply.from_buffer(self._recv(self._host_id, module_id))
-
-        if self._debug:
-            reply.dump()
-
-        return reply
+        return self.send_request(request)
 
     def send_boot(self, module_id=None):
         """
