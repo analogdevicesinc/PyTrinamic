@@ -6,24 +6,24 @@ _PACKAGE_STRUCTURE = ">BBBBIB"
 class TMCL:
     @staticmethod
     def validate_host_id(host_id):
-        if not(type(host_id) == int):
-            raise TypeError
-        if not(0 <= host_id < 256):
-            raise ValueError("Incorrect Host ID value. Must be between 0 and 255 inclusively.")
+        if not isinstance(host_id, int):
+            raise TypeError("Host ID must be of type int!")
+        if not(0 <= host_id <= 255):
+            raise ValueError("Incorrect Host ID value. Must be between 0 and 255 inclusively!")
 
     @staticmethod
     def validate_module_id(module_id):
-        if not(type(module_id) == int):
-            raise TypeError
-        if not(0 <= module_id < 256):
-            raise ValueError("Incorrect Module ID value. Must be between 0 and 255 inclusively.")
+        if not isinstance(module_id, int):
+            raise TypeError("Module ID must be of type int!")
+        if not(0 <= module_id <= 255):
+            raise ValueError("Incorrect Module ID value. Must be between 0 and 255 inclusively!")
 
     @staticmethod
     def calculate_checksum(data):
         checksum = 0
         for d in data:
             checksum += d
-        checksum %= 256
+        checksum &= 0xFF
         return checksum
 
 
