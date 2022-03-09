@@ -93,9 +93,6 @@ class SlcanTmclInterface(TmclInterface):
     def supports_tmcl():
         return True
 
-    def print_info(self):
-        print("Connection: type=slcan_tmcl_interface channel=" + self._port + " bitrate=" + str(self._bitrate))
-
     @staticmethod
     def list():
         """
@@ -109,3 +106,6 @@ class SlcanTmclInterface(TmclInterface):
             connected.append(element.device)
 
         return connected
+
+    def __str__(self):
+        return "Connection: type={} channel={} bitrate={}".format(type(self).__name__, self._port, self._bitrate)

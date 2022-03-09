@@ -65,9 +65,6 @@ class UartIcInterface:
     def supports_tmcl():
         return False
 
-    def print_info(self):
-        print("Connection: type=uart_ic_interface com=" + self.serial.portstr + " baud=" + str(self.baudrate))
-
     def send(self, address, value):
         # prepare TMCL request
         request = RegisterRequest(address, value)
@@ -97,3 +94,6 @@ class UartIcInterface:
             connected.append(element.device)
 
         return connected
+
+    def __str__(self):
+        return "Connection: type={} port={} baudrate={}".format(type(self).__name__, self.serial.portstr, self.baudrate)

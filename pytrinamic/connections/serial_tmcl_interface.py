@@ -82,9 +82,6 @@ class SerialTmclInterface(TmclInterface):
     def supports_tmcl():
         return True
 
-    def print_info(self):
-        print("Connection: type=serial_tmcl_interface com=" + self._serial.portstr + " baud=" + str(self._baudrate))
-
     @staticmethod
     def list():
         """
@@ -98,3 +95,6 @@ class SerialTmclInterface(TmclInterface):
             connected.append(element.device)
 
         return connected
+
+    def __str__(self):
+        return "Connection: type={} port={} baudrate={}".format(type(self).__name__, self._serial.portstr, self._baudrate)

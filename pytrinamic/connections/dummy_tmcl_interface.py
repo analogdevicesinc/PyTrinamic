@@ -60,9 +60,6 @@ class DummyTmclInterface(TmclInterface):
     def supports_tmcl():
         return True
 
-    def print_info(self):
-        print("Connection: type=dummy_tmcl_interface")
-
     @staticmethod
     def list():
         """
@@ -72,6 +69,9 @@ class DummyTmclInterface(TmclInterface):
             connection manager.
         """
         return ["dummy"]
+
+    def __str__(self):
+        return "Connection: type={}".format(type(self).__name__)
 
 
 if __name__ == "__main__":

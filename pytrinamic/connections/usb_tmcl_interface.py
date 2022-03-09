@@ -68,16 +68,6 @@ class UsbTmclInterface(SerialTmclInterface):
     def supports_tmcl():
         return True
 
-    def __str__(self):
-        info = "UsbTmclInterface {"
-        info += "'com_port':" + self._serial.portstr + ", "
-        info += "'baudrate':" + str(self._baudrate) + ", "
-        if self._debug:
-            info += "'debug_enabled':" + str(self._debug) + ", "
-        info = info[:-2]
-        info += "}"
-        return info
-
 
 if __name__ == "__main__":
     interface = UsbTmclInterface("COM5")

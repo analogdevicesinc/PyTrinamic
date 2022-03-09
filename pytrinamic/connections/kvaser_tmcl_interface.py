@@ -95,9 +95,6 @@ class KvaserTmclInterface(TmclInterface):
     def supports_tmcl():
         return True
 
-    def print_info(self):
-        print("Connection: type=pcan_tmcl_interface channel=" + str(self._channel) + " bitrate=" + str(self._bitrate))
-
     @staticmethod
     def list():
         """
@@ -107,3 +104,6 @@ class KvaserTmclInterface(TmclInterface):
             connection manager.
         """
         return _CHANNELS
+
+    def __str__(self):
+        return "Connection: type={} channel={} bitrate={}".format(type(self).__name__, self._channel, self._bitrate)
