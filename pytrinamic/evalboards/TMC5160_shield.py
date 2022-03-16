@@ -4,6 +4,7 @@ from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
 from pytrinamic.tmcl import TMCLCommand
 
+
 class TMC5160_shield(TMCLEval):
     """
     This class represents a TMC5160 Evaluation Shield.
@@ -20,11 +21,11 @@ class TMC5160_shield(TMCLEval):
         Parameters:
             connection:
                 Type: class
-                A class that provides the neccessary functions for communicating
+                A class that provides the necessary functions for communicating
                 with a TMC5160. The required functions are
                     connection.writeRegister(registerAddress, command, channel, value, moduleID)
                     connection.readRegister(registerAddress, command, channel, moduleID, signed)
-                for writing/reading to registers of the TMC5160.
+                for writing/reading to register of the TMC5160.
             channel:
                 Type: int
                 IC index for the given module. It is used to distinguish between
@@ -40,11 +41,11 @@ class TMC5160_shield(TMCLEval):
         self.ics = [TMC5160()]
 
     # Use the motion controller functions for register access
-    def write_register(self, registerAddress, value):
-        return self._connection.write_register(registerAddress, TMCLCommand.WRITE_MC, self.__channel, value, self._module_id)
+    def write_register(self, register_address, value):
+        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, self.__channel, value, self._module_id)
 
-    def read_register(self, registerAddress, signed=False):
-        return self._connection.read_register(registerAddress, TMCLCommand.READ_MC, self.__channel, self._module_id, signed)
+    def read_register(self, register_address, signed=False):
+        return self._connection.read_register(register_address, TMCLCommand.READ_MC, self.__channel, self._module_id, signed)
 
     def write_register_field(self, field, value):
         return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),

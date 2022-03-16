@@ -1,12 +1,13 @@
-#!/usr/bin/env python3
-'''
+"""
 Minimalistic demonstration of the stallGuard feature of the TMC5160.
 To reset stall on all modules, restart then script.
+"""
 
-Created on 20.03.2020
-
-@author: LK
-'''
+import time
+import pytrinamic
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
+from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 
 ################################################################################
 # Configuration for all motors
@@ -18,13 +19,6 @@ THRESHOLD_SG = 3
 THRESHOLD_VELOCITY = 1
 
 ################################################################################
-
-import time
-
-import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
-from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 
 pytrinamic.show_info()
 

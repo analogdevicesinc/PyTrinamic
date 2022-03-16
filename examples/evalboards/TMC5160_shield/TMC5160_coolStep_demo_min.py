@@ -1,11 +1,6 @@
-#!/usr/bin/env python3
-'''
+"""
 Demonstration of the stallGuard feature of the TMC5160 (minimalistic).
-
-Created on 20.03.2020
-
-@author: LK
-'''
+"""
 
 import time
 import pytrinamic

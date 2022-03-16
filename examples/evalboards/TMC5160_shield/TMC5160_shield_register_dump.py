@@ -1,14 +1,9 @@
-#!/usr/bin/env python3
-'''
+"""
 Dump all register values of the shield IC.
 
 The connection to a Landungsbrücke is established over USB. TMCL commands are
 used for communicating with the IC.
-
-Created on 18.03.2020
-
-@author: LK
-'''
+"""
 
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager

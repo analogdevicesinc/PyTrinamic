@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-'''
+"""
 Demonstration of the cooolStep feature of the TMC5160.
 The sensorless stallGaurd technology calculates the remaining available load for
 a motor. If that remaining load exceeds a specified value (i.e. load decreases),
@@ -12,12 +11,8 @@ sensitivity and thresholds. After that you are free to play around with this
 feature.
 
 All actions will be performed on all attached shields simultaneously, so you can
-try it with multiple axes aswell.
-
-Created on 23.03.2020
-
-@author: LK
-'''
+try it with multiple axes as well.
+"""
 
 import argparse
 import os
@@ -81,11 +76,13 @@ for shield in shields:
 print("Initialization is done. You can now play around with applying and releasing loads and see how the current gets adjusted.")
 input("Press enter to continue ...")
 
+
 def handle_key():
     while True:
         ch = msvcrt.getch()
         if ch == b'e':
             exit()
+
 
 t = Thread(target=handle_key)
 t.start()
