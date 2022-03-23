@@ -10,7 +10,7 @@ class KvaserTmclInterface(TmclInterface):
     This class implements a TMCL connection for Kvaser adapter using CANLIB.
     Try 0 as default channel.
     """
-    def __init__(self, port=0, datarate=1000000, host_id=2, module_id=1, debug=False):
+    def __init__(self, port="0", datarate=1000000, host_id=2, module_id=1, debug=False):
         if not isinstance(port, str):
             raise TypeError
 
