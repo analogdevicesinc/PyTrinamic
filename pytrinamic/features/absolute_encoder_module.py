@@ -20,10 +20,10 @@ class AbsoluteEncoderModule(AbsoluteEncoder):
         This value is stored as AbsoluteEncoderType axis parameter.
 
         Parameters:
-        type: Absolute encoder type
+        encoder_type: Absolute encoder type
         """
         if self._hasAbsoluteEncoderType:
-            self._parent.set_axis_parameter(self._aps.AbsoluteEncoderType, self._axis, type)
+            self._parent.set_axis_parameter(self._aps.AbsoluteEncoderType, self._axis, encoder_type)
 
     def get_type(self):
         """
