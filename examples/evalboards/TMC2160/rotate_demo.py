@@ -16,7 +16,7 @@ with ConnectionManager().connect() as my_interface:
     motor = eval_board.motors[0]
 
     print("Rotating...")
-    motor.rotate(12800)
+    motor.rotate(10*25600)
     time.sleep(5)
 
     print("Stopping...")
@@ -24,7 +24,7 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(1)
 
     print("Moving back to 0...")
-    motor.move_to(0, 10000)
+    motor.move_to(0, 200000)
 
     # Wait until position 0 is reached
     while motor.actual_position != 0:

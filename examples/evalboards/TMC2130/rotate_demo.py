@@ -17,14 +17,14 @@ with ConnectionManager().connect() as my_interface:
 
     print("Rotating...")
     motor.rotate(10*25600)
-    time.sleep(2)
+    time.sleep(5)
 
     print("Stopping...")
     motor.stop()
     time.sleep(1)
 
     print("Moving back to 0...")
-    motor.move_to(0, 10000)
+    motor.move_to(0, 200000)
 
     # Wait until position 0 is reached
     while motor.actual_position != 0:
