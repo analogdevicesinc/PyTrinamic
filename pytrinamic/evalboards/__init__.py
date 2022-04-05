@@ -1,4 +1,5 @@
 from .tmcl_eval import TMCLEval
+from .MAX22216_eval import MAX22216_eval
 from .TMC2100_eval import TMC2100_eval
 from .TMC2130_eval import TMC2130_eval
 from .TMC2160_eval import TMC2160_eval

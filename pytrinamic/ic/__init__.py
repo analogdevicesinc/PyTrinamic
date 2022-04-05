@@ -1,3 +1,4 @@
+from .MAX22216 import MAX22216
 from .TMC2100 import TMC2100
 from .TMC2130 import TMC2130
 from .TMC2160 import TMC2160
