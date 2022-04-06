@@ -60,7 +60,7 @@ class TMC7300_eval(TMCLEval):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
 
-        def set_standby_current(self, motor, value):
+        def set_standby_current(self, value):
             self.set_axis_parameter(self.AP.ICStandby, value)
 
         class AP:

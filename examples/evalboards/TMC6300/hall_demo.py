@@ -21,7 +21,7 @@ with ConnectionManager().connect() as my_interface:
     motor.set_hall_order(0)
 
     print("Rotating...")
-    motor.set_target_pwm(6000)
+    motor.set_target_pwm(8000)
     time.sleep(3)
 
     print("Stopping...")
@@ -29,7 +29,7 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(2)
 
     print("Rotating back...")
-    motor.set_target_pwm(-6000)
+    motor.set_target_pwm(-8000)
     time.sleep(3)
 
     print("Stopping...")
