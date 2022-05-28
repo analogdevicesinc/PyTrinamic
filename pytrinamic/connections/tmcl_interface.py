@@ -160,9 +160,15 @@ class TmclInterface(ABC):
     def get_version_string(self, module_id=None):
         """
         Request the ASCII version string.
+
+        .. deprecated:: 0.2.0
         """
-        reply = self.send(TMCLCommand.GET_FIRMWARE_VERSION, 0, 0, 0, module_id)
-        return reply.version_string()
+        try:
+            reply = self.send(TMCLCommand.GET_FIRMWARE_VERSION, 0, 0, 0, module_id)
+        except (TMCLReplyStatusError, TMCLReplyChecksumError) as exc:
+            return exc.reply.version_string()
+        else:
+            return reply.version_string()
 
     # General parameter access functions
     def get_parameter(self, p_command, p_type, p_axis, p_value, module_id=None, signed=False):
