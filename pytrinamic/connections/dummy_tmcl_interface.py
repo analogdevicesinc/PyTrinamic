@@ -77,6 +77,5 @@ class DummyTmclInterface(TmclInterface):
 if __name__ == "__main__":
     interface = DummyTmclInterface("dummy")
 
-    interface.get_version_string()
     interface.send_boot()
     interface.close()
