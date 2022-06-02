@@ -82,6 +82,7 @@ class TMCL_Command(object):
     GET_FIRMWARE_VERSION        = 136
     RESTORE_FACTORY_SETTINGS    = 137
     TARGET_POSITION_REACHED     = 138
+    RAMDEBUG                    = 142
     ASSIGNMENT                  = 143
     WRITE_MC                    = 146
     WRITE_DRV                   = 147
