@@ -6,4 +6,5 @@ from .serial_tmcl_interface import SerialTmclInterface
 from .uart_ic_interface import UartIcInterface
 from .usb_tmcl_interface import UsbTmclInterface
 from .slcan_tmcl_interface import SlcanTmclInterface
+from .ixxat_tmcl_interface import IxxatTmclInterface
 from .connection_manager import ConnectionManager
