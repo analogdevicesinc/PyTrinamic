@@ -12,6 +12,7 @@ from .TMCM1617 import TMCM1617
 from .TMCM1630 import TMCM1630
 from .TMCM1633 import TMCM1633
 from .TMCM1636 import TMCM1636
+from .TMCM1637 import TMCM1637
 from .TMCM1640 import TMCM1640
 from .TMCM1670 import TMCM1670
 from .TMCM3110 import TMCM3110
