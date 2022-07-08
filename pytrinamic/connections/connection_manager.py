@@ -9,6 +9,7 @@ from pytrinamic.connections import SerialTmclInterface
 from pytrinamic.connections import UartIcInterface
 from pytrinamic.connections import UsbTmclInterface
 from pytrinamic.connections import SlcanTmclInterface
+from pytrinamic.connections import IxxatTmclInterface
 
 
 class ConnectionManager:
@@ -85,7 +86,8 @@ class ConnectionManager:
         ("socketcan_tmcl", SocketcanTmclInterface, 1000000),
         ("serial_tmcl", SerialTmclInterface, 9600),
         ("uart_ic", UartIcInterface, 9600),
-        ("usb_tmcl", UsbTmclInterface, 115200)
+        ("usb_tmcl", UsbTmclInterface, 115200),
+        ("ixxat_tmcl", IxxatTmclInterface, 1000000),
     ]
 
     def __init__(self, arg_list=None, connection_type="any", debug=False):
