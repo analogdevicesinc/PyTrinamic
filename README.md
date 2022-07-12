@@ -2,11 +2,13 @@
 
 PyTrinamic is a Python package for communicating with TRINAMIC modules, evaluation boards and ICs.
 
-The package is intended to automate tasks that were only possible by manually stepping though the [TMCL-IDE](only available through manual access using the).
+The package is intended to automate tasks that are typically done manually with TRINAMICs [TMCL-IDE](https://www.trinamic.com/support/software/tmcl-ide/).
 
-## Setup
+<mark>❕ Note that we change the way PyTrinamic is used, please check out the [Migration Guide](#migration-guide)❕</mark>
 
-Use pip to install the PyTrinamic.
+## Install
+
+Use pip to install PyTrinamic.
 
 ```
 pip install pytrinamic

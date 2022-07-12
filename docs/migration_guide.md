@@ -54,7 +54,7 @@ from PyTrinamic.TMCL import ...
 
 Now
 ```py
-from PyTrinamic.tmcl import ...
+from pytrinamic.tmcl import ...
 ```
 
 ## Class Naming
@@ -69,7 +69,7 @@ module = TMCM_1160(..)
 .. = TMCL.TMCL_Command
 ```
 
-New:
+Now:
 
 ```py
 module = TMCM1160(..)
@@ -78,16 +78,16 @@ module = TMCM1160(..)
 
 ## Function Naming
 
-All function now use the snake_case naming convention.
+All functions now use the snake_case naming convention.
 
 PyTrinamic < 0.2.0:
 
 ```py
-module.getAxisParameter(Module_1160.APs.ActualPosition)
+module.getAxisParameter(TMCM_1160.APs.ActualPosition)
 ```
 
-New:
+Now:
 
 ```py
-module.getAxisParameter(Module_1160.APs.ActualPosition)
+module.get_axis_parameter(TMCM1160._MotorTypeA.AP.ActualPosition)
 ```
