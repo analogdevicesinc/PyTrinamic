@@ -262,6 +262,15 @@ class TmclInterface(ABC):
         """
         return self.move(1, motor, distance, module_id).value
 
+    def reference_search(self, command_type, motor, module_id=None):
+        """
+        Use the TMCL RFS command to search for the reference points.
+
+        :param int command_type: 0 starts the search, 1 stops the search, and 2 returns the status.
+        :param int motor: the index of the motor
+        """
+        return self.send(TMCLCommand.RFS, command_type, motor, 0, module_id).value
+
     # IO pin functions
     def get_analog_input(self, x, module_id=None):
         return self.send(TMCLCommand.GIO, x, 1, 0, module_id).value

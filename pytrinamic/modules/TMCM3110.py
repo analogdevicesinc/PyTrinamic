@@ -31,6 +31,27 @@ class TMCM3110(TMCLModule):
             self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
+    def start_reference_search(self, axis):
+        self.connection.reference_search(0, axis)
+
+    def stop_reference_search(self, axis):
+        self.connection.reference_search(1, axis)
+
+    def get_reference_search_status(self, axis):
+        return self.connection.reference_search(2, axis)
+
+    def set_reference_search_mode(self, axis, mode):
+        motor = self.motors[axis]
+        return motor.set_axis_parameter(motor.AP.ReferenceSearchMode, mode)
+
+    def set_reference_search_speed(self, axis, speed):
+        motor = self.motors[axis]
+        return motor.set_axis_parameter(motor.AP.ReferenceSearchSpeed, speed)
+
+    def set_reference_switch_speed(self, axis, speed):
+        motor = self.motors[axis]
+        return motor.set_axis_parameter(motor.AP.ReferenceSwitchSpeed, speed)
+
     class _MotorTypeA(MotorControlModule):
 
         def __init__(self, module, axis):
