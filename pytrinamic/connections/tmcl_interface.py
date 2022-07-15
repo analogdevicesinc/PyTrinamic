@@ -228,11 +228,15 @@ class TmclInterface(ABC):
         return self.read_register(register_address, TMCLCommand.READ_DRV, 1, module_id, signed)
 
     def read_register(self, register_address, command, channel, module_id=None, signed=False):
-        value = self.send(command, register_address, channel, 0, module_id).value
+        tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+        tmcl_type = register_address & 0xFF
+        value = self.send(command, tmcl_type, tmcl_motor, 0, module_id).value
         return TMC_helpers.to_signed_32(value) if signed else value
 
     def write_register(self, register_address, command, channel, value, module_id=None):
-        return self.send(command, register_address, channel, value, module_id)
+        tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+        tmcl_type = register_address & 0xFF
+        return self.send(command, tmcl_type, tmcl_motor, value, module_id)
 
     # Motion control functions
     def rotate(self, motor, velocity, module_id=None):
