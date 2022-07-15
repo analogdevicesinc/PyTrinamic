@@ -5,7 +5,7 @@ This guide outlines how to convert existing code based on legacy PyTrinamic (<0.
 Also check out the new [examples](https://github.com/trinamic/PyTrinamic/tree/master/examples).
 For almost all examples that were published for legacy PyTrinamic, new examples are provided.
 
-## Import
+## Imports
 
 All imports now use PyTrinamic in lowercase letters.
 
@@ -24,7 +24,7 @@ from pytrinamic.version import __version__
 ```
 
 
-## Shorter Imports
+## Shorter Import Paths
 
 We introduced shorter imports.
 
