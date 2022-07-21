@@ -19,9 +19,9 @@ pip install pytrinamic
 
 Please have a look at the [code examples on GitHub](https://github.com/trinamic/PyTrinamic/tree/feature_feature_hierarchy_v2/examples).
 
-## Migration Guide
+## Migration Guide<a id="migration-guide"></a>
 
-Version 0.2.0 of PyTrinamic introduces several changes to the API. For those who want to convert code that uses an older version of PyTrinamic, we wrote a short [migration guide](docs/migration_guide.md).
+Version 0.2.0 of PyTrinamic introduces several changes to the API. For those who want to convert code that uses an older version of PyTrinamic, we wrote a short [migration guide](https://github.com/trinamic/PyTrinamic/blob/master/docs/migration_guide.md).
 
 All previous versions of PyTrinamic will still be available on PyPI and can be installed via: `pip install pytrinamic==0.1.27`.
 
