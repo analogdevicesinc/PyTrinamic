@@ -1,4 +1,4 @@
-from pytrinamic.features.coolstep import CoolStep
+from ..features.coolstep import CoolStep
 import time
 
 

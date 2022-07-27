@@ -1,6 +1,6 @@
 import can
 from can import CanError
-from pytrinamic.connections.tmcl_interface import TmclInterface
+from ..connections.tmcl_interface import TmclInterface
 
 _CHANNELS = ["0",  "1",  "2"]
 

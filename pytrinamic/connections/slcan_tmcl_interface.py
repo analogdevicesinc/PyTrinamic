@@ -1,7 +1,7 @@
 import can
 from can import CanError
 from serial.tools.list_ports import comports
-from pytrinamic.connections.tmcl_interface import TmclInterface
+from ..connections.tmcl_interface import TmclInterface
 
 
 class SlcanTmclInterface(TmclInterface):

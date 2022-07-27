@@ -1,4 +1,4 @@
-from pytrinamic.features.linear_ramp import LinearRamp
+from ..features.linear_ramp import LinearRamp
 
 
 class LinearRampModule(LinearRamp):

@@ -1,6 +1,6 @@
-from pytrinamic.modules import TMCLModule
-from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule, AbsoluteEncoderModule
-from pytrinamic.features import PIDModule
+from ..modules import TMCLModule
+from ..features import MotorControlModule, DriveSettingModule, LinearRampModule, AbsoluteEncoderModule
+from ..features import PIDModule
 
 
 class TMCM1670(TMCLModule):

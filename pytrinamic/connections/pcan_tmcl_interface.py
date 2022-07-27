@@ -2,7 +2,7 @@
 import can
 from can import CanError
 from can.interfaces.pcan.pcan import PcanError
-from pytrinamic.connections.tmcl_interface import TmclInterface
+from ..connections.tmcl_interface import TmclInterface
 
 _CHANNELS = [
     "PCAN_USBBUS1",  "PCAN_USBBUS2",  "PCAN_USBBUS3",  "PCAN_USBBUS4",

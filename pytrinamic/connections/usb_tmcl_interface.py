@@ -1,5 +1,5 @@
 import serial.tools.list_ports
-from pytrinamic.connections.serial_tmcl_interface import SerialTmclInterface
+from ..connections.serial_tmcl_interface import SerialTmclInterface
 
 
 class UsbTmclInterface(SerialTmclInterface):

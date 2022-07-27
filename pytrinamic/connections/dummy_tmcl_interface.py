@@ -1,4 +1,4 @@
-from pytrinamic.connections.tmcl_interface import TmclInterface
+from ..connections.tmcl_interface import TmclInterface
 
 
 class DummyTmclInterface(TmclInterface):

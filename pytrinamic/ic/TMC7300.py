@@ -1,6 +1,6 @@
 import struct
-from pytrinamic.ic.tmc_ic import TMCIc
-from pytrinamic.helpers import TMC_helpers
+from ..ic.tmc_ic import TMCIc
+from ..helpers import TMC_helpers
 
 DATAGRAM_FORMAT = ">BI"
 DATAGRAM_LENGTH = 5

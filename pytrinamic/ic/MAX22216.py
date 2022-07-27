@@ -1,4 +1,5 @@
-from pytrinamic.ic.tmc_ic import TMCIc
+from ..ic.tmc_ic import TMCIc
+
 
 class MAX22216(TMCIc):
     """

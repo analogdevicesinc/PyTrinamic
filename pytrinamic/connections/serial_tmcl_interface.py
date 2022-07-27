@@ -1,7 +1,7 @@
 from serial import Serial, SerialException
 import serial.tools.list_ports
-from pytrinamic.connections.tmcl_interface import TmclInterface
-from pytrinamic.tmcl import TMCLReplyChecksumError
+from ..connections.tmcl_interface import TmclInterface
+from ..tmcl import TMCLReplyChecksumError
 
 
 class SerialTmclInterface(TmclInterface):

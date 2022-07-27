@@ -1,4 +1,4 @@
-from pytrinamic.features.pid import PID
+from ..features.pid import PID
 
 
 class PIDModule(PID):
