@@ -1,4 +1,4 @@
-from pytrinamic.ic.tmc_ic import TMCIc
+from ..ic.tmc_ic import TMCIc
 
 
 class TMC4361(TMCIc):

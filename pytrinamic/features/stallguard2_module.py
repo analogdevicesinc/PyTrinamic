@@ -1,4 +1,4 @@
-from pytrinamic.features.stallguard2 import StallGuard2
+from ..features.stallguard2 import StallGuard2
 import time
 
 

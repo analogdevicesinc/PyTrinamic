@@ -1,4 +1,4 @@
-from pytrinamic.features.abn_encoder import ABNEncoder
+from ..features.abn_encoder import ABNEncoder
 
 
 class ABNEncoderModule(ABNEncoder):

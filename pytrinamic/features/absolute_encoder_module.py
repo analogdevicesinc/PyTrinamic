@@ -1,4 +1,4 @@
-from pytrinamic.features.absolute_encoder import AbsoluteEncoder
+from ..features.absolute_encoder import AbsoluteEncoder
 
 
 class AbsoluteEncoderModule(AbsoluteEncoder):

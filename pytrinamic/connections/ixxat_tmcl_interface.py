@@ -1,6 +1,6 @@
 import can
 from can import CanError
-from pytrinamic.connections.tmcl_interface import TmclInterface
+from ..connections.tmcl_interface import TmclInterface
 
 # Providing 5 channels here, this should cover all use cases.
 # Ixxat USB-to-CAN provides 1, 2 or 4 channels.

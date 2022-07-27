@@ -1,4 +1,4 @@
-from pytrinamic.features.motor_control import MotorControl
+from ..features.motor_control import MotorControl
 
 
 class MotorControlModule(MotorControl):

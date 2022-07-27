@@ -1,4 +1,4 @@
-from pytrinamic.features.drive_setting import DriveSetting
+from ..features.drive_setting import DriveSetting
 
 
 class DriveSettingModule(DriveSetting):

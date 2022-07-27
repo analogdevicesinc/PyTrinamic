@@ -1,8 +1,8 @@
-from pytrinamic.modules import TMCLModule
+from ..modules import TMCLModule
 
 # features
-from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
-from pytrinamic.features import StallGuard2Module, CoolStepModule
+from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
+from ..features import StallGuard2Module, CoolStepModule
 
 
 class TMCM3110(TMCLModule):

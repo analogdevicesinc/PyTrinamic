@@ -1,5 +1,5 @@
-from pytrinamic.features.motor_control import MotorControl
-from pytrinamic.helpers import TMC_helpers
+from ..features.motor_control import MotorControl
+from ..helpers import TMC_helpers
 
 
 class MotorControlIc(MotorControl):

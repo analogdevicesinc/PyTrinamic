@@ -1,6 +1,6 @@
 from abc import ABC
-from pytrinamic.tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
-from pytrinamic.helpers import TMC_helpers
+from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
+from ..helpers import TMC_helpers
 
 
 class TmclInterface(ABC):
