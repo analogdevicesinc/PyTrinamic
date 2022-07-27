@@ -1,4 +1,4 @@
-from pytrinamic.features.digital_hall import DigitalHall
+from ..features.digital_hall import DigitalHall
 
 
 class DigitalHallModule(DigitalHall):

@@ -1,8 +1,8 @@
-from pytrinamic.modules import TMCLModule
-from pytrinamic.ic import TMC4671, TMC6200
-from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
-from pytrinamic.features import ABNEncoderModule, DigitalHallModule, PIDModule
-from pytrinamic.helpers import TMC_helpers
+from ..modules import TMCLModule
+from ..ic import TMC4671, TMC6200
+from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
+from ..features import ABNEncoderModule, DigitalHallModule, PIDModule
+from ..helpers import TMC_helpers
 
 
 class TMCM1617(TMCLModule):

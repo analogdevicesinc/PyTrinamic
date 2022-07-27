@@ -1,4 +1,4 @@
-from pytrinamic import name, desc
+from . import name, desc
 
 
 class TMC_helpers(object):

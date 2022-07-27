@@ -1,15 +1,15 @@
 import sys
 import argparse
 
-from pytrinamic.connections import DummyTmclInterface
-from pytrinamic.connections import PcanTmclInterface
-from pytrinamic.connections import SocketcanTmclInterface
-from pytrinamic.connections import KvaserTmclInterface
-from pytrinamic.connections import SerialTmclInterface
-from pytrinamic.connections import UartIcInterface
-from pytrinamic.connections import UsbTmclInterface
-from pytrinamic.connections import SlcanTmclInterface
-from pytrinamic.connections import IxxatTmclInterface
+from ..connections import DummyTmclInterface
+from ..connections import PcanTmclInterface
+from ..connections import SocketcanTmclInterface
+from ..connections import KvaserTmclInterface
+from ..connections import SerialTmclInterface
+from ..connections import UartIcInterface
+from ..connections import UsbTmclInterface
+from ..connections import SlcanTmclInterface
+from ..connections import IxxatTmclInterface
 
 
 class ConnectionManager:

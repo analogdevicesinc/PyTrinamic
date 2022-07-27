@@ -1,7 +1,7 @@
-from pytrinamic.ic.tmc_ic import TMCIc
+from ..ic.tmc_ic import TMCIc
 
 # features
-from pytrinamic.features.motor_control_ic import MotorControlIc
+from ..features.motor_control_ic import MotorControlIc
 # from pytrinamic.features.LinearRampIC import LinearRampIC
 # from pytrinamic.features.CurrentIC import CurrentIC
 # from pytrinamic.features.StallGuard2IC import StallGuard2IC

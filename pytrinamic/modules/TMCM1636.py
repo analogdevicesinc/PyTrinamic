@@ -1,8 +1,8 @@
-from pytrinamic.modules import TMCLModule
+from ..modules import TMCLModule
 
 # features
-from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule, ABNEncoderModule
-from pytrinamic.features import DigitalHallModule, PIDModule, AbsoluteEncoderModule
+from ..features import MotorControlModule, DriveSettingModule, LinearRampModule, ABNEncoderModule
+from ..features import DigitalHallModule, PIDModule, AbsoluteEncoderModule
 
 
 class TMCM1636(TMCLModule):
