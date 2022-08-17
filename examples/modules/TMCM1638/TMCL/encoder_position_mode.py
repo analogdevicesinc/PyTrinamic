@@ -55,14 +55,18 @@ with connection_manager.connect() as my_interface:
 
     # set target position 
     motor.move_to(motor.abn_encoder.resolution * 50)
+
+    # wait for position reached
     while not(motor.get_position_reached()):
-        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        print("target position: {} actual position: {}".format(motor.target_position, motor.actual_position))
         time.sleep(0.2)
 
     # move back to zero position 
     motor.move_to(0)
+
+    # wait for position reached
     while not(motor.get_position_reached()):
-        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        print("target position: {} actual position: {}".format(motor.target_position, motor.actual_position))
         time.sleep(0.2)
 
 print("\nReady.")
