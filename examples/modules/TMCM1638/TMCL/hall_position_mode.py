@@ -1,6 +1,6 @@
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.modules import TMCM1637
+from pytrinamic.modules import TMCM1638
 import time
 
 pytrinamic.show_info()
@@ -8,10 +8,10 @@ pytrinamic.show_info()
 connection_manager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
 
 with connection_manager.connect() as my_interface:
-    module = TMCM1637(my_interface)
+    module = TMCM1638(my_interface)
     motor = module.motors[0]
 
-    # Define motor configuration for the TMCM-1637.
+    # Define motor configuration for the TMCM-1638.
     #
     # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
