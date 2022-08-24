@@ -65,6 +65,11 @@ class ConnectionManager:
 
             Default value: 115200
 
+        --timeout <timeout in s>
+            The rx timeout. The value should be larger than 0.
+
+            Default value: 5.0
+
         --host-id <host-id>
             The host id to use with a TMCL connection.
 
@@ -156,6 +161,9 @@ class ConnectionManager:
             # No data rate has been set -> keep old value
             pass
 
+        # Timeout
+        self.__timeout_s = args.timeout_s[0]
+
         # Host ID
         try:
             self.__host_id = int(args.host_id[0])
@@ -174,6 +182,7 @@ class ConnectionManager:
             print("\tPort:       " + self.__port)
             print("\tBlacklist:  " + str(self.__no_port))
             print("\tData rate:  " + str(self.__data_rate))
+            print("\tTimeout:    " + str(self.__timeout_s))
             print("\tHost ID:    " + str(self.__host_id))
             print("\tModule ID:  " + str(self.__module_id))
             print()
@@ -243,10 +252,10 @@ class ConnectionManager:
             if self.__interface.supports_tmcl():
                 # Open the connection to a TMCL interface
                 self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id,
-                                                     debug=debug_interface)
+                                                     debug=debug_interface, timeout_s=self.__timeout_s)
             else:
                 # Open the connection to a direct IC interface
-                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
+                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface, timeout_s=self.__timeout_s)
         except ConnectionError as e:
             raise ConnectionError("Couldn't connect to port " + port + ". Connection failed.") from e
 
@@ -303,6 +312,18 @@ class ConnectionManager:
         script, this function adds the arguments of the ConnectionManager to the
         argparse parser.
         """
+        class GreaterThanZeroFloat:
+            """Checker for float choice.
+
+            assert 1.0 == GreaterThanZeroFloat()
+            assert 0.0 != GreaterThanZeroFloat()
+            """
+            def __eq__(self, other):
+                return other > 0.0
+
+            def __repr__(self):
+                return "x > 0.0"
+
         group = arg_parser.add_argument_group("ConnectionManager options")
         group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str,
                            choices=[actual_interface[0] for actual_interface in ConnectionManager.INTERFACES],
@@ -313,6 +334,8 @@ class ConnectionManager:
                            help='Exclude ports')
         group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
                            help='Connection data-rate (default: %(default)s)')
+        group.add_argument('--timeout', dest='timeout_s', action='store', nargs=1, type=float, default=[5.0], choices=[GreaterThanZeroFloat()],
+                           help='Connection rx timeout in seconds(default: %(default)s)', metavar='<float_greater_than_zero>')
 
         group = arg_parser.add_argument_group("ConnectionManager TMCL options")
 

@@ -27,7 +27,7 @@ class IxxatTmclInterface(TmclInterface):
             print("Found IXXAT adapter with hardware id '%s'." % hwid)
     """
 
-    def __init__(self, port="0", datarate=1000000, host_id=2, module_id=1, debug=False):
+    def __init__(self, port="0", datarate=1000000, host_id=2, module_id=1, debug=False, timeout_s=5):
         if not isinstance(port, str):
             raise TypeError
 
@@ -37,6 +37,7 @@ class IxxatTmclInterface(TmclInterface):
         TmclInterface.__init__(self, host_id, module_id, debug)
         self._channel = port
         self._bitrate = datarate
+        self._timeout_s = timeout_s
 
         try:
             if self._debug:
@@ -100,7 +101,7 @@ class IxxatTmclInterface(TmclInterface):
         del module_id
 
         try:
-            msg = self._connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=self._timeout_s)
         except CanError as e:
             raise ConnectionError(
                 f"Failed to receive a TMCL message from {self.__class__.__name__} (channel {str(self._channel)})"
