@@ -312,17 +312,15 @@ class ConnectionManager:
         script, this function adds the arguments of the ConnectionManager to the
         argparse parser.
         """
-        class GreaterThanZeroFloat:
-            """Checker for float choice.
-
-            assert 1.0 == GreaterThanZeroFloat()
-            assert 0.0 != GreaterThanZeroFloat()
+        def _positive_float(value):
             """
-            def __eq__(self, other):
-                return other > 0.0
+            Argparse checker for float a positive float type.
+            """
+            value_float = float(value)
+            if value_float < 0:
+                raise argparse.ArgumentTypeError("Expected a positive float, got {}".format(value_float))
 
-            def __repr__(self):
-                return "x > 0.0"
+            return value_float
 
         group = arg_parser.add_argument_group("ConnectionManager options")
         group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str,
@@ -334,8 +332,8 @@ class ConnectionManager:
                            help='Exclude ports')
         group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
                            help='Connection data-rate (default: %(default)s)')
-        group.add_argument('--timeout', dest='timeout_s', action='store', nargs=1, type=float, default=[5.0], choices=[GreaterThanZeroFloat()],
-                           help='Connection rx timeout in seconds(default: %(default)s)', metavar='<float_greater_than_zero>')
+        group.add_argument('--timeout', dest='timeout_s', action='store', nargs=1, type=_positive_float, default=5.0,
+                           help='Connection rx timeout in seconds (default: %(default)s)', metavar="SECONDS")
 
         group = arg_parser.add_argument_group("ConnectionManager TMCL options")
 
