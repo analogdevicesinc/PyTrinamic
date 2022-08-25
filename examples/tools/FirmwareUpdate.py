@@ -1,8 +1,11 @@
+import argparse
 import sys
 import time
 import math
 import re
 import struct
+import logging
+import intelhex
 
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
@@ -11,134 +14,57 @@ from pytrinamic.tmcl import TMCLCommand
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
 # command.
 SERIAL_BOOT_TIMEOUT = 100
+# ################################ Commandline ##################################
+parser = argparse.ArgumentParser()
+
+# Mandatory arguments
+parser.add_argument("hex_file", metavar="hex-file", help="Hex file to be uploaded")
+
+# Optional arguments
+parser.add_argument('-v', '--verbose', action="count", default=0, help="Verbosity level")
+
+# ConnectionManager arguments
+ConnectionManager.argparse(parser)
+
+args = parser.parse_args()
+
 # ################################ Preparation ##################################
 pytrinamic.show_info()
 
-if len(sys.argv) < 2:
-    print("Usage:\n\tFirmwareUpdate.py HexFilePath [connection options]")
-    exit(1)
-
-print("Opening hex file (" + sys.argv[1] + ")")
-
-try:
-    f = open(sys.argv[1], "rt")
-except FileNotFoundError:
-    print("Error: Hex file not found")
-    exit(1)
-
 connectionManager = ConnectionManager(sys.argv)
 
-# ############################## Hex file parsing ###############################
-print("Parsing hex file")
+if args.verbose == 0:
+    log_level = logging.ERROR
+elif args.verbose == 1:
+    log_level = logging.WARNING
+elif args.verbose == 2:
+    log_level = logging.INFO
+else:
+    log_level = logging.DEBUG
 
-data = []
-extendedAddress = 0
-segmentAddress = 0
-for lineNumber, line in enumerate(f, 1):
-    # ## Parse a hex file line
-    # Check for RECORD MARK
-    if line[0] != ':':
-        continue
+logging.basicConfig(stream=sys.stdout, level=log_level)
 
-    # CHECKSUM validation
-    # All Bytes summed together modulo 256 have to be 0
-    checksum = 0
-    for i in range(1, len(line)-1, 2):
-        checksum = checksum + int(line[i:i+2], 16)
-    if checksum % 256 != 0:
-        print("Error: Invalid Checksum in line " + str(lineNumber))
-        exit(1)
-
-    # Read the fields of the entry
-    rec_len = int(line[1:3], 16)
-    rec_address = int(line[3:7], 16)
-    rec_type = int(line[7:9], 16)
-    rec_data = line[9:rec_len*2+9]
-
-    # RECLEN validation
-    # Total characters:
-    #     1: RECORD MARK
-    #     2: RECLEN
-    #     4: LOAD OFFSET
-    #     2: RECTYPE
-    #     RECLEN*2: DATA / INFO
-    #     2: CHKSUM
-    #     1: \n
-    if 1 + 2 + 4 + 2 + (rec_len*2) + 2 + 1 != len(line):
-        print("Error: Invalid record length in line " + str(lineNumber))
-
-    # ## Record type distinction
-    if rec_type == 0:
-        # Type: Data Record
-        address = extendedAddress + segmentAddress + rec_address
-        if address % 4 != 0:
-            print("Error: Address is not 4-Byte aligned (Line " + str(lineNumber) + ")")
-            exit(1)
-
-        data.append((address, rec_len, rec_data))
-
-    if rec_type == 1:
-        # Type: End of File Record
-        break
-
-    if rec_type == 2:
-        # Type: Extended Segment Address Record
-        segmentAddress = int(rec_data, 16) * 0x10
-
-        if extendedAddress != 0:
-            print("Warning: Hex file uses both Type 2 and Type 4 records!")
-
-    if rec_type == 3:
-        # Type: Start Segment Address Record
-        # Ignore this record
-        pass
-
-    if rec_type == 4:
-        # Type: Extended Linear Address Record
-        extendedAddress = int(rec_data, 16) * 0x10000
-        print("Extended Address: " + hex(extendedAddress))
-
-        if segmentAddress != 0:
-            print("Warning: Hex file uses both Type 2 and Type 4 records!")
-
-    if rec_type == 5:
-        # Type: Start Linear Address Record
-        # Ignore this record
-        pass
-
-print("Parsed " + str(lineNumber) + " lines containing " + str(len(data)) + " data records")
-
-# Make sure that the data is sorted by address
-data.sort(key=lambda x: x[0])
-
-f.close()
-
-print()
-
+############################### Hex file parsing ###############################
+print("Opening hex file (" + args.hex_file + ")")
+file = intelhex.IntelHex(args.hex_file)
+file.padding = 0x00
 # ########################## Binary data preparation ############################
 
 # Get the boundaries and size of the data
-start_address = data[0][0]
-end_address = data[-1][0] + data[-1][1]
+start_address = file.minaddr()
+end_address = file.maxaddr()
 length = end_address - start_address
 
-# Extract the parsed hex data into a bytearray
-byteData = bytearray(length)
+# Calculate the checksum
 checksum = 0
-for entry in data:
-    address = entry[0]
+for addr in file.addresses():
+    checksum += file[addr]
+    checksum &= 0xFFFFFFFF
 
-    for i in range(0, entry[1]):
-        value = int(entry[2][i*2:(i+1)*2], 16)
-        checksum = (checksum + value) & 0xFFFFFFFF
-        byteData[address-start_address + i] = value
-
-print("Start address: 0x{0:08X}".format(start_address))
-print("End address:   0x{0:08X}".format(end_address))
-print("Length:        0x{0:08X}".format(length))
-print("Checksum:      0x{0:08X}".format(checksum))
-
-print()
+logging.info("Start address: 0x{0:08X}".format(start_address))
+logging.info("End address:   0x{0:08X}".format(end_address))
+logging.info("Length:        0x{0:08X}".format(length))
+logging.info("Checksum:      0x{0:08X}".format(checksum))
 
 # ############################# Bootloader entry ################################
 # Connect to the evaluation board
@@ -166,26 +92,34 @@ if not myInterface:
     print("Error: Timeout when attempting to reconnect to bootloader")
     exit(1)
 
-myInterface.enableDebug(True)
 # Retrieve the bootloader version
-bootloaderVersion = myInterface.getVersionString(1)
+bootloaderVersion = myInterface.get_version_string(1)
 found = re.search("\d\d\d\dB\d\d\d", bootloaderVersion)
 if found:
     pattern = found.group(0)[0:4] + "V\d\d\d"
-    print("Scanning new firmware data for correct module string (" + found.group(0)[0:4] + "V###)")
+    logging.info(f"Scanning new firmware data for correct module string ({found.group(0)[0:4]}V###)")
 else:
     found = re.search("\d\d\dB\d\.\d\d", bootloaderVersion)
     if found:
         pattern = found.group(0)[0:3] + "V\d\.\d\d"
-        print("Scanning new firmware data for correct module string (" + found.group(0)[0:3] + "V#.##)")
+        logging.info(f"Scanning new firmware data for correct module string ({found.group(0)[0:3]}V#.##)")
     else:
-        print("Error: GetVersion returned invalid answer (" + bootloaderVersion + ")")
+        logging.error(f"GetVersion returned invalid answer ({bootloaderVersion})")
         exit(1)
 
 # Scan for the module string
-firmwareString = str(byteData, encoding="ascii", errors="ignore")
-found = re.search(pattern, firmwareString)
-if not found:
+found = None
+for segment in file.segments():
+    print(segment)
+    start = segment[0]
+    length = segment[1] - segment[0]
+    firmware_bytes = file.gets(start, length)
+    firmware_string = str(firmware_bytes, encoding="ascii", errors="ignore")
+
+    found = re.search(pattern, firmware_string)
+    if found:
+        break
+else:
     print("Error: No matching version string found in firmware image")
     exit(1)
 
@@ -201,6 +135,10 @@ reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 1, 0, 0)
 mem_start_address = reply.value
 reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 2, 0, 0)
 mem_size = reply.value
+
+logging.debug(f"Bootloader memory page size:      0x{mem_page_size:08X}")
+logging.debug(f"Bootloader Memory start address:  0x{mem_start_address:08X}")
+logging.debug(f"Bootloader Memory size:           0x{mem_size:08X}")
 
 # Check if the page size is a power of two
 if not(((mem_page_size & (mem_page_size - 1)) == 0) and mem_page_size != 0):
@@ -252,11 +190,10 @@ def write32Bit(address, write_data):
     myInterface.send(TMCLCommand.BOOT_WRITE_BUFFER, math.floor(offset / 4) % 256, math.floor(math.floor(offset / 4) / 256), write_data)
     current_page_dirty = True
 
-
-for i in range(0, len(byteData), 4):
-    address = i + start_address
-    value = struct.unpack("<I", byteData[i:i+4])[0]
-    write32Bit(address, value)
+print("Uploading new firmware...")
+for addr in range(start_address, end_address, 4):
+    value = file[addr+3] << 24 | file[addr+2] << 16 | file[addr+1] << 8 | file[addr]
+    write32Bit(addr, value)
 
 # If the last page didn't get written yet, write it
 if current_page_dirty:

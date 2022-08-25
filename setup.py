@@ -21,6 +21,12 @@ setuptools.setup(
         "canopen",
         "pyserial>=3"
     ],
+    extras_require={
+        # Optional: Examples, scripts etc. that require additional libraries
+        "Extra": [
+            "IntelHex>=2.3"
+        ],
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "Development Status :: 4 - Beta",
