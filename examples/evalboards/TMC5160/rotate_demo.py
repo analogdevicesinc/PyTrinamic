@@ -1,5 +1,9 @@
 """
 Move a motor back and forth using velocity and position mode of the TMC5160
+
+Line 31, we set a lower run/standby current for the motor. Using NEMA17, this should result in a coil current around 800mA.
+If the motor is stalling due to too low current, set motorCurrent higher.
+If a lower value still is needed, set GLOBAL_SCALER register to 128 to half motor current.
 """
 import time
 import pytrinamic
@@ -16,7 +20,7 @@ with ConnectionManager().connect() as my_interface:
     mc = eval_board.ics[0]
     motor = eval_board.motors[0]
 
-    print("Preparing parameter...")
+    print("Preparing parameters...")
     eval_board.write_register(mc.REG.A1, 1000)
     eval_board.write_register(mc.REG.V1, 50000)
     eval_board.write_register(mc.REG.D1, 500)
@@ -25,11 +29,16 @@ with ConnectionManager().connect() as my_interface:
     eval_board.write_register(mc.REG.VSTOP, 10)
     eval_board.write_register(mc.REG.AMAX, 1000)
 
+    # Set lower run/standby current
+    motorCurrent = 2
+    motor.set_axis_parameter(motor.AP.MaxCurrent, motorCurrent)
+    motor.set_axis_parameter(motor.AP.StandbyCurrent, motorCurrent)
+
     # Clear actual positions
     motor.actual_position = 0
 
     print("Rotating...")
-    motor.rotate(7*25600)
+    motor.rotate(7 * 25600)
     time.sleep(5)
 
     print("Stopping...")
@@ -37,7 +46,7 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(1)
 
     print("Moving back to 0...")
-    motor.move_to(0, 100000)
+    motor.move_to(0, 7 * 25600)
 
     # Wait until position 0 is reached
     while motor.actual_position != 0:
