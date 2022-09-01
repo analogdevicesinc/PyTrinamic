@@ -63,10 +63,15 @@ class ConnectionManager:
             interpreted depends on the interface used. E.g. the serial
             connection uses this value as the baud rate.
 
-            Default value: 115200
+            The Default value also depends on the interface.
+                * for any CAN interface its 1000000
+                * for the serial_tmcl and uard_id interface it is 9600
+                * for usb_tmcl it is 115200
 
         --timeout <timeout in s>
-            The rx timeout. The value should be larger than 0.
+            The rx timeout in seconds. Accepts only values >= 0.
+            If 0 is given the rx function will block forever.
+            This might be useful for debugging.
 
             Default value: 5.0
 
