@@ -19,7 +19,10 @@ class SlcanTmclInterface(TmclInterface):
         TmclInterface.__init__(self, host_id, module_id, debug)
         self._bitrate = datarate
         self._port = com_port
-        self._timeout_s = timeout_s
+        if timeout_s == 0:
+            self._timeout_s = None
+        else:
+            self._timeout_s = timeout_s
         self._serial_baudrate = serial_baudrate
 
         try:

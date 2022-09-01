@@ -14,6 +14,8 @@ class SerialTmclInterface(TmclInterface):
 
         TmclInterface.__init__(self, host_id, module_id, debug)
         self._baudrate = datarate
+        if timeout_s == 0:
+            timeout_s = None
 
         try:
             self._serial = Serial(com_port, self._baudrate, timeout=timeout_s)

@@ -9,36 +9,73 @@ import time
 import pytest
 
 from pytrinamic.connections import ConnectionManager
+from pytrinamic.connections import KvaserTmclInterface
+from pytrinamic.connections import SerialTmclInterface
+from pytrinamic.connections import UartIcInterface
 
 
+@pytest.mark.parametrize('interface,con_man_parameters', [
+    ('serial_tmcl', ' --port COM4 --data-rate 115200'),
+    ('uart_ic', ' --port COM4'),
+    ('kvaser_tmcl', '')
+])
 @pytest.mark.parametrize('add_argument,expected_timeout', [
     ('', 5),
     (' --timeout 7', 7),
     (' --timeout 200', 200),
     (' --timeout 33.3', 33.3),
+    (' --timeout 0.0', None),
+    (' --timeout 0', None),
+    (' --timeout -0', None),
 ])
-def test_serial_tmcl(add_argument, expected_timeout):
+def test_valid_input_cm(interface, con_man_parameters, add_argument, expected_timeout):
     """Check if the timeout is forwarded to the serial interface."""
 
-    cm = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200" + add_argument)
+    cm = ConnectionManager(f"--interface {interface}{con_man_parameters}" + add_argument)
 
     with cm.connect() as myinterface:
-        assert myinterface._serial.timeout == expected_timeout
+        if interface == 'serial_tmcl':
+            assert myinterface._serial.timeout == expected_timeout
+        elif interface == 'uart_ic':
+            assert myinterface.serial.timeout == expected_timeout
+        elif interface == 'kvaser_tmcl':
+            assert myinterface._timeout_s == expected_timeout
+        else:
+            pytest.fail('Unexpected interface!')
 
 
-@pytest.mark.parametrize('add_argument,expected_timeout', [
-    ('', 5),
-    (' --timeout 7', 7),
-    (' --timeout 200', 200),
-    (' --timeout 33.3', 33.3),
+@pytest.mark.parametrize('interface_class', [
+    'kvaser_tmcl',
+    'serial_tmcl',
+    'uart_ic',
 ])
-def test_kvaser_tmcl(add_argument, expected_timeout):
-    """Check if the timeout is forwarded to the Kvaser interface."""
-
-    cm = ConnectionManager("--interface kvaser_tmcl" + add_argument)
-
-    with cm.connect() as myinterface:
+@pytest.mark.parametrize('timeout_input,expected_timeout', [
+    ('', 5),
+    (None, None),
+    (0, None),
+    (7, 7),
+    (33.3, 33.3),
+])
+def test_valid_input_direct(interface_class, timeout_input, expected_timeout):
+    """Test like the test_valid_input_cm() but without the connection manager."""
+    if interface_class == 'kvaser_tmcl':
+        if timeout_input == '':
+            myinterface = KvaserTmclInterface()
+        else:
+            myinterface = KvaserTmclInterface(timeout_s=timeout_input)
         assert myinterface._timeout_s == expected_timeout
+    elif interface_class == 'serial_tmcl':
+        if timeout_input == '':
+            myinterface = SerialTmclInterface('COM4')
+        else:
+            myinterface = SerialTmclInterface('COM4', timeout_s=timeout_input)
+        assert myinterface._serial.timeout == expected_timeout
+    elif interface_class == 'uart_ic':
+        if timeout_input == '':
+            myinterface = UartIcInterface('COM4')
+        else:
+            myinterface = UartIcInterface('COM4', timeout_s=timeout_input)
+        assert myinterface.serial.timeout == expected_timeout
 
 
 @pytest.mark.parametrize('con_man_call,expected_exception', [
@@ -50,7 +87,7 @@ def test_actual_timeout(con_man_call, expected_exception):
 
     cm = ConnectionManager(f"{con_man_call} --timeout 1.5")
 
-    with pytest.raises(expected_exception) as exec_info:
+    with pytest.raises(expected_exception):
         with cm.connect() as myinterface:
             start_time = time.perf_counter()
             myinterface._recv(0, 0)
@@ -61,8 +98,9 @@ def test_actual_timeout(con_man_call, expected_exception):
 
 @pytest.mark.parametrize('timeout_argument', [
     'string',
-    '0',
-    '0x1F'
+    '0x1F',
+    '-0.1',
+    '-100',
 ])
 def test_invalid_timeout(timeout_argument):
     """Test some invalid arguments for the timeout value."""

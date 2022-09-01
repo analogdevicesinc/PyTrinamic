@@ -162,7 +162,7 @@ class ConnectionManager:
             pass
 
         # Timeout
-        self.__timeout_s = args.timeout_s[0]
+        self.__timeout_s = args.timeout_s
 
         # Host ID
         try:
@@ -332,7 +332,7 @@ class ConnectionManager:
                            help='Exclude ports')
         group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
                            help='Connection data-rate (default: %(default)s)')
-        group.add_argument('--timeout', dest='timeout_s', action='store', nargs=1, type=_positive_float, default=5.0,
+        group.add_argument('--timeout', dest='timeout_s', action='store', type=_positive_float, default=5.0,
                            help='Connection rx timeout in seconds (default: %(default)s)', metavar="SECONDS")
 
         group = arg_parser.add_argument_group("ConnectionManager TMCL options")
