@@ -13,9 +13,9 @@ with ConnectionManager(debug=True).connect() as my_interface:
 
     debug = RAMDebug(my_interface)
     debug.set_channel(ch)
-    debug.set_trigger_type(RAMDebug_Trigger.TRIGGER_RISING_EDGE_SIGNED)
+    debug.set_trigger_type(RAMDebug_Trigger.TRIGGER_UNCONDITIONAL)
     debug.set_trigger_threshold(50)
-    debug.start_measurement(is_eval=True)
+    debug.start_measurement()
 
     while(not debug.is_measurement_done()):
         pass
