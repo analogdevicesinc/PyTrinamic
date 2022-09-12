@@ -57,36 +57,35 @@ class RAMDebug_State(IntEnum):
     PRETRIGGER     = 4
 
 class Channel():
-    def __init__(self, channel_type, value, address = 0, signed = False, mask = 0xFFFF_FFFF, shift = 0, eval_channel = 0): #TODO: add signed
+    def __init__(self, channel_type, value, address = 0, signed = False, mask = 0xFFFF_FFFF, shift = 0): #TODO: add signed
         self.value = value
         self.type = channel_type
         self.shift = shift
         self.mask = mask
         self.address = address
         self.signed = signed
-        self.eval_channel = eval_channel
 
     @classmethod
     def axis_parameter(cls, motor, parameter_nr, eval_channel=0):
         channel_type = RAMDebug_Channel.CHANNEL_AXIS_PARAMETER
-        value = ((motor << 24) & 0xFF00_0000) | (parameter_nr & 0x0000_00FF)
+        value = ((motor << 24) & 0xFF00_0000) | ((eval_channel << 16) & 0x0001_0000) | (parameter_nr & 0x0000_00FF)
         # Error if value is bigger than 8 bits
-        return cls(channel_type, value, eval_channel=eval_channel)
+        return cls(channel_type, value)
 
     @classmethod
     def register(cls, motor, address, signed=False, eval_channel=0):
         channel_type = RAMDebug_Channel.CHANNEL_REGISTER
-        value = ((motor << 24) & 0xFF00_0000) | (address & 0x0000_FFFF)
+        value = ((motor << 24) & 0xFF00_0000) | ((eval_channel << 16) & 0x0001_0000) | (address & 0x0000_FFFF)
 
         # Error if value is bigger than 8 bits
-        return cls(channel_type, value, address, signed, eval_channel=eval_channel)
+        return cls(channel_type, value, address, signed)
 
     @classmethod
     def stacked_register(cls, motor, data_address, selector_address, value, eval_channel=0):
         channel_type = RAMDebug_Channel.CHANNEL_STACKED_REGISTER
-        value = ((motor << 24) & 0xFF00_0000) | (value << 16 & 0x00FF_0000) | (selector_address << 8 & 0x0000_FF00) | (data_address & 0x0000_00FF)
+        value = ((motor << 24) & 0xFF00_0000) | (value << 16 & 0x00FF_0000) | ((eval_channel << 16) & 0x0001_0000) | (selector_address << 8 & 0x0000_FF00) | (data_address & 0x0000_00FF)
         # Error if value is bigger than 8 bits
-        return cls(channel_type, value, eval_channel=eval_channel)
+        return cls(channel_type, value)
 
     @classmethod
     def field(cls, motor, field, signed=False, eval_channel=0):
@@ -96,9 +95,9 @@ class Channel():
         mask    = field[1]
         shift   = field[2]
 
-        value = ((motor << 24) & 0xFF00_0000) | (address & 0x0000_FFFF)
+        value = ((motor << 24) & 0xFF00_0000) | ((eval_channel << 16) & 0x0001_0000) | (address & 0x0000_FFFF)
 
-        return cls(channel_type, value, address, signed, mask, shift, eval_channel=eval_channel)
+        return cls(channel_type, value, address, signed, mask, shift)
 
     @classmethod
     def memory_address(cls, address):
@@ -176,10 +175,12 @@ class RAMDebug():
     def get_channels(self):
         return self.channels
 
-    def start_measurement_module(self):
+    def start_measurement(self):
         self._command(RAMDebug_Command.INIT.value, 0, 0)
         self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, self.get_total_samples())
+        self._command(RAMDebug_Command.SET_PROCESS_FREQUENCY, 0, self._process_frequency)
         self._command(RAMDebug_Command.SET_PRESCALER.value, 0, self._prescaler)
+
         for channel in self.channels:
             self._command(RAMDebug_Command.SET_CHANNEL.value, channel.type.value, channel.value)
 
@@ -187,29 +188,6 @@ class RAMDebug():
         self._command(RAMDebug_Command.SET_PRETRIGGER_SAMPLE_COUNT.value, 0, self._pretrigger_samples * self.channel_count())
         self._command(RAMDebug_Command.SET_TRIGGER_CHANNEL.value, self._trigger_channel.type.value, self._trigger_channel.value)
         self._command(RAMDebug_Command.ENABLE_TRIGGER.value, self._trigger_type.value, self._trigger_threshold)
-
-    def start_measurement_eval(self):
-        self._command(RAMDebug_Command.INIT.value, 0, 0)
-        self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, self.get_total_samples())
-        self._command(RAMDebug_Command.SET_PROCESS_FREQUENCY, 0, self._process_frequency)
-        self._command(RAMDebug_Command.SET_PRESCALER.value, 0, self._prescaler)
-        for channel in self.channels:
-            self._command(RAMDebug_Command.SET_EVAL_CHANNEL.value, 0, channel.eval_channel)
-            self._command(RAMDebug_Command.SET_ADDRESS.value, 0, channel.value)
-            self._command(RAMDebug_Command.SET_TYPE.value, 0, channel.type.value)
-
-        self._command(RAMDebug_Command.SET_SHIFT_MASK.value, self._trigger_shift, self._trigger_mask)
-        self._command(RAMDebug_Command.SET_PRETRIGGER_SAMPLE_COUNT.value, 0, self._pretrigger_samples * self.channel_count())
-        self._command(RAMDebug_Command.SET_TRIGGER_TYPE.value, 0, self._trigger_channel.type.value)
-        self._command(RAMDebug_Command.SET_TRIGGER_EVAL_CHANNEL.value, 0, self._trigger_channel.eval_channel)
-        self._command(RAMDebug_Command.SET_TRIGGER_ADDRESS.value, 0, self._trigger_channel.value)
-        self._command(RAMDebug_Command.ENABLE_TRIGGER.value, self._trigger_type.value, self._trigger_threshold)
-
-    def start_measurement(self, is_eval=False):
-        if(is_eval):
-            self.start_measurement_eval()
-        else:
-            self.start_measurement_module()
 
     def is_measurement_done(self):
         return self.get_state() == RAMDebug_State.COMPLETE.value
