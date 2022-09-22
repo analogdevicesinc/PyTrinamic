@@ -21,13 +21,6 @@ class TMC4671_eval(TMCLEval):
     def read_register(self, register_address, signed=False):
         return self._connection.read_mc(register_address, self._module_id, signed)
 
-    def write_register_field(self, field, value):
-        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
-                                   field[1], field[2], value))
-
-    def read_register_field(self, field):
-        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
-
     class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)

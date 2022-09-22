@@ -40,13 +40,6 @@ class TMC2208_eval(TMCLEval):
     def read_register(self, register_address, signed=False):
         return self._connection.read_drv(register_address, self._module_id, signed)
 
-    def write_register_field(self, field, value):
-        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
-                                   field[1], field[2], value))
-
-    def read_register_field(self, field):
-        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
-
     # Motion control functions
 
     def rotate(self, axis, value):
