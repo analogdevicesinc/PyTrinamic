@@ -33,7 +33,7 @@ class PcanTmclInterface(TmclInterface):
     """
     This class implements a TMCL connection over a PCAN adapter.
     """
-    def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False):
+    def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False, timeout_s=5):
         if not isinstance(port, str):
             raise TypeError
 
@@ -43,6 +43,10 @@ class PcanTmclInterface(TmclInterface):
         TmclInterface.__init__(self, host_id, module_id, debug)
         self._channel = port
         self._bitrate = datarate
+        if timeout_s == 0:
+            self._timeout_s = None
+        else:
+            self._timeout_s = timeout_s
 
         try:
             self._connection = can.Bus(interface="pcan", channel=self._channel, bitrate=self._bitrate)
@@ -95,7 +99,7 @@ class PcanTmclInterface(TmclInterface):
         del module_id
 
         try:
-            msg = self._connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=self._timeout_s)
         except CanError as e:
             raise ConnectionError("Failed to receive a TMCL message") from e
 

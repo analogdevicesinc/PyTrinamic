@@ -12,13 +12,17 @@ class SlcanTmclInterface(TmclInterface):
     Maybe SerialBaudrate has to be changed based on adapter.
     """
 
-    def __init__(self, com_port, datarate=1000000, host_id=2, module_id=1, debug=True, serial_baudrate=115200):
+    def __init__(self, com_port, datarate=1000000, host_id=2, module_id=1, debug=True, timeout_s=5, serial_baudrate=115200):
         if not isinstance(com_port, str):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, debug)
         self._bitrate = datarate
         self._port = com_port
+        if timeout_s == 0:
+            self._timeout_s = None
+        else:
+            self._timeout_s = timeout_s
         self._serial_baudrate = serial_baudrate
 
         try:
@@ -74,7 +78,7 @@ class SlcanTmclInterface(TmclInterface):
         del module_id
 
         try:
-            msg = self._connection.recv(timeout=3)
+            msg = self._connection.recv(timeout=self._timeout_s)
         except CanError as e:
             raise ConnectionError("Failed to receive a TMCL message") from e
 

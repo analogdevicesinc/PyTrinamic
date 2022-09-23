@@ -8,19 +8,19 @@ class SerialTmclInterface(TmclInterface):
     """
     Opens a serial TMCL connection
     """
-    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False):
+    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False, timeout_s=5):
         if not isinstance(com_port, str):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, debug)
         self._baudrate = datarate
+        if timeout_s == 0:
+            timeout_s = None
 
         try:
-            self._serial = Serial(com_port, self._baudrate)
+            self._serial = Serial(com_port, self._baudrate, timeout=timeout_s)
         except SerialException as e:
             raise ConnectionError from e
-
-        self._serial.timeout = 5
 
         if self._debug:
             print("Opened port: " + self._serial.portstr)

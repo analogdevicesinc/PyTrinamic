@@ -32,10 +32,12 @@ class RegisterReply:
 
 class UartIcInterface:
 
-    def __init__(self, com_port, datarate=9600, debug=False):
+    def __init__(self, com_port, datarate=9600, debug=False, timeout_s=5):
         self._debug = debug
         self.baudrate = datarate
-        self.serial = Serial(com_port, self.baudrate)
+        if timeout_s == 0:
+            timeout_s = None
+        self.serial = Serial(com_port, self.baudrate, timeout=timeout_s)
         print("Open port: " + self.serial.portstr)
 
     def __enter__(self):

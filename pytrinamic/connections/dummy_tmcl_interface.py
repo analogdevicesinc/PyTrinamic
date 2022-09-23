@@ -3,7 +3,7 @@ from pytrinamic.connections.tmcl_interface import TmclInterface
 
 class DummyTmclInterface(TmclInterface):
 
-    def __init__(self, port, datarate=115200, host_id=2, module_id=1, debug=True):
+    def __init__(self, port, datarate=115200, host_id=2, module_id=1, debug=True, timeout_s=5):
         """
         Opens a dummy TMCL connection
         """
@@ -17,6 +17,7 @@ class DummyTmclInterface(TmclInterface):
             print("\tData rate:  " + str(datarate))
             print("\tHost ID:    " + str(host_id))
             print("\tModule ID:  " + str(module_id))
+            print("\tTimeout:    " + str(timeout_s))
 
     def __enter__(self):
         return self
