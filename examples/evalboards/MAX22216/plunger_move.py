@@ -14,9 +14,9 @@ with ConnectionManager(debug=True).connect() as my_interface:
     solenoid = ic.motors[0]
 
     solenoid.u_supply = 24.0 # V
-    solenoid.u_dc_h = 24.0 # V
+    solenoid.u_dc_h = 10.0 # V
     solenoid.u_dc_l = 0.0 # V
-    solenoid.u_dc_l2h = 24.0 # V 
+    solenoid.u_dc_l2h = 10.0 # V 
     solenoid.u_dc_h2l = 0.0 # V
     solenoid.u_ac = 1.0 # V ampl
     solenoid.f_ac = 50.0 # Hz

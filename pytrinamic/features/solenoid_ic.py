@@ -94,7 +94,8 @@ class SolenoidIC(Solenoid):
         vdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.VDR_NDUTY) == 1)
         cdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE) == 1)
         fsf = self.__map_fsf.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE), 1.0)
-        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_H, self.__u_dc_value(u_dc_h, self.__u_supply, vdr, cdr, fsf))
+        print("U_DC_H {}".format(round(self.__u_dc_value(u_dc_h, self.__u_supply, vdr, cdr, fsf))))
+        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_H, round(self.__u_dc_value(u_dc_h, self.__u_supply, vdr, cdr, fsf)))
 
     def get_voltage_high(self):
         """
@@ -120,7 +121,7 @@ class SolenoidIC(Solenoid):
         vdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.VDR_NDUTY) == 1)
         cdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE) == 1)
         fsf = self.__map_fsf.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE), 1.0)
-        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_L, self.__u_dc_value(u_dc_l, self.__u_supply, vdr, cdr, fsf))
+        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_L, round(self.__u_dc_value(u_dc_l, self.__u_supply, vdr, cdr, fsf)))
 
     def get_voltage_low(self):
         """
@@ -146,7 +147,7 @@ class SolenoidIC(Solenoid):
         vdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.VDR_NDUTY) == 1)
         cdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE) == 1)
         fsf = self.__map_fsf.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE), 1.0)
-        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_L2H, self.__u_dc_value(u_dc_l2h, self.__u_supply, vdr, cdr, fsf))
+        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_L2H, round(self.__u_dc_value(u_dc_l2h, self.__u_supply, vdr, cdr, fsf)))
 
     def get_voltage_low_high(self):
         """
@@ -172,7 +173,7 @@ class SolenoidIC(Solenoid):
         vdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.VDR_NDUTY) == 1)
         cdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE) == 1)
         fsf = self.__map_fsf.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.CTRL_MODE), 1.0)
-        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_H2L, self.__u_dc_value(u_dc_h2l, self.__u_supply, vdr, cdr, fsf))
+        self._parent.write_axis_field(self._axis, self._ic.FIELD.DC_H2L, round(self.__u_dc_value(u_dc_h2l, self.__u_supply, vdr, cdr, fsf)))
 
     def get_voltage_high_low(self):
         """
@@ -196,8 +197,8 @@ class SolenoidIC(Solenoid):
         Parameters:
         u_ac_freq: AC frequency.
         """
-        pwm_freq = __map_pwm_freq.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.F_PWM_M), 100E3)
-        self._parent.write_axis_field(self._axis, self._ic.FIELD.DELTA_PHI, self.__delta_phi(pwm_freq, u_ac_freq))
+        pwm_freq = self.__map_pwm_freq.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.F_PWM_M), 100E3)
+        self._parent.write_axis_field(self._axis, self._ic.FIELD.DELTA_PHI, round(self.__delta_phi(pwm_freq, u_ac_freq)))
 
     def get_frequency(self):
         """
@@ -208,7 +209,7 @@ class SolenoidIC(Solenoid):
         Returns:
         AC frequency.
         """
-        pwm_freq = __map_pwm_freq.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.F_PWM_M), 100E3)
+        pwm_freq = self.__map_pwm_freq.get(self._parent.read_axis_field(self._axis, self._ic.FIELD.F_PWM_M), 100E3)
         return self.__f_AC(pwm_freq, self._parent.read_axis_field(self._axis, self._ic.FIELD.DELTA_PHI))
 
     def set_voltage_ac(self, u_ac):
@@ -220,7 +221,7 @@ class SolenoidIC(Solenoid):
         u_ac: AC voltage.
         """
         vdr = (self._parent.read_axis_field(self._axis, self._ic.FIELD.VDR_NDUTY) == 1)
-        self._parent.write_axis_field(self._axis, self._ic.FIELD.U_AC, self.__u_ac_value(u_ac, self.__u_supply, vdr))
+        self._parent.write_axis_field(self._axis, self._ic.FIELD.U_AC, round(self.__u_ac_value(u_ac, self.__u_supply, vdr)))
 
     def get_voltage_ac(self):
         """
