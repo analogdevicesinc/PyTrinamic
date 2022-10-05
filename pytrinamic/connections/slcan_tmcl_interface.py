@@ -1,10 +1,10 @@
 import can
 from can import CanError
 from serial.tools.list_ports import comports
-from ..connections.tmcl_interface import TmclInterface
+from ..connections.can_tmcl_interface import CanTmclInterface
 
 
-class SlcanTmclInterface(TmclInterface):
+class SlcanTmclInterface(CanTmclInterface):
     """
     This class implements a TMCL connection for CAN over Serial / SLCAN.
     Compatible with CANable running slcan firmware and similar.
@@ -16,89 +16,24 @@ class SlcanTmclInterface(TmclInterface):
         if not isinstance(com_port, str):
             raise TypeError
 
-        TmclInterface.__init__(self, host_id, module_id, debug)
+        CanTmclInterface.__init__(self, host_id, module_id, debug, timeout_s)
         self._bitrate = datarate
         self._port = com_port
-        if timeout_s == 0:
-            self._timeout_s = None
-        else:
-            self._timeout_s = timeout_s
         self._serial_baudrate = serial_baudrate
 
         try:
             self._connection = can.Bus(interface='slcan', channel=self._port, bitrate=self._bitrate,
-                                       ttyBaudrate=self._serialBaudrate)
+                                       ttyBaudrate=self._serial_baudrate)
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
         except CanError as e:
-            self.__connection = None
+            self._connection = None
             raise ConnectionError("Failed to connect to CAN bus") from e
 
         if self._debug:
             print("Opened slcan bus on channel " + self._port)
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exit_type, value, traceback):
-        """
-        Close the connection at the end of a with-statement block.
-        """
-        del exit_type, value, traceback
-        self.close()
-
-    def close(self):
-        if self._debug:
-            print("Closing CAN bus")
-
-        self._connection.shutdown()
-
-    def _send(self, host_id, module_id, data):
-        """
-            Send the bytearray parameter [data].
-
-            This is a required override function for using the tmcl_interface
-            class.
-        """
-        del host_id
-
-        msg = can.Message(arbitration_id=module_id, is_extended_id=False, data=data[1:])
-
-        try:
-            self.__connection.send(msg)
-        except CanError as e:
-            raise ConnectionError("Failed to send a TMCL message") from e
-
-    def _recv(self, host_id, module_id):
-        """
-            Read 9 bytes and return them as a bytearray.
-
-            This is a required override function for using the tmcl_interface
-            class.
-        """
-        del module_id
-
-        try:
-            msg = self._connection.recv(timeout=self._timeout_s)
-        except CanError as e:
-            raise ConnectionError("Failed to receive a TMCL message") from e
-
-        if not msg:
-            # Todo: Timeout retry mechanism
-            raise ConnectionError("Recv timed out")
-
-        if msg.arbitration_id != host_id:
-            # The filter shouldn't let wrong messages through.
-            # This is just a sanity check
-            raise ConnectionError("Received wrong ID")
-
-        return bytearray([msg.arbitration_id]) + msg.data
-
-    @staticmethod
-    def supports_tmcl():
-        return True
-
-    @staticmethod
-    def list():
+    @classmethod
+    def list(cls):
         """
             Return a list of available connection ports as a list of strings.
 
@@ -110,6 +45,3 @@ class SlcanTmclInterface(TmclInterface):
             connected.append(element.device)
 
         return connected
-
-    def __str__(self):
-        return "Connection: type={} channel={} bitrate={}".format(type(self).__name__, self._port, self._bitrate)
