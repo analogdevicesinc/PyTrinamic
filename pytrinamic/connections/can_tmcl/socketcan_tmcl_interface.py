@@ -1,6 +1,6 @@
 import can
 from can import CanError
-from ..connections.can_tmcl_interface import CanTmclInterface
+from ...connections.can_tmcl_interface import CanTmclInterface
 
 
 class SocketcanTmclInterface(CanTmclInterface):

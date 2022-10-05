@@ -1,7 +1,7 @@
 import can
 from can import CanError
 from serial.tools.list_ports import comports
-from ..connections.can_tmcl_interface import CanTmclInterface
+from ...connections.can_tmcl_interface import CanTmclInterface
 
 
 class SlcanTmclInterface(CanTmclInterface):

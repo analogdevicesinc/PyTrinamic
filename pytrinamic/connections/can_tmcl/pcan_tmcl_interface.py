@@ -1,7 +1,7 @@
 
 import can
 from can.interfaces.pcan.pcan import PcanError
-from ..connections.can_tmcl_interface import CanTmclInterface
+from ...connections.can_tmcl_interface import CanTmclInterface
 
 
 class PcanTmclInterface(CanTmclInterface):

@@ -1,5 +1,5 @@
 import can
-from ..connections.can_tmcl_interface import CanTmclInterface
+from ...connections.can_tmcl_interface import CanTmclInterface
 
 
 class KvaserTmclInterface(CanTmclInterface):
