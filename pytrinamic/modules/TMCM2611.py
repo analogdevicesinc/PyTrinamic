@@ -68,7 +68,6 @@ class TMCM2611(TMCLModule):
             MaxCurrent = 11
             OpenLoopCurrent = 12
             MotorDirection = 13
-            MotorType = 14
             CommutationMode = 15
             ActualOpenLoopAngle = 16
             ActualEncoderAngle = 17
@@ -192,8 +191,9 @@ class TMCM2611(TMCLModule):
             COMM_MODE_DIGITAL_HALL = 2
             COMM_MODE_ABN_ENCODER = 3
 
-            ENCODER_INIT_ESTIMATE_OFFSET = 0
-            ENCODER_INIT_USE_HALL = 2
+            ENCODER_INIT_MODE_0 = 0
+            ENCODER_INIT_MODE_1 = 1
+            ENCODER_INIT_MODE_2 = 2
 
     class GP:
         SerialBaudRate = 65
