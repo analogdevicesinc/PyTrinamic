@@ -186,6 +186,13 @@ class RAMDebug():
         self._trigger_mask = channel.mask
         self._trigger_shift = channel.shift
 
+    def set_trigger(self, trigger_channel, trigger_type, trigger_threshold):
+        """
+        Fully configure the RAMDebug trigger
+        """
+        self.set_trigger_type(trigger_type)
+        self.set_trigger_threshold(trigger_threshold)
+        self.set_trigger_channel(trigger_channel)
 
     def set_pretrigger_samples(self, pretrigger_samples):
         self._pretrigger_samples = pretrigger_samples
