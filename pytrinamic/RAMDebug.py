@@ -138,7 +138,7 @@ class RAMDebug():
         self._trigger_mask = 0x0000_0000
         self._trigger_shift = 0x0000_0000
         self.channels = []
-        self.samples = []
+        self.samples = None
 
     def get_sample_count(self):
         return self._sample_count
@@ -208,6 +208,10 @@ class RAMDebug():
         return self.get_state() == RAMDebug_State.COMPLETE
 
     def get_samples(self):
+        # If the samples were already downloaded, just return them
+        if self.samples:
+            return self.samples
+
         i = 0
         data = []
 
