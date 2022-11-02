@@ -179,8 +179,8 @@ class RAMDebug():
     def set_trigger_channel(self, channel):
         if isinstance(channel, Channel):
             self._trigger_channel = channel
-            self._trigger_mask = channel._mask
-            self._trigger_shift = channel._shift
+            self._trigger_mask = channel.mask
+            self._trigger_shift = channel.shift
 
 
     def set_pretrigger_samples(self, pretrigger_samples):
