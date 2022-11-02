@@ -170,23 +170,30 @@ class RAMDebug():
         self._prescaler = divider-1
 
     def set_trigger_type(self, trigger_type):
-        if isinstance(trigger_type, RAMDebug_Trigger):
-            self._trigger_type = trigger_type
+        if not isinstance(trigger_type, RAMDebug_Trigger):
+            raise ValueError("Invalid trigger type - you must pass a RAMDebug_Trigger object")
+
+        self._trigger_type = trigger_type
 
     def set_trigger_threshold(self, trigger_threshold):
         self._trigger_threshold = trigger_threshold
 
     def set_trigger_channel(self, channel):
-        if isinstance(channel, Channel):
-            self._trigger_channel = channel
-            self._trigger_mask = channel.mask
-            self._trigger_shift = channel.shift
+        if not isinstance(channel, Channel):
+            raise ValueError("Invalid channel - you must pass a Channel object")
+
+        self._trigger_channel = channel
+        self._trigger_mask = channel.mask
+        self._trigger_shift = channel.shift
 
 
     def set_pretrigger_samples(self, pretrigger_samples):
         self._pretrigger_samples = pretrigger_samples
 
     def set_channel(self, channel):
+        if not isinstance(channel, Channel):
+            raise ValueError("Invalid channel - you must pass a Channel object")
+
         if self.channel_count() >= self.MAX_CHANNELS:
             raise RuntimeError("Out of channels!")
 
