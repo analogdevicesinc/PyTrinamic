@@ -153,7 +153,21 @@ class RAMDebug():
         self._process_frequency = process_frequency
 
     def set_prescaler(self, prescaler):
+        """
+        Set the capture prescaler to divide the capture frequency.
+        The actual capture frequency is MAX_FREQUENCY/(prescaler+1).
+        """
         self._prescaler = prescaler
+
+    def set_divider(self, divider):
+        """
+        Set the capture prescaler to divide the capture frequency.
+        The actual capture frequency is MAX_FREQUENCY/divider.
+        """
+        if not (1 <= divider <= 0xFFFF_FFFF):
+            raise ValueError("Invalid divider value. Possible divider values are [1; 2^32-1]")
+
+        self._prescaler = divider-1
 
     def set_trigger_type(self, trigger_type):
         if isinstance(trigger_type, RAMDebug_Trigger):
