@@ -1,4 +1,4 @@
-from pytrinamic.tmcl import TMCLCommand
+from pytrinamic.tmcl import TMCLCommand, TMCLReplyStatusError, TMCLStatus
 from enum import IntEnum
 
 class RAMDebug_Command(IntEnum):
@@ -178,8 +178,17 @@ class RAMDebug():
     def start_measurement(self):
         self._command(RAMDebug_Command.INIT.value, 0, 0)
         self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, self.get_total_samples())
-        self._command(RAMDebug_Command.SET_PROCESS_FREQUENCY, 0, self._process_frequency)
         self._command(RAMDebug_Command.SET_PRESCALER.value, 0, self._prescaler)
+
+        try:
+            self._command(RAMDebug_Command.SET_PROCESS_FREQUENCY, 0, self._process_frequency)
+        except TMCLReplyStatusError as e:
+            if e.status_code == TMCLStatus.WRONG_TYPE:
+                # SET_PROCESS_FREQUENCY not supported -> skip exception
+                pass
+            else:
+                # A different error occurred -> reraise exception
+                raise e
 
         for channel in self.channels:
             self._command(RAMDebug_Command.SET_CHANNEL.value, channel.type.value, channel.value)
