@@ -56,6 +56,12 @@ class RAMDebug_State(IntEnum):
     COMPLETE       = 3
     PRETRIGGER     = 4
 
+    UNKNOWN_STATUS = -1 # Placeholder value in case invalid state values were returned
+
+    @classmethod
+    def _missing_(cls, value):
+        return cls.UNKNOWN_STATUS
+
 class Channel():
     def __init__(self, channel_type, value, address = 0, signed = False, mask = 0xFFFF_FFFF, shift = 0): #TODO: add signed
         self.value = value
@@ -199,7 +205,7 @@ class RAMDebug():
         self._command(RAMDebug_Command.ENABLE_TRIGGER.value, self._trigger_type.value, self._trigger_threshold)
 
     def is_measurement_done(self):
-        return self.get_state() == RAMDebug_State.COMPLETE.value
+        return self.get_state() == RAMDebug_State.COMPLETE
 
     def get_samples(self):
         i = 0
@@ -251,7 +257,10 @@ class RAMDebug():
         return len(self.channels)
 
     def get_state(self):
-        return self._command(RAMDebug_Command.GET_STATE.value, 0, 0).value
+        """
+        Returns the state of this measurement as a RAMDebug_State enum
+        """
+        return RAMDebug_State(self._command(RAMDebug_Command.GET_STATE.value, 0, 0).value)
 
     def __str__(self):
         text  = f"RAMDebug handler for connection {self._connection}\n"
