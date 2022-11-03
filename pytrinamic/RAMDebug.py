@@ -209,9 +209,35 @@ class RAMDebug():
     def get_channels(self):
         return self.channels
 
-    def start_measurement(self):
+    def start_measurement(self, *, strict=True):
+        """
+        Start the measurement.
+        If you are waiting for a trigger, wait until is_pretriggering() returns false before causing
+        your trigger event.
+
+        Arguments:
+            - strict:
+                When set to True, reject invalid sample counts.
+                When set to False, automatically adjust too high sample counts.
+        """
+        samples = self.get_total_samples()
+        if self.get_total_samples() > self.MAX_ELEMENTS:
+            if strict:
+                raise RuntimeError(f"Too many samples requested! Requested {self.get_total_samples()} ({self._sample_count} for {self.channel_count()} channels). Maximum available samples: {self.MAX_ELEMENTS}. Either adjust your sample count or pass strict=False to this function to let RAMDebug reduce sample count automatically.")
+            else:
+                # Non-strict mode: Limit the sample count
+                samples = self.MAX_ELEMENTS - (self.MAX_ELEMENTS % self.channel_count())
+
+        pretrigger_samples = self._pretrigger_samples * self.channel_count()
+        if pretrigger_samples > samples:
+            if strict:
+                raise RuntimeError(f"Too many pretrigger samples requested! Requested {pretrigger_samples} pretrigger samples, but only capturing {samples} samples.")
+            else:
+                # Non-strict mode: Limit the pretrigger sample count
+                pretrigger_samples = samples
+
         self._command(RAMDebug_Command.INIT.value, 0, 0)
-        self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, self.get_total_samples())
+        self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, samples)
         self._command(RAMDebug_Command.SET_PRESCALER.value, 0, self._prescaler)
 
         try:
@@ -246,7 +272,7 @@ class RAMDebug():
         i = 0
         data = []
 
-        while i < self.get_total_samples():
+        while i < min(self.get_total_samples(), self.MAX_ELEMENTS):
             reply = self._command(RAMDebug_Command.GET_SAMPLE.value, 0, i)
             done = reply.status != 0x64
             if done:
