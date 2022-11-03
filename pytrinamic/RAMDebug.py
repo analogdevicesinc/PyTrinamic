@@ -232,6 +232,9 @@ class RAMDebug():
         self._command(RAMDebug_Command.SET_TRIGGER_CHANNEL.value, self._trigger_channel.type.value, self._trigger_channel.value)
         self._command(RAMDebug_Command.ENABLE_TRIGGER.value, self._trigger_type.value, self._trigger_threshold)
 
+    def is_pretriggering(self):
+        return self.get_state() == RAMDebug_State.PRETRIGGER
+
     def is_measurement_done(self):
         return self.get_state() == RAMDebug_State.COMPLETE
 
