@@ -1,5 +1,5 @@
 from ..connections.tmcl_interface import TmclInterface
-
+from ..tmcl import TMCLReply, TMCLStatus, TMCLRequest
 
 class DummyTmclInterface(TmclInterface):
 
@@ -11,6 +11,9 @@ class DummyTmclInterface(TmclInterface):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, debug)
+
+        # Cache sent request to echo in reply
+        self._cached_request = 0
 
         if self._debug:
             print("Opened dummy TMCL interface on port '" + port + "'")
@@ -43,7 +46,9 @@ class DummyTmclInterface(TmclInterface):
             This is a required override function for using the tmcl_interface
             class.
         """
-        del host_id, module_id, data
+        self._cached_request = TMCLRequest.from_buffer(data)
+
+        del host_id, module_id
         pass
 
     def _recv(self, host_id, module_id):
@@ -53,9 +58,13 @@ class DummyTmclInterface(TmclInterface):
             This is a required override function for using the tmcl_interface
             class.
         """
-        del host_id, module_id
+        command = self._cached_request.command
+        value = self._cached_request.value
 
-        return bytearray(9)
+        # Prepare a dummy answer, we always return the SUCCESS status, should be safe enough for dummy stuff.
+        reply = TMCLReply(host_id, module_id, TMCLStatus.SUCCESS, command, value)
+
+        return reply.to_buffer()
 
     @staticmethod
     def supports_tmcl():
