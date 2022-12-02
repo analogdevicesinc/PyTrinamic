@@ -127,6 +127,9 @@ else:
     print("Error: No matching version string found in firmware image")
     exit(1)
 
+start = file.minaddr()
+length = file.maxaddr() - start
+
 print("Bootloader version: " + bootloaderVersion)
 print("Firmware version:   " + found.group(0))
 
