@@ -71,26 +71,30 @@ logging.info("Checksum:      0x{0:08X}".format(checksum))
 print("Connecting")
 myInterface = connectionManager.connect()
 
-# Send the boot command
-print("Switching to bootloader mode")
-myInterface.send_boot(1)
-myInterface.close()
+# If not already in bootloader, enter it
+if not "B" in myInterface.get_version_string().upper():
+    # Send the boot command
+    print("Switching to bootloader mode")
+    myInterface.send_boot(1)
+    myInterface.close()
 
-# Reconnect after a small delay
-print("Reconnecting")
-timestamp = time.time()
-while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
-    try:
-        # Attempt to connect
-        myInterface = connectionManager.connect()
-        # If no exception occurred, exit the retry loop
-        break
-    except (ConnectionError, TypeError):
-        myInterface = None
+    # Reconnect after a small delay
+    print("Reconnecting")
+    timestamp = time.time()
+    while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
+        try:
+            # Attempt to connect
+            myInterface = connectionManager.connect()
+            # If no exception occurred, exit the retry loop
+            break
+        except (ConnectionError, TypeError):
+            myInterface = None
 
-if not myInterface:
-    print("Error: Timeout when attempting to reconnect to bootloader")
-    exit(1)
+    if not myInterface:
+        print("Error: Timeout when attempting to reconnect to bootloader")
+        exit(1)
+
+time.sleep(1)
 
 # Retrieve the bootloader version
 bootloaderVersion = myInterface.get_version_string(1)
