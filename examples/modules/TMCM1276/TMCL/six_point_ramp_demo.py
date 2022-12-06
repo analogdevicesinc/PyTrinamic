@@ -1,14 +1,10 @@
 import dataclasses
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1276
 import time
-import pandas as pd
-
-import matplotlib
 
 
 @dataclasses.dataclass
@@ -43,11 +39,11 @@ with connectionManager.connect() as myInterface:
 
     samples = []
     motor.move_to(100000)
-    while not (motor.get_position_reached()):
+    while not motor.get_position_reached():
         samples.append(Sample(time.perf_counter(), format(motor.actual_position), format(motor.actual_velocity)))
 
     motor.move_to(0)
-    while not (motor.get_position_reached()):
+    while not motor.get_position_reached():
         samples.append(Sample(time.perf_counter(), format(motor.actual_position), format(motor.actual_velocity)))
 
     fig, ax = plt.subplots(2)
