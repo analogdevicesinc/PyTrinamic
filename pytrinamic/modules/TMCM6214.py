@@ -13,7 +13,8 @@ class TMCM6214(TMCLModule):
         super().__init__(connection, module_id)
         self.name = "TMCM-6214"
         self.desc = self.__doc__
-        self.motors = [self._MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1), self._MotorTypeA(self, 2),
+                       self._MotorTypeA(self, 3), self._MotorTypeA(self, 4), self._MotorTypeA(self, 5)]
 
     def rotate(self, axis, velocity):
         """
@@ -251,6 +252,22 @@ class TMCM6214(TMCLModule):
 
 
     class IO:
-        IN0 = 0
-        IN1 = 1
-        IN2 = 2
+        OUT0   = 0
+        OUT1   = 1
+        OUT2   = 2
+        OUT3   = 3
+        OUT4   = 4
+        OUT5   = 5
+        OUT6   = 6
+        OUT7   = 7
+        AIN0   = 0
+        IN1    = 1
+        IN2    = 2
+        IN3    = 3
+        AIN4   = 4
+        IN5    = 5
+        IN6    = 6
+        IN7    = 7
+        STO    = 10
+        STO1   = 13
+        STO2   = 14
