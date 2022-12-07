@@ -52,127 +52,97 @@ class TMCM2611(TMCLModule):
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
         class AP:
-            # ADC Measurement
-            AdcI0Raw = 0
-            AdcI1Raw = 1
-            CurrentPhaseU = 2
-            CurrentPhaseV = 3
-            CurrentPhaseW = 4
+            # Basic motor parameters
+            MotorPolePairs = 0
+            MaxCurrent = 1
+            OpenLoopCurrent = 2
+            MotorDirection = 3
+            CommutationMode = 4
+            ActualOpenLoopAngle = 5
+            MotorType = 9
 
-            # ADC Settings
-            AdcOffsetPhaseA = 5
-            AdcOffsetPhaseB = 6
+            # Current ADC parameters
+            AdcOffsetI0 = 10
+            AdcOffsetI1 = 11
+            AdcI0Raw = 12
+            AdcI1Raw = 13
+            CurrentPhaseU = 14
+            CurrentPhaseV = 15
+            CurrentPhaseW = 16
 
-            # Motor settings
-            MotorPolePairs = 10
-            MaxCurrent = 11
-            OpenLoopCurrent = 12
-            MotorDirection = 13
-            CommutationMode = 15
-            ActualOpenLoopAngle = 16
-            ActualEncoderAngle = 17
-            ActualHallAngle = 18
-            ActualEncoderOpenLoopAngleDiff = 20
-            ActualHallOpenLoopAngleDigg = 21
-            VelocityUnitSelection = 27
+            # PID Settings
+            TorqueP = 20
+            TorqueI = 21
+            VelocityP = 22
+            VelocityI = 23
+            PositionP = 24
 
-            # Torque mode settings
+            # Torque mode parameters
             TargetTorque = 30
-            ActualTorque = 31
-            TargetFlux = 32
-            ActualFlux = 33
-            ActualTorqueUnfiltered = 34
+            ActualTorque = 32
+            TargetFlux = 33
+            ActualFlux = 34
 
-            # Velocity mode settings
-            TargetVelocity = 40
-            RampVelocity = 41
-            ActualVelocity = 42
-            MaxVelocity = 43
-            MaxAcceleration = 44
-            EnableRamp = 45
-            VelocityFilter = 46
-            MotorHaltedVelocity = 47
-            ActualVelocityUnfiltered = 48
-
-            # Position mode settings
-            ActualAbsoluteEncoderAngle = 19
-            PositionSensorSelection = 25
-            TargetPosition = 50
-            RampPosition = 51
-            ActualPosition = 52
-            TargetReachedDistance = 53
-            TargetReachedVelocity = 54
-            PositionReachedFlag = 55
+            # Ramper parameters
+            MaxVelocity = 40
+            MaxAcceleration = 41
+            TargetVelocity = 42
+            RampVelocity = 44
+            ActualVelocity = 45
+            TargetPosition = 46
+            RampPosition = 47
+            ActualPosition = 48
+            PositionReachedFlag = 49
+            EnableRamp = 50
+            VelocityFilter = 51
+            MotorHaltedVelocity = 53
+            TargetReachedDistance = 54
+            TargetReachedVelocity = 55
             PositionScaler = 56
-            UseFeedForwardPosition = 57
+            UseFeedForwardVel = 57
 
-            # PI parameters
-            TorqueP = 70
-            TorqueI = 71
-            VelocityP = 72
-            VelocityI = 73
-            PositionP = 74
-            TorqueISUM = 75
-            FluxIntegralSUM = 76
-            VelocityIntegralSUM = 77
-            TorquePIDError = 78
-            FluxPIDError = 79
-            VelocityPIDError = 80
-            PositionPIDError = 81
+            # Hall sensor parameters
+            HallSensorPolarity = 60
+            HallSensorDirection = 61
+            HallSensorInterpolation = 62
+            HallSensorOffset = 63
+            ActualHallAngle = 64
 
-            # Hall settings
-            HallSensorPolarity = 90
-            HallSensorDirection = 91
-            HallSensorInterpolation = 92
-            HallSensorOffset = 93
-            HallSensorInputs = 94
+            # ABN Encoder parameters
+            EncoderSteps = 70
+            EncoderDirection = 71
+            EncoderInitMode = 72
+            EncoderInitDelay = 73
+            EncoderInitVelocity = 74
+            EncoderInitState = 75
+            EncoderOffset = 76
+            ClearOnNull = 77
+            ClearOnce = 78
+            ActualEncoderAngle = 79
 
-            # Encoder settings
-            EncoderSteps = 100
-            EncoderDirection = 101
-            EncoderInitMode = 102
-            EncoderInitState = 103
-            EncoderInitDelay = 104
-            EncoderInitVelocity = 105
-            EncoderOffset = 106
-            ClearOnNull = 107
-            ClearOnce = 108
-            EncoderInputs = 109
-            EncoderRawValue = 111
+            # Brake control parameters
+            BrakeRelease = 80
+            BrakeReleaseDuty = 81
+            BrakeReleaseDuration = 82
+            BrakeHoldDuty = 83
 
-            # Chopper settings
-            PWMFrequency = 110
+            # Status APs
+            StatusFlags = 90
+            SupplyVoltage = 91
+            DriverTemperature = 92
+            HallSensorInputs = 93
+            EncoderInputs = 94
+            EncoderRawValue = 95
 
-            # Brake control
-            BrakeRelease = 120
-            BrakeReleaseDuty = 121
-            BrakeHoldDuty = 122
-            BrakeReleaseDuration = 132
-            BrakeEnable = 124
-            BrakeInvert = 125
+            # PI internal parameters
+            TorquePIDError = 100
+            FluxPIDError = 101
+            VelocityPIDError = 102
 
-            # Brake Chopper control
-            BrakeChopperVoltage = 141
-            BrakeChopperHyteresis = 142
-            BrakeChopperActive = 144
-
-            # General APs
-            StatusFlags = 156
-            SupplyVoltage = 220
-            DriverTemperature = 221
+            # Diagnostic/Debug parameters
             MainLoopsPerSecond = 230
             TorqueLoopsPerSecond = 231
             VelocityLoopsPerSecond = 232
-
-            # Ref switches
-            ReferenceSwitchEnable = 209
-            ReferenceSwitchPolarity = 210
-            RightStopSwitch = 211
-            LeftStopSwitch = 212
-            HomeStopSwitch = 213
-            SwitchPullupEnable = 214
-
-            # Debug values
             DebugValue0 = 240
             DebugValue1 = 241
             DebugValue2 = 242
@@ -186,14 +156,21 @@ class TMCM2611(TMCLModule):
             EnableDriver = 255
 
         class ENUM:
+            # Commutation modes
             COMM_MODE_DISABLED = 0
             COMM_MODE_OPENLOOP = 1
             COMM_MODE_DIGITAL_HALL = 2
             COMM_MODE_ABN_ENCODER = 3
 
-            ENCODER_INIT_MODE_0 = 0
-            ENCODER_INIT_MODE_1 = 1
-            ENCODER_INIT_MODE_2 = 2
+            # Encoder init methods
+            ENC_INIT_ESTIMATE_OFFSET = 0
+            ENC_INIT_USE_HALL = 1
+
+            # Encoder init states
+            ENC_INIT_STATE_SLEEP = 0
+            ENC_INIT_STATE_START = 1
+            ENC_INIT_STATE_WAIT = 2
+            ENC_INIT_STATE_ESTIMATE_OFFSET = 3
 
     class GP:
         SerialBaudRate = 65
