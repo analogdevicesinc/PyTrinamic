@@ -123,13 +123,19 @@ class AgvControl:
         motor.abn_encoder.direction = 1
         motor.abn_encoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
 
-        # Velocity: Set scaler to shift I velocity coef by 8 and enable biquad, then set min deviation register
+        # Velocity:
+        # Set scaler to shift I velocity coef by 8, this gives better resolution for setting the I parameter
         self.module.connection.write_register(
             0x61, TMCLCommand.WRITE_MC, motor._axis, 0x08
         )
+
+        # Enable default biquad filter on speed, this does not appear to do much, probably improves the filtering a bit
         self.module.connection.write_register(
             0x24, TMCLCommand.WRITE_MC, motor._axis, True
         )
+
+        # Set the minimum deviation register, this stops velocity calculation when the AGV is at standstill
+        # Heavily reduces vibrations at standstill caused by high PI parameters.
         self.module.connection.write_register(
             0x2D, TMCLCommand.WRITE_MC, motor._axis, (0x000CBFFD)
         )
