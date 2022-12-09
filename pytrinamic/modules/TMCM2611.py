@@ -125,6 +125,7 @@ class TMCM2611(TMCLModule):
             BrakeReleaseDuty = 81
             BrakeReleaseDuration = 82
             BrakeHoldDuty = 83
+            BrakeState = 84
 
             # Status APs
             StatusFlags = 90
@@ -171,6 +172,12 @@ class TMCM2611(TMCLModule):
             ENC_INIT_STATE_START = 1
             ENC_INIT_STATE_WAIT = 2
             ENC_INIT_STATE_ESTIMATE_OFFSET = 3
+
+            # Brake states
+            BRAKE_FAULTY = 0
+            BRAKE_READY = 1
+            BRAKE_APPLY_MAX_PWM = 2
+            BRAKE_APPLY_HOLD_PWM = 3
 
     class GP:
         SerialBaudRate = 65
