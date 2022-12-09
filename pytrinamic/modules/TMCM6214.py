@@ -102,7 +102,8 @@ class TMCM6214(TMCLModule):
             ActualVelocity                   = 3
             MaxVelocity                      = 4
             MaxAcceleration                  = 5
-            RunCurrent                       = 6
+            MaxCurrent                       = 6
+            RunCurrent                       = MaxCurrent
             StandbyCurrent                   = 7
             PositionReachedFlag              = 8
             HomeSwitch                       = 9
