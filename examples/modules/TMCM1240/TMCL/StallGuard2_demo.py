@@ -1,9 +1,7 @@
 """
 Sets the StallGuard2 threshold such that the stall guard value (i.e SG value) is zero
 when the motor comes close to stall and also sets the stop on stall velocity to a value
-one less than the actual velocity of the moto
-:param motor: TMCL motor object
-:param init_velocity: initial velocity to rotate the motor.
+one less than the actual velocity of the motor
 """
 
 import pytrinamic
