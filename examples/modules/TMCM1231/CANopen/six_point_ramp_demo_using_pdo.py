@@ -7,7 +7,7 @@ import time
 import dataclasses
 import canopen
 import matplotlib.pyplot as plt
-from pytrinamic.modules.CANopen_node import TmcmNode
+from pytrinamic.modules.canopen_node import TmcmNode
 
 
 samples = []
@@ -73,55 +73,46 @@ with canopen.Network() as network:
     # tmcm_1231.sdo['Profile stop deceleration 1'].raw = 5000
     tmcm_1231.sdo['Bow scaling factor 1'].raw = 255                 # ramp_wait_time?
 
-    target_position = 100000
     # Profile Velocity Mode
     tmcm_1231.sdo['Modes of Operation 1'].raw = tmcm_1231.ModeOfOperation.PROFILE_POSITION_MODE
 
-    tmcm_1231.rpdo[4]['Controlword 1'].raw = 15
+    tmcm_1231.rpdo[4]['Controlword 1'].raw = tmcm_1231.Cmd.ENABLE_OPERATION
     tmcm_1231.rpdo[4]['Target Position 1'].raw = 0
     tmcm_1231.rpdo[4].transmit()
 
     time.sleep(0.2)
 
-    tmcm_1231.rpdo[4]['Target Position 1'].raw = target_position
-    tmcm_1231.rpdo[4]['Controlword 1'].raw = 31
-    tmcm_1231.rpdo[4].transmit()
+    for target_position in [100000, 0]:
+        tmcm_1231.rpdo[4]['Target Position 1'].raw = target_position
+        tmcm_1231.rpdo[4]['Controlword 1'].raw = tmcm_1231.Cmd.ENABLE_OPERATION + tmcm_1231.Cmd.NEW_SET_POINT
+        tmcm_1231.rpdo[4].transmit()
 
-    tmcm_1231.rpdo[4]['Controlword 1'].raw = 15
-    tmcm_1231.rpdo[4].transmit()
+        tmcm_1231.rpdo[4]['Controlword 1'].raw = tmcm_1231.Cmd.ENABLE_OPERATION
+        tmcm_1231.rpdo[4].transmit()
 
-    mask = 1024
-    while tmcm_1231.sdo['Statusword 1'].raw & mask == 0:
-        pass
+        target_reached_flag_mask = 0x0400
+        while tmcm_1231.sdo['Statusword 1'].raw & target_reached_flag_mask == 0:
+            pass
 
-    print("Reached Target Position!")
-
-    tmcm_1231.rpdo[4]['Target Position 1'].raw = 0
-    tmcm_1231.rpdo[4]['Controlword 1'].raw = 31
-    tmcm_1231.rpdo[4].transmit()
-
-    while tmcm_1231.sdo['Statusword 1'].raw & mask == 0:
-        pass
-
-    print("Reached Zero Position!")
+        print("Reached Target Position: {target_position}" .format(target_position=target_position))
 
     tmcm_1231.nmt.state = 'PRE-OPERATIONAL'
     tmcm_1231.shutdown()
 
-    fig, ax = plt.subplots(2)
-    t = [float(s.timestamp - samples[0].timestamp) for s in samples]
-    pos = [float(s.position) for s in samples]
-    vel = [float(s.velocity) for s in samples]
-    ax[0].plot(t, pos, label='Position')
-    ax[0].set_title('Pos vs Time')
-    ax[0].set_xlabel('Time')
-    ax[0].set_ylabel('Pos')
-    ax[0].legend()
-    ax[0].grid()
-    ax[1].plot(t, vel, label='Velocity')
-    ax[1].set_title('Vel vs Time')
-    ax[1].set_xlabel('Time')
-    ax[1].set_ylabel('Vel')
-    ax[1].legend()
-    ax[1].grid()
-    plt.show()
+fig, ax = plt.subplots(2)
+t = [float(s.timestamp - samples[0].timestamp) for s in samples]
+pos = [float(s.position) for s in samples]
+vel = [float(s.velocity) for s in samples]
+ax[0].plot(t, pos, label='Position')
+ax[0].set_title('Pos vs Time')
+ax[0].set_xlabel('Time')
+ax[0].set_ylabel('Pos')
+ax[0].legend()
+ax[0].grid()
+ax[1].plot(t, vel, label='Velocity')
+ax[1].set_title('Vel vs Time')
+ax[1].set_xlabel('Time')
+ax[1].set_ylabel('Vel')
+ax[1].legend()
+ax[1].grid()
+plt.show()

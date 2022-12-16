@@ -5,7 +5,7 @@ one less than the actual velocity of the motor
 """
 import time
 import canopen
-from pytrinamic.modules.CANopen_node import TmcmNode
+from pytrinamic.modules.canopen_node import TmcmNode
 
 def stallguard2_init(init_velocity):
     # Resetting SG2 threshold and stop on stall velocity to zero
@@ -59,8 +59,8 @@ def main():
         print("Configuring StallGuard2 parameters...")
         stallguard2_init(init_velocity = 10000)
         print("Apply load and try to stall the motor...")
-        mask = 16384
-        while tmcm_1231.sdo['Statusword 1'].raw & mask != 0:
+        motor_activity_flag_mask = 0x4000
+        while tmcm_1231.sdo['Statusword 1'].raw & motor_activity_flag_mask != 0:
             pass
         print("Motor stopped by StallGuard2!")
 

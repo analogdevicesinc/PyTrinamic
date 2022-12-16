@@ -10,7 +10,7 @@ import time
 import dataclasses
 import canopen
 import matplotlib.pyplot as plt
-from pytrinamic.modules.CANopen_node import TmcmNode
+from pytrinamic.modules.canopen_node import TmcmNode
 
 
 samples = []
@@ -57,7 +57,7 @@ with canopen.Network() as network:
     target_velocity = 10000
     # Profile Velocity Mode
     tmcm_1231.rpdo[4]['Modes of Operation 1'].raw = tmcm_1231.ModeOfOperation.PROFILE_VELOCITY_MODE
-    tmcm_1231.rpdo[4]['Controlword 1'].raw = 15
+    tmcm_1231.rpdo[4]['Controlword 1'].raw = tmcm_1231.Cmd.ENABLE_OPERATION
     tmcm_1231.rpdo[4]['Target Velocity 1'].raw = target_velocity
     tmcm_1231.rpdo[4].transmit()
     print("Motor rotating...")

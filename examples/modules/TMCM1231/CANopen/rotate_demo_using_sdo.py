@@ -3,7 +3,7 @@ Uses SDO to rotate the motor for 5 seconds in profile velocity mode.
 """
 import time
 import canopen
-from pytrinamic.modules.CANopen_node import TmcmNode
+from pytrinamic.modules.canopen_node import TmcmNode
 
 with canopen.Network() as network:
     network.connect(channel='PCAN_USBBUS1', bustype='pcan', bitrate=1_000_000)
