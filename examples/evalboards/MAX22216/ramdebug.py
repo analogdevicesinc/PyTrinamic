@@ -1,11 +1,14 @@
+import logging
+
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import MAX22216
 from pytrinamic.RAMDebug import Channel, RAMDebug, RAMDebug_Trigger
 
+logging.basicConfig(level=logging.DEBUG)
 pytrinamic.show_info()
 
-with ConnectionManager(debug=True).connect() as my_interface:
+with ConnectionManager().connect() as my_interface:
     print(my_interface)
 
     ch = Channel.field(0, MAX22216.FIELD.ADC_VM_RAW, signed=True, eval_channel=1)

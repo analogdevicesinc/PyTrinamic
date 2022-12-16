@@ -17,7 +17,7 @@ pip install pytrinamic
 
 ## Getting Started
 
-Please have a look at the [code examples on GitHub](https://github.com/trinamic/PyTrinamic/tree/feature_feature_hierarchy_v2/examples).
+Please have a look at the [code examples on GitHub](https://github.com/trinamic/PyTrinamic/tree/master/examples).
 
 ## Migration Guide<a id="migration-guide"></a>
 

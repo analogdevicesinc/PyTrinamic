@@ -1,4 +1,4 @@
-from pytrinamic.tmcl import TMCLCommand
+from pytrinamic.tmcl import TMCLCommand, TMCLReplyStatusError, TMCLStatus
 from enum import IntEnum
 
 class RAMDebug_Command(IntEnum):
@@ -55,6 +55,12 @@ class RAMDebug_State(IntEnum):
     CAPTURE        = 2
     COMPLETE       = 3
     PRETRIGGER     = 4
+
+    UNKNOWN_STATUS = -1 # Placeholder value in case invalid state values were returned
+
+    @classmethod
+    def _missing_(cls, value):
+        return cls.UNKNOWN_STATUS
 
 class Channel():
     def __init__(self, channel_type, value, address = 0, signed = False, mask = 0xFFFF_FFFF, shift = 0): #TODO: add signed
@@ -132,7 +138,7 @@ class RAMDebug():
         self._trigger_mask = 0x0000_0000
         self._trigger_shift = 0x0000_0000
         self.channels = []
-        self.samples = []
+        self.samples = None
 
     def get_sample_count(self):
         return self._sample_count
@@ -147,26 +153,54 @@ class RAMDebug():
         self._process_frequency = process_frequency
 
     def set_prescaler(self, prescaler):
+        """
+        Set the capture prescaler to divide the capture frequency.
+        The actual capture frequency is MAX_FREQUENCY/(prescaler+1).
+        """
         self._prescaler = prescaler
 
+    def set_divider(self, divider):
+        """
+        Set the capture prescaler to divide the capture frequency.
+        The actual capture frequency is MAX_FREQUENCY/divider.
+        """
+        if not (1 <= divider <= 0xFFFF_FFFF):
+            raise ValueError("Invalid divider value. Possible divider values are [1; 2^32-1]")
+
+        self._prescaler = divider-1
+
     def set_trigger_type(self, trigger_type):
-        if isinstance(trigger_type, RAMDebug_Trigger):
-            self._trigger_type = trigger_type
+        if not isinstance(trigger_type, RAMDebug_Trigger):
+            raise ValueError("Invalid trigger type - you must pass a RAMDebug_Trigger object")
+
+        self._trigger_type = trigger_type
 
     def set_trigger_threshold(self, trigger_threshold):
         self._trigger_threshold = trigger_threshold
 
     def set_trigger_channel(self, channel):
-        if isinstance(channel, Channel):
-            self._trigger_channel = channel
-            self._trigger_mask = channel._mask
-            self._trigger_shift = channel._shift
+        if not isinstance(channel, Channel):
+            raise ValueError("Invalid channel - you must pass a Channel object")
 
+        self._trigger_channel = channel
+        self._trigger_mask = channel.mask
+        self._trigger_shift = channel.shift
+
+    def set_trigger(self, trigger_channel, trigger_type, trigger_threshold):
+        """
+        Fully configure the RAMDebug trigger
+        """
+        self.set_trigger_type(trigger_type)
+        self.set_trigger_threshold(trigger_threshold)
+        self.set_trigger_channel(trigger_channel)
 
     def set_pretrigger_samples(self, pretrigger_samples):
         self._pretrigger_samples = pretrigger_samples
 
     def set_channel(self, channel):
+        if not isinstance(channel, Channel):
+            raise ValueError("Invalid channel - you must pass a Channel object")
+
         if self.channel_count() >= self.MAX_CHANNELS:
             raise RuntimeError("Out of channels!")
 
@@ -175,11 +209,46 @@ class RAMDebug():
     def get_channels(self):
         return self.channels
 
-    def start_measurement(self):
+    def start_measurement(self, *, strict=True):
+        """
+        Start the measurement.
+        If you are waiting for a trigger, wait until is_pretriggering() returns false before causing
+        your trigger event.
+
+        Arguments:
+            - strict:
+                When set to True, reject invalid sample counts.
+                When set to False, automatically adjust too high sample counts.
+        """
+        samples = self.get_total_samples()
+        if self.get_total_samples() > self.MAX_ELEMENTS:
+            if strict:
+                raise RuntimeError(f"Too many samples requested! Requested {self.get_total_samples()} ({self._sample_count} for {self.channel_count()} channels). Maximum available samples: {self.MAX_ELEMENTS}. Either adjust your sample count or pass strict=False to this function to let RAMDebug reduce sample count automatically.")
+            else:
+                # Non-strict mode: Limit the sample count
+                samples = self.MAX_ELEMENTS - (self.MAX_ELEMENTS % self.channel_count())
+
+        pretrigger_samples = self._pretrigger_samples * self.channel_count()
+        if pretrigger_samples > samples:
+            if strict:
+                raise RuntimeError(f"Too many pretrigger samples requested! Requested {pretrigger_samples} pretrigger samples, but only capturing {samples} samples.")
+            else:
+                # Non-strict mode: Limit the pretrigger sample count
+                pretrigger_samples = samples
+
         self._command(RAMDebug_Command.INIT.value, 0, 0)
-        self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, self.get_total_samples())
-        self._command(RAMDebug_Command.SET_PROCESS_FREQUENCY, 0, self._process_frequency)
+        self._command(RAMDebug_Command.SET_SAMPLE_COUNT.value, 0, samples)
         self._command(RAMDebug_Command.SET_PRESCALER.value, 0, self._prescaler)
+
+        try:
+            self._command(RAMDebug_Command.SET_PROCESS_FREQUENCY, 0, self._process_frequency)
+        except TMCLReplyStatusError as e:
+            if e.status_code == TMCLStatus.WRONG_TYPE:
+                # SET_PROCESS_FREQUENCY not supported -> skip exception
+                pass
+            else:
+                # A different error occurred -> reraise exception
+                raise e
 
         for channel in self.channels:
             self._command(RAMDebug_Command.SET_CHANNEL.value, channel.type.value, channel.value)
@@ -189,14 +258,21 @@ class RAMDebug():
         self._command(RAMDebug_Command.SET_TRIGGER_CHANNEL.value, self._trigger_channel.type.value, self._trigger_channel.value)
         self._command(RAMDebug_Command.ENABLE_TRIGGER.value, self._trigger_type.value, self._trigger_threshold)
 
+    def is_pretriggering(self):
+        return self.get_state() == RAMDebug_State.PRETRIGGER
+
     def is_measurement_done(self):
-        return self.get_state() == RAMDebug_State.COMPLETE.value
+        return self.get_state() == RAMDebug_State.COMPLETE
 
     def get_samples(self):
+        # If the samples were already downloaded, just return them
+        if self.samples:
+            return self.samples
+
         i = 0
         data = []
 
-        while i < self.get_total_samples():
+        while i < min(self.get_total_samples(), self.MAX_ELEMENTS):
             reply = self._command(RAMDebug_Command.GET_SAMPLE.value, 0, i)
             done = reply.status != 0x64
             if done:
@@ -242,7 +318,10 @@ class RAMDebug():
         return len(self.channels)
 
     def get_state(self):
-        return self._command(RAMDebug_Command.GET_STATE.value, 0, 0).value
+        """
+        Returns the state of this measurement as a RAMDebug_State enum
+        """
+        return RAMDebug_State(self._command(RAMDebug_Command.GET_STATE.value, 0, 0).value)
 
     def __str__(self):
         text  = f"RAMDebug handler for connection {self._connection}\n"

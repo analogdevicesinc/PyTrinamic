@@ -6,6 +6,7 @@ from .TMC2208 import TMC2208
 from .TMC2209 import TMC2209
 from .TMC2224 import TMC2224
 from .TMC2225 import TMC2225
+from .TMC2240 import TMC2240
 from .TMC2300 import TMC2300
 from .TMC2590 import TMC2590
 from .TMC2660 import TMC2660

@@ -1,4 +1,5 @@
 import sys
+import logging
 import argparse
 
 from ..connections import DummyTmclInterface
@@ -10,6 +11,8 @@ from ..connections import UartIcInterface
 from ..connections import UsbTmclInterface
 from ..connections import SlcanTmclInterface
 from ..connections import IxxatTmclInterface
+
+logger = logging.getLogger(__name__)
 
 
 class ConnectionManager:
@@ -63,7 +66,17 @@ class ConnectionManager:
             interpreted depends on the interface used. E.g. the serial
             connection uses this value as the baud rate.
 
-            Default value: 115200
+            The Default value also depends on the interface.
+                * for any CAN interface its 1000000
+                * for the serial_tmcl and uard_id interface it is 9600
+                * for usb_tmcl it is 115200
+
+        --timeout <timeout in s>
+            The rx timeout in seconds. Accepts only values >= 0.
+            If 0 is given the rx function will block forever.
+            This might be useful for debugging.
+
+            Default value: 5.0
 
         --host-id <host-id>
             The host id to use with a TMCL connection.
@@ -90,24 +103,23 @@ class ConnectionManager:
         ("ixxat_tmcl", IxxatTmclInterface, 1000000),
     ]
 
-    def __init__(self, arg_list=None, connection_type="any", debug=False):
+    def __init__(self, arg_list=None, connection_type="any"):
         # Attributes
-        self.__debug = debug
         self.__connection = None
 
         arg_parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
         ConnectionManager.argparse(arg_parser)
 
         if not arg_list:
-            if self.__debug:
-                print("Using arguments from the command line")
+            logger.info("Using arguments from the command line.")
             arg_list = sys.argv
 
         if isinstance(arg_list, str):
             arg_list = arg_list.split()
-            if self.__debug:
-                print("Splitting string:", arg_list)
 
+        logger.debug("List of input arguments: %s", arg_list)
+
+        # Parse the command line
         args = arg_parser.parse_known_args(arg_list)[0]
 
         # Argument storage - default parameters are set here
@@ -118,11 +130,7 @@ class ConnectionManager:
         self.__host_id    = 2
         self.__module_id  = 1
 
-        # Parse the command line
-        if self.__debug:
-            print("Commandline argument list: {0:s}".format(str(arg_list)))
-            print("Parsed commandline arguments: {0:s}".format(str(args)))
-            print()
+        logger.debug("Combined default and parsed arguments: %s", args)
 
         # ## Interpret given arguments
         # Interface
@@ -156,6 +164,9 @@ class ConnectionManager:
             # No data rate has been set -> keep old value
             pass
 
+        # Timeout
+        self.__timeout_s = args.timeout_s
+
         # Host ID
         try:
             self.__host_id = int(args.host_id[0])
@@ -168,17 +179,18 @@ class ConnectionManager:
         except ValueError as exc:
             raise ValueError("Invalid module id: " + args.module_id[0]) from exc
 
-        if self.__debug:
-            print("Connection parameters:")
-            print("\tInterface:  " + self.__interface.__qualname__)
-            print("\tPort:       " + self.__port)
-            print("\tBlacklist:  " + str(self.__no_port))
-            print("\tData rate:  " + str(self.__data_rate))
-            print("\tHost ID:    " + str(self.__host_id))
-            print("\tModule ID:  " + str(self.__module_id))
-            print()
+        logger.info("ConnectionManager created with ["
+                    "Interface: %s; "
+                    "Port: %s; "
+                    "Blacklist: %s; "
+                    "Data rate: %s; "
+                    "Timeout: %s;"
+                    "Host ID: %s; "
+                    "Module ID: %s]",
+                    self.__interface.__qualname__, self.__port, self.__no_port, self.__data_rate, self.__timeout_s,
+                    self.__host_id, self.__module_id)
 
-    def connect(self, debug_interface=None):
+    def connect(self):
         """
         Attempt to connect to a module with the stored connection parameters.
 
@@ -187,19 +199,7 @@ class ConnectionManager:
 
         If no connections are available or a connection attempt fails, a
         ConnectionError exception is raised
-
-        Parameters:
-            debug_interface:
-                Type: bool, optional, default value: None
-                Control whether the connection should be created in
-                debug mode. A boolean value will enable or disable the debug mode,
-                a None value will set the connections debug mode according to the
-                ConnectionManagers debug mode.
         """
-        # If no debug selection has been passed, inherit the debug state from the connection manager
-        if debug_interface is None:
-            debug_interface = self.__debug
-
         # Get all available ports
         port_list = self.list_connections()
 
@@ -243,10 +243,10 @@ class ConnectionManager:
             if self.__interface.supports_tmcl():
                 # Open the connection to a TMCL interface
                 self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id,
-                                                     debug=debug_interface)
+                                                     timeout_s=self.__timeout_s)
             else:
                 # Open the connection to a direct IC interface
-                self.__connection = self.__interface(port, self.__data_rate, debug=debug_interface)
+                self.__connection = self.__interface(port, self.__data_rate, timeout_s=self.__timeout_s)
         except ConnectionError as e:
             raise ConnectionError("Couldn't connect to port " + port + ". Connection failed.") from e
 
@@ -303,6 +303,16 @@ class ConnectionManager:
         script, this function adds the arguments of the ConnectionManager to the
         argparse parser.
         """
+        def _positive_float(value):
+            """
+            Argparse checker for float a positive float type.
+            """
+            value_float = float(value)
+            if value_float < 0:
+                raise argparse.ArgumentTypeError("Expected a positive float, got {}".format(value_float))
+
+            return value_float
+
         group = arg_parser.add_argument_group("ConnectionManager options")
         group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str,
                            choices=[actual_interface[0] for actual_interface in ConnectionManager.INTERFACES],
@@ -313,6 +323,8 @@ class ConnectionManager:
                            help='Exclude ports')
         group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
                            help='Connection data-rate (default: %(default)s)')
+        group.add_argument('--timeout', dest='timeout_s', action='store', type=_positive_float, default=5.0,
+                           help='Connection rx timeout in seconds (default: %(default)s)', metavar="SECONDS")
 
         group = arg_parser.add_argument_group("ConnectionManager TMCL options")
 
