@@ -53,7 +53,7 @@ class StallGuard2Module(StallGuard2):
 
         Returns: StallGuard2 threshold.
         """
-        return self._parent.get_axis_parameter(self._aps.SG2Threshold, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SG2Threshold, self._axis, signed=True)
 
     def set_stop_velocity(self, velocity):
         """

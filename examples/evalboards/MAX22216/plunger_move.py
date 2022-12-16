@@ -1,3 +1,4 @@
+
 import logging
 import time
 
@@ -5,6 +6,7 @@ import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import MAX22216
 from pytrinamic.evalboards import MAX22216_eval
+
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -18,6 +20,7 @@ with ConnectionManager().connect() as my_interface:
     solenoid = ic.motors[0]
 
     solenoid.u_supply = 24.0 # V
+
     solenoid.u_dc_h = 10.0 # V
     solenoid.u_dc_l = 0.0 # V
     solenoid.u_dc_l2h = 10.0 # V 
