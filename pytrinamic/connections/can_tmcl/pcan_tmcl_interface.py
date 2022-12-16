@@ -32,26 +32,24 @@ class PcanTmclInterface(CanTmclInterface):
         "PCAN_LANBUS13", "PCAN_LANBUS14", "PCAN_LANBUS15", "PCAN_LANBUS16"
     ]
 
-    def __init__(self, port, datarate=1000000, host_id=2, module_id=1, debug=False, timeout_s=5):
+    def __init__(self, port, datarate=1000000, host_id=2, module_id=1, timeout_s=5):
         if not isinstance(port, str):
             raise TypeError
 
         if port not in self._CHANNELS:
             raise ValueError("Invalid port!")
 
-        CanTmclInterface.__init__(self, host_id, module_id, debug, timeout_s)
+        CanTmclInterface.__init__(self, port, datarate, host_id, module_id, timeout_s)
         self._channel = port
         self._bitrate = datarate
 
+        self.logger.info("Connect to bus with bit-rate %s.", self._bitrate)
         try:
             self._connection = can.Bus(interface="pcan", channel=self._channel, bitrate=self._bitrate)
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0xFFFFFFFF}])
         except PcanError as e:
             self._connection = None
             raise ConnectionError("Failed to connect to PCAN bus") from e
-
-        if self._debug:
-            print("Opened bus on channel " + self._channel)
 
     @classmethod
     def list(cls):

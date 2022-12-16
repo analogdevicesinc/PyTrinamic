@@ -1,3 +1,4 @@
+import logging
 import struct
 from serial import Serial
 import serial.tools.list_ports
@@ -14,8 +15,8 @@ class RegisterRequest:
     def to_buffer(self):
         return struct.pack(REGISTER_PACKAGE_STRUCTURE, self.address, self.value)
 
-    def dump(self):
-        print("RegisterRequest: " + str(self.address) + "," + str(self.value))
+    def __str__(self):
+        return "RegisterRequest: [Addr:{:02x}, Value:{}]".format(self.address, self.value)
 
 
 class RegisterReply:
@@ -23,8 +24,8 @@ class RegisterReply:
         self.address = reply_struct[0]
         self.value = reply_struct[1]
 
-    def dump(self):
-        print("RegisterReply:   " + str(self.address) + "," + str(self.value))
+    def __str__(self):
+        return "RegisterReply:   [Addr:{:02x}, Value:{}]".format(self.address, self.value)
 
     def value(self):
         return self.value
@@ -32,13 +33,15 @@ class RegisterReply:
 
 class UartIcInterface:
 
-    def __init__(self, com_port, datarate=9600, debug=False, timeout_s=5):
-        self._debug = debug
+    def __init__(self, com_port, datarate=9600, timeout_s=5):
         self.baudrate = datarate
         if timeout_s == 0:
             timeout_s = None
+
+        self.logger = logging.getLogger("{}.{}".format(self.__class__.__name__, com_port))
+
+        self.logger.debug("Opening port (baudrate=%s).", datarate)
         self.serial = Serial(com_port, self.baudrate, timeout=timeout_s)
-        print("Open port: " + self.serial.portstr)
 
     def __enter__(self):
         return self
@@ -51,17 +54,12 @@ class UartIcInterface:
         self.close()
 
     def close(self):
-        if self._debug:
-            print("Close port: " + self.serial.portstr)
-
+        self.logger.info("Closing port.")
         self.serial.close()
 
     def send_datagram(self, data, recv_size):
         self.serial.write(data)
         return self.serial.read(recv_size)
-
-    def enable_debug(self, enable):
-        self._debug = enable
 
     @staticmethod
     def supports_tmcl():
@@ -71,15 +69,11 @@ class UartIcInterface:
         # prepare TMCL request
         request = RegisterRequest(address, value)
 
-        if self._debug:
-            request.dump()
-
         # send request, wait, and handle reply
+        self.logger.debug("Tx %s", request)
         self.serial.write(request.to_buffer())
         reply = RegisterReply(struct.unpack(REGISTER_PACKAGE_STRUCTURE, self.serial.read(REGISTER_PACKAGE_LENGTH)))
-
-        if self._debug:
-            reply.dump()
+        self.logger.debug("Rx %s", reply)
 
         return reply
 

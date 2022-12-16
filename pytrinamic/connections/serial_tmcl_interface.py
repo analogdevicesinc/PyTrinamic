@@ -1,3 +1,5 @@
+import logging
+
 from serial import Serial, SerialException
 import serial.tools.list_ports
 from ..connections.tmcl_interface import TmclInterface
@@ -8,22 +10,22 @@ class SerialTmclInterface(TmclInterface):
     """
     Opens a serial TMCL connection
     """
-    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, debug=False, timeout_s=5):
+    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, timeout_s=5):
         if not isinstance(com_port, str):
             raise TypeError
 
-        TmclInterface.__init__(self, host_id, module_id, debug)
+        TmclInterface.__init__(self, host_id, module_id)
         self._baudrate = datarate
         if timeout_s == 0:
             timeout_s = None
 
+        self.logger = logging.getLogger("{}.{}".format(self.__class__.__name__, com_port))
+
+        self.logger.debug("Opening port (baudrate=%s).", datarate)
         try:
             self._serial = Serial(com_port, self._baudrate, timeout=timeout_s)
         except SerialException as e:
             raise ConnectionError from e
-
-        if self._debug:
-            print("Opened port: " + self._serial.portstr)
 
     def __enter__(self):
         return self
@@ -36,9 +38,7 @@ class SerialTmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        if self._debug:
-            print("Closing port: " + self._serial.portstr)
-
+        self.logger.info("Closing port.")
         self._serial.close()
 
     def _send(self, host_id, module_id, data):

@@ -151,9 +151,6 @@ class TMCLRequest:
             self.checksum
         )
 
-    def dump(self):
-        print(self)
-
 
 class TMCLReply:
     def __init__(self, reply_address, module_address, status, command, value, checksum=None, special=False):
@@ -193,9 +190,6 @@ class TMCLReply:
             self.value,
             self.checksum
         )
-
-    def dump(self):
-        print(self)
 
     def value(self):
         return self.value

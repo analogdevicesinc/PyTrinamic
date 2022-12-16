@@ -12,25 +12,23 @@ class SlcanTmclInterface(CanTmclInterface):
     Maybe SerialBaudrate has to be changed based on adapter.
     """
 
-    def __init__(self, com_port, datarate=1000000, host_id=2, module_id=1, debug=True, timeout_s=5, serial_baudrate=115200):
+    def __init__(self, com_port, datarate=1000000, host_id=2, module_id=1, timeout_s=5, serial_baudrate=115200):
         if not isinstance(com_port, str):
             raise TypeError
 
-        CanTmclInterface.__init__(self, host_id, module_id, debug, timeout_s)
-        self._bitrate = datarate
-        self._port = com_port
+        CanTmclInterface.__init__(self, com_port, datarate, host_id, module_id, timeout_s)
         self._serial_baudrate = serial_baudrate
 
+        self.logger.info("Connect to bus. (Baudrate=%s)", self._serial_baudrate)
         try:
-            self._connection = can.Bus(interface='slcan', channel=self._port, bitrate=self._bitrate,
+            self._connection = can.Bus(interface='slcan',
+                                       channel=self._channel,
+                                       bitrate=self._bitrate,
                                        ttyBaudrate=self._serial_baudrate)
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
         except CanError as e:
             self._connection = None
             raise ConnectionError("Failed to connect to CAN bus") from e
-
-        if self._debug:
-            print("Opened slcan bus on channel " + self._port)
 
     @classmethod
     def list(cls):

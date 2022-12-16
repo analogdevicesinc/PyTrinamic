@@ -1,12 +1,16 @@
+import logging
+import time
+
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import MAX22216
 from pytrinamic.evalboards import MAX22216_eval
-import time
+
+logging.basicConfig(level=logging.DEBUG)
 
 pytrinamic.show_info()
 
-with ConnectionManager(debug=True).connect() as my_interface:
+with ConnectionManager().connect() as my_interface:
     print(my_interface)
 
     eval = MAX22216_eval(my_interface)
