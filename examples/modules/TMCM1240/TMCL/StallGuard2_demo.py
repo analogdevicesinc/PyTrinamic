@@ -37,7 +37,11 @@ def stallguard2_init(motor, init_velocity):
         for i in range(50):
             load_samples.append(motor.stallguard2.get_load_value())
         if 0 in load_samples:
-            motor.drive_settings.max_current = motor.drive_settings.max_current - 8
+            if motor.drive_settings.max_current > 0:
+                motor.drive_settings.max_current = motor.drive_settings.max_current - 8
+            else:
+                print("Current has reached its minimum limit! Please reset the max_current and start again!")
+                break
         else:
             break
 
