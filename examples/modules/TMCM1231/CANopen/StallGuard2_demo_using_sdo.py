@@ -32,7 +32,11 @@ def stallguard2_init(init_velocity):
         for i in range(50):
             load_samples.append(tmcm_1231.sdo['Actual Load Value 1'].raw )
         if 0 in load_samples:
-            tmcm_1231.sdo['Absolute Max Current 1'].raw = tmcm_1231.sdo['Absolute Max Current 1'].raw - 1
+            if tmcm_1231.sdo['Absolute Max Current 1'].raw > 0:
+                tmcm_1231.sdo['Absolute Max Current 1'].raw = tmcm_1231.sdo['Absolute Max Current 1'].raw - 1
+            else:
+                print("Current has reached its minimum limit! Please reset the max_current and start again!")
+                break
         else:
             break
 
