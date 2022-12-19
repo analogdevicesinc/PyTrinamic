@@ -1,6 +1,7 @@
 """
 Sets the CoolStep parameters such that the current increases/decreases if the SG value lies
 below or above the SG_min or SG_max threshold values.
+Works with Stepper motor type: MS17HD4P4150
 """
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
