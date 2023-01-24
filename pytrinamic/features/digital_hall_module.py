@@ -8,6 +8,7 @@ class DigitalHallModule(DigitalHall):
         self._aps = aps
         self._hasHallSensorDirection = False
         self._hasHallSensorPolarity = False
+        self._hasHallSensorSectorOffset = False
         self._hasHallSensorOffset = False
         self._hasHallSensorInterpolation = False
 
@@ -15,6 +16,8 @@ class DigitalHallModule(DigitalHall):
             self._hasHallSensorDirection = True
         if hasattr(self._aps, "HallSensorPolarity"):
             self._hasHallSensorPolarity = True
+        if hasattr(self._aps, "HallSensorSectorOffset"):
+            self._hasHallSensorSectorOffset = True
         if hasattr(self._aps, "HallSensorOffset"):
             self._hasHallSensorOffset = True
         if hasattr(self._aps, "HallSensorInterpolation"):
@@ -37,6 +40,16 @@ class DigitalHallModule(DigitalHall):
     def get_polarity(self):
         if self._hasHallSensorPolarity:
             return self._parent.get_axis_parameter(self._aps.HallSensorPolarity, self._axis)
+        else:
+            return None
+
+    def set_sector_offset(self, sector_offset):
+        if self._hasHallSensorSectorOffset:
+            self._parent.set_axis_parameter(self._aps.HallSensorSectorOffset, self._axis, sector_offset)
+
+    def get_sector_offset(self):
+        if self._hasHallSensorSectorOffset:
+            return self._parent.get_axis_parameter(self._aps.HallSensorSectorOffset, self._axis)
         else:
             return None
 
@@ -63,6 +76,7 @@ class DigitalHallModule(DigitalHall):
     # Properties
     direction = property(get_direction, set_direction)
     polarity = property(get_polarity, set_polarity)
+    sector_offset = property(get_sector_offset, set_sector_offset)
     offset = property(get_offset, set_offset)
     interpolation = property(get_interpolation, set_interpolation)
 
@@ -73,6 +87,9 @@ class DigitalHallModule(DigitalHall):
 
         if self._hasHallSensorPolarity:
             values += "'polarity':" + str(self.polarity) + ", "
+
+        if self._hasHallSensorSectorOffset:
+            values += "'sector_offset':" + str(self.sector_offset) + ", "
 
         if self._hasHallSensorOffset:
             values += "'offset':" + str(self.offset) + ", "
