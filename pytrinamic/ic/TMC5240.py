@@ -9,7 +9,7 @@ class TMC5240(TMCIc):
         Supply voltage: 4,5-36V
     """
     def __init__(self, parent_eval):
-        super().__init__("TMC5130", self.__doc__)
+        super().__init__(self.__class__.__name__, self.__doc__)
         self._parent = parent_eval
         self.motors = [self.MotorTypeA(parent_eval, self, 0)]
 
@@ -19,9 +19,6 @@ class TMC5240(TMCIc):
         """
         def __init__(self, parent_eval, ic, axis):
             MotorControlIc.__init__(self, parent_eval, ic, axis)
-#            LinearRampIC.__init__(self)
-#            CurrentIC.__init__(self)
-#            StallGuard2IC.__init__(self)
 
     class REG:
         """

@@ -3,10 +3,6 @@ from pytrinamic.ic import TMC5240
 from pytrinamic.features import MotorControlModule
 from pytrinamic.helpers import TMC_helpers
 
-# from pytrinamic.features.linear_ramp_module import LinearRampModule
-# from pytrinamic.features.stallguard2_module import StallGuard2Module
-# from pytrinamic.features.CurrentModule import CurrentModule
-
 
 class TMC5240_eval(TMCLEval):
     """
@@ -54,9 +50,6 @@ class TMC5240_eval(TMCLEval):
         """
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
-            # LinearRampModule.__init__(self)
-            # StallGuard2Module.__init__(self)
-            # CurrentModule.__init__(self)
 
         class AP:
             TargetPosition = 0

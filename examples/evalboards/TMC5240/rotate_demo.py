@@ -10,7 +10,7 @@ with ConnectionManager().connect() as my_interface:
 
     eval_board = TMC5240_eval(my_interface)
     motor = eval_board.motors[0]
-    motor.max_acceleration = 51200
+    motor.set_axis_parameter(motor.AP.MaxAcceleration,51200)
 
     print("Rotating...")
     motor.rotate(51200)
