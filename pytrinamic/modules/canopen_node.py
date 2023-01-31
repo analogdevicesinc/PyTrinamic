@@ -26,13 +26,13 @@ class TmcmNode(canopen.RemoteNode):
     def __init__(self, *args, **kwargs):
         super(TmcmNode, self).__init__(*args, **kwargs)
 
-    def go_to_operation_enabled(self):
+    def go_to_operation_enabled(self, motor=1):
         # clear an eventually present fault
-        state = self.get_state()
+        state = self.get_state(motor)
         if state == 'Fault':
-            self.sdo[0x6040].raw = self.Cmd.FAULT_RESET
+            self.sdo['Controlword {number}'.format(number=motor)].raw = self.Cmd.FAULT_RESET
             while 1:
-                state = self.get_state()
+                state = self.get_state(motor)
                 if state == 'Switch on disable':
                     break
                 time.sleep(1)
@@ -47,21 +47,21 @@ class TmcmNode(canopen.RemoteNode):
         }
         # go up the state machine states
         for cmd, expected_status in sequence_from_state[state]:
-            self.sdo[0x6040].raw = cmd
+            self.sdo['Controlword {number}'.format(number=motor)].raw = cmd
             time.sleep(0.1)
             while 1:
-                state = self.get_state()
+                state = self.get_state(motor)
                 if state == 'Fault':
                     raise self.StateMachineFault(f'Fault when transitioning to {expected_status}')
                 if state == expected_status:
                     break
 
-    def shutdown(self):
-        if self.get_state() != 'Switch on disable':
-            self.sdo[0x6040].raw = 0
+    def shutdown(self, motor=1):
+        if self.get_state(motor) != 'Switch on disable':
+            self.sdo['Controlword {number}'.format(number=motor)].raw = 0
             time.sleep(0.1)
 
-    def get_state(self):
+    def get_state(self, motor=None):
         states = [
             ('Not ready to switch on', 0b0000_0000_0100_1111, 0b0000_0000_0000_0000),
             ('Switch on disable', 0b0000_0000_0100_1111, 0b0000_0000_0100_0000),
@@ -72,7 +72,7 @@ class TmcmNode(canopen.RemoteNode):
             ('Fault reaction active', 0b0000_0000_0100_1111, 0b0000_0000_0000_1111),
             ('Fault', 0b0000_0000_0100_1111, 0b0000_0000_0000_1000),
         ]
-        statusword = self.sdo[0x6041].raw
+        statusword = self.sdo['Statusword {number}'.format(number=motor)].raw
         for name, mask, bits in states:
             if (statusword & mask) == bits:
                 return name
