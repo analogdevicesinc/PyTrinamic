@@ -61,7 +61,7 @@ class TmcmNode(canopen.RemoteNode):
             self.sdo['Controlword {number}'.format(number=motor)].raw = 0
             time.sleep(0.1)
 
-    def get_state(self, motor=None):
+    def get_state(self, motor=1):
         states = [
             ('Not ready to switch on', 0b0000_0000_0100_1111, 0b0000_0000_0000_0000),
             ('Switch on disable', 0b0000_0000_0100_1111, 0b0000_0000_0100_0000),
