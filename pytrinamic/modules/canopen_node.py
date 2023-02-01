@@ -33,7 +33,6 @@ class TmcmNode(canopen.RemoteNode):
             self.sdo['Controlword {number}'.format(number=motor)].raw = self.Cmd.FAULT_RESET
             while 1:
                 state = self.get_state(motor)
-
                 if state == 'Switch on disable':
                     break
                 time.sleep(1)
