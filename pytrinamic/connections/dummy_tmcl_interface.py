@@ -1,23 +1,22 @@
+import logging
+
 from ..connections.tmcl_interface import TmclInterface
 
 
 class DummyTmclInterface(TmclInterface):
 
-    def __init__(self, port, datarate=115200, host_id=2, module_id=1, debug=True, timeout_s=5):
+    def __init__(self, port, datarate=115200, host_id=2, module_id=1, timeout_s=5):
         """
         Opens a dummy TMCL connection
         """
         if not isinstance(port, str):
             raise TypeError
 
-        TmclInterface.__init__(self, host_id, module_id, debug)
+        TmclInterface.__init__(self, host_id, module_id)
 
-        if self._debug:
-            print("Opened dummy TMCL interface on port '" + port + "'")
-            print("\tData rate:  " + str(datarate))
-            print("\tHost ID:    " + str(host_id))
-            print("\tModule ID:  " + str(module_id))
-            print("\tTimeout:    " + str(timeout_s))
+        self.logger = logging.getLogger("{}.{}".format(self.__class__.__name__, port))
+
+        self.logger.debug("Opening port (baudrate=%s).", datarate)
 
     def __enter__(self):
         return self
@@ -33,8 +32,7 @@ class DummyTmclInterface(TmclInterface):
         """
         Closes the dummy TMCL connection
         """
-        if self._debug:
-            print("Closed dummy TMCL interface")
+
 
     def _send(self, host_id, module_id, data):
         """

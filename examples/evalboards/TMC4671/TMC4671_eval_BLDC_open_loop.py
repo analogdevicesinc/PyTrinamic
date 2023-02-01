@@ -8,7 +8,6 @@ from pytrinamic.ic import TMC4671
 pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
-    # my_interface.enable_debug(True)
     print(my_interface)
 
     if isinstance(my_interface, UartIcInterface):

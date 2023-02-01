@@ -1,3 +1,4 @@
+import logging
 from abc import ABC
 from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
 from ..helpers import TMC_helpers
@@ -19,13 +20,10 @@ class TmclInterface(ABC):
         _send(self, host_id, module_id, data)
         _recv(self, host_id, module_id)
 
-    A subclass may use the boolean _debug attribute to toggle printing further
-    debug output.
-
     A subclass may read the _host_id and _module_id parameters.
     """
 
-    def __init__(self, host_id=2, default_module_id=1, debug=False):
+    def __init__(self, host_id=2, default_module_id=1):
         """
         Parameters:
             host_id:
@@ -38,40 +36,14 @@ class TmclInterface(ABC):
                 tmcl_interface functions. When only communicating with one
                 module a script can omit the moduleID for all TMCL interface
                 calls by declaring this default value once at the start.
-            debug:
-                Type: bool, optional, default: False
-                A switch for enabling debug mode. Can be changed with
-                enableDebug(). In debug mode all sent and received TMCL packets
-                get dumped to stdout. The boolean _debug attribute holds the
-                current state of debug mode - subclasses may read it to print
-                further debug output.
         """
+        self.logger = logging.getLogger("TmclInterfaceAbstractBaseClassObject")  # Will be overwritten in derived classes
 
         TMCL.validate_host_id(host_id)
         TMCL.validate_module_id(default_module_id)
 
-        if not isinstance(debug, bool):
-            raise TypeError
-
         self._host_id = host_id
         self._module_id = default_module_id
-        self._debug = debug
-
-    def enable_debug(self, enable):
-        """
-        Set the debug mode, which dumps all TMCL datagrams written and read.
-        """
-        if not isinstance(enable, bool):
-            raise TypeError("Expected boolean value")
-
-        self._debug = enable
-
-    def print_info(self):
-        info = "ConnectionInterface {"
-        info += "'debug_enabled':" + str(self._debug) + ", "
-        info = info[:-2]
-        info += "}"
-        print(info)
 
     def _send(self, host_id, module_id, data):
         """
@@ -106,14 +78,12 @@ class TmclInterface(ABC):
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
         """
-        if self._debug:
-            request.dump()
+        self.logger.debug("Tx: %s", request)
 
         self._send(self._host_id, request.moduleAddress, request.to_buffer())
         reply = TMCLReply.from_buffer(self._recv(self._host_id, request.moduleAddress))
 
-        if self._debug:
-            reply.dump()
+        self.logger.debug("Rx: %s", reply)
 
         self._reply_check(reply)
 
@@ -151,8 +121,7 @@ class TmclInterface(ABC):
 
         request = TMCLRequest(module_id, TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6)
 
-        if self._debug:
-            request.dump()
+        self.logger.debug("Tx: %s", request)
 
         # Send the request
         self._send(self._host_id, module_id, request.to_buffer())

@@ -1,4 +1,5 @@
 
+import logging
 import can
 from ..connections.tmcl_interface import TmclInterface
 
@@ -6,16 +7,18 @@ from ..connections.tmcl_interface import TmclInterface
 class CanTmclInterface(TmclInterface):
     """Generic CAN interface class for the CAN adapters."""
 
-    def __init__(self, host_id=2, default_module_id=1, debug=False, timeout_s=5):
+    def __init__(self, channel, datarate, host_id, default_module_id, timeout_s):
 
-        TmclInterface.__init__(self, host_id, default_module_id, debug)
+        TmclInterface.__init__(self, host_id, default_module_id)
         self._connection = None
-        self._channel = None
-        self._bitrate = None
+        self._channel = channel
+        self._bitrate = datarate
         if timeout_s == 0:
             self._timeout_s = None
         else:
             self._timeout_s = timeout_s
+
+        self.logger = logging.getLogger(f"{self.__class__.__name__}.{self._channel}")
 
     def __enter__(self):
         return self
@@ -28,8 +31,7 @@ class CanTmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        if self._debug:
-            print(f"Closing {self.__class__.__name__} (channel {str(self._channel)})")
+        self.logger.info("Shutdown.")
 
         self._connection.shutdown()
 
@@ -71,8 +73,7 @@ class CanTmclInterface(TmclInterface):
         if msg.arbitration_id != host_id:
             # The filter shouldn't let wrong messages through.
             # This is just a sanity check
-            if self._debug:
-                print(f"Received wrong ID ({self.__class__.__name__}, on channel {str(self._channel)})")
+            self.logger.warning("Received a CAN Frame with unexpected ID (received: %d; expected: %d)", msg.arbitration_id, host_id)
 
         return bytearray([msg.arbitration_id]) + msg.data
 
