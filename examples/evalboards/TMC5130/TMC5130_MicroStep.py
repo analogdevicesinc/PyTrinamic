@@ -6,6 +6,7 @@ The connection to a Landungsbrücke is established over USB. TMCL commands are
 used for communicating with the IC.
 
 Created on 15.05.2019
+Updated on 27.03.2023 by ASU
 
 @author: LH
 '''
@@ -32,25 +33,26 @@ measured = [(0, 0, 247), (1, 1, 247), (2, 3, 247), (3, 4, 247), (4, 6, 247), (5,
 connectionManager = ConnectionManager()
 myInterface = connectionManager.connect()
 eval = TMC5130_eval(myInterface)
-eval.showChipInfo()
-ic = eval.IC
+#eval.showChipInfo()
+ic = eval.ics[0]
+motor = eval.motors[0]
 
-MSLUT = [
-        ic.read_register(ic.REGISTERS.MSLUT0),
-        ic.read_register(ic.REGISTERS.MSLUT1),
-        ic.read_register(ic.REGISTERS.MSLUT2),
-        ic.read_register(ic.REGISTERS.MSLUT3),
-        ic.read_register(ic.REGISTERS.MSLUT4),
-        ic.read_register(ic.REGISTERS.MSLUT5),
-        ic.read_register(ic.REGISTERS.MSLUT6),
-        ic.read_register(ic.REGISTERS.MSLUT7),
+MSLUT_ = [
+        eval.read_register(ic.REG.MSLUT_0),
+        eval.read_register(ic.REG.MSLUT_1),
+        eval.read_register(ic.REG.MSLUT_2),
+        eval.read_register(ic.REG.MSLUT_3),
+        eval.read_register(ic.REG.MSLUT_4),
+        eval.read_register(ic.REG.MSLUT_5),
+        eval.read_register(ic.REG.MSLUT_6),
+        eval.read_register(ic.REG.MSLUT_7),
     ]
 
 ranges = [
-        (ic.read_register_field(ic.FIELDS.X1), ic.read_register_field(ic.FIELDS.W0)),
-        (ic.read_register_field(ic.FIELDS.X2), ic.read_register_field(ic.FIELDS.W1)),
-        (ic.read_register_field(ic.FIELDS.X3), ic.read_register_field(ic.FIELDS.W2)),
-        (257,                                          ic.read_register_field(ic.FIELDS.W3)),
+        (eval.read_register_field(ic.FIELD.X1), eval.read_register_field(ic.FIELD.W0)),
+        (eval.read_register_field(ic.FIELD.X2), eval.read_register_field(ic.FIELD.W1)),
+        (eval.read_register_field(ic.FIELD.X3), eval.read_register_field(ic.FIELD.W2)),
+        (257, eval.read_register_field(ic.FIELD.W3)),
     ]
 
 print(ranges)
@@ -58,13 +60,13 @@ if not(ranges[0][0] <= ranges[1][0] <= ranges[2][0] <= ranges[3][0]):
     print("Error: Condition X1 <= X2 <= X3 <= X4 not satisfied")
 
 for i in range(0, 8):
-    print("MSLUT{0}:      0x{1:08X}".format(i, MSLUT[i]))
+    print("MSLUT_{0}:      0x{1:08X}".format(i, MSLUT_[i]))
 
-print("MSLUTSEL:    0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUTSEL)))
-print("MSLUTSTART:  0x{0:08X}".format(ic.read_register(ic.REGISTERS.MSLUTSTART)))
+print("MSLUT_SEL:    0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSEL)))
+print("MSLUT_START:  0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSTART)))
 print()
 
-start = TMC5130.readRegisterField(TMC5130.fields.START_SIN)
+start = eval.read_register_field(ic.FIELD.START_SIN)
 values = [ (0, start) ]
 
 for i in range(1, 257):
@@ -73,7 +75,7 @@ for i in range(1, 257):
             offset = ranges[j][1] - 1
             break
 
-    bitValue   = ((MSLUT[math.floor((i)/32) & 7] >> ((i) % 32) ) & 1)
+    bitValue   = ((MSLUT_[math.floor((i)/32) & 7] >> ((i) % 32) ) & 1)
     deltaValue = bitValue + offset
     newValue   = values[i-1][1] + deltaValue
 
@@ -98,35 +100,35 @@ del newValues
 
 # Measure the MS values from the IC directly. Can be skipped to save time
 if MEASURE:
-    ic.write_register_field(ic.FIELDS.IRUN, 10)
-    ic.write_register(ic.REGISTERS.A1, 10000)
-    ic.write_register(ic.REGISTERS.V1, 500000)
-    ic.write_register(ic.REGISTERS.D1, 10000)
-    ic.write_register(ic.REGISTERS.DMAX, 500)
-    ic.write_register(ic.REGISTERS.VSTART, 0)
-    ic.write_register(ic.REGISTERS.VSTOP, 10)
-    ic.write_register(ic.REGISTERS.AMAX, 1000)
+    eval.write_register_field(ic.FIELD.IRUN, 10)
+    eval.write_register(ic.REG.A1, 10000)
+    eval.write_register(ic.REG.V1, 500000)
+    eval.write_register(ic.REG.D1, 10000)
+    eval.write_register(ic.REG.DMAX, 500)
+    eval.write_register(ic.REG.VSTART, 0)
+    eval.write_register(ic.REG.VSTOP, 10)
+    eval.write_register(ic.REG.AMAX, 1000)
 
-    if ic.read_register(ic.REGISTERS.MSCNT) != 0:
+    if eval.read_register(ic.REG.MSCNT) != 0:
         # ToDo: Move to 0 instead of erroring out
         print("Error: Motor not at MS 0")
         exit(1)
 
     measured = []
     for i in range(0, 1025):
-        CUR_A = ic.read_register_field(ic.FIELDS.CUR_A)
+        CUR_A = eval.read_register_field(ic.FIELD.CUR_A)
         if CUR_A >=256:
             CUR_A -= 512
-        CUR_B = ic.read_register_field(ic.FIELDS.CUR_B)
+        CUR_B = eval.read_register_field(ic.FIELD.CUR_B)
         if CUR_B >=256:
             CUR_B -= 512
-        STEP  = ic.read_register_field(ic.FIELDS.MSCNT)
+        STEP  = eval.read_register_field(ic.FIELD.MSCNT)
 
         measured = measured + [(STEP, CUR_A, CUR_B)]
-        ic.move_by(0, 1, 1000)
+        motor.move_to(1, 1000)
         time.sleep(0.1)
 
-    ic.move_to(0, 0, 1000)
+    motor.move_to(0, 1000)
 
 myInterface.close()
 
