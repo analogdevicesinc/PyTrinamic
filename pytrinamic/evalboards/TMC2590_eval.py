@@ -53,7 +53,7 @@ class TMC2590_eval(TMCLEval):
         if velocity and velocity != 0:
             # Set maximum positioning velocity
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
-        self._connection.move(motor, position, self._module_id)
+        self._connection.move_to(motor, position, self._module_id)
 
     class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
