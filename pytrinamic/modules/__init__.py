@@ -24,3 +24,4 @@ from .TMCM6110 import TMCM6110
 from .TMCM6212 import TMCM6212
 from .TMCM6214 import TMCM6214
 from .TMCM1231 import TMCM1231
+from .TMCM1230 import TMCM1230
