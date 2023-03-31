@@ -5,13 +5,13 @@ from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
 from ..features import StallGuard2Module, CoolStepModule
 
 
-class TMCM1231(TMCLModule):
+class TMCM123x_0_1(TMCLModule):
     """
-    The TMCM-1231 is a  single axis controller/driver module for 2-phase bipolar stepper motors.
+    The TMCM-123x_0_1 represents TMCM-1230 and TMCM-1231. They are single axis controller/driver modules for 2-phase bipolar stepper motors.
     """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-        self.name = "TMCM-1231"
+        self.name = "TMCM-123x_0_1"
         self.desc = self.__doc__
         self.motors = [self._MotorTypeA(self, 0)]
 
