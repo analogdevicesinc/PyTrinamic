@@ -68,6 +68,8 @@ class TMC2660(TMCIc):
         SG                     = (0x02, 0x00000001,  0)
 
         # DRVCTRL
+        Register_Address_Bits = (0x08, 0x000C0000, 18) # For register variant: S/D mode
+        # Register_Address_Bits  = ( 0x08, 0x000E0000, 17 ) # For register variant: SPI Mode
         INTPOL                 = (0x08, 0x00000200,  9)
         DEDGE                  = (0x08, 0x00000100,  8)
         MRES                   = (0x08, 0x0000000F,  0)
@@ -84,12 +86,14 @@ class TMC2660(TMCIc):
         RNDTF                  = (0x0C, 0x00002000, 13)
         HDEC                   = (0x0C, 0x00001800, 11)
         HEND                   = (0x0C, 0x00000780,  7)
-        HDEC1                  = (0x0C, 0x00002000, 12)
+        HDEC1                  = (0x0C, 0x00001000, 12)
+        HDEC0                  = (0x0C, 0x00000800, 11)
         HEND                   = (0x0C, 0x00000780,  7)
-        HSTRT                  = (0x0C, 0x00000070,  3)
+        HSTRT                  = (0x0C, 0x00000070,  4)
         TOFF                   = (0x0C, 0x0000000F,  0)
 
         # SMARTEN
+        Register_Address_Bits  = (0x0D, 0x000E0000, 17 )
         SEIMIN                 = (0x0D, 0x00008000, 15)
         SEDN                   = (0x0D, 0x00006000, 13)
         SEUP                   = (0x0D, 0x00000060,  5)
@@ -97,11 +101,13 @@ class TMC2660(TMCIc):
         SEMIN                  = (0x0D, 0x0000000F,  0)
 
         # SGCSCONF
+        Register_Address_Bits  = (0x0E, 0x000E0000, 17 )
         SFILT                  = (0x0E, 0x00010000, 16)
         SGT                    = (0x0E, 0x00007F00,  8)
         CS                     = (0x0E, 0x0000001F,  0)
 
         # DRVCONF
+        Register_Address_Bits  = (0x0F, 0x000E0000, 17 )
         TST                    = (0x0F, 0x00010000, 16)
         SLPH                   = (0x0F, 0x0000C000, 14)
         SLPL                   = (0x0F, 0x00003000, 12)
