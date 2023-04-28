@@ -1,7 +1,5 @@
-from . import name, desc
 
-
-class TMC_helpers(object):
+class BitField:
 
     @staticmethod
     def field_get(data, mask, shift):
@@ -11,14 +9,10 @@ class TMC_helpers(object):
     def field_set(data, mask, shift, value):
         return (data & (~mask)) | ((value << shift) & mask)
 
-    @staticmethod
-    def to_signed_32(x):
-        m = x & 0xffffffff
-        return (m ^ 0x80000000) - 0x80000000
 
-    @staticmethod
-    def show_info():
-        print(name + " - " + desc)
+def to_signed_32(x):
+    m = x & 0xffffffff
+    return (m ^ 0x80000000) - 0x80000000
 
 
 class EEPROM:

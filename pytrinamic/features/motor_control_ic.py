@@ -1,5 +1,5 @@
 from ..features.motor_control import MotorControl
-from ..helpers import TMC_helpers
+from ..helpers import to_signed_32
 
 
 class MotorControlIc(MotorControl):
@@ -163,7 +163,7 @@ class MotorControlIc(MotorControl):
         Returns: Value of the target register field for the given axis.
         """
         value = self._parent.read_register_field(field[self._axis] if type(field) == list else field)
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return to_signed_32(value) if signed else value
 
     # Properties
     target_position = property(get_target_position, set_target_position)

@@ -1,7 +1,7 @@
 import logging
 from abc import ABC
 from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
-from ..helpers import TMC_helpers
+from ..helpers import to_signed_32
 
 
 class TmclInterface(ABC):
@@ -142,7 +142,7 @@ class TmclInterface(ABC):
     # General parameter access functions
     def get_parameter(self, p_command, p_type, p_axis, p_value, module_id=None, signed=False):
         value = self.send(p_command, p_type, p_axis, p_value, module_id).value
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return to_signed_32(value) if signed else value
 
     def set_parameter(self, p_command, p_type, p_axis, p_value, module_id=None):
         return self.send(p_command, p_type, p_axis, p_value, module_id)
@@ -150,7 +150,7 @@ class TmclInterface(ABC):
     # Axis parameter access functions
     def get_axis_parameter(self, command_type, axis, module_id=None, signed=False):
         value = self.send(TMCLCommand.GAP, command_type, axis, 0, module_id).value
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return to_signed_32(value) if signed else value
 
     def set_axis_parameter(self, command_type, axis, value, module_id=None):
         return self.send(TMCLCommand.SAP, command_type, axis, value, module_id)
@@ -165,7 +165,7 @@ class TmclInterface(ABC):
     # Global parameter access functions
     def get_global_parameter(self, command_type, bank, module_id=None, signed=False):
         value = self.send(TMCLCommand.GGP, command_type, bank, 0, module_id).value
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return to_signed_32(value) if signed else value
 
     def set_global_parameter(self, command_type, bank, value, module_id=None):
         return self.send(TMCLCommand.SGP, command_type, bank, value, module_id)
@@ -200,7 +200,7 @@ class TmclInterface(ABC):
         tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
         tmcl_type = register_address & 0xFF
         value = self.send(command, tmcl_type, tmcl_motor, 0, module_id).value
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return to_signed_32(value) if signed else value
 
     def write_register(self, register_address, command, channel, value, module_id=None):
         tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
