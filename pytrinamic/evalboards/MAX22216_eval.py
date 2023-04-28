@@ -1,6 +1,6 @@
 from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import MAX22216
-from pytrinamic.helpers import TMC_helpers
+
 
 class MAX22216_eval(TMCLEval):
     """
