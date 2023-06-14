@@ -1,6 +1,6 @@
 import struct
 from ..ic.tmc_ic import TMCIc
-from ..helpers import TMC_helpers
+from ..helpers import BitField, to_signed_32
 
 DATAGRAM_FORMAT = ">BI"
 DATAGRAM_LENGTH = 5
@@ -26,14 +26,14 @@ class TMC7300(TMCIc):
         reply = self._connection.send_datagram(datagram, DATAGRAM_LENGTH)
         values = struct.unpack(DATAGRAM_FORMAT, reply)
         value = values[1]
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return to_signed_32(value) if signed else value
 
     def write_register_field(self, field, value):
-        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
-                                   field[1], field[2], value))
+        return self.write_register(field[0], BitField.field_set(self.read_register(field[0]),
+                                                                field[1], field[2], value))
 
     def read_register_field(self, field):
-        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
+        return BitField.field_get(self.read_register(field[0]), field[1], field[2])
 
     class REG:
         GCONF         = 0x00

@@ -1,7 +1,6 @@
 from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import TMC5072
 from pytrinamic.features import MotorControlModule
-from pytrinamic.helpers import TMC_helpers
 
 # from pytrinamic.features.linear_ramp_module import LinearRampModule
 # from pytrinamic.features.stallguard2_module import StallGuard2Module

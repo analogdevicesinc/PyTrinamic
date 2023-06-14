@@ -1,6 +1,5 @@
 from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import TMC6200
-from pytrinamic.helpers import TMC_helpers
 
 
 class TMC6200_eval(TMCLEval):

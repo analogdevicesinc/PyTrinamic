@@ -23,7 +23,7 @@ class StallGuard2Module(StallGuard2):
         0 - Disable StallGuard2 filter
         1 - Enable StallGuard2 filter
         """
-        self._parent.set_axis_parameter(self._aps.SG2FilterEnable, self._axis, filter)
+        self._parent.set_axis_parameter(self._aps.SG2FilterEnable, self._axis, enable_filter)
 
     def get_filter(self):
         """

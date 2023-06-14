@@ -1,7 +1,6 @@
 from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import TMC5240
 from pytrinamic.features import MotorControlModule
-from pytrinamic.helpers import TMC_helpers
 
 
 class TMC5240_eval(TMCLEval):

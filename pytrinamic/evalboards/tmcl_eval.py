@@ -1,4 +1,5 @@
-from pytrinamic.helpers import TMC_helpers
+from pytrinamic.helpers import BitField, to_signed_32
+
 
 class TMCLEval(object):
 
@@ -44,11 +45,11 @@ class TMCLEval(object):
         return self._connection.get_axis_parameter(ap_type, axis, self._module_id, signed=signed)
 
     def write_register_field(self, field, value):
-        return self.write_register(field[0], TMC_helpers.field_set(self.read_register(field[0]),
-                                   field[1], field[2], value))
+        return self.write_register(field[0], BitField.field_set(self.read_register(field[0]),
+                                                                field[1], field[2], value))
 
     def read_register_field(self, field):
-        return TMC_helpers.field_get(self.read_register(field[0]), field[1], field[2])
+        return BitField.field_get(self.read_register(field[0]), field[1], field[2])
 
     def write_axis_field(self, axis, field, value):
         """
@@ -76,7 +77,7 @@ class TMCLEval(object):
         Returns: Value of the target register field for the given axis.
         """
         value = self.read_register_field(field[axis] if type(field) == list else field)
-        return TMC_helpers.to_signed_32(value) if signed else value
+        return BitField.to_signed_32(value) if signed else value
 
     def __str__(self):
         return "{} {}".format(

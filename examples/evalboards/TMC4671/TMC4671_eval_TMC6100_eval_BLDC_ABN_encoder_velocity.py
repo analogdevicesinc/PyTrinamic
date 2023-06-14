@@ -1,14 +1,11 @@
 import time
 import statistics
-import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval, TMC6100_eval
 from pytrinamic.ic import TMC4671, TMC6100
 
-pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
-    print(my_interface)
 
     # Create TMC4671-EVAL and TMC6100-EVAL class which communicate over the Landungsbrücke via TMCL
     mc_eval = TMC4671_eval(my_interface)
@@ -58,11 +55,9 @@ with ConnectionManager().connect() as my_interface:
     # Limits
     mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_LIMITS, 1000)
 
-    # PI settings
+    # PI settings for Torque/Flux regulator
     mc_eval.write_register(TMC4671.REG.PID_TORQUE_P_TORQUE_I, 0x01000100)
     mc_eval.write_register(TMC4671.REG.PID_FLUX_P_FLUX_I, 0x01000100)
-
-    # ===== ABN encoder test drive =====
 
     # Init encoder (mode 0)
     print("Initializing Encoder...")
@@ -70,31 +65,39 @@ with ConnectionManager().connect() as my_interface:
     mc_eval.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000)
     mc_eval.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_EXTERNAL)
     mc_eval.write_register(TMC4671.REG.PHI_E_EXT, 0x00000000)
-    mc_eval.write_register(TMC4671.REG.UQ_UD_EXT, 2000)
+    mc_eval.write_register(TMC4671.REG.UQ_UD_EXT, 1000)
     time.sleep(1)
-
     # Clear abn_decoder_count
     mc_eval.write_register(TMC4671.REG.ABN_DECODER_COUNT, 0)
+    print("...done")
 
-    # Feedback selection
+    # Commutation Feedback selection
     mc_eval.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_ABN)
+
+    # ===== ABN encoder test drive =====
+
+    # Limits
+    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_LIMITS, 2000)
+
+    # PI settings for velocity regulator
+    mc_eval.write_register(TMC4671.REG.PID_VELOCITY_P_VELOCITY_I, 400 << 16 | 100 << 0)
+
+    # Velocity Feedback selection
     mc_eval.write_register(TMC4671.REG.VELOCITY_SELECTION, TMC4671.ENUM.VELOCITY_PHI_M_ABN)
 
-    # Switch to torque mode
-    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_TORQUE)
+    # Switch to velocity mode
+    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_VELOCITY)
 
     # Rotate right
-    print("Rotate right...")
-    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, 0x03E80000)
-    time.sleep(3)
-
-    # Rotate left
-    print("Rotate left...")
-    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, int(0xFC180000))
+    print("Rotate right!")
+    mc_eval.write_register(TMC4671.REG.PID_VELOCITY_TARGET, 500)
     time.sleep(3)
 
     # Stop
-    print("Stop...")
-    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, 0)
+    print("Stop!")
+    mc_eval.write_register(TMC4671.REG.PID_VELOCITY_TARGET, 0)
+    time.sleep(1)
 
-print("\nReady.")
+    # Switch to stop mode
+    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_STOPPED)
+

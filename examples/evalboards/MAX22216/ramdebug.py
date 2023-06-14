@@ -20,7 +20,7 @@ with ConnectionManager().connect() as my_interface:
     debug.set_trigger_threshold(50)
     debug.start_measurement()
 
-    while(not debug.is_measurement_done()):
+    while not debug.is_measurement_done():
         pass
 
     samples = debug.get_samples()

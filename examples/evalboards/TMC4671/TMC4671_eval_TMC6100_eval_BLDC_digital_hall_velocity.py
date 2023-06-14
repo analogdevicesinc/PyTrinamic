@@ -1,14 +1,11 @@
 import time
 import statistics
-import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval, TMC6100_eval
 from pytrinamic.ic import TMC4671, TMC6100
 
-pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
-    print(my_interface)
 
     # Create TMC4671-EVAL and TMC6100-EVAL class which communicate over the Landungsbrücke via TMCL
     mc_eval = TMC4671_eval(my_interface)
@@ -17,10 +14,7 @@ with ConnectionManager().connect() as my_interface:
     # Configure TMC6100 pwm for use with TMC4671 (disable singleline)
     drv_eval.write_register_field(TMC6100.FIELD.SINGLELINE, 0)
 
-    # Configure TMC4671 for a BLDC motor with ABN-Encoder
-
-    # Switch to stopped mode
-    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_STOPPED)
+    # Configure TMC4671 for a BLDC motor with digital hall
 
     # Motor type & PWM configuration
     mc_eval.write_register_field(TMC4671.FIELD.MOTOR_TYPE, TMC4671.ENUM.MOTOR_TYPE_BLDC)
@@ -50,51 +44,43 @@ with ConnectionManager().connect() as my_interface:
     mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF000000 + int(adc_i0_offset))
     mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF000000 + int(adc_i1_offset))
 
-    # ABN encoder settings
-    mc_eval.write_register(TMC4671.REG.ABN_DECODER_MODE, 0x00000000)
-    mc_eval.write_register(TMC4671.REG.ABN_DECODER_PPR, 4096)
-    mc_eval.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0)
-
     # Limits
     mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_LIMITS, 1000)
 
-    # PI settings
+    # PI settings for Torque/Flux regulator
     mc_eval.write_register(TMC4671.REG.PID_TORQUE_P_TORQUE_I, 0x01000100)
     mc_eval.write_register(TMC4671.REG.PID_FLUX_P_FLUX_I, 0x01000100)
 
-    # ===== ABN encoder test drive =====
+    # hall settings
+    mc_eval.write_register_field(TMC4671.FIELD.HALL_DIRECTION, 1)
+    mc_eval.write_register_field(TMC4671.FIELD.HALL_PHI_E_OFFSET, 9500)
 
-    # Init encoder (mode 0)
-    print("Initializing Encoder...")
-    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, 0x00000008)
-    mc_eval.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0x00000000)
-    mc_eval.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_EXTERNAL)
-    mc_eval.write_register(TMC4671.REG.PHI_E_EXT, 0x00000000)
-    mc_eval.write_register(TMC4671.REG.UQ_UD_EXT, 2000)
-    time.sleep(1)
+    # Commutation Feedback selection
+    mc_eval.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_HALL)
 
-    # Clear abn_decoder_count
-    mc_eval.write_register(TMC4671.REG.ABN_DECODER_COUNT, 0)
+    # ===== Digital hall test drive =====
 
-    # Feedback selection
-    mc_eval.write_register(TMC4671.REG.PHI_E_SELECTION, TMC4671.ENUM.PHI_E_ABN)
-    mc_eval.write_register(TMC4671.REG.VELOCITY_SELECTION, TMC4671.ENUM.VELOCITY_PHI_M_ABN)
+    # Limits
+    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_LIMITS, 2000)
 
-    # Switch to torque mode
-    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_TORQUE)
+    # PI settings for velocity regulator
+    mc_eval.write_register(TMC4671.REG.PID_VELOCITY_P_VELOCITY_I, 400 << 16 | 100 << 0)
+
+    # Velocity Feedback selection
+    mc_eval.write_register(TMC4671.REG.VELOCITY_SELECTION, TMC4671.ENUM.VELOCITY_PHI_M_HAL)
+
+    # Switch to velocity mode
+    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_VELOCITY)
 
     # Rotate right
-    print("Rotate right...")
-    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, 0x03E80000)
-    time.sleep(3)
-
-    # Rotate left
-    print("Rotate left...")
-    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, int(0xFC180000))
+    print("Rotate right!")
+    mc_eval.write_register(TMC4671.REG.PID_VELOCITY_TARGET, 500)
     time.sleep(3)
 
     # Stop
-    print("Stop...")
-    mc_eval.write_register(TMC4671.REG.PID_TORQUE_FLUX_TARGET, 0)
+    print("Stop!")
+    mc_eval.write_register(TMC4671.REG.PID_VELOCITY_TARGET, 0)
+    time.sleep(1)
 
-print("\nReady.")
+    # Switch to stop mode
+    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_STOPPED)

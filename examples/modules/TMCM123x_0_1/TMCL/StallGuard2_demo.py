@@ -5,7 +5,7 @@ one less than the actual velocity of the motor
 """
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.modules import TMCM1231
+from pytrinamic.modules import TMCM123x_0_1
 import time
 
 def stallguard2_init(motor, init_velocity):
@@ -47,9 +47,9 @@ def main():
     pytrinamic.show_info()
 
     # This example is using PCAN, if you want to use another connection please change the next line.
-    connection_manager = ConnectionManager("--interface pcan_tmcl")
+    connection_manager = ConnectionManager("--interface kvaser_tmcl")
     with connection_manager.connect() as my_interface:
-        module = TMCM1231(my_interface)
+        module = TMCM123x_0_1(my_interface)
         motor = module.motors[0]
 
         print("Preparing parameters")
