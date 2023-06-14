@@ -106,7 +106,6 @@ with ConnectionManager().connect() as my_interface:
     print("Stop!")
     targetPos = 0
     motor.set_axis_parameter(motor.AP.TargetPosition, targetPos)
-    # samples = []
     start_time = time.time()
     while time.time() - start_time < 3:
         samples.append(Sample(time.perf_counter(), motor.get_axis_parameter(motor.AP.ActualPosition, True)))
