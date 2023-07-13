@@ -9,20 +9,20 @@ from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671
 
 pytrinamic.show_info()
-my_interface = ConnectionManager().connect()
-print(my_interface)
 
-if isinstance(my_interface, UartIcInterface):
-    # Create an TMC4671 IC class which communicates directly over UART
-    mc = TMC4671(my_interface)
-    # Use IC like an "EVAL" to use this example for both access variants
-    eval_board = mc
-else:
-    # Create an TMC4671 IC class which communicates over the Landungsbrücke via TMCL
-    eval_board = TMC4671_eval(my_interface)
-    mc = eval_board.ics[0]
+with ConnectionManager().connect() as my_interface:
 
-with my_interface:
+    print(my_interface)
+
+    if isinstance(my_interface, UartIcInterface):
+        # Create an TMC4671 IC class which communicates directly over UART
+        mc = TMC4671(my_interface)
+        # Use IC like an "EVAL" to use this example for both access variants
+        eval_board = mc
+    else:
+        # Create an TMC4671 IC class which communicates over the Landungsbrücke via TMCL
+        eval_board = TMC4671_eval(my_interface)
+        mc = eval_board.ics[0]
 
     # Configure TMC4671 for a BLDC motor in open loop mode
 

@@ -16,7 +16,7 @@ with ConnectionManager().connect() as my_interface:
     motor = eval_board.motors[0]
 
     print("Rotating...")
-    motor.rotate(10*25600)
+    motor.rotate(51200)
     time.sleep(2)
 
     print("Stopping...")

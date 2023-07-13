@@ -3,6 +3,7 @@ from ..ic.tmc_ic import TMCIc
 from ..features.solenoid_ic import SolenoidIC
 from ..features.solenoid_control_ic import SolenoidControlIC
 
+
 class MAX22216(TMCIc):
     """
     QUAD SERIAL PROGRAMMABLE 2A HALF BRIDGE DRIVER

@@ -23,7 +23,7 @@ class StallGuard2Module(StallGuard2):
         0 - Disable StallGuard2 filter
         1 - Enable StallGuard2 filter
         """
-        self._parent.set_axis_parameter(self._aps.SG2FilterEnable, self._axis, filter)
+        self._parent.set_axis_parameter(self._aps.SG2FilterEnable, self._axis, enable_filter)
 
     def get_filter(self):
         """
@@ -53,7 +53,7 @@ class StallGuard2Module(StallGuard2):
 
         Returns: StallGuard2 threshold.
         """
-        return self._parent.get_axis_parameter(self._aps.SG2Threshold, self._axis)
+        return self._parent.get_axis_parameter(self._aps.SG2Threshold, self._axis, signed=True)
 
     def set_stop_velocity(self, velocity):
         """

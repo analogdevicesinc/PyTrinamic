@@ -24,6 +24,14 @@ class DigitalHall(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def set_sector_offset(self, sector_offset):
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_sector_offset(self):
+        raise NotImplementedError
+
+    @abstractmethod
     def set_offset(self, offset):
         raise NotImplementedError
 

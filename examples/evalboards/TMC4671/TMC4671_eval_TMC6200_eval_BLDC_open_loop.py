@@ -7,7 +7,6 @@ from pytrinamic.ic import TMC4671, TMC6200
 pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
-    # myInterface.enable_debug(True)
     print(my_interface)
 
     # Create a TMC4671-EVAL and TMC6200-EVAL which communicates over the Landungsbrücke via TMCL

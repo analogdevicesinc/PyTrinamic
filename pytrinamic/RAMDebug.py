@@ -1,6 +1,7 @@
 from pytrinamic.tmcl import TMCLCommand, TMCLReplyStatusError, TMCLStatus
 from enum import IntEnum
 
+
 class RAMDebug_Command(IntEnum):
     INIT                        =  0
     SET_SAMPLE_COUNT            =  1
@@ -25,6 +26,7 @@ class RAMDebug_Command(IntEnum):
     SET_TRIGGER_EVAL_CHANNEL    = 20
     SET_TRIGGER_ADDRESS         = 21
 
+
 class RAMDebug_Channel(IntEnum):
     CHANNEL_CAPTURE_DISABLED = 0
     CHANNEL_AXIS_PARAMETER   = 1
@@ -34,11 +36,13 @@ class RAMDebug_Channel(IntEnum):
     CHANNEL_MEMORY_ADDRESS   = 5
     CHANNEL_ANALOG_INPUT     = 6
 
+
 class RAMDebug_Info(IntEnum):
     INFO_MAX_CHANNELS       = 0
     INFO_BUFFER_ELEMENTS    = 1
     INFO_SAMPLING_FREQUENCY = 2
     INFO_CAPTURED_SAMPLES   = 3
+
 
 class RAMDebug_Trigger(IntEnum):
     TRIGGER_UNCONDITIONAL         = 0
@@ -48,6 +52,7 @@ class RAMDebug_Trigger(IntEnum):
     TRIGGER_RISING_EDGE_UNSIGNED  = 4
     TRIGGER_FALLING_EDGE_UNSIGNED = 5
     TRIGGER_DUAL_EDGE_UNSIGNED    = 6
+
 
 class RAMDebug_State(IntEnum):
     IDLE           = 0
@@ -61,6 +66,7 @@ class RAMDebug_State(IntEnum):
     @classmethod
     def _missing_(cls, value):
         return cls.UNKNOWN_STATUS
+
 
 class Channel():
     def __init__(self, channel_type, value, address = 0, signed = False, mask = 0xFFFF_FFFF, shift = 0): #TODO: add signed
@@ -118,6 +124,7 @@ class Channel():
 
         # Error if value is bigger than 8 bits
         return cls(channel_type, number)
+
 
 class RAMDebug():
     def __init__(self, connection):
@@ -312,7 +319,6 @@ class RAMDebug():
             return self.MAX_ELEMENTS
         else:
             return self._sample_count * self.channel_count()
-
 
     def channel_count(self):
         return len(self.channels)
