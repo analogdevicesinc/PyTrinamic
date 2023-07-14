@@ -76,9 +76,13 @@ class TMCM2611(TMCLModule):
             VelocityP = 22
             VelocityI = 23
             PositionP = 24
+            VelocityPScaler = 25
+            VelocityIScaler = 26
+            PositionPScaler = 27
 
             # Torque mode parameters
             TargetTorque = 30
+            TorqueOffset = 31
             ActualTorque = 32
             TargetFlux = 33
             ActualFlux = 34
@@ -93,13 +97,16 @@ class TMCM2611(TMCLModule):
             RampPosition = 47
             ActualPosition = 48
             PositionReachedFlag = 49
+
+            # Advanced motor control configuration
             EnableRamp = 50
             VelocityFilter = 51
             MotorHaltedVelocity = 53
-            TargetReachedDistance = 54
-            TargetReachedVelocity = 55
+            PositionReachedDistance = 54
+            PositionReachedVelocity = 55
             PositionScaler = 56
             UseFeedForwardVel = 57
+            VelocityMeterCounterLimit = 58
 
             # Hall sensor parameters
             HallSensorPolarity = 60
@@ -116,8 +123,6 @@ class TMCM2611(TMCLModule):
             EncoderInitVelocity = 74
             EncoderInitState = 75
             EncoderOffset = 76
-            ClearOnNull = 77
-            ClearOnce = 78
             ActualEncoderAngle = 79
 
             # Brake control parameters
@@ -136,9 +141,17 @@ class TMCM2611(TMCLModule):
             EncoderRawValue = 95
 
             # PI internal parameters
-            TorquePIDError = 100
-            FluxPIDError = 101
-            VelocityPIDError = 102
+            TorquePIDErrorSum = 100
+            FluxPIDErrorSum = 101
+            VelocityPIDErrorSum = 102
+
+            # IIt
+            ThermalWindingTimeConstant1 = 110
+            IItlimit1 = 111
+            IItSum1 = 112
+            ThermalWindingTimeConstant2 = 113
+            IItlimit2 = 114
+            IItSum2 = 115
 
             # Diagnostic/Debug parameters
             MainLoopsPerSecond = 230
@@ -154,6 +167,8 @@ class TMCM2611(TMCLModule):
             DebugValue7 = 247
             DebugValue8 = 248
             DebugValue9 = 249
+
+            # Disable driver
             EnableDriver = 255
 
         class ENUM:
@@ -182,9 +197,10 @@ class TMCM2611(TMCLModule):
     class GP:
         SerialBaudRate = 65
         SerialAddress = 66
+        SerialHeartbeat = 68
         CANBitRate = 69
         CANsendID = 70
         CANreceiveID = 71
         TelegramPauseTime = 75
         SerialHostAddress = 76
-        AutoStartMode = 77
+        CANHeartbeat = 82

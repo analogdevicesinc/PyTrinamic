@@ -3,7 +3,6 @@ import time
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM2611
-from pytrinamic.tmcl import TMCLCommand
 
 
 class AgvControl:
@@ -53,22 +52,9 @@ class AgvControl:
             )
 
         # Config motors using functions defined lower in this class
-        self.__config_pid(
-            self.motor_left,
-            self.AGV_TORQUE_P,
-            self.AGV_TORQUE_I,
-            self.AGV_SPEED_P,
-            self.AGV_SPEED_I,
-        )
-        self.__config_pid(
-            self.motor_right,
-            self.AGV_TORQUE_P,
-            self.AGV_TORQUE_I,
-            self.AGV_SPEED_P,
-            self.AGV_SPEED_I,
-        )
-        self.__config_drive(self.motor_left)
-        self.__config_drive(self.motor_right)
+
+        self._config_pid()
+        self._config_drive()
 
     def drive_motors(self, left_rpm, right_rpm):
         """
@@ -102,7 +88,7 @@ class AgvControl:
         )
         self.drive_motors(rpm, -rpm)
 
-    def __config_drive(self, motor):
+    def _config_drive(self):
         """
         Configure drive settings, abn decoder unit, velocity calculation tweaks and velocity ramper.
         Then executes encoder initialization before going to closed loop velocity mode.
@@ -110,61 +96,47 @@ class AgvControl:
         Configure PI to achieve accurate positioning.
         """
 
-        # Set general drive settings
-        motor.drive_settings.pole_pairs = self.AGV_POLE_PAIRS
-        motor.drive_settings.max_current = self.AGV_PEAK_CURRENT  # mA
-        motor.drive_settings.open_loop_current = int(self.AGV_PEAK_CURRENT / 4)  # mA
-        motor.drive_settings.target_reached_distance = 5
-        motor.drive_settings.target_reached_velocity = 500  # RPM
-        motor.drive_settings.motor_halted_velocity = 250  # RPM
+        for motor in self.module.motors:
+            # Set general drive settings
+            motor.drive_settings.pole_pairs = self.AGV_POLE_PAIRS
+            motor.drive_settings.max_current = self.AGV_PEAK_CURRENT  # mA
+            motor.drive_settings.open_loop_current = int(self.AGV_PEAK_CURRENT / 4)  # mA
+            motor.drive_settings.target_reached_distance = 5
+            motor.drive_settings.target_reached_velocity = 500  # RPM
+            motor.drive_settings.motor_halted_velocity = 250  # RPM
 
-        # Set encoder settings
-        motor.abn_encoder.resolution = self.AGV_ABN_PPR
-        motor.abn_encoder.direction = 1
-        motor.abn_encoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
+            # Set encoder settings
+            motor.abn_encoder.resolution = self.AGV_ABN_PPR
+            motor.abn_encoder.direction = 1
+            motor.abn_encoder.init_mode = motor.ENUM.ENCODER_INIT_MODE_0
 
-        # Velocity:
-        # Set scaler to shift I velocity coef by 8, this gives better resolution for setting the I parameter
-        self.module.connection.write_register(
-            0x61, TMCLCommand.WRITE_MC, motor._axis, 0x08
-        )
+            # Set scaler to shift I velocity coef by 8, this gives better resolution for setting the I parameter
+            motor.set_axis_parameter(motor.AP.VelocityIScaler, 1)
 
-        # Enable default biquad filter on speed, this does not appear to do much, probably improves the filtering a bit
-        self.module.connection.write_register(
-            0x24, TMCLCommand.WRITE_MC, motor._axis, True
-        )
+            # Configure ramp settings
+            motor.linear_ramp.max_velocity = self.AGV_MAX_SPEED
+            motor.linear_ramp.max_acceleration = self.AGV_MAX_ACCEL
+            motor.linear_ramp.enabled = 1
+            print(motor.linear_ramp)
 
-        # Set the minimum deviation register, this stops velocity calculation when the AGV is at standstill
-        # Heavily reduces vibrations at standstill caused by high PI parameters.
-        self.module.connection.write_register(
-            0x2D, TMCLCommand.WRITE_MC, motor._axis, (0x000CBFFD)
-        )
+            # Do encoder initialization
+            motor.rotate(1)
+            motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_OPENLOOP
+            time.sleep(1)
+            motor.rotate(0)
+            motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
+            time.sleep(1)
 
-        # Configure ramp settings
-        motor.linear_ramp.max_velocity = self.AGV_MAX_SPEED
-        motor.linear_ramp.max_acceleration = self.AGV_MAX_ACCEL
-        motor.linear_ramp.enabled = 1
-        print(motor.linear_ramp)
-
-        # Do encoder initialization
-        motor.rotate(1)
-        motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_OPENLOOP
-        time.sleep(1)
-        motor.rotate(0)
-        motor.drive_settings.commutation_mode = motor.ENUM.COMM_MODE_ABN_ENCODER
-        time.sleep(1)
-
-    def __config_pid(self, motor, torque_p, torque_i, velocity_p, velocity_i):
+    def _config_pid(self):
         """
         User settable PID configuration. Simply sets value of all controllers.
         """
-
-        motor.pid.torque_p = torque_p
-        motor.pid.torque_i = torque_i
-        motor.pid.velocity_p = velocity_p
-        motor.pid.velocity_i = velocity_i
-        motor.pid.position_p = 0
-        print(motor.pid)
+        for motor in self.module.motors:
+            motor.pid.torque_p = self.AGV_TORQUE_P
+            motor.pid.torque_i = self.AGV_TORQUE_I
+            motor.pid.velocity_p = self.AGV_SPEED_P
+            motor.pid.velocity_i = self.AGV_SPEED_I
+            motor.pid.position_p = 0
 
 
 if __name__ == "__main__":

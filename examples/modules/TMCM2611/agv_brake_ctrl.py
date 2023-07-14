@@ -28,35 +28,17 @@ class AgvBrakeDemo:
         self.motor_right = self.module.motors[1]
 
         # Set brake parameters
-        self.motor_right.set_axis_parameter(
-            self.motor_right.AP.BrakeReleaseDuty, self.AGV_BRAKE_RELEASE_DUTY_CYCLE
-        )
-        self.motor_left.set_axis_parameter(
-            self.motor_right.AP.BrakeReleaseDuty, self.AGV_BRAKE_RELEASE_DUTY_CYCLE
-        )
-        self.motor_right.set_axis_parameter(
-            self.motor_right.AP.BrakeHoldDuty, self.AGV_BRAKE_HOLD_DUTY_CYCLE
-        )
-        self.motor_left.set_axis_parameter(
-            self.motor_right.AP.BrakeHoldDuty, self.AGV_BRAKE_HOLD_DUTY_CYCLE
-        )
-        self.motor_right.set_axis_parameter(
-            self.motor_right.AP.BrakeReleaseDuration, self.AGV_BRAKE_RELEASE_DURATION
-        )
-        self.motor_left.set_axis_parameter(
-            self.motor_right.AP.BrakeReleaseDuration, self.AGV_BRAKE_RELEASE_DURATION
-        )
+        for motor in self.module.motors:
+            motor.set_axis_parameter(motor.AP.BrakeReleaseDuty, self.AGV_BRAKE_RELEASE_DUTY_CYCLE)
+            motor.set_axis_parameter(motor.AP.BrakeHoldDuty, self.AGV_BRAKE_HOLD_DUTY_CYCLE)
+            motor.set_axis_parameter(motor.AP.BrakeReleaseDuration, self.AGV_BRAKE_RELEASE_DURATION)
 
     def brake(self, release_brakes: bool):
         """
         True to brake, false to drive
         """
-        self.motor_right.set_axis_parameter(
-            self.motor_right.AP.BrakeRelease, release_brakes
-        )
-        self.motor_left.set_axis_parameter(
-            self.motor_right.AP.BrakeRelease, release_brakes
-        )
+        for motor in self.module.motors:
+            motor.set_axis_parameter(motor.AP.BrakeRelease, release_brakes)
 
     def brakes_check_state(self):
         """
@@ -96,3 +78,5 @@ if __name__ == "__main__":
     time.sleep(2)
     brake_demo.brake(False)
     print(brake_demo.brakes_check_state())
+
+    brake_demo.interface.close()
