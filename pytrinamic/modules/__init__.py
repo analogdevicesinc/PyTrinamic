@@ -1,5 +1,6 @@
 from .tmcl_module import TMCLModule
 from .TMCC160 import TMCC160
+from .TMCM1021 import TMCM1021
 from .TMCM1140 import TMCM1140
 from .TMCM1141 import TMCM1141
 from .TMCM1160 import TMCM1160

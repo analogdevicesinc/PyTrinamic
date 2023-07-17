@@ -1,19 +1,16 @@
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.modules import TMCM1140
+from pytrinamic.modules import TMCM1021
 import time
 
 pytrinamic.show_info()
 
-# for serial interface
-#with ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200").connect() as my_interface:
-# for usb interface
-with ConnectionManager().connect() as my_interface:
+with ConnectionManager("--interface serial_tmcl --port COM8 --data-rate 9600").connect() as my_interface:
     print(my_interface)
-    module = TMCM1140(my_interface)
+    module = TMCM1021(my_interface)
     motor = module.motors[0]
 
-    # The configuration is based on our PD42-1-1140-TMCL
+    # The configuration is based on our PD28-x-1021-TMCL
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
 
     print("Preparing parameters...")
@@ -26,8 +23,8 @@ with ConnectionManager().connect() as my_interface:
     print(motor.drive_settings)
 
     # preparing linear ramp settings
-    motor.linear_ramp.max_acceleration = 1000
-    motor.linear_ramp.max_velocity = 1000
+    motor.linear_ramp.max_acceleration = 25600
+    motor.linear_ramp.max_velocity = 51200
     print(motor.linear_ramp)
 
     time.sleep(1.0)
@@ -37,7 +34,7 @@ with ConnectionManager().connect() as my_interface:
 
     # start rotating motor for 5 sek
     print("Rotating...")
-    motor.rotate(1000)
+    motor.rotate(102400)
     time.sleep(5)
 
     # stop rotating motor
