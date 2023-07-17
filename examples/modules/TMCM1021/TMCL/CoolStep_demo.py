@@ -5,12 +5,8 @@ import time
 
 pytrinamic.show_info()
 
-# for serial interface
-my_interface = ConnectionManager("--interface serial_tmcl --port COM8 --data-rate 9600").connect()
-
-print(my_interface)
-
-with my_interface:
+with ConnectionManager("--interface serial_tmcl --port COM8 --data-rate 9600").connect() as my_interface:
+    print(my_interface)
     module = TMCM1021(my_interface)
     motor = module.motors[0]
 

@@ -5,14 +5,9 @@ import time
 
 pytrinamic.show_info()
 
-# for serial interface
-myInterface = ConnectionManager("--interface serial_tmcl --port COM8 --data-rate 9600").connect()
-
-
-print(myInterface)
-
-with myInterface:
-    module = TMCM1021(myInterface)
+with ConnectionManager("--interface serial_tmcl --port COM8 --data-rate 9600").connect() as my_interface:
+    print(my_interface)
+    module = TMCM1021(my_interface)
     motor = module.motors[0]
 
     # The configuration is based on our PD28-x-1021-TMCL
