@@ -1,5 +1,8 @@
 """
-Move a motor back and forth using velocity and position mode of the TMC6300
+Move a motor back and forth using pwm mode of the TMC6140-eval
+
+Author: ASU
+
 """
 import time
 import pytrinamic
