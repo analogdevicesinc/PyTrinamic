@@ -1,3 +1,11 @@
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
+
 """Run a TMCM-123x_0_1 in "Profile Position Mode" using PDOs to configure Six-Point Ramp
 
 Includes the recording and plotting of the actual velocity along with the actual position.

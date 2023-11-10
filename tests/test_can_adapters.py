@@ -1,3 +1,11 @@
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
+
 """Testing the all CAN Adapters in a combined Network
 
 To recreate the tests create a CAN network by combining:
