@@ -22,6 +22,7 @@ from .TMC5160_eval import TMC5160_eval
 from .TMC5160_shield import TMC5160_shield
 from .TMC5240_eval import TMC5240_eval
 from .TMC6100_eval import TMC6100_eval
+from .TMC6140_eval import TMC6140_eval
 from .TMC6200_eval import TMC6200_eval
 from .TMC6300_eval import TMC6300_eval
 from .TMC7300_eval import TMC7300_eval
