@@ -3,6 +3,7 @@ from .can_tmcl.pcan_tmcl_interface import PcanTmclInterface
 from .can_tmcl.socketcan_tmcl_interface import SocketcanTmclInterface
 from .can_tmcl.kvaser_tmcl_interface import KvaserTmclInterface
 from .serial_tmcl_interface import SerialTmclInterface
+from .socket_tmcl_interface import SocketTmclInterface
 from .uart_ic_interface import UartIcInterface
 from .usb_tmcl_interface import UsbTmclInterface
 from .can_tmcl.slcan_tmcl_interface import SlcanTmclInterface

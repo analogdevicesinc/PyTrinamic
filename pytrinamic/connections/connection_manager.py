@@ -19,6 +19,7 @@ from ..connections import UartIcInterface
 from ..connections import UsbTmclInterface
 from ..connections import SlcanTmclInterface
 from ..connections import IxxatTmclInterface
+from ..connections import SocketTmclInterface
 
 logger = logging.getLogger(__name__)
 
@@ -109,13 +110,16 @@ class ConnectionManager:
         ("uart_ic", UartIcInterface, 9600),
         ("usb_tmcl", UsbTmclInterface, 115200),
         ("ixxat_tmcl", IxxatTmclInterface, 1000000),
+        ("socket_serial_tmcl", SocketTmclInterface, 1000000),
     ]
 
     def __init__(self, arg_list=None, connection_type="any"):
         # Attributes
         self.__connection = None
 
-        arg_parser = argparse.ArgumentParser(description='ConnectionManager to setup connections dynamically and interactively')
+        arg_parser = argparse.ArgumentParser(
+            description="ConnectionManager to setup connections dynamically and interactively"
+        )
         ConnectionManager.argparse(arg_parser)
 
         if not arg_list:
@@ -131,19 +135,19 @@ class ConnectionManager:
         args = arg_parser.parse_known_args(arg_list)[0]
 
         # Argument storage - default parameters are set here
-        self.__interface  = UsbTmclInterface
-        self.__port       = "any"
-        self.__no_port    = []
-        self.__data_rate  = 115200
-        self.__host_id    = 2
-        self.__module_id  = 1
+        self.__interface = UsbTmclInterface
+        self.__port = "any"
+        self.__no_port = []
+        self.__data_rate = 115200
+        self.__host_id = 2
+        self.__module_id = 1
 
         logger.debug("Combined default and parsed arguments: %s", args)
 
         # ## Interpret given arguments
         # Interface
         for actual_interface in self.INTERFACES:
-            if connection_type == "tmcl" and not(actual_interface[1].supports_tmcl()):
+            if connection_type == "tmcl" and not (actual_interface[1].supports_tmcl()):
                 continue
 
             if args.interface[0] == actual_interface[0]:
@@ -161,7 +165,9 @@ class ConnectionManager:
         # No-Port
         for port in args.exclude:
             if port in ["any", "interactive"]:
-                raise ValueError("Port blacklist (no-port) cannot use the special port: " + port)
+                raise ValueError(
+                    "Port blacklist (no-port) cannot use the special port: " + port
+                )
 
         # Data rate
         try:
@@ -187,16 +193,23 @@ class ConnectionManager:
         except ValueError as exc:
             raise ValueError("Invalid module id: " + args.module_id[0]) from exc
 
-        logger.info("ConnectionManager created with ["
-                    "Interface: %s; "
-                    "Port: %s; "
-                    "Blacklist: %s; "
-                    "Data rate: %s; "
-                    "Timeout: %s;"
-                    "Host ID: %s; "
-                    "Module ID: %s]",
-                    self.__interface.__qualname__, self.__port, self.__no_port, self.__data_rate, self.__timeout_s,
-                    self.__host_id, self.__module_id)
+        logger.info(
+            "ConnectionManager created with ["
+            "Interface: %s; "
+            "Port: %s; "
+            "Blacklist: %s; "
+            "Data rate: %s; "
+            "Timeout: %s;"
+            "Host ID: %s; "
+            "Module ID: %s]",
+            self.__interface.__qualname__,
+            self.__port,
+            self.__no_port,
+            self.__data_rate,
+            self.__timeout_s,
+            self.__host_id,
+            self.__module_id,
+        )
 
     def connect(self):
         """
@@ -239,8 +252,13 @@ class ConnectionManager:
                 try:
                     port = port_list[tmp]
                 except IndexError as exc:
-                    raise ConnectionError("Couldn't connect to Port Number " + self.__port + ". Only "
-                                          + str(len(port_list)) + " ports available") from exc
+                    raise ConnectionError(
+                        "Couldn't connect to Port Number "
+                        + self.__port
+                        + ". Only "
+                        + str(len(port_list))
+                        + " ports available"
+                    ) from exc
             except ValueError:
                 # Not a number -> port string gets passed to interface directly
                 # Do not check against the port list in this case. In certain
@@ -250,13 +268,22 @@ class ConnectionManager:
         try:
             if self.__interface.supports_tmcl():
                 # Open the connection to a TMCL interface
-                self.__connection = self.__interface(port, self.__data_rate, self.__host_id, self.__module_id,
-                                                     timeout_s=self.__timeout_s)
+                self.__connection = self.__interface(
+                    port,
+                    self.__data_rate,
+                    self.__host_id,
+                    self.__module_id,
+                    timeout_s=self.__timeout_s,
+                )
             else:
                 # Open the connection to a direct IC interface
-                self.__connection = self.__interface(port, self.__data_rate, timeout_s=self.__timeout_s)
+                self.__connection = self.__interface(
+                    port, self.__data_rate, timeout_s=self.__timeout_s
+                )
         except ConnectionError as e:
-            raise ConnectionError("Couldn't connect to port " + port + ". Connection failed.") from e
+            raise ConnectionError(
+                "Couldn't connect to port " + port + ". Connection failed."
+            ) from e
 
         return self.__connection
 
@@ -298,7 +325,7 @@ class ConnectionManager:
                     if not (1 <= selection <= len(port_list)):
                         raise ValueError
 
-                    return port_list[selection-1]
+                    return port_list[selection - 1]
                 except ValueError:
                     continue
 
@@ -311,35 +338,88 @@ class ConnectionManager:
         script, this function adds the arguments of the ConnectionManager to the
         argparse parser.
         """
+
         def _positive_float(value):
             """
             Argparse checker for float a positive float type.
             """
             value_float = float(value)
             if value_float < 0:
-                raise argparse.ArgumentTypeError("Expected a positive float, got {}".format(value_float))
+                raise argparse.ArgumentTypeError(
+                    "Expected a positive float, got {}".format(value_float)
+                )
 
             return value_float
 
         group = arg_parser.add_argument_group("ConnectionManager options")
-        group.add_argument('--interface', dest='interface', action='store', nargs=1, type=str,
-                           choices=[actual_interface[0] for actual_interface in ConnectionManager.INTERFACES],
-                           default=['usb_tmcl'], help='Connection interface (default: %(default)s)')
-        group.add_argument('--port', dest='port', action='store', nargs=1, type=str, default=['any'],
-                           help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)')
-        group.add_argument('--no-port', dest='exclude', action='append', nargs='*', type=str, default=[],
-                           help='Exclude ports')
-        group.add_argument('--data-rate', dest='data_rate', action='store', nargs=1, type=int,
-                           help='Connection data-rate (default: %(default)s)')
-        group.add_argument('--timeout', dest='timeout_s', action='store', type=_positive_float, default=5.0,
-                           help='Connection rx timeout in seconds (default: %(default)s)', metavar="SECONDS")
+        group.add_argument(
+            "--interface",
+            dest="interface",
+            action="store",
+            nargs=1,
+            type=str,
+            choices=[
+                actual_interface[0] for actual_interface in ConnectionManager.INTERFACES
+            ],
+            default=["usb_tmcl"],
+            help="Connection interface (default: %(default)s)",
+        )
+        group.add_argument(
+            "--port",
+            dest="port",
+            action="store",
+            nargs=1,
+            type=str,
+            default=["any"],
+            help='Connection port (default: %(default)s, n: Use n-th available port, "any": Use any available port, "interactive": Interactive dialogue for port selection, String: Attempt to use the provided string - e.g. COM6 or /dev/tty3)',
+        )
+        group.add_argument(
+            "--no-port",
+            dest="exclude",
+            action="append",
+            nargs="*",
+            type=str,
+            default=[],
+            help="Exclude ports",
+        )
+        group.add_argument(
+            "--data-rate",
+            dest="data_rate",
+            action="store",
+            nargs=1,
+            type=int,
+            help="Connection data-rate (default: %(default)s)",
+        )
+        group.add_argument(
+            "--timeout",
+            dest="timeout_s",
+            action="store",
+            type=_positive_float,
+            default=5.0,
+            help="Connection rx timeout in seconds (default: %(default)s)",
+            metavar="SECONDS",
+        )
 
         group = arg_parser.add_argument_group("ConnectionManager TMCL options")
 
-        group.add_argument('--host-id', dest='host_id', action='store', nargs=1, type=int, default=[2],
-                           help='TMCL host-id (default: %(default)s)')
-        group.add_argument('--module-id', dest='module_id', action='store', nargs=1, type=int, default=[1],
-                           help='TMCL module-id (default: %(default)s)')
+        group.add_argument(
+            "--host-id",
+            dest="host_id",
+            action="store",
+            nargs=1,
+            type=int,
+            default=[2],
+            help="TMCL host-id (default: %(default)s)",
+        )
+        group.add_argument(
+            "--module-id",
+            dest="module_id",
+            action="store",
+            nargs=1,
+            type=int,
+            default=[1],
+            help="TMCL module-id (default: %(default)s)",
+        )
 
         return arg_parser
 
@@ -354,17 +434,31 @@ if __name__ == "__main__":
     print("Verifying interfaces list...\n")
     for interface in ConnectionManager.INTERFACES:
         if not hasattr(interface[1], "supports_tmcl"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the supports_tmcl() function")
+            raise NotImplementedError(
+                "Interface " + interface[0] + " is missing the supports_tmcl() function"
+            )
         if not hasattr(interface[1], "close"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the close() function")
+            raise NotImplementedError(
+                "Interface " + interface[0] + " is missing the close() function"
+            )
         if not hasattr(interface[1], "__enter__"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the __enter__() function")
+            raise NotImplementedError(
+                "Interface " + interface[0] + " is missing the __enter__() function"
+            )
         if not hasattr(interface[1], "__exit__"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the __exit__() function")
+            raise NotImplementedError(
+                "Interface " + interface[0] + " is missing the __exit__() function"
+            )
         if not hasattr(interface[1], "list"):
-            raise NotImplementedError("Interface " + interface[0] + " is missing the list() function")
+            raise NotImplementedError(
+                "Interface " + interface[0] + " is missing the list() function"
+            )
 
-    print("List of interfaces: " + str(ConnectionManager.list_supported_interfaces()) + "\n")
+    print(
+        "List of interfaces: "
+        + str(ConnectionManager.list_supported_interfaces())
+        + "\n"
+    )
 
     print("---------------------------------------------------")
     print("Performing test run...\n")
