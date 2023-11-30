@@ -26,3 +26,4 @@ from .TMC6140_eval import TMC6140_eval
 from .TMC6200_eval import TMC6200_eval
 from .TMC6300_eval import TMC6300_eval
 from .TMC7300_eval import TMC7300_eval
+from .TMC5272_eval import TMC5272_eval
