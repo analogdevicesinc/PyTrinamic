@@ -8,6 +8,8 @@ Adapting it to follow the structure of serial_tmcl_interface.py and socketcan_tm
 """
 
 import logging
+
+import numpy as np
 from .tmcl_interface import TmclInterface
 from ..tmcl import TMCLReplyChecksumError
 import re
@@ -83,7 +85,7 @@ class SocketTmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        self.logger.info("Closing Socket Connection")
+        # self.logger.info("Closing Socket Connection")
         self._socket.close()
 
     def _send(self, host_id, module_id, data):
@@ -95,6 +97,8 @@ class SocketTmclInterface(TmclInterface):
         """
         del host_id, module_id
         self._check_socket()
+        # print('Sending data:')
+        # print(" ".join("{:02x}".format(x) for x in data))
         self._socket.sendall(data)
 
     def _recv(self, host_id, module_id):
@@ -106,8 +110,11 @@ class SocketTmclInterface(TmclInterface):
         """
         del host_id, module_id
         self._check_socket()
-        data = self._socket.recv(9)
-        if len(data) != 9:
+        try:
+            data = self._socket.recvmsg(9)[0]
+        except socket.timeout:
+            print(f'Data received: {type(data)=}' )            
+            print(" ".join("{:02x}".format(x) for x in data))
             raise RuntimeError("TMCL datagram timed out")
 
         return data
