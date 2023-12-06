@@ -1,3 +1,9 @@
+"""
+Sets the StallGuard2 threshold such that the stall guard value (i.e SG value) is zero
+when the motor comes close to stall and also sets the stop on stall velocity to a value
+one less than the actual velocity of the motor
+"""
+
 import time
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
@@ -60,7 +66,7 @@ def main():
         motor.set_axis_parameter(motor.AP.StandbyCurrent, 6)
         motor.set_axis_parameter(motor.AP.MicrostepResolution, 8)  # 256 micro-steps
         print("Max_Velocity:", motor.get_axis_parameter(motor.AP.MaxVelocity))
-        print("max_acceleration:", motor.get_axis_parameter(motor.AP.MaxAcceleration))
+        print("Max_Acceleration:", motor.get_axis_parameter(motor.AP.MaxAcceleration))
 
         time.sleep(1.0)
 
