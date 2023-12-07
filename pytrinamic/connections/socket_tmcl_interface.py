@@ -113,8 +113,9 @@ class SocketTmclInterface(TmclInterface):
         try:
             data = self._socket.recvmsg(9)[0]
         except socket.timeout:
-            print(f'Data received: {type(data)=}' )            
-            print(" ".join("{:02x}".format(x) for x in data))
+            if ('data' in locals()):
+                print(f'Data received: {type(data)=}' )            
+                print(" ".join("{:02x}".format(x) for x in data))
             raise RuntimeError("TMCL datagram timed out")
 
         return data
