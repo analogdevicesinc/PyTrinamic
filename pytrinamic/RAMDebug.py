@@ -28,13 +28,14 @@ class RAMDebug_Command(IntEnum):
 
 
 class RAMDebug_Channel(IntEnum):
-    CHANNEL_CAPTURE_DISABLED = 0
-    CHANNEL_AXIS_PARAMETER   = 1
-    CHANNEL_REGISTER         = 2
-    CHANNEL_STACKED_REGISTER = 3
-    CHANNEL_SYSTICK          = 4
-    CHANNEL_MEMORY_ADDRESS   = 5
-    CHANNEL_ANALOG_INPUT     = 6
+    CHANNEL_CAPTURE_DISABLED   = 0
+    CHANNEL_AXIS_PARAMETER     = 1
+    CHANNEL_REGISTER           = 2
+    CHANNEL_STACKED_REGISTER   = 3
+    CHANNEL_SYSTICK            = 4
+    CHANNEL_RAMDEBUG_PARAMETER = 5
+    CHANNEL_ANALOG_INPUT       = 6
+    CHANNEL_GLOBAL_PARAMETER   = 8
 
 
 class RAMDebug_Info(IntEnum):
@@ -71,11 +72,17 @@ class RAMDebug_State(IntEnum):
 class Channel():
     def __init__(self, channel_type, value, address = 0, signed = False, mask = 0xFFFF_FFFF, shift = 0): #TODO: add signed
         self.value = value
-        self.type = channel_type
+        self.type = RAMDebug_Channel(channel_type)
         self.shift = shift
         self.mask = mask
         self.address = address
         self.signed = signed
+
+    @classmethod
+    def systick(cls):
+        channel_type = RAMDebug_Channel.CHANNEL_SYSTICK
+        value = 0
+        return cls(channel_type, value)
 
     @classmethod
     def axis_parameter(cls, motor, parameter_nr, eval_channel=0):
@@ -112,18 +119,19 @@ class Channel():
         return cls(channel_type, value, address, signed, mask, shift)
 
     @classmethod
-    def memory_address(cls, address):
-        channel_type = RAMDebug_Channel.CHANNEL_MEMORY_ADDRESS
-        value = address
-        return cls(channel_type, value, address)
-
-    @classmethod
     def analog_input(cls, number):
         channel_type = RAMDebug_Channel.CHANNEL_ANALOG_INPUT
         value = number
 
         # Error if value is bigger than 8 bits
         return cls(channel_type, number)
+
+    @classmethod
+    def global_parameter(cls, bank, parameter_nr, eval_channel=0):
+        channel_type = RAMDebug_Channel.CHANNEL_GLOBAL_PARAMETER
+        value = ((motor << 24) & 0xFF00_0000) | ((eval_channel << 16) & 0x0001_0000) | (parameter_nr & 0x0000_00FF)
+        # Error if value is bigger than 8 bits
+        return cls(channel_type, value)
 
 
 class RAMDebug():
