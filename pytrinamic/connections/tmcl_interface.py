@@ -148,34 +148,50 @@ class TmclInterface(ABC):
         return self.send(p_command, p_type, p_axis, p_value, module_id)
 
     # Axis parameter access functions
-    def get_axis_parameter(self, command_type, axis, module_id=None, signed=False):
-        value = self.send(TMCLCommand.GAP, command_type, axis, 0, module_id).value
+    def get_axis_parameter(self, index, axis, module_id=None, signed=False):
+        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        value = self.send(TMCLCommand.GAP, tmcl_type, tmcl_motor, 0, module_id).value
         return to_signed_32(value) if signed else value
 
-    def set_axis_parameter(self, command_type, axis, value, module_id=None):
-        return self.send(TMCLCommand.SAP, command_type, axis, value, module_id)
+    def set_axis_parameter(self, index, axis, value, module_id=None):
+        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        return self.send(TMCLCommand.SAP, tmcl_type, tmcl_motor, value, module_id)
 
-    def store_axis_parameter(self, command_type, axis, module_id=None):
-        return self.send(TMCLCommand.STAP, command_type, axis, 0, module_id)
+    def store_axis_parameter(self, index, axis, module_id=None):
+        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        return self.send(TMCLCommand.STAP, tmcl_type, tmcl_motor, 0, module_id)
 
-    def set_and_store_axis_parameter(self, command_type, axis, value, module_id=None):
-        self.send(TMCLCommand.SAP, command_type, axis, value, module_id)
-        self.send(TMCLCommand.STAP, command_type, axis, 0, module_id)
+    def set_and_store_axis_parameter(self, index, axis, value, module_id=None):
+        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        self.send(TMCLCommand.SAP, tmcl_type, tmcl_motor, value, module_id)
+        self.send(TMCLCommand.STAP, tmcl_type, tmcl_motor, 0, module_id)
 
     # Global parameter access functions
-    def get_global_parameter(self, command_type, bank, module_id=None, signed=False):
-        value = self.send(TMCLCommand.GGP, command_type, bank, 0, module_id).value
+    def get_global_parameter(self, index, bank, module_id=None, signed=False):
+        tmcl_motor = (bank & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        value = self.send(TMCLCommand.GGP, tmcl_type, tmcl_motor, 0, module_id).value
         return to_signed_32(value) if signed else value
 
-    def set_global_parameter(self, command_type, bank, value, module_id=None):
-        return self.send(TMCLCommand.SGP, command_type, bank, value, module_id)
+    def set_global_parameter(self, index, bank, value, module_id=None):
+        tmcl_motor = (bank & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        return self.send(TMCLCommand.SGP, tmcl_type, tmcl_motor, value, module_id)
 
-    def store_global_parameter(self, command_type, bank, module_id=None):
-        return self.send(TMCLCommand.STGP, command_type, bank, 0, module_id)
+    def store_global_parameter(self, index, bank, module_id=None):
+        tmcl_motor = (bank & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        return self.send(TMCLCommand.STGP, tmcl_type, tmcl_motor, 0, module_id)
 
-    def set_and_store_global_parameter(self, command_type, bank, value, module_id=None):
-        self.send(TMCLCommand.SGP, command_type, bank, value, module_id)
-        self.send(TMCLCommand.STGP, command_type, bank, 0, module_id)
+    def set_and_store_global_parameter(self, index, bank, value, module_id=None):
+        tmcl_motor = (bank & 0x0F) | ((index & 0x0F00) >> 4)
+        tmcl_type = index & 0xFF
+        self.send(TMCLCommand.SGP, tmcl_type, tmcl_motor, value, module_id)
+        self.send(TMCLCommand.STGP, tmcl_type, tmcl_motor, 0, module_id)
 
     # Register access functions
     def write_mc(self, register_address, value, module_id=None):
