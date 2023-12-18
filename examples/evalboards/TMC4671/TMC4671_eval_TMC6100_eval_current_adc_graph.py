@@ -1,3 +1,10 @@
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
 """
 This code measures the phase currents and convert them to ampere reading
 Note: There might be an offset compared to the actual reading and that can be compensated in
