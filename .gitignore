@@ -126,6 +126,12 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
+# PyCharm project settings directory
+.idea
+
+# VS Code workspace settings directory
+.vscode
+
 # mkdocs documentation
 /site
 
@@ -136,8 +142,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-#.idea
-.idea
 
 # End of https://www.gitignore.io/api/python
