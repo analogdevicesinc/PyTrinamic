@@ -1,3 +1,11 @@
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
+
 """
 Sets the StallGuard2 threshold such that the stall guard value (i.e SG value) is zero
 when the motor comes close to stall and also sets the stop on stall velocity to a value
