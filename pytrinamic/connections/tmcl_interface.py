@@ -7,6 +7,7 @@
 ################################################################################
 
 import logging
+import warnings
 from abc import ABC
 from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
 from ..helpers import to_signed_32
@@ -149,10 +150,22 @@ class TmclInterface(ABC):
 
     # General parameter access functions
     def get_parameter(self, p_command, p_type, p_axis, p_value, module_id=None, signed=False):
+        """
+        General parameter read function.
+
+        .. deprecated:: 0.3.0
+        """
+        warnings.warn("Function get_parameter() is going te be removed in future versions of pytrinamic!", FutureWarning)
         value = self.send(p_command, p_type, p_axis, p_value, module_id).value
         return to_signed_32(value) if signed else value
 
     def set_parameter(self, p_command, p_type, p_axis, p_value, module_id=None):
+        """
+        General parameter write function.
+
+        .. deprecated:: 0.3.0
+        """
+        warnings.warn("Function set_parameter() is going te be removed in future versions of pytrinamic!", FutureWarning)
         return self.send(p_command, p_type, p_axis, p_value, module_id)
 
     # Axis parameter access functions
