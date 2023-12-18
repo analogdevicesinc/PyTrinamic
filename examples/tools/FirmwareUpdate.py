@@ -39,7 +39,7 @@ args = parser.parse_args()
 # ################################ Preparation ##################################
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager(sys.argv)
+connection_manager = ConnectionManager(sys.argv)
 
 if args.verbose == 0:
     log_level = logging.ERROR
@@ -77,14 +77,14 @@ logging.info("Checksum:      0x{0:08X}".format(checksum))
 # ############################# Bootloader entry ################################
 # Connect to the evaluation board
 print("Connecting")
-myInterface = connectionManager.connect()
+my_interface = connection_manager.connect()
 
 # If not already in bootloader, enter it
-if not "B" in myInterface.get_version_string().upper():
+if not "B" in my_interface.get_version_string().upper():
     # Send the boot command
     print("Switching to bootloader mode")
-    myInterface.send_boot(1)
-    myInterface.close()
+    my_interface.send_boot(1)
+    my_interface.close()
 
     # Reconnect after a small delay
     print("Reconnecting")
@@ -92,20 +92,20 @@ if not "B" in myInterface.get_version_string().upper():
     while (time.time() - timestamp) < SERIAL_BOOT_TIMEOUT:
         try:
             # Attempt to connect
-            myInterface = connectionManager.connect()
+            my_interface = connection_manager.connect()
             # If no exception occurred, exit the retry loop
             break
         except (ConnectionError, TypeError):
-            myInterface = None
+            my_interface = None
 
-    if not myInterface:
+    if not my_interface:
         print("Error: Timeout when attempting to reconnect to bootloader")
         exit(1)
 
 time.sleep(1)
 
 # Retrieve the bootloader version
-bootloaderVersion = myInterface.get_version_string(1)
+bootloaderVersion = my_interface.get_version_string(1)
 found = re.search("\d\d\d\dB\d\d\d", bootloaderVersion)
 if found:
     pattern = found.group(0)[0:4] + "V\d\d\d"
@@ -144,11 +144,11 @@ print("Firmware version:   " + found.group(0))
 print()
 
 # Get the memory parameters
-reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 0, 0, 0)
+reply = my_interface.send(TMCLCommand.BOOT_GET_INFO, 0, 0, 0)
 mem_page_size = reply.value
-reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 1, 0, 0)
+reply = my_interface.send(TMCLCommand.BOOT_GET_INFO, 1, 0, 0)
 mem_start_address = reply.value
-reply = myInterface.send(TMCLCommand.BOOT_GET_INFO, 2, 0, 0)
+reply = my_interface.send(TMCLCommand.BOOT_GET_INFO, 2, 0, 0)
 mem_size = reply.value
 
 logging.debug(f"Bootloader memory page size:      0x{mem_page_size:08X}")
@@ -170,7 +170,7 @@ if start_address != mem_start_address:
 
 # Erase the old firmware
 print("Erasing the old firmware")
-reply = myInterface.send(TMCLCommand.BOOT_ERASE_ALL, 0, 0, 0)
+reply = my_interface.send(TMCLCommand.BOOT_ERASE_ALL, 0, 0, 0)
 
 # Calculate the starting page
 current_page = math.floor(start_address/mem_page_size) * mem_page_size
@@ -184,7 +184,7 @@ def writePage(page):
         raise ValueError
 
     print("Writing page 0x{0:08X}".format(page))
-    myInterface.send(TMCLCommand.BOOT_WRITE_PAGE, 0, 0, current_page)
+    my_interface.send(TMCLCommand.BOOT_WRITE_PAGE, 0, 0, current_page)
 
 
 # Helper function: Write a 32 bit data block
@@ -202,7 +202,7 @@ def write32Bit(address, write_data):
         current_page_dirty = False
 
     # print("Writing {0:08X} to offset {1:04X} on page {2:08X}".format(writeData, offset, page))
-    myInterface.send(TMCLCommand.BOOT_WRITE_BUFFER, math.floor(offset / 4) % 256, math.floor(math.floor(offset / 4) / 256), write_data)
+    my_interface.send(TMCLCommand.BOOT_WRITE_BUFFER, math.floor(offset / 4) % 256, math.floor(math.floor(offset / 4) / 256), write_data)
     current_page_dirty = True
 
 print("Uploading new firmware...")
@@ -217,7 +217,7 @@ if current_page_dirty:
 print()
 
 # Checksum verification
-reply = myInterface.send(TMCLCommand.BOOT_GET_CHECKSUM, 0, 0, end_address - 1)
+reply = my_interface.send(TMCLCommand.BOOT_GET_CHECKSUM, 0, 0, end_address - 1)
 if reply.value != checksum:
     print("Error: Checksums don't match! (Checksum: 0x{0:08X}, received: 0x{1:08X}".format(checksum, reply.value))
     exit(1)
@@ -225,10 +225,10 @@ if reply.value != checksum:
 print("Checksum of the uploaded firmware matches")
 print("Finalizing upload (Writing length and checksum)")
 # Write firmware length
-myInterface.send(TMCLCommand.BOOT_WRITE_LENGTH, 0, 0, length)
+my_interface.send(TMCLCommand.BOOT_WRITE_LENGTH, 0, 0, length)
 # Write firmware checksum
-myInterface.send(TMCLCommand.BOOT_WRITE_LENGTH, 1, 0, checksum)
+my_interface.send(TMCLCommand.BOOT_WRITE_LENGTH, 1, 0, checksum)
 
 # Restart the firmware
 print("Starting the firmware")
-myInterface.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0)
+my_interface.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0)

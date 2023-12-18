@@ -7,9 +7,6 @@
 ################################################################################
 """
 Automatically stops the motor during active (low active) right reference switch input using direct register access.
-
-Author: ASU
-
 """
 
 import time

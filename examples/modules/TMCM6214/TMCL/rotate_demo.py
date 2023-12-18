@@ -12,10 +12,10 @@ from pytrinamic.modules import TMCM6214
 import time
 
 pytrinamic.show_info()
-connectionManager = ConnectionManager()
+connection_manager = ConnectionManager()
 
-with connectionManager.connect() as myInterface:
-    module = TMCM6214(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM6214(my_interface)
     motor_0 = module.motors[0]
 
     print("Preparing parameters")

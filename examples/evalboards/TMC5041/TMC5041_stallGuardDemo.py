@@ -27,9 +27,9 @@ import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC5041_eval import TMC5041_eval
 
-connectionManager = ConnectionManager()
+connection_manager = ConnectionManager()
 
-myInterface = connectionManager.connect()
+my_interface = connection_manager.connect()
 
 ### Parameters #################################################################
 
@@ -54,7 +54,7 @@ pytrinamic.show_info()
 
 # Initialization
 
-TMC5041 = TMC5041_eval(myInterface)
+TMC5041 = TMC5041_eval(my_interface)
 TMC5041.showChipInfo()
 
 ### Configuration
@@ -137,4 +137,4 @@ while TMC5041.readRegisterField(TMC5041.fields.VACTUAL[0]) != 0 and TMC5041.read
 # Clear any remaining stalls
 TMC5041.readRegisterField(TMC5041.fields.EVENT_STOP_SG[MOTOR_LEADING])
 
-myInterface.close()
+my_interface.close()

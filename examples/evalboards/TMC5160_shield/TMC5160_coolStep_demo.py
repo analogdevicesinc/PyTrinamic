@@ -66,9 +66,9 @@ logger.debug(f"Target velocity: {args.velocity[0]}")
 logger.debug(f"Maximum acceleration: {args.acceleration[0]}")
 logger.debug(f"Maximum current: {args.current[0]}")
 
-myInterface = ConnectionManager().connect()
+my_interface = ConnectionManager().connect()
 
-shields = TmcEvalShield(myInterface, TMC5160_shield).shields
+shields = TmcEvalShield(my_interface, TMC5160_shield).shields
 
 # Initialize all attached shields
 for shield in shields:
@@ -116,4 +116,4 @@ for shield in shields:
     logger.info(f"Stopping motors for shield {shield}.")
     shield.stop(0)
 
-myInterface.close()
+my_interface.close()

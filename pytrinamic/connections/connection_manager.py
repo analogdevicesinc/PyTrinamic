@@ -368,10 +368,10 @@ if __name__ == "__main__":
 
     print("---------------------------------------------------")
     print("Performing test run...\n")
-    connectionManager = ConnectionManager()
+    connection_manager = ConnectionManager()
     try:
-        connection = connectionManager.connect()
-        connectionManager.disconnect()
+        connection = connection_manager.connect()
+        connection_manager.disconnect()
     except ConnectionError:
         print("Error: No connections available")
 

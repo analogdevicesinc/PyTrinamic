@@ -13,9 +13,9 @@ import time
 
 pytrinamic.show_info()
 # This example is using PCAN, if you want to use another connection please change the next line.
-connectionManager = ConnectionManager("--interface kvaser_tmcl")
-with connectionManager.connect() as myInterface: 
-    module = TMCM123x_0_1(myInterface)
+connection_manager = ConnectionManager("--interface kvaser_tmcl")
+with connection_manager.connect() as my_interface:
+    module = TMCM123x_0_1(my_interface)
     motor = module.motors[0]
 
     # Please be sure not to use a too high current setting for your motor.

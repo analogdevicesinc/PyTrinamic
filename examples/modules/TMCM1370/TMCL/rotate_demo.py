@@ -13,9 +13,9 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager("--interface serial_tmcl --port COM10 --data_rate 9600")
-myInterface = connectionManager.connect()
-module = TMCM1370(myInterface)
+connection_manager = ConnectionManager("--interface serial_tmcl --port COM10 --data_rate 9600")
+my_interface = connection_manager.connect()
+module = TMCM1370(my_interface)
 motor = module.motors[0]
 
 # preparing drive settings

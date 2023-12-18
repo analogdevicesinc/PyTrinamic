@@ -16,6 +16,7 @@ import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards.TMC5240_eval import TMC5240_eval
 
+
 def stallguard2_init(motor, init_velocity):
     # Resetting SG2 threshold and stop on stall velocity to zero
     motor.set_axis_parameter(motor.AP.SG2Threshold, 0)
@@ -59,6 +60,7 @@ def stallguard2_init(motor, init_velocity):
     print("Threshold:", motor.get_axis_parameter(motor.AP.SG2Threshold))
     print("stop_velocity:", motor.get_axis_parameter(motor.AP.smartEnergyStallVelocity))
 
+
 def main():
     pytrinamic.show_info()
 
@@ -88,6 +90,7 @@ def main():
         while not (motor.actual_velocity == 0):
             pass
         print("Motor stopped by StallGuard2!")
+
 
 if __name__ == "__main__":
     main()

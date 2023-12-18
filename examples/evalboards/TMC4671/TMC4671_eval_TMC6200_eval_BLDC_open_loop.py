@@ -76,6 +76,4 @@ with ConnectionManager().connect() as my_interface:
     print("Unpowered...")
     mc_eval.write_register(TMC4671.REG.UQ_UD_EXT, 0)
 
-    myInterface.close()
-
 print("\nReady.")

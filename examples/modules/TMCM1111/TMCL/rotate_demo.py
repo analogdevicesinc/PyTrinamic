@@ -7,9 +7,6 @@
 ################################################################################
 """
 Rotate the motor with the specified velocity to reach the target position.
-
-Author: ASU
-
 """
 
 import pytrinamic
@@ -19,9 +16,9 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager()  # If no Interface is selected , the default interface is usb_tmcl
-with connectionManager.connect() as myInterface: 
-    module = TMCM1111(myInterface)
+connection_manager = ConnectionManager()  # If no Interface is selected , the default interface is usb_tmcl
+with connection_manager.connect() as my_interface:
+    module = TMCM1111(my_interface)
     motor = module.motors[0]
 
     # Please be sure not to use a too high current setting for your motor.

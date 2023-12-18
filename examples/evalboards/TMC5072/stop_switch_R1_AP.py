@@ -7,9 +7,6 @@
 ################################################################################
 """
 Automatically stops the motor during active (low active) right reference switch input using APs.
-
-Author: ASU
-
 """
 
 import time

@@ -14,10 +14,10 @@ import time
 pytrinamic.show_info()
 
 # This example is using PCAN, if you want to use another connection please change the next line.
-connectionManager = ConnectionManager("--interface pcan_tmcl")
+connection_manager = ConnectionManager("--interface pcan_tmcl")
 
-myInterface = connectionManager.connect()
-module = TMCM1276(myInterface)
+my_interface = connection_manager.connect()
+module = TMCM1276(my_interface)
 motor = module.motors[0]
 
 print("Preparing parameters")
@@ -56,4 +56,4 @@ print("Reached Position 0")
 
 print()
 
-myInterface.close()
+my_interface.close()

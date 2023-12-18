@@ -15,15 +15,11 @@ pytrinamic.show_info()
 
 # Using CAN interface (PEAK CAN interface)
 # for USB interface just comment out the next line
-connectionManager = ConnectionManager("--interface pcan_tmcl")
-
-myInterface = connectionManager.connect()
+connection_manager = ConnectionManager("--interface pcan_tmcl")
 
 
-print(myInterface)
-
-with myInterface:
-    module = TMCM1160(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM1160(my_interface)
     motor = module.motors[0]
 
     # The configuration is based on our PD42-1-1160-TMCL

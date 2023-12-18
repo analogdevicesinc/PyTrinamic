@@ -13,9 +13,9 @@ import time
 
 pytrinamic.show_info()
 
-connectionManager = ConnectionManager()  # If no Interface is selected , the default interface is usb_tmcl
-with connectionManager.connect() as myInterface: 
-    module = TMCM6212(myInterface)
+connection_manager = ConnectionManager()  # If no Interface is selected , the default interface is usb_tmcl
+with connection_manager.connect() as my_interface:
+    module = TMCM6212(my_interface)
     motor_0 = module.motors[0]  # Using motors 0, 3, and 5; change here to use different motors
     motor_1 = module.motors[3]
     motor_2 = module.motors[5]

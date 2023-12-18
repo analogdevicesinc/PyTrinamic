@@ -14,13 +14,10 @@ import time
 pytrinamic.show_info()
 
 # using USB interface
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+connection_manager = ConnectionManager()
 
-print(myInterface)
-
-with myInterface:
-    module = TMCM1161(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM1161(my_interface)
     motor = module.motors[0]
 
     # The configuration is based on our TMCM-1161-TMCL

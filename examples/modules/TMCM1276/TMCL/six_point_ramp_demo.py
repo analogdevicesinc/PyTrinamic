@@ -25,10 +25,10 @@ class Sample:
 pytrinamic.show_info()
 
 # This example is using PCAN, if you want to use another connection please change the next line.
-connectionManager = ConnectionManager("--interface pcan_tmcl")
+connection_manager = ConnectionManager("--interface pcan_tmcl")
 
-with connectionManager.connect() as myInterface:
-    module = TMCM1276(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM1276(my_interface)
     motor = module.motors[0]
 
     # Setting axis parameters for configuring SixPoint ramp

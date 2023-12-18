@@ -38,10 +38,10 @@ THRESHOLD_COOLSTEP = 0
 ################################################################################
 
 pytrinamic.show_info()
-connectionManager = ConnectionManager()
-myInterface = connectionManager.connect()
+connection_manager = ConnectionManager()
+my_interface = connection_manager.connect()
 
-shields = TmcEvalShield(myInterface, TMC5160_shield).shields
+shields = TmcEvalShield(my_interface, TMC5160_shield).shields
 
 # Initialize all attached shields
 for shield in shields:
@@ -73,4 +73,4 @@ for shield in shields:
     logger.info(f"Stopping motors for shield {shield}.")
     shield.stop(0)
 
-myInterface.close()
+my_interface.close()

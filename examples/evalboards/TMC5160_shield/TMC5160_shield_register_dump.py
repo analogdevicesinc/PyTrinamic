@@ -19,8 +19,8 @@ from pytrinamic.modules.tmc_eval_shield import TmcEvalShield
 from pytrinamic.evalboards.TMC5160_shield import TMC5160_shield
 
 pytrinamic.show_info()
-myInterface = ConnectionManager().connect()
-shields = TmcEvalShield(myInterface, TMC5160_shield).shields
+my_interface = ConnectionManager().connect()
+shields = TmcEvalShield(my_interface, TMC5160_shield).shields
 
 for shield in shields:
     print(shield)
@@ -28,4 +28,4 @@ for shield in shields:
         if(not name.startswith("__")) and (not name.endswith("__")):
             print("{0}: 0x{1:08X}".format(name, shield.read_register(register)))
 
-myInterface.close()
+my_interface.close()

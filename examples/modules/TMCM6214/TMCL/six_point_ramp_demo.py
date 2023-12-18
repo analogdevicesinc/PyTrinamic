@@ -23,10 +23,10 @@ class Sample:
 
 pytrinamic.show_info()
 # This example is using USB.
-connectionManager = ConnectionManager()
+connection_manager = ConnectionManager()
 
-with connectionManager.connect() as myInterface:
-    module = TMCM6214(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM6214(my_interface)
     motor = module.motors[0]
 
     # Setting axis parameters for configuring SixPoint ramp

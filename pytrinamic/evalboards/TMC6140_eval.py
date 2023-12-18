@@ -42,8 +42,8 @@ class TMC6140_eval(TMCLEval):
             self.set_axis_parameter(self.AP.HallOrder, value)
 
         class AP:
-            TargetAngle          = 1
-            HallAngle                = 2
+            TargetAngle                    = 1
+            HallAngle                      = 2
             TargetPWM                      = 3
             ActualPWM                      = 4
             CommutationMode                = 5

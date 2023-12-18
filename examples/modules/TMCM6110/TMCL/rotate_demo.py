@@ -12,10 +12,10 @@ from pytrinamic.modules import TMCM6110
 import time
 
 pytrinamic.show_info()
-connectionManager = ConnectionManager()  # using USB
+connection_manager = ConnectionManager()  # using USB
 
-with connectionManager.connect() as myInterface: 
-    module = TMCM6110(myInterface)
+with connection_manager.connect() as my_interface:
+    module = TMCM6110(my_interface)
     motor_0 = module.motors[0]
     motor_1 = module.motors[1]
     motor_2 = module.motors[2]

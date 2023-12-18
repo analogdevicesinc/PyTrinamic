@@ -5,9 +5,7 @@
 # Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
 # proprietary & confidential to Analog Devices, Inc. and its licensors.
 ################################################################################
-
-#!/usr/bin/env python3
-'''
+"""
 Demonstrate usage of StallGuard2 homing with the TMC5031
 
 This script uses two motors for a simple demonstration of Stallguard2-based
@@ -16,20 +14,16 @@ detected the other motor moves to the position where the first motor has
 stalled. This process is repeated indefinitely. Optionally the direction of the
 rotation can change after each stall to allow moving back and forth between two
 objects the motor collides with when rotating.
-
-Created on 29.01.2020
-
-@author: JM
-'''
+"""
 
 import time
 import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC5031_eval import TMC5031_eval
 
-connectionManager = ConnectionManager()
+connection_manager = ConnectionManager()
 
-myInterface = connectionManager.connect()
+my_interface = connection_manager.connect()
 
 ### Parameters #################################################################
 
@@ -54,7 +48,7 @@ pytrinamic.show_info()
 
 # Initialization
 
-TMC5031 = TMC5031_eval(myInterface)
+TMC5031 = TMC5031_eval(my_interface)
 TMC5031.showChipInfo()
 
 ### Configuration
@@ -71,7 +65,7 @@ TMC5031.writeRegisterField(TMC5031.fields.SGT[MOTOR_LEADING], SG_THRESHOLD)
 # Set stall guard minimum velocity
 TMC5031.writeRegisterField(TMC5031.fields.VCOOLTHRS[MOTOR_LEADING], SG_VELOCITY)
 # Enable Stall guard
-TMC5031.writeRegisterField(TMC5031.fields.SG_STOP[MOTOR_LEADING], 1);
+TMC5031.writeRegisterField(TMC5031.fields.SG_STOP[MOTOR_LEADING], 1)
 
 ## Configure following motor for position ramping
 TMC5031.writeRegister(TMC5031.registers.V1[MOTOR_FOLLOWING], 0)
@@ -109,7 +103,7 @@ try:
         # Let the other motor follow
         print("Motor " + str(MOTOR_FOLLOWING) + " following")
         target = TMC5031.readRegisterField(TMC5031.fields.XACTUAL[MOTOR_LEADING])
-        TMC5031.moveTo(MOTOR_FOLLOWING, target, VELOCITY);
+        TMC5031.moveTo(MOTOR_FOLLOWING, target, VELOCITY)
 
         # Wait until the other motor reached the target
         while TMC5031.readRegisterField(TMC5031.fields.POSITION_REACHED[MOTOR_FOLLOWING]) == 0:
@@ -137,4 +131,4 @@ while TMC5031.readRegisterField(TMC5031.fields.VACTUAL[0]) != 0 and TMC5031.read
 # Clear any remaining stalls
 TMC5031.readRegisterField(TMC5031.fields.EVENT_STOP_SG[MOTOR_LEADING])
 
-myInterface.close()
+my_interface.close()
