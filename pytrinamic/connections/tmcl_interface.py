@@ -29,22 +29,17 @@ class TmclInterface(ABC):
         _send(self, host_id, module_id, data)
         _recv(self, host_id, module_id)
 
-    A subclass may read the _host_id and _module_id parameters.
     """
 
     def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8):
         """
-        Parameters:
-            host_id:
-                Type: int, optional, default value: 2
-                The ID of the TMCL host. This ID is the same for each module
-                when communicating with multiple modules.
-            default_module_id:
-                Type: int, optional, default value: 1
-                The default module ID to use when no ID is given to any of the
-                tmcl_interface functions. When only communicating with one
-                module a script can omit the moduleID for all TMCL interface
-                calls by declaring this default value once at the start.
+        :param int host_id: The ID of the TMCL host. This ID is the same for each module
+            when communicating with multiple modules.
+        :param int default_module_id: The default module ID to use when no ID is given to any of the
+            tmcl_interface functions. When only communicating with one
+            module a script can omit the moduleID for all TMCL interface
+            calls by declaring this default value once at the start.
+        :param int default_ap_index_bit_width: Axis parameter index bit-width.
         """
         self.logger = logging.getLogger("TmclInterfaceAbstractBaseClassObject")  # Will be overwritten in derived classes
 
@@ -52,12 +47,12 @@ class TmclInterface(ABC):
         TMCL.validate_module_id(default_module_id)
 
         self._host_id = host_id
-        self._module_id = default_module_id
+        self._default_module_id = default_module_id
 
         if not (8 <= default_ap_index_bit_width <= 15):
             raise ValueError(f"Value {default_ap_index_bit_width} for parameter default_ap_index_bit_width is outside the allowed range (8..15)!")
 
-        self.default_ap_index_bit_width = default_ap_index_bit_width
+        self._default_ap_index_bit_width = default_ap_index_bit_width
 
     def _send(self, host_id, module_id, data):
         """
@@ -117,7 +112,7 @@ class TmclInterface(ABC):
 
         # If no module ID is given, use the default one
         if not module_id:
-            module_id = self._module_id
+            module_id = self._default_module_id
 
         request = TMCLRequest(module_id, opcode, op_type, motor, value)
 
@@ -130,7 +125,7 @@ class TmclInterface(ABC):
         """
         # If no module ID is given, use the default one
         if not module_id:
-            module_id = self._module_id
+            module_id = self._default_module_id
 
         request = TMCLRequest(module_id, TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6)
 
@@ -174,7 +169,7 @@ class TmclInterface(ABC):
 
     def _send_ap_cmd(self, cmd, index, axis, value, module_id, index_bit_width):
         if not index_bit_width:
-            index_bit_width = self.default_ap_index_bit_width
+            index_bit_width = self._default_ap_index_bit_width
 
         if not (8 <= index_bit_width <= 15):
             raise ValueError(f"Value {index_bit_width} for parameter index_bit_width is outside the allowed range (8..15)!")
