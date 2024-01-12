@@ -8,7 +8,7 @@
 
 class TMCLModule(object):
 
-    def __init__(self, connection, module_id=1):
+    def __init__(self, connection, module_id=1, ap_index_bit_width=8):
         """
         Constructor for the module instance.
 
@@ -20,6 +20,7 @@ class TMCLModule(object):
         """
         self.connection = connection
         self.module_id = module_id
+        self.ap_index_bit_width = ap_index_bit_width
         self.name = ""
         self.desc = ""
         self.motors = []
@@ -58,7 +59,7 @@ class TMCLModule(object):
         axis: Axis index for the parameter to be set.
         value: Value to set the axis parameter to.
         """
-        self.connection.set_axis_parameter(ap_type, axis, value, self.module_id)
+        self.connection.set_axis_parameter(ap_type, axis, value, self.module_id, self.ap_index_bit_width)
 
     def get_axis_parameter(self, ap_type, axis, signed=False):
         """
@@ -72,7 +73,7 @@ class TMCLModule(object):
 
         Returns: Axis parameter value.
         """
-        return self.connection.get_axis_parameter(ap_type, axis, self.module_id, signed=signed)
+        return self.connection.get_axis_parameter(ap_type, axis, self.module_id, signed, self.ap_index_bit_width)
 
     def set_global_parameter(self, gp_type, bank, value):
         """
@@ -97,7 +98,7 @@ class TMCLModule(object):
 
         Returns: Global parameter value.
         """
-        return self.connection.get_global_parameter(gp_type, bank, self.module_id, signed=signed)
+        return self.connection.get_global_parameter(gp_type, bank, self.module_id, signed)
 
     def get_analog_input(self, x):
         """

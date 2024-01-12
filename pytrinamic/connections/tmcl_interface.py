@@ -32,7 +32,7 @@ class TmclInterface(ABC):
     A subclass may read the _host_id and _module_id parameters.
     """
 
-    def __init__(self, host_id=2, default_module_id=1):
+    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8):
         """
         Parameters:
             host_id:
@@ -53,6 +53,11 @@ class TmclInterface(ABC):
 
         self._host_id = host_id
         self._module_id = default_module_id
+
+        if not (8 <= default_ap_index_bit_width <= 15):
+            raise ValueError(f"Value {default_ap_index_bit_width} for parameter default_ap_index_bit_width is outside the allowed range (8..15)!")
+
+        self.default_ap_index_bit_width = default_ap_index_bit_width
 
     def _send(self, host_id, module_id, data):
         """
@@ -168,28 +173,40 @@ class TmclInterface(ABC):
         warnings.warn("Function set_parameter() is going te be removed in future versions of pytrinamic!", FutureWarning)
         return self.send(p_command, p_type, p_axis, p_value, module_id)
 
-    # Axis parameter access functions
-    def get_axis_parameter(self, index, axis, module_id=None, signed=False):
-        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
+    def _send_ap_cmd(self, cmd, index, axis, value, module_id, index_bit_width):
+        if not index_bit_width:
+            index_bit_width = self.default_ap_index_bit_width
+
+        if not (8 <= index_bit_width <= 15):
+            raise ValueError(f"Value {index_bit_width} for parameter index_bit_width is outside the allowed range (8..15)!")
+
+        axis_bit_width = 16 - index_bit_width
+
+        if index >= 2**index_bit_width:
+            raise ValueError(f"Value {index} for parameter index is outside the allowed range (0..{2**index_bit_width - 1})!")
+        if axis >= 2**axis_bit_width:
+            raise ValueError(f"Value {axis} for parameter axis is outside the allowed range (0..{2**axis_bit_width - 1})!")
+
+        index_shift = 8 - axis_bit_width
+        index_mask = ((2**index_bit_width) - 1) << 8
+        tmcl_motor = axis | ((index & index_mask) >> index_shift)
         tmcl_type = index & 0xFF
-        value = self.send(TMCLCommand.GAP, tmcl_type, tmcl_motor, 0, module_id).value
+        return self.send(cmd, tmcl_type, tmcl_motor, value, module_id)
+
+    # Axis parameter access functions
+    def get_axis_parameter(self, index, axis, module_id=None, signed=False, index_bit_width=None):
+        value = self._send_ap_cmd(TMCLCommand.GAP, index, axis, 0, module_id, index_bit_width).value
         return to_signed_32(value) if signed else value
 
-    def set_axis_parameter(self, index, axis, value, module_id=None):
-        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
-        tmcl_type = index & 0xFF
-        return self.send(TMCLCommand.SAP, tmcl_type, tmcl_motor, value, module_id)
+    def set_axis_parameter(self, index, axis, value, module_id=None, index_bit_width=None):
+        return self._send_ap_cmd(TMCLCommand.SAP, index, axis, value, module_id, index_bit_width).value
 
-    def store_axis_parameter(self, index, axis, module_id=None):
-        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
-        tmcl_type = index & 0xFF
-        return self.send(TMCLCommand.STAP, tmcl_type, tmcl_motor, 0, module_id)
+    def store_axis_parameter(self, index, axis, module_id=None, index_bit_width=None):
+        return self._send_ap_cmd(TMCLCommand.STAP, index, axis, 0, module_id, index_bit_width).value
 
-    def set_and_store_axis_parameter(self, index, axis, value, module_id=None):
-        tmcl_motor = (axis & 0x0F) | ((index & 0x0F00) >> 4)
-        tmcl_type = index & 0xFF
-        self.send(TMCLCommand.SAP, tmcl_type, tmcl_motor, value, module_id)
-        self.send(TMCLCommand.STAP, tmcl_type, tmcl_motor, 0, module_id)
+    def set_and_store_axis_parameter(self, index, axis, value, module_id=None, index_bit_width=None):
+        self._send_ap_cmd(TMCLCommand.SAP, index, axis, value, module_id, index_bit_width)
+        self._send_ap_cmd(TMCLCommand.STAP, index, axis, 0, module_id, index_bit_width)
 
     # Global parameter access functions
     def get_global_parameter(self, command_type, bank, module_id=None, signed=False):
