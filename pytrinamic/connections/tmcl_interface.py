@@ -102,8 +102,7 @@ class TmclInterface(ABC):
         self._reply_check(reply)
 
         # Status codes below 100 indicate an error response.
-        # Ignore status when receiving the ascii firmware version.
-        if reply.status < 100 and request.command != TMCLCommand.GET_FIRMWARE_VERSION:
+        if reply.status < 100:
             raise TMCLReplyStatusError(reply)
 
         return reply
