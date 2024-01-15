@@ -29,11 +29,11 @@ class MockTmclInterface:
     def __exit__(self, exitType, value, traceback):
         del exitType, value, traceback
 
-    def set_axis_parameter(self, type, axis, value, module_id):
+    def set_axis_parameter(self, type, axis, value, module_id, ap_index_bit_width):
         pass
 
-    def get_axis_parameter(self, type, axis, module_id, signed):
-        if type == TMCM6110._MotorTypeA.APs.PositionReachedFlag:
+    def get_axis_parameter(self, type, axis, module_id, signed, ap_index_bit_width):
+        if type == TMCM6110._MotorTypeA.AP.PositionReachedFlag:
             self._position_reached_toggle[axis] ^= True
             if self._position_reached_toggle[axis]:
                 return 1
