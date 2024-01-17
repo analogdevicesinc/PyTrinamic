@@ -11,8 +11,8 @@ from ..ic.tmc_ic import TMCIc
 
 class TMC5272(TMCIc):
     """
-    The TMC5272 is a high-performance driver IC for two phase stepper motors. Standard SPI and STEP/DIR simply
-    communication. Supply voltage: 4.75-46V.
+    The TMC5272 is a high-performance driver IC for two phase stepper motors. Standard SPI and UART communication
+    interface. Supply voltage: 2.1-20V.
     """
     def __init__(self):
         super().__init__("TMC5272", self.__doc__)
