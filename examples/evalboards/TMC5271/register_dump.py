@@ -13,7 +13,7 @@ The connection to a Landungsbrücke is established over USB. TMCL commands are u
 
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards.TMC5271_eval import TMC5271_eval
+from pytrinamic.evalboards import TMC5271_eval
 
 pytrinamic.show_info()
 
@@ -21,10 +21,9 @@ my_interface = ConnectionManager().connect()
 print(my_interface)
 eval_board = TMC5271_eval(my_interface)
 drv = eval_board.ics[0]
-motor = eval_board.motors[0]
 
 print("Driver info: " + str(drv.get_info()))
-print("Motor1 Register dump for " + str(drv.get_name()) + ":")
+print("Register dump for " + str(drv.get_name()) + ":")
 
 print("GCONF            : 0x{0:08X}".format(eval_board.read_register(drv.REG.GCONF)))
 print("GSTAT            : 0x{0:08X}".format(eval_board.read_register(drv.REG.GSTAT)))

@@ -7,15 +7,25 @@
 ################################################################################
 
 from ..ic.tmc_ic import TMCIc
+from ..features.motor_control_ic import MotorControlIc
 
 
 class TMC5271(TMCIc):
     """
-    The TMC5271 is a high-performance driver IC for two phase stepper motors. Standard SPI and UART communication
-    interface. Supply voltage: 2.1-20V.
+    The TMC5271 is a smart high-performance single-axis stepper motor controller and driver IC
+    with serial communication interfaces (SPI and UART). Supply voltage: 2.1-20V DC.
     """
-    def __init__(self):
-        super().__init__("TMC5271", self.__doc__)
+    def __init__(self, parent_eval):
+        super().__init__(self.__class__.__name__, self.__doc__)
+        self._parent = parent_eval
+        self.motors = [self.MotorTypeA(parent_eval, self, 0)]
+
+    class MotorTypeA(MotorControlIc):
+        """
+        Motor class for the generic motor.
+        """
+        def __init__(self, parent_eval, ic, axis):
+            MotorControlIc.__init__(self, parent_eval, ic, axis)
 
     class REG:
         """

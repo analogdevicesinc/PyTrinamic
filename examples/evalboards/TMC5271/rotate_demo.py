@@ -12,7 +12,7 @@ Move a motor back and forth using velocity and position mode of the TMC5271
 import time
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards.TMC5271_eval import TMC5271_eval
+from pytrinamic.evalboards import TMC5271_eval
 
 pytrinamic.show_info()
 
@@ -36,6 +36,7 @@ with ConnectionManager().connect() as my_interface:
     eval_board.set_axis_parameter(motor.AP.CurrentScalingSelector, 0, 3)
     eval_board.set_axis_parameter(motor.AP.GlobalCurrentScalerA, 0, 251)
     time.sleep(1)
+
     # Resetting the current position to 0
     eval_board.set_axis_parameter(motor.AP.ActualPosition, 0, 0)
     print(eval_board.get_axis_parameter(motor.AP.ActualPosition, 0))
@@ -54,7 +55,6 @@ with ConnectionManager().connect() as my_interface:
     while motor.actual_position != 0:
         print("Actual position: " + str(motor.actual_position))
         time.sleep(0.2)
-
     print("Reached position 0")
 
 print("\nReady.")

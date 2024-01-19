@@ -37,15 +37,15 @@ class TMC5271_eval(TMCLEval):
         """
         TMCLEval.__init__(self, connection, module_id)
         self.motors = [self._MotorTypeA(self, 0)]
-        self.ics = [TMC5271()]
+        self.ics = [TMC5271(self)]
 
     # Use the driver controller functions for register access
 
     def write_register(self, register_address, value):
-        return self._connection.write_drv(register_address, value, self._module_id)
+        return self._connection.write_mc(register_address, value, self._module_id)
 
     def read_register(self, register_address, signed=False):
-        return self._connection.read_drv(register_address, self._module_id, signed)
+        return self._connection.read_mc(register_address, self._module_id, signed)
 
     # Motion control functions
 
