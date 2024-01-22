@@ -18,7 +18,8 @@ class TMC5272(TMCIc):
     def __init__(self, parent_eval):
         super().__init__(self.__class__.__name__, self.__doc__)
         self._parent = parent_eval
-        self.motors = [self.MotorTypeA(parent_eval, self, 0)]
+        self.motors = [self.MotorTypeA(parent_eval, self, 0),
+                       self.MotorTypeA(parent_eval, self, 1)]
 
     class MotorTypeA(MotorControlIc):
         """
@@ -26,7 +27,6 @@ class TMC5272(TMCIc):
         """
         def __init__(self, parent_eval, ic, axis):
             MotorControlIc.__init__(self, parent_eval, ic, axis)
-
 
     class REG:
         """

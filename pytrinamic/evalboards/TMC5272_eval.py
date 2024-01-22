@@ -36,7 +36,9 @@ class TMC5272_eval(TMCLEval):
                 parameter for the writeDRV and readDRV functions.
         """
         TMCLEval.__init__(self, connection, module_id)
-        self.motors = [self._MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0),
+                       self._MotorTypeA(self, 1)]
+
         self.ics = [TMC5272(self)]
 
     # Use the driver controller functions for register access
