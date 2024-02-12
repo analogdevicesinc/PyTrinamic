@@ -48,6 +48,9 @@ class TMC4671_eval(TMCLEval):
             MaxAcceleration                = 11
             EnableRamp                     = 12
             RampVelocity                   = 13
+            LinearScaler                   = 20
+            LinearMaxVelocity              = 21
+            LinearMaxAcceleration          = 22
             LinearTargetPosition           = 25
             TargetTorque                   = 171
             PID_FLUX_TARGET                = 172
@@ -59,6 +62,14 @@ class TMC4671_eval(TMCLEval):
             TargetTorqueRaw                = 189
             PIDIN_TARGET_FLUX              = 191
             TargetVelocity                 = 192
+
+            DebugMaxVelocity               = 240
+            DebugMaxAcceleration           = 241
+            DebugTargetVelocity            = 242
+            DebugRampVelocity              = 243
+            DebugTargetPosition            = 244
+            DebugRampPosition              = 245
+
             torqueMeasurementFactor        = 251
             StartEncoderInitialization     = 252
             EncoderInitState               = 253

@@ -190,3 +190,4 @@ class TMCM6110(TMCLModule):
         IN5    = 5
         IN6    = 6
         IN7    = 7
+        VIN    = 8
