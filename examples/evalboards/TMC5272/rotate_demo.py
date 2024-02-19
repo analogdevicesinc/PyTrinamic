@@ -17,50 +17,54 @@ pytrinamic.show_info()
 with ConnectionManager().connect() as my_interface:
     # Create TMC5272-EVAL class which communicates over the Landungsbrücke via TMCL
     eval_board = TMC5272_eval(my_interface)
+    mc = eval_board.ics[0]
     motor1 = eval_board.motors[0]
     motor2 = eval_board.motors[1]
 
+    # Set the current scaling selector
+    eval_board.set_axis_parameter(motor1.AP.CurrentScalingSelector, 0, 3)
+
     # Motor 1
 
-    # Ramp_Parameters_Setting for Position Mode
-    eval_board.set_axis_parameter(motor1.AP.StartVelocity, 0, 40000)
-    eval_board.set_axis_parameter(motor1.AP.StopVelocity, 0, 40001)
-    eval_board.set_axis_parameter(motor1.AP.V1, 0, 25000)
-    eval_board.set_axis_parameter(motor1.AP.MaxVelocity, 0, 100000)
-    eval_board.set_axis_parameter(motor1.AP.A1, 0, 10000)
-    eval_board.set_axis_parameter(motor1.AP.MaxAcceleration, 0, 10000)
-    eval_board.set_axis_parameter(motor1.AP.D1, 0, 10)
-    # Current_Settings1
-    eval_board.set_axis_parameter(motor1.AP.MaxCurrent, 0, 31)
-    eval_board.set_axis_parameter(motor1.AP.StandbyCurrent, 0, 10)
-    eval_board.set_axis_parameter(motor1.AP.FSR_IREF, 0, 3)
-    eval_board.set_axis_parameter(motor1.AP.CurrentScalingSelector, 0, 3)
-    eval_board.set_axis_parameter(motor1.AP.GlobalCurrentScalerA, 0, 251)
+    # Ramp parameters setting for Position Mode
+    eval_board.write_register(mc.REG.M0_VSTART, 40000)
+    eval_board.write_register(mc.REG.M0_VSTOP, 40001)
+    eval_board.write_register(mc.REG.M0_V1, 25000)
+    eval_board.write_register(mc.REG.M0_VMAX, 100000)
+    eval_board.write_register(mc.REG.M0_A1, 10000)
+    eval_board.write_register(mc.REG.M0_AMAX, 10000)
+    eval_board.write_register(mc.REG.M0_D1, 10)
+    # Current settings
+    eval_board.write_register_field(mc.FIELD.M0_IHOLD_IRUN_IRUN, 31)
+    eval_board.write_register_field(mc.FIELD.M0_IHOLD_IRUN_IHOLD, 10)
+    eval_board.write_register_field(mc.FIELD.M0_FSR, 3)
+    eval_board.write_register_field(mc.FIELD.M0_FSR_IREF, 3)
+    eval_board.write_register_field(mc.FIELD.GLOBAL_SCALER_GLOBALSCALER_M0_A, 251)
     time.sleep(1)
     # Resetting the current position to 0
-    eval_board.set_axis_parameter(motor1.AP.ActualPosition, 0, 0)
-    print("Actual Position Motor 1:", eval_board.get_axis_parameter(motor1.AP.ActualPosition, 0))
+    eval_board.write_register(mc.REG.M0_XACTUAL, 0)
+    print("Actual Position Motor 1:", eval_board.read_register(mc.REG.M0_XACTUAL, 0))
 
     # Motor 2
 
-    # Ramp_Parameters_Setting for Position Mode
-    eval_board.set_axis_parameter(motor2.AP.StartVelocity, 1, 40000)
-    eval_board.set_axis_parameter(motor2.AP.StopVelocity, 1, 40001)
-    eval_board.set_axis_parameter(motor2.AP.V1, 1, 25000)
-    eval_board.set_axis_parameter(motor2.AP.MaxVelocity, 0, 100000)
-    eval_board.set_axis_parameter(motor2.AP.A1, 1, 10000)
-    eval_board.set_axis_parameter(motor2.AP.MaxAcceleration, 1, 10000)
-    eval_board.set_axis_parameter(motor2.AP.D1, 1, 10)
-    # Current_Settings1
-    eval_board.set_axis_parameter(motor2.AP.MaxCurrent, 1, 31)
-    eval_board.set_axis_parameter(motor2.AP.StandbyCurrent, 1, 10)
-    eval_board.set_axis_parameter(motor2.AP.FSR_IREF, 1, 1)
-    eval_board.set_axis_parameter(motor2.AP.CurrentScalingSelector, 1, 0)
-    eval_board.set_axis_parameter(motor2.AP.GlobalCurrentScalerA, 1, 251)
+    # Ramp parameters setting for Position Mode
+    eval_board.write_register(mc.REG.M1_VSTART, 40000)
+    eval_board.write_register(mc.REG.M1_VSTOP, 40001)
+    eval_board.write_register(mc.REG.M1_V1, 25000)
+    eval_board.write_register(mc.REG.M1_VMAX, 100000)
+    eval_board.write_register(mc.REG.M1_A1, 10000)
+    eval_board.write_register(mc.REG.M1_AMAX, 10000)
+    eval_board.write_register(mc.REG.M1_D1, 10)
+    # Current settings
+    eval_board.write_register_field(mc.FIELD.M1_IHOLD_IRUN_IRUN, 31)
+    eval_board.write_register_field(mc.FIELD.M1_IHOLD_IRUN_IHOLD, 10)
+    eval_board.write_register_field(mc.FIELD.M1_FSR, 3)
+    eval_board.write_register_field(mc.FIELD.M1_FSR_IREF, 3)
+    eval_board.write_register_field(mc.FIELD.GLOBAL_SCALER_GLOBALSCALER_M1_A, 251)
     time.sleep(1)
     # Resetting the current position to 0
-    eval_board.set_axis_parameter(motor2.AP.ActualPosition, 0, 0)
-    print("Actual Position Motor 2:", eval_board.get_axis_parameter(motor2.AP.ActualPosition, 0))
+    eval_board.write_register(mc.REG.M1_XACTUAL, 0)
+    print("Actual Position Motor 2:", eval_board.read_register(mc.REG.M1_XACTUAL, 0))
 
     print("Rotating...")
     motor1.rotate(2*25600)
