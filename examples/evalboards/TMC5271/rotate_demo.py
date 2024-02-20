@@ -1,8 +1,10 @@
 ################################################################################
-# Copyright © 2024 Analog Devices Inc. All Rights Reserved. This software is
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
 # proprietary & confidential to Analog Devices, Inc. and its licensors.
 ################################################################################
-
 """
 Move a motor back and forth using velocity and position mode of the TMC5271
 """
@@ -19,25 +21,28 @@ with ConnectionManager().connect() as my_interface:
     eval_board = TMC5271_eval(my_interface)
     motor = eval_board.motors[0]
     mc = eval_board.ics[0]
-    # Ramp_Parameters_Setting for Position Mode
-    eval_board.set_axis_parameter(motor.AP.StartVelocity, 0, 40000)
-    eval_board.set_axis_parameter(motor.AP.StopVelocity, 0, 40001)
-    eval_board.set_axis_parameter(motor.AP.V1, 0, 25000)
-    eval_board.set_axis_parameter(motor.AP.MaxVelocity, 0, 100000)
-    eval_board.set_axis_parameter(motor.AP.A1, 0, 10000)
-    eval_board.set_axis_parameter(motor.AP.MaxAcceleration, 0, 10000)
-    eval_board.set_axis_parameter(motor.AP.D1, 0, 10)
-    # Current_Settings
-    eval_board.set_axis_parameter(motor.AP.MaxCurrent, 0, 31)
-    eval_board.set_axis_parameter(motor.AP.StandbyCurrent, 0, 10)
-    eval_board.set_axis_parameter(motor.AP.FSR_IREF, 0, 3)
-    eval_board.set_axis_parameter(motor.AP.CurrentScalingSelector, 0, 3)
-    eval_board.set_axis_parameter(motor.AP.GlobalCurrentScalerA, 0, 251)
-    time.sleep(1)
 
+    # Set the current scaling selector
+    eval_board.set_axis_parameter(motor.AP.CurrentScalingSelector, 0, 3)
+
+    # Ramp parameters setting for Position Mode
+    eval_board.write_register(mc.REG.VSTART, 40000)
+    eval_board.write_register(mc.REG.VSTOP, 40001)
+    eval_board.write_register(mc.REG.V1, 25000)
+    eval_board.write_register(mc.REG.VMAX, 100000)
+    eval_board.write_register(mc.REG.A1, 10000)
+    eval_board.write_register(mc.REG.AMAX, 10000)
+    eval_board.write_register(mc.REG.D1, 10)
+    # Current settings
+    eval_board.write_register_field(mc.FIELD.IRUN, 31)
+    eval_board.write_register_field(mc.FIELD.IHOLD, 10)
+    eval_board.write_register_field(mc.FIELD.FSR, 0)
+    eval_board.write_register_field(mc.FIELD.FSR_IREF, 3)
+    eval_board.write_register_field(mc.FIELD.GLOBALSCALER_A, 251)
+    time.sleep(1)
     # Resetting the current position to 0
-    eval_board.set_axis_parameter(motor.AP.ActualPosition, 0, 0)
-    print(eval_board.get_axis_parameter(motor.AP.ActualPosition, 0))
+    eval_board.write_register(mc.REG.XACTUAL, 0)
+    print("Actual Position", eval_board.read_register(mc.REG.XACTUAL, 0))
 
     print("Rotating...")
     motor.rotate(2*25600)
