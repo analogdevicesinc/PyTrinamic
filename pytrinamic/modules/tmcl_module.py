@@ -8,7 +8,7 @@
 
 class TMCLModule(object):
 
-    def __init__(self, connection, module_id=1, ap_index_bit_width=8):
+    def __init__(self, connection, module_id=1, ap_index_bit_width=8, reg_address_bit_width=12):
         """
         Constructor for the module instance.
 
@@ -21,6 +21,7 @@ class TMCLModule(object):
         self.connection = connection
         self.module_id = module_id
         self.ap_index_bit_width = ap_index_bit_width
+        self.reg_address_bit_width = reg_address_bit_width
         self.name = ""
         self.desc = ""
         self.motors = []
@@ -99,6 +100,25 @@ class TMCLModule(object):
         Returns: Global parameter value.
         """
         return self.connection.get_global_parameter(gp_type, bank, self.module_id, signed)
+
+    def write_register_by_block(self, block, offset, value):
+        """
+        Write to register/field on this module identified by block number and register offset.
+
+        :param int block: register block index.
+        :param offset int: offset of the register's field address from the register base address.
+        :param int value: Value to write the register/field on the module.
+        """
+        return self.connection.write_mc_by_id(block, offset, value, address_width=self.reg_address_bit_width)
+
+    def read_register_by_block(self, block, offset):
+        """
+        Read from register/field on this module identified by block number and register offset.
+
+        :param int block: register block index.
+        :param offset int: offset of the register's field address from the register base address.
+        """
+        return self.connection.read_mc_by_id(block, offset, address_width=self.reg_address_bit_width)
 
     def get_analog_input(self, x):
         """

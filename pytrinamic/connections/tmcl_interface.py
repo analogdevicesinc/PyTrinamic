@@ -31,7 +31,7 @@ class TmclInterface(ABC):
 
     """
 
-    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8):
+    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8, default_reg_address_bit_width=12):
         """
         :param int host_id: The ID of the TMCL host. This ID is the same for each module
             when communicating with multiple modules.
@@ -40,6 +40,7 @@ class TmclInterface(ABC):
             module a script can omit the moduleID for all TMCL interface
             calls by declaring this default value once at the start.
         :param int default_ap_index_bit_width: Axis parameter index bit-width.
+        :param int default_reg_address_bit_width: Register address bit-width.
         """
         self.logger = logging.getLogger("TmclInterfaceAbstractBaseClassObject")  # Will be overwritten in derived classes
 
@@ -52,7 +53,11 @@ class TmclInterface(ABC):
         if not (8 <= default_ap_index_bit_width <= 15):
             raise ValueError(f"Value {default_ap_index_bit_width} for parameter default_ap_index_bit_width is outside the allowed range (8..15)!")
 
+        if not (11 <= default_reg_address_bit_width <= 12):
+            raise ValueError(f"Value {default_reg_address_bit_width} for register address default_reg_address_bit_width is outside the allowed range (11 or 12)!")
+
         self._default_ap_index_bit_width = default_ap_index_bit_width
+        self._default_reg_address_bit_width = default_reg_address_bit_width
 
     def _send(self, host_id, module_id, data):
         """
@@ -218,32 +223,56 @@ class TmclInterface(ABC):
         self.send(TMCLCommand.STGP, command_type, bank, 0, module_id)
 
     # Register access functions
-    def write_mc(self, register_address, value, module_id=None):
-        return self.write_register(register_address, TMCLCommand.WRITE_MC, 0, value, module_id)
+    def write_mc(self, register_address, value, module_id=None, address_width=None):
+        return self.write_register(register_address, TMCLCommand.WRITE_MC, 0, value, module_id, address_width)
 
-    def read_mc(self, register_address, module_id=None, signed=False):
-        return self.read_register(register_address, TMCLCommand.READ_MC, 0, module_id, signed)
+    def read_mc(self, register_address, module_id=None, signed=False, address_width=None):
+        return self.read_register(register_address, TMCLCommand.READ_MC, 0, module_id, signed, address_width)
 
-    def write_mc_by_id(self, ic_id, register_address, value, module_id=None):
-        return self.write_register(register_address, TMCLCommand.WRITE_MC, ic_id, value, module_id)
+    def write_mc_by_id(self, ic_id, register_address, value, module_id=None, address_width=None):
+        return self.write_register(register_address, TMCLCommand.WRITE_MC, ic_id, value, module_id, address_width)
 
-    def read_mc_by_id(self, ic_id, register_address, module_id=None, signed=False):
-        return self.read_register(register_address, TMCLCommand.READ_MC, ic_id, module_id, signed)
+    def read_mc_by_id(self, ic_id, register_address, module_id=None, signed=False, address_width=None):
+        return self.read_register(register_address, TMCLCommand.READ_MC, ic_id, module_id, signed, address_width)
 
-    def write_drv(self, register_address, value, module_id=None):
-        return self.write_register(register_address, TMCLCommand.WRITE_DRV, 1, value, module_id)
+    def write_drv(self, register_address, value, module_id=None, address_width=None):
+        return self.write_register(register_address, TMCLCommand.WRITE_DRV, 1, value, module_id, address_width)
 
-    def read_drv(self, register_address, module_id=None, signed=False):
-        return self.read_register(register_address, TMCLCommand.READ_DRV, 1, module_id, signed)
+    def read_drv(self, register_address, module_id=None, signed=False, address_width=None):
+        return self.read_register(register_address, TMCLCommand.READ_DRV, 1, module_id, signed, address_width)
 
-    def read_register(self, register_address, command, channel, module_id=None, signed=False):
-        tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+    def read_register(self, register_address, command, channel, module_id=None, signed=False, address_width=None):
+        if not address_width:
+            address_width = self._default_reg_address_bit_width
+
+        if address_width == 11:
+            tmcl_motor = (channel & 0x1F) | ((register_address & 0x0700) >> 3)
+        elif address_width == 12:
+            tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+        else:
+            raise ValueError(f"Address width {address_width} unsupported address width!")
+
+        if register_address >= 2**address_width:
+            raise ValueError(f"Value {register_address} for register address is outside the allowed range (0..{2**address_width - 1})!")
+
         tmcl_type = register_address & 0xFF
         value = self.send(command, tmcl_type, tmcl_motor, 0, module_id).value
         return to_signed_32(value) if signed else value
 
-    def write_register(self, register_address, command, channel, value, module_id=None):
-        tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+    def write_register(self, register_address, command, channel, value, module_id=None, address_width=None):
+        if not address_width:
+            address_width = self._default_reg_address_bit_width
+
+        if address_width == 11:
+            tmcl_motor = (channel & 0x1F) | ((register_address & 0x0700) >> 3)
+        elif address_width == 12:
+            tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+        else:
+            raise ValueError(f"Address width {address_width} unsupported address width!")
+
+        if register_address >= 2**address_width:
+            raise ValueError(f"Value {register_address} for register address is outside the allowed range (0..{2**address_width - 1})!")
+
         tmcl_type = register_address & 0xFF
         return self.send(command, tmcl_type, tmcl_motor, value, module_id)
 
