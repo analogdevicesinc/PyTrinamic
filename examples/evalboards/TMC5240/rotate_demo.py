@@ -6,7 +6,7 @@
 import time
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards.TMC5240_eval import TMC5240_eval
+from pytrinamic.evalboards import TMC5240_eval
 
 pytrinamic.show_info()
 
@@ -15,7 +15,8 @@ with ConnectionManager().connect() as my_interface:
 
     eval_board = TMC5240_eval(my_interface)
     motor = eval_board.motors[0]
-    motor.set_axis_parameter(motor.AP.MaxAcceleration, 51200)
+    mc = eval_board.ics[0]
+    eval_board.write_register(mc.REG.AMAX, 51200)
 
     print("Rotating...")
     motor.rotate(51200)
