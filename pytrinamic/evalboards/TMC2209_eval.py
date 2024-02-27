@@ -37,7 +37,7 @@ class TMC2209_eval(TMCLEval):
         """
         TMCLEval.__init__(self, connection, module_id)
         self.motors = [self._MotorTypeA(self, 0)]
-        self.ics = [TMC2209()]
+        self.ics = [TMC2209(self)]
 
     # Use the driver controller functions for register access
 

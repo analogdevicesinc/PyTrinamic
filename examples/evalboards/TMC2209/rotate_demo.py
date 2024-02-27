@@ -19,6 +19,10 @@ with ConnectionManager().connect() as my_interface:
     # Create TMC2209-EVAL class which communicates over the Landungsbrücke via TMCL
     eval_board = TMC2209_eval(my_interface)
     motor = eval_board.motors[0]
+    mc = eval_board.ics[0]
+
+    # Setting acceleration in ramp parameters
+    motor.set_axis_parameter(motor.AP.MaxAcceleration, 100000)
 
     print("Rotating...")
     motor.rotate(1*4000)
@@ -29,7 +33,7 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(1)
 
     print("Moving back to 0")
-    motor.move_to(0, 2000)
+    motor.move_to(0, 4000)
 
     # Wait until position 0 is reached
     while motor.actual_position != 0:

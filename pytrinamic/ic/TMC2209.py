@@ -7,6 +7,7 @@
 ################################################################################
 
 from ..ic.tmc_ic import TMCIc
+from ..features.motor_control_ic import MotorControlIc
 
 
 class TMC2209(TMCIc):
@@ -14,8 +15,17 @@ class TMC2209(TMCIc):
     The TMC2209 is an ultra-silent motor driver IC for two phase stepper motors. TMC2209 pinning is compatible to a
     number of legacy drivers as well as to the TMC2208. Supply voltage is 4,75 - 29V.
     """
-    def __init__(self):
-        super().__init__("TMC2209", self.__doc__)
+    def __init__(self, parent_eval):
+        super().__init__(self.__class__.__name__, self.__doc__)
+        self._parent = parent_eval
+        self.motors = [self.MotorTypeA(parent_eval, self, 0)]
+
+    class MotorTypeA(MotorControlIc):
+        """
+        Motor class for the generic motor.
+        """
+        def __init__(self, parent_eval, ic, axis):
+            MotorControlIc.__init__(self, parent_eval, ic, axis)
 
     class REG:
         """
