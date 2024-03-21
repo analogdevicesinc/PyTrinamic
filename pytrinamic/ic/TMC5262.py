@@ -9,8 +9,8 @@ from ..features.motor_control_ic import MotorControlIc
 
 class TMC5262(TMCIc):
     """
-        The TMC5262 is a smart high-performance stepper motor controller and driver IC with serial communication interfaces (SPI, UART).
-        Supply voltage: 4,5-36V
+        The TMC5262 is a smart high-power single axis stepper motor controller and driver IC with SPI communication interface.
+        Supply voltage: 4,5-65V DC
     """
     def __init__(self, parent_eval):
         super().__init__(self.__class__.__name__, self.__doc__)
