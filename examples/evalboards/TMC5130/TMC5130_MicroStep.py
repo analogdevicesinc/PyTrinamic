@@ -2,7 +2,7 @@
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# Copyright © 2024 Analog Devices Inc. All Rights Reserved. This software is
 # proprietary & confidential to Analog Devices, Inc. and its licensors.
 ################################################################################
 
@@ -14,7 +14,7 @@ The connection to a Landungsbrücke is established over USB. TMCL commands are
 used for communicating with the IC.
 
 Created on 15.05.2019
-Updated on 27.03.2023 by ASU
+Updated on 05.04.2024 by ME
 
 @author: LH
 """
@@ -71,7 +71,8 @@ with ConnectionManager().connect() as my_interface:
 
     print("MSLUT_SEL:    0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSEL)))
     print("MSLUT_START:  0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSTART)))
-    print()
+
+
 
     start = eval.read_register_field(ic.FIELD.START_SIN)
     values = [ (0, start) ]
@@ -107,6 +108,9 @@ with ConnectionManager().connect() as my_interface:
 
     # Measure the MS values from the IC directly. Can be skipped to save time
     if MEASURE:
+        print()
+        print('Measuring')
+        print('*********')
         eval.write_register_field(ic.FIELD.IRUN, 10)
         eval.write_register(ic.REG.A1, 10000)
         eval.write_register(ic.REG.V1, 500000)
@@ -134,20 +138,35 @@ with ConnectionManager().connect() as my_interface:
             measured = measured + [(STEP, CUR_A, CUR_B)]
             motor.move_to(1, 1000)
             time.sleep(0.1)
+            print('\rProgress: ', round(i/1025*100, 2), '%', end='')              #shows the progress
 
+        print('\rProgress: 100 %')
         motor.move_to(0, 1000)
 
-
+print()
+print('Results:')
 print(values)
 print(measured)
 
+#1. Plot
 plot.figure(num=1, clear=True)
 plot.plot([(x[1], x[2]) for x in values])
+plot.gca().legend(('CUR_A','CUR_B'))                                                    # add label
+plot.xlabel ('Microstep counter (MSCNT)')
+plot.ylabel ('Current [internal unit (-256 bit; 256 bit)]')
+plot.title ('Microstep Table for a full step')
 plot.show(block=False)
+
+#2. plot
 plot.figure(num=2, clear=True)
-plot.plot([x[1] for x in values], [x[2] for x in values], '.')
+plot.plot([x[1] for x in values], [x[2] for x in values],  label="plot")     # add label
 ax = plot.gca()
 ax.add_artist(plot.Circle((0, 0), 248, fill=False, color='black'))
+plot.xlabel ('current_A [internal unit (-256 bit; 256 bit)]')
+plot.ylabel ('current_B [internal unit (-256 bit; 256 bit)]')
+plot.title ('current_B over current_A')
+plot.legend(loc="upper left")
+
 plot.show()
 
 plot.close('all')
