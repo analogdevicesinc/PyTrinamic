@@ -13,11 +13,15 @@ Visualize the microstep table of the TMC5130
 The connection to a Landungsbrücke is established over USB. TMCL commands are
 used for communicating with the IC.
 
+Created on 15.05.2019
+Updated on 05.04.2024 by ME
+
+@author: LH
 """
 
 import time
 import math
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plot
 import pytrinamic
 
 from pytrinamic.connections.connection_manager import ConnectionManager
@@ -41,8 +45,8 @@ with ConnectionManager().connect() as my_interface:
     motor = eval.motors[0]
 
     MSLUT_ = [
-            eval.read_register(ic.REG.MSLUT_0),         # Description:
-            eval.read_register(ic.REG.MSLUT_1),         # Microstep  Lookup Table
+            eval.read_register(ic.REG.MSLUT_0),
+            eval.read_register(ic.REG.MSLUT_1),
             eval.read_register(ic.REG.MSLUT_2),
             eval.read_register(ic.REG.MSLUT_3),
             eval.read_register(ic.REG.MSLUT_4),
@@ -105,8 +109,8 @@ with ConnectionManager().connect() as my_interface:
     # Measure the MS values from the IC directly. Can be skipped to save time
     if MEASURE:
         print()
-        print("Measuring")
-        print("*********")
+        print('Measuring')
+        print('*********')
         eval.write_register_field(ic.FIELD.IRUN, 10)
         eval.write_register(ic.REG.A1, 10000)
         eval.write_register(ic.REG.V1, 500000)
@@ -134,35 +138,35 @@ with ConnectionManager().connect() as my_interface:
             measured = measured + [(STEP, CUR_A, CUR_B)]
             motor.move_to(1, 1000)
             time.sleep(0.1)
-            print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              #shows the progress
+            print('\rProgress: ', round(i/1025*100, 2), '%', end='')              #shows the progress
 
         print('\rProgress: 100 %')
         motor.move_to(0, 1000)
 
 print()
-print("Results:")
+print('Results:')
 print(values)
 print(measured)
 
 #1. Plot
-fig, ax1 = plt.subplots()
-plt.plot([(x[1], x[2]) for x in values])
-ax1.legend(("CUR_A', 'CUR_B"))                                                    # add label
-ax1.set_xlabel("Microstep counter (MSCNT)")
-ax1.set_ylabel("Current [internal unit (-256 bit; 256 bit)]")
-ax1.set_title("Microstep Table for a full step")
-plt.show(block=False)
+plot.figure(num=1, clear=True)
+plot.plot([(x[1], x[2]) for x in values])
+plot.gca().legend(('CUR_A','CUR_B'))                                                    # add label
+plot.xlabel ('Microstep counter (MSCNT)')
+plot.ylabel ('Current [internal unit (-256 bit; 256 bit)]')
+plot.title ('Microstep Table for a full step')
+plot.show(block=False)
 
 #2. plot
-fig, ax2 = plt.subplots()
-plt.plot([x[1] for x in values], [x[2] for x in values], label="plot")     # add label
+plot.figure(num=2, clear=True)
+plot.plot([x[1] for x in values], [x[2] for x in values],  label="plot")     # add label
+ax = plot.gca()
+ax.add_artist(plot.Circle((0, 0), 248, fill=False, color='black'))
+plot.xlabel ('current_A [internal unit (-256 bit; 256 bit)]')
+plot.ylabel ('current_B [internal unit (-256 bit; 256 bit)]')
+plot.title ('current_B over current_A')
+plot.legend(loc="upper left")
 
-ax2.add_artist(plt.Circle((0, 0), 248, fill=False, color="black"))
-ax2.set_xlabel("current_A [internal unit (-256 bit; 256 bit)]")
-ax2.set_ylabel("current_B [internal unit (-256 bit; 256 bit)]")
-ax2.set_title("current_B over current_A")
-plt.legend(loc="upper left")
+plot.show()
 
-plt.show()
-
-plt.close('all')
+plot.close('all')
