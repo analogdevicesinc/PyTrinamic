@@ -20,12 +20,11 @@ import time
 import pytrinamic
 import numpy as np
 import matplotlib.pyplot as plt
-def speed_step2rotation(x): return x / 53687
-def speed_rotation2step(x): return x * 53687
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
-
+def speed_step2rotation(x): return x / 53687
+def speed_rotation2step(x): return x * 53687
 
 pytrinamic.show_info()
 
