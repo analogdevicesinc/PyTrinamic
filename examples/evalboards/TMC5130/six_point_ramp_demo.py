@@ -19,7 +19,6 @@ In the current configuration, it uses a sixPoint ramp. That improves the control
 import time
 import pytrinamic
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 def speed_step2rotation(x): return x / 53687
 def speed_rotation2step(x): return x * 53687
@@ -43,7 +42,6 @@ with ConnectionManager().connect() as my_interface:
     # For "Trapezoid Mode" set A1 = D1 = AMAX = DMAX
     # For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
-
     print("Preparing parameters...")                         #Name     |  Mode   |           Task
     eval_board.write_register(mc.REG.A1, 8000)         #A1       | 6 piont | initial acceleration between VSTART and V1
     eval_board.write_register(mc.REG.AMAX, 800)        #AMAX     | trapez. | accelaration in the end
@@ -65,7 +63,6 @@ with ConnectionManager().connect() as my_interface:
     print("Rotating...")
     motor.rotate(-7 * 25600)
     time.sleep(5)
-
 
     print("Stopping...")
     motor.stop()
@@ -94,7 +91,7 @@ with ConnectionManager().connect() as my_interface:
 
     #1. Plot: position
     x = np.arange(0, (i)*T_s, T_s)
-    fig, ax1 = plt.subplots()
+    fig1, ax1 = plt.subplots()
     ax1.plot(x, values_position)
     ax1.set_xlabel("Time [s]")
     ax1.set_ylabel("Position [Microsteps]")
@@ -103,8 +100,8 @@ with ConnectionManager().connect() as my_interface:
     plt.show(block=False)
 
     # 2. Plot: speed
-    fig, ax2 = plt.subplots()
-    plt.plot(x, values_speed)
+    fig2, ax2 = plt.subplots()
+    ax2.plot(x, values_speed)
     ax2.set_xlabel("Time [s]")
     ax2.set_ylabel("Speed [Microsteps / second]")
     secax = ax2.secondary_yaxis('right', functions=(speed_step2rotation, speed_rotation2step))
@@ -115,7 +112,6 @@ with ConnectionManager().connect() as my_interface:
 
  #calculating the acceleration
     values_acceleration = []
-    values_acceleration_smoth=[]
     m=0
     for ii in values_speed:
         values_acceleration.append((values_speed[m-1]-values_speed[m])/(values_time[m-1]-values_time[m]))
@@ -123,8 +119,8 @@ with ConnectionManager().connect() as my_interface:
     values_acceleration[0]=values_acceleration[1] #first speed value is incorrect. Therefore it is replaced
 
     # 3. Plot: acceleration
-    fig, ax3 = plt.subplots()
-    plt.plot(x, values_acceleration)
+    fig3, ax3 = plt.subplots()
+    ax3.plot(x, values_acceleration)
     ax3.set_xlabel("Time [s]")
     ax3.set_ylabel("Acceleration [Microsteps /s^2]")
     ax3.set_title("Acceleration")
