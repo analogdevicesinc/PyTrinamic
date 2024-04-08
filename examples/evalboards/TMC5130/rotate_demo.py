@@ -10,13 +10,20 @@ Line 31, we set a lower run/standby current for the motor. Using NEMA17, this sh
 If the motor is stalling due to too low current, set motorCurrent higher.
 If a lower value still is needed, set GLOBAL_SCALER register to 128 to half motor current.
 
-Created on 15.05.2019 by ME
+In the end, the script  has  3 plots of position, velocity and acceleration
+The acceleration is calculated. Position and speed are read out. The values are not the actual ones.
+
+In the current configuration, it uses a sixPoint ramp. That improves the control system ability.
+
 """
 import time
 import pytrinamic
 import numpy as np
 import math
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
+def speed_step2rotation(x): return x / 53687
+def speed_rotation2step(x): return x * 53687
+
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
@@ -31,22 +38,20 @@ with ConnectionManager().connect() as my_interface:
     mc = eval_board.ics[0]
     motor = eval_board.motors[0]
 
-    #it can be used with "Trapezoid Mode" (tapez.) : acceleration, constant speed, deacceleration
-    #or the "6 Point Mode" where the acceleration and deceleration, are splitted in two stages
-    #For "Trapezoid Mode" set A1 = D1 < AMAX = DMAX             -> this is the mode right now
-    #For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX
-
-
+    # it can be used with "Trapezoid Mode" (tapez.) : acceleration, constant speed, deacceleration
+    # or the "6 Point Mode" where the acceleration and deceleration, are splitted in two stages
+    # For "Trapezoid Mode" set A1 = D1 = AMAX = DMAX
+    # For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
     print("Preparing parameters...")                         #Name     |  Mode   |           Task
     eval_board.write_register(mc.REG.A1, 1000)         #A1       | 6 piont | initial acceleration between VSTART and V1
     eval_board.write_register(mc.REG.AMAX, 1000)       #AMAX     | trapez. | accelaration in the end
-    eval_board.write_register(mc.REG.V1, 50000)        #V1       |         | threshold for the  first acceleration phase
+    eval_board.write_register(mc.REG.V1, 100000)       #V1       |         | threshold for the  first acceleration phase
     eval_board.write_register(mc.REG.D1, 1000)         #D1       | 6 piont | de/acceleration in the  end / start
     eval_board.write_register(mc.REG.DMAX, 1000)       #DMAX     | trapez. | initial deacceleration
     eval_board.write_register(mc.REG.VSTART, 0)        #VSTART   |         | Motor start velocity
     eval_board.write_register(mc.REG.VSTOP, 10)        #VSTOP    |         | Motor stop velocity threshold
-    v_max=5 * 25600  #= 179'200                                                  | max velocity
+    v_max = 7 * 25600  #= 179'200                                                | max velocity
 
     # Set lower run/standby current
     motorCurrent = 2
@@ -63,24 +68,18 @@ with ConnectionManager().connect() as my_interface:
 
     print("Stopping...")
     motor.stop()
-    time.sleep(3)
-
+    time.sleep(2)
 
     print("Moving back to 0...")
     motor.move_to(0, -v_max)
 
     # Wait until position 0 is reached
-    i=0                    # Sample count
-    T_s=0.2                #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
-
-    time_ref =time.perf_counter()
+    T_s = 0.2                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
 
     while motor.actual_position != 0:
-        print(f"time: {time.perf_counter()- time_ref:.1f} s\tActual position: {motor.actual_position} \t Actual speed: {motor.actual_velocity}")
-        i+=1
+        print(f"Actual position: {motor.actual_position} \t Actual speed: {motor.actual_velocity}")
         time.sleep(T_s)
 
     print("Reached position 0\t Reached speed 0")
-
 
 print("\nReady.")
