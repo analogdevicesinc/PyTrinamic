@@ -145,8 +145,8 @@ print(values)
 print(measured)
 
 #1. Plot
-fig, ax1 = plt.subplots()
-plt.plot([(x[1], x[2]) for x in values])
+fig1, ax1 = plt.subplots()
+ax1.plot([(x[1], x[2]) for x in values])
 ax1.legend(("CUR_A', 'CUR_B"))                                                    # add label
 ax1.set_xlabel("Microstep counter (MSCNT)")
 ax1.set_ylabel("Current [internal unit (-256 bit; 256 bit)]")
@@ -154,9 +154,8 @@ ax1.set_title("Microstep Table for a full step")
 plt.show(block=False)
 
 #2. plot
-fig, ax2 = plt.subplots()
-plt.plot([x[1] for x in values], [x[2] for x in values], label="plot")     # add label
-
+fig2, ax2 = plt.subplots()
+ax2.plot([x[1] for x in values], [x[2] for x in values], label="plot")     # add label
 ax2.add_artist(plt.Circle((0, 0), 248, fill=False, color="black"))
 ax2.set_xlabel("current_A [internal unit (-256 bit; 256 bit)]")
 ax2.set_ylabel("current_B [internal unit (-256 bit; 256 bit)]")
