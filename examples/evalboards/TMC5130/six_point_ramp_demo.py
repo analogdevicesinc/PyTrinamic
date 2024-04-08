@@ -41,15 +41,15 @@ with ConnectionManager().connect() as my_interface:
     # For "Trapezoid Mode" set A1 = D1 = AMAX = DMAX
     # For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
-    print("Preparing parameters...")                         #Name     |  Mode   |           Task
-    eval_board.write_register(mc.REG.A1, 8000)         #A1       | 6 piont | initial acceleration between VSTART and V1
-    eval_board.write_register(mc.REG.AMAX, 800)        #AMAX     | trapez. | accelaration in the end
-    eval_board.write_register(mc.REG.V1, 100000)       #V1       |         | threshold for the  first acceleration phase
-    eval_board.write_register(mc.REG.D1, 8000)         #D1       | 6 piont | de/acceleration in the  end / start
-    eval_board.write_register(mc.REG.DMAX, 800)        #DMAX     | trapez. | initial deacceleration
-    eval_board.write_register(mc.REG.VSTART, 0)        #VSTART   |         | Motor start velocity
-    eval_board.write_register(mc.REG.VSTOP, 10)        #VSTOP    |         | Motor stop velocity threshold
-    v_max = 7 * 25600  #= 179'200                                                | max velocity
+    print("Preparing parameters...")                 # Name     |  Mode   |           Task
+    eval_board.write_register(mc.REG.A1, 8000)       # A1       | 6 piont | initial acceleration between VSTART and V1
+    eval_board.write_register(mc.REG.AMAX, 800)      # AMAX     | trapez. | accelaration in the end
+    eval_board.write_register(mc.REG.V1, 100000)     # V1       |         | threshold for the  first acceleration phase
+    eval_board.write_register(mc.REG.D1, 8000)       # D1       | 6 piont | de/acceleration in the  end / start
+    eval_board.write_register(mc.REG.DMAX, 800)      # DMAX     | trapez. | initial deacceleration
+    eval_board.write_register(mc.REG.VSTART, 0)      # VSTART   |         | Motor start velocity
+    eval_board.write_register(mc.REG.VSTOP, 10)      # VSTOP    |         | Motor stop velocity threshold
+    v_max = 7 * 25600  #= 179'200                                         | max velocity
 
     # Set lower run/standby current
     motorCurrent = 2
@@ -89,7 +89,7 @@ with ConnectionManager().connect() as my_interface:
     print(f"Time: {time.perf_counter() - time_ref:.2f}s\t\tReached position 0\t\t Reached speed 0")
 
     #1. Plot: position
-    x = np.arange(0, (i)*T_s, T_s)
+    x = np.arange(0, i*T_s, T_s)
     fig1, ax1 = plt.subplots()
     ax1.plot(x, values_position)
     ax1.set_xlabel("Time [s]")
@@ -109,13 +109,13 @@ with ConnectionManager().connect() as my_interface:
     ax2.set_title("Speed")
     plt.show(block=False)
 
- #calculating the acceleration
+    #calculating the acceleration
     values_acceleration = []
-    m=0
+    m = 0
     for ii in values_speed:
         values_acceleration.append((values_speed[m-1]-values_speed[m])/(values_time[m-1]-values_time[m]))
         m += 1
-    values_acceleration[0]=values_acceleration[1] #first speed value is incorrect. Therefore it is replaced
+    values_acceleration[0] = values_acceleration[1] #first speed value is incorrect. Therefore it is replaced
 
     # 3. Plot: acceleration
     fig3, ax3 = plt.subplots()
