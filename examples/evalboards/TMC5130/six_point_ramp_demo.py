@@ -25,9 +25,9 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
 full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
-# Most motors have PolePairs = 200. But that is not necessarily like that!
-micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256 # = 51200
-# One mechanical revolution = PolePairs * 4 * 256 Microsteps = 50 * 4 * 256 = 51200 microsteps per mechanical revolution
+# Most motors have 200 full steps per revolution! a full step  = PolePairs * 4
+micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256
+# One mechanical revolution = 300 full steps * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
 
 
 def speed_step2rotation(x): return x / full_steps_per_mechanical_revolution
@@ -60,16 +60,16 @@ with ConnectionManager().connect() as my_interface:
     v_max = round( 4 * micro_steps_per_mechanical_revolution)  # [rps]    | max velocity
 
     # Set lower run/standby current
-    motorCurrent = 2
-    motor.set_axis_parameter(motor.AP.RunCurrent, motorCurrent)
-    motor.set_axis_parameter(motor.AP.StandbyCurrent, motorCurrent)
+    motor_current = 2
+    motor.set_axis_parameter(motor.AP.RunCurrent, motor_current)
+    motor.set_axis_parameter(motor.AP.StandbyCurrent, motor_current)
 
     # Clear actual positions
     motor.actual_position = 0
 
     print("Rotating...")
     motor.rotate(-v_max)
-    time.sleep(15)
+    time.sleep(5)
 
     print("Stopping...")
     motor.stop()
@@ -82,7 +82,7 @@ with ConnectionManager().connect() as my_interface:
 
     # Wait until position 0 is reached
     i = 0                         # Sample count
-    T_s = 0.001                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
+    T_s = 0.005                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
     values_position = []
     values_speed = []
     values_time = []
@@ -124,12 +124,13 @@ with ConnectionManager().connect() as my_interface:
     plt.show(block=False)
 
     #calculating the acceleration
-    values_acceleration = []
-    m = 0
-    for ii in values_speed:
-        values_acceleration.append((values_speed[m-1]-values_speed[m])/(values_time[m-1]-values_time[m]))
-        m += 1
-    values_acceleration[0] = values_acceleration[1] #first speed value is incorrect. Therefore it is replaced
+    values_acceleration = [0]
+    j = 0
+    for _ in values_speed[1:]:
+        values_acceleration.append((values_speed[j-1]-values_speed[j])/(values_time[j-1]-values_time[j]))
+        j += 1
+    values_acceleration.append(0)
+    values_time.append(values_time[i]+T_s)
 
     # 3. Plot: acceleration
     fig3, ax3 = plt.subplots()
