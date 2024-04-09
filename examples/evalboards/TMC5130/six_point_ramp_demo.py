@@ -18,16 +18,15 @@ In the current configuration, it uses a sixPoint ramp. That improves the control
 """
 import time
 import pytrinamic
-import numpy as np
 import matplotlib.pyplot as plt
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
 full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
-# Most motors have 200 full steps per revolution! a full step  = PolePairs * 4
+# Most motors have 50 full steps per revolution! a full step  = PolePairs * 4
 micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256
-# One mechanical revolution = 300 full steps * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
+# One mechanical revolution = 200 full steps * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
 
 
 def speed_step2rotation(x): return x / full_steps_per_mechanical_revolution
