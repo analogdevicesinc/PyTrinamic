@@ -22,6 +22,12 @@ import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
+full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
+# Most motors have PolePairs = 200. But that is not necessarily like that!
+micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256 # = 51200
+# One mechanical revolution = PolePairs * 4 * 256 Microsteps = 50 * 4 * 256 = 51200 microsteps per mechanical revolution
+
+
 pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
@@ -45,7 +51,7 @@ with ConnectionManager().connect() as my_interface:
     eval_board.write_register(mc.REG.DMAX, 1000)     # DMAX     | trapez. | initial deacceleration
     eval_board.write_register(mc.REG.VSTART, 0)      # VSTART   |         | Motor start velocity
     eval_board.write_register(mc.REG.VSTOP, 10)      # VSTOP    |         | Motor stop velocity threshold
-    v_max = 7 * 25600  #= 179'200                                         | max velocity
+    v_max = round( 4 * micro_steps_per_mechanical_revolution)    # [rps]  | max velocity
 
     # Set lower run/standby current
     motorCurrent = 2
@@ -56,11 +62,12 @@ with ConnectionManager().connect() as my_interface:
     motor.actual_position = 0
 
     print("Rotating...")
-    motor.rotate(-7 * 25600)
+    motor.rotate(-v_max)
     time.sleep(5)
 
     print("Stopping...")
     motor.stop()
+
     time.sleep(2)
 
     print("Moving back to 0...")
