@@ -23,14 +23,10 @@ import matplotlib.pyplot as plt
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
-full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
-# Most motors have 50 full steps per revolution! a full step  = PolePairs * 4
-micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256
-# One mechanical revolution = 200 full steps * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
+micro_steps_per_mechanical_revolution = 53687   # unit [ppt}
 
-
-def speed_step2rotation(x): return x / full_steps_per_mechanical_revolution
-def speed_rotation2step(x): return x * full_steps_per_mechanical_revolution
+def speed_step2rotation(x): return x / micro_steps_per_mechanical_revolution
+def speed_rotation2step(x): return x * micro_steps_per_mechanical_revolution
 
 
 pytrinamic.show_info()
@@ -56,10 +52,10 @@ with ConnectionManager().connect() as my_interface:
     eval_board.write_register(mc.REG.DMAX, 800)      # DMAX     | trapez. | initial deacceleration
     eval_board.write_register(mc.REG.VSTART, 0)      # VSTART   |         | Motor start velocity
     eval_board.write_register(mc.REG.VSTOP, 10)      # VSTOP    |         | Motor stop velocity threshold
-    v_max = round( 4 * micro_steps_per_mechanical_revolution)  # [rps]    | max velocity
+    v_max = round(4 * micro_steps_per_mechanical_revolution)   # [rps]    | max velocity
 
     # Set lower run/standby current
-    motor_current = 2
+    motor_current = 1
     motor.set_axis_parameter(motor.AP.RunCurrent, motor_current)
     motor.set_axis_parameter(motor.AP.StandbyCurrent, motor_current)
 

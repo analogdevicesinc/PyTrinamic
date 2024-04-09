@@ -22,11 +22,7 @@ import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
-full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
-# Most motors have 50 full steps per revolution! a full step  = PolePairs * 4
-micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256
-# One mechanical revolution = 200 full steps * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
-
+micro_steps_per_mechanical_revolution = 53687   # unit [ppt}
 
 pytrinamic.show_info()
 
@@ -54,7 +50,7 @@ with ConnectionManager().connect() as my_interface:
     v_max = round( 4 * micro_steps_per_mechanical_revolution)    # [rps]  | max velocity
 
     # Set lower run/standby current
-    motor_current = 2
+    motor_current = 1
     motor.set_axis_parameter(motor.AP.RunCurrent, motor_current)
     motor.set_axis_parameter(motor.AP.StandbyCurrent, motor_current)
 
