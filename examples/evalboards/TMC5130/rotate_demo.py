@@ -54,9 +54,9 @@ with ConnectionManager().connect() as my_interface:
     v_max = round( 4 * micro_steps_per_mechanical_revolution)    # [rps]  | max velocity
 
     # Set lower run/standby current
-    motorCurrent = 2
-    motor.set_axis_parameter(motor.AP.RunCurrent, motorCurrent)
-    motor.set_axis_parameter(motor.AP.StandbyCurrent, motorCurrent)
+    motor_current = 2
+    motor.set_axis_parameter(motor.AP.RunCurrent, motor_current)
+    motor.set_axis_parameter(motor.AP.StandbyCurrent, motor_current)
 
     # Clear actual positions
     motor.actual_position = 0
