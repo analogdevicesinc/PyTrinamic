@@ -23,9 +23,9 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
 full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
-# Most motors have PolePairs = 200. But that is not necessarily like that!
-micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256 # = 51200
-# One mechanical revolution = PolePairs * 4 * 256 Microsteps = 50 * 4 * 256 = 51200 microsteps per mechanical revolution
+# Most motors have 50 full steps per revolution! a full step  = PolePairs * 4
+micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256
+# One mechanical revolution = 200 full steps * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
 
 
 pytrinamic.show_info()
