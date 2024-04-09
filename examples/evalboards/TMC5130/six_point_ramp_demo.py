@@ -23,10 +23,16 @@ import matplotlib.pyplot as plt
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
-def speed_step2rotation(x): return x / 200 * 256    # = 51200 Microsteps per mechanical revolution
-def speed_rotation2step(x): return x * 200 * 256    # = 51200 Microsteps per mechanical revolution
-# One mechanical revolution = PolePairs * 4 * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
+
+full_steps_per_mechanical_revolution = 200 # A full step = PolePairs * 4.
 # Most motors have PolePairs = 200. But that is not necessarily like that!
+micro_steps_per_mechanical_revolution = full_steps_per_mechanical_revolution * 256 # = 51200
+# One mechanical revolution = PolePairs * 4 * 256 Microsteps = 50 * 4 * 256 = 51200 microsteps per mechanical revolution
+
+
+def speed_step2rotation(x): return x / full_steps_per_mechanical_revolution
+def speed_rotation2step(x): return x * full_steps_per_mechanical_revolution
+
 
 pytrinamic.show_info()
 
@@ -51,7 +57,7 @@ with ConnectionManager().connect() as my_interface:
     eval_board.write_register(mc.REG.DMAX, 800)      # DMAX     | trapez. | initial deacceleration
     eval_board.write_register(mc.REG.VSTART, 0)      # VSTART   |         | Motor start velocity
     eval_board.write_register(mc.REG.VSTOP, 10)      # VSTOP    |         | Motor stop velocity threshold
-    v_max = 7 * 25600  #= 179'200                                         | max velocity
+    v_max = round( 4 * micro_steps_per_mechanical_revolution)  # [rps]    | max velocity
 
     # Set lower run/standby current
     motorCurrent = 2
@@ -62,19 +68,21 @@ with ConnectionManager().connect() as my_interface:
     motor.actual_position = 0
 
     print("Rotating...")
-    motor.rotate(-7 * 25600)
-    time.sleep(5)
+    motor.rotate(-v_max)
+    time.sleep(15)
 
     print("Stopping...")
     motor.stop()
-    time.sleep(2)
+
+    while motor.actual_velocity != 0:
+        time.sleep(0.1)
 
     print("Moving back to 0...")
     motor.move_to(0, -v_max)
 
     # Wait until position 0 is reached
     i = 0                         # Sample count
-    T_s = 0.005                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
+    T_s = 0.001                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
     values_position = []
     values_speed = []
     values_time = []
@@ -88,25 +96,29 @@ with ConnectionManager().connect() as my_interface:
         i += 1
         time.sleep(T_s)
 
+    values_position.append(motor.actual_position)
+    values_speed.append(motor.actual_velocity)
+    values_time.append(time.perf_counter() - time_ref)
     print(f"Time: {time.perf_counter() - time_ref:.2f}s\t\tReached position 0\t\t Reached speed 0")
 
     #1. Plot: position
-    x = np.arange(0, i*T_s, T_s)
     fig1, ax1 = plt.subplots()
-    ax1.plot(x, values_position)
+    ax1.plot(values_time, values_position)
     ax1.set_xlabel("Time [s]")
     ax1.set_ylabel("Position [Microsteps]")
+    secax1 = ax1.secondary_yaxis('right', functions=(speed_step2rotation, speed_rotation2step))
+    secax1.set_ylabel("Position [ruonds]")
     ax1.set_title("Position")
     ax1.ticklabel_format(axis="y", scilimits=[-3, 3])
     plt.show(block=False)
 
     # 2. Plot: speed
     fig2, ax2 = plt.subplots()
-    ax2.plot(x, values_speed)
+    ax2.plot(values_time, values_speed)
     ax2.set_xlabel("Time [s]")
     ax2.set_ylabel("Speed [Microsteps / second]")
-    secax = ax2.secondary_yaxis('right', functions=(speed_step2rotation, speed_rotation2step))
-    secax.set_ylabel("Speed [rps]")
+    secax2 = ax2.secondary_yaxis('right', functions=(speed_step2rotation, speed_rotation2step))
+    secax2.set_ylabel("Speed [rps]")
     ax2.ticklabel_format(axis="y", scilimits=[-3, 3])
     ax2.set_title("Speed")
     plt.show(block=False)
@@ -121,12 +133,12 @@ with ConnectionManager().connect() as my_interface:
 
     # 3. Plot: acceleration
     fig3, ax3 = plt.subplots()
-    ax3.plot(x, values_acceleration)
+    ax3.plot(values_time, values_acceleration)
     ax3.set_xlabel("Time [s]")
     ax3.set_ylabel("Acceleration [Microsteps /s^2]")
     ax3.set_title("Acceleration")
-    secax = ax3.secondary_yaxis("right", functions=(speed_step2rotation, speed_rotation2step))
-    secax.set_ylabel("Acceleration [round/s^2]")
+    secax3 = ax3.secondary_yaxis("right", functions=(speed_step2rotation, speed_rotation2step))
+    secax3.set_ylabel("Acceleration [round/s^2]")
     ax3.ticklabel_format(axis='y', scilimits=[-3, 3])
     plt.show()
     plt.close('all')
