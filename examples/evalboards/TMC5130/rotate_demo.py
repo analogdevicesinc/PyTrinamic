@@ -22,7 +22,7 @@ import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
-micro_steps_per_mechanical_revolution = 53687   # unit [ppt}
+micro_steps_per_mechanical_revolution = 53687   # unit [ppt] = [µsteps / t]
 
 pytrinamic.show_info()
 

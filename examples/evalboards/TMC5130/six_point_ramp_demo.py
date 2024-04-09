@@ -23,7 +23,17 @@ import matplotlib.pyplot as plt
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 
-micro_steps_per_mechanical_revolution = 53687   # unit [ppt}
+micro_steps_per_mechanical_revolution = 53687   # unit [ppt] = [µsteps / t]
+"""
+Definition in the Datasheet page 36 and 75
+[ppt] = [µsteps / t]
+[pps] = [µsteps / s]
+f_CLK = 16 MHz   commonly   (page 52)
+
+v_pps = v_ppt * (f_CKL / 2 /2^23)
+a_pps = a_ppt * /2 *(512 * 265)/2^24
+
+"""
 
 def speed_step2rotation(x): return x / micro_steps_per_mechanical_revolution
 def speed_rotation2step(x): return x * micro_steps_per_mechanical_revolution
