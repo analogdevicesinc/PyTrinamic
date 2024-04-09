@@ -23,8 +23,10 @@ import matplotlib.pyplot as plt
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
-def speed_step2rotation(x): return x / 53687
-def speed_rotation2step(x): return x * 53687
+def speed_step2rotation(x): return x / 200 * 256    # = 51200 Microsteps per mechanical revolution
+def speed_rotation2step(x): return x * 200 * 256    # = 51200 Microsteps per mechanical revolution
+# One mechanical revolution = PolePairs * 4 * 256 Microsteps = 200 * 256 = 51200 microsteps per mechanical revolution
+# Most motors have PolePairs = 200. But that is not necessarily like that!
 
 pytrinamic.show_info()
 
