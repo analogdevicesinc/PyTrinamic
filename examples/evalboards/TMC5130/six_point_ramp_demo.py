@@ -53,7 +53,7 @@ with ConnectionManager().connect() as my_interface:
     # it can be used with "Trapezoid Mode" (tapez.) : acceleration, constant speed, deacceleration
     # or the "6 Point Mode" where the acceleration and deceleration, are splitted in two stages
     # For "Trapezoid Mode" set A1 = D1 = AMAX = DMAX
-    # For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
+    # For symmetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
     print("Preparing parameters...")
 
@@ -85,7 +85,7 @@ with ConnectionManager().connect() as my_interface:
     eval_board.write_register(mc.REG.VSTOP, 10)                           # VSTOP  | µsteps |         | Motor stop velocity threshold
 
     print("Rotating...")
-    eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # aktivate velocity mode in negative direction
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # activate velocity mode in negative direction
     time.sleep(5)
 
     print("Stopping...")
@@ -98,8 +98,8 @@ with ConnectionManager().connect() as my_interface:
     print("Moving back to 0...")
     traget_position = 0
     eval_board.write_register_field(mc.FIELD.VMAX, v_max)                   # set max speed
-    eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)      # set traget position to 0
-    eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)                   # aktivate position mode
+    eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)      # set target position to 0
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)                   # activate position mode
 
     # Wait until position 0 is reached
     i = 0       # Sample count

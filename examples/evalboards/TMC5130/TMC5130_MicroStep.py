@@ -124,25 +124,25 @@ with ConnectionManager().connect() as my_interface:
 
             measured = measured + [(STEP, CUR_A, CUR_B)]
             v_max= 1000
-            traget_position = 1
+            taraget_position = 1
             eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
-            eval.write_register_field(ic.FIELD.XTARGET, traget_position)  # set traget position to 0
-            eval.write_register_field(ic.FIELD.RAMPMODE, 0)  # aktivate position mode
+            eval.write_register_field(ic.FIELD.XTARGET, taraget_position)  # set target position to 0
+            eval.write_register_field(ic.FIELD.RAMPMODE, 0)  # activate position mode
             time.sleep(0.1)
-            print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              #shows the progress
+            print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              # shows the progress
 
         print('\rProgress: 100 %')
         v_max = 53678
-        traget_position = 0
+        taraget_position = 0
         eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
-        eval.write_register_field(ic.FIELD.XTARGET, traget_position)  # set traget position to 0
+        eval.write_register_field(ic.FIELD.XTARGET, taraget_position)  # set target  position to 0
 
 print()
 print("Results:")
 print(values)
 print(measured)
 
-#1. Plot
+# 1. Plot
 fig1, ax1 = plt.subplots()
 ax1.plot([(x[1], x[2]) for x in values])
 ax1.legend(("CUR_A', 'CUR_B"))                                                    # add label
@@ -151,7 +151,7 @@ ax1.set_ylabel("Current [internal unit (-256 bit; 256 bit)]")
 ax1.set_title("Microstep Table for a full step")
 plt.show(block=False)
 
-#2. plot
+# 2. plot
 fig2, ax2 = plt.subplots()
 ax2.plot([x[1] for x in values], [x[2] for x in values], label="plot")     # add label
 ax2.add_artist(plt.Circle((0, 0), 248, fill=False, color="black"))

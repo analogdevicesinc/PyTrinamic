@@ -35,7 +35,7 @@ def stallguard2_init(mc, motor, eval_board, init_velocity):
     microstep_resolution = eval_board.read_register_field(mc.FIELD.MRES)
     v_max = rotation2step( init_velocity)     # internal unit  <- rps
     eval_board.write_register_field(mc.FIELD.VMAX, v_max)                   # set max speed in the register
-    eval_board.write_register_field(mc.FIELD.RAMPMODE, 1)                   # aktivate velocity mode in positv direction
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 1)                   # activate velocity mode in positive direction
     sgthresh = 0
     sgt = 0
 

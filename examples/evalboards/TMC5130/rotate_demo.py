@@ -44,7 +44,7 @@ with ConnectionManager().connect() as my_interface:
     # it can be used with "Trapezoid Mode" (tapez.) : acceleration, constant speed, deacceleration
     # or the "6 Point Mode" where the acceleration and deceleration, are splitted in two stages
     # For "Trapezoid Mode" set A1 = D1 = AMAX = DMAX
-    # For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
+    # For symmetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
     print("Preparing parameters...")
     v_max = round(4 * micro_steps_per_mechanical_revolution)  # 4 rps --> [ppt]
@@ -70,7 +70,7 @@ with ConnectionManager().connect() as my_interface:
                                                             #         | (have a look at six_point_ramp_demo)
 
     print("Rotating...")
-    eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # aktivate velocity mode in negative direction
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # activate velocity mode in negative direction
     time.sleep(5)
 
     print("Stopping...")
@@ -79,15 +79,15 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(2)
 
     print("Moving back to 0...")
-    traget_position = 10000
+    target_position = 10000
     eval_board.write_register_field(mc.FIELD.VMAX, v_max)                   # set max speed
-    eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)      # set traget position to 0
+    eval_board.write_register_field(mc.FIELD.XTARGET, target_position)      # set target position to 0
     eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)                   # aktivate position mode
 
     # Wait until position 0 is reached
     T_s = 0.2                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
 
-    while eval_board.read_register_field(mc.FIELD.XACTUAL) != traget_position:
+    while eval_board.read_register_field(mc.FIELD.XACTUAL) != target_position:
         print(f"Actual position: {to_signed_32(eval_board.read_register_field(mc.FIELD.XACTUAL))} \t Actual speed: {eval_board.read_register_field(mc.FIELD.VACTUAL)}")
         time.sleep(T_s)
 
