@@ -23,7 +23,7 @@ import pytrinamic
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.evalboards.TMC5130_eval import TMC5130_eval
 
-MEASURE = True
+MEASURE = False
 
 pytrinamic.show_info()
 
@@ -145,7 +145,7 @@ print(measured)
 # 1. Plot
 fig1, ax1 = plt.subplots()
 ax1.plot([(x[1], x[2]) for x in values])
-ax1.legend(("CUR_A', 'CUR_B"))                                                    # add label
+ax1.legend(('CUR_A', 'CUR_B'))                                                    # add label
 ax1.set_xlabel("Microstep counter (MSCNT)")
 ax1.set_ylabel("Current [internal unit (-256 bit; 256 bit)]")
 ax1.set_title("Microstep Table for a full step")
@@ -158,7 +158,7 @@ ax2.add_artist(plt.Circle((0, 0), 248, fill=False, color="black"))
 ax2.set_xlabel("current_A [internal unit (-256 bit; 256 bit)]")
 ax2.set_ylabel("current_B [internal unit (-256 bit; 256 bit)]")
 ax2.set_title("current_B over current_A")
-plt.legend(loc="upper left")
+ax2.legend(loc="upper left")
 
 plt.show()
 

@@ -47,7 +47,6 @@ with ConnectionManager().connect() as my_interface:
     # For symmetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
     print("Preparing parameters...")
-    v_max = round(4 * micro_steps_per_mechanical_revolution)  # 4 rps --> [ppt]
 
     # Set - ramp - parameters
     #########################                                       # Name   |  Unit  |  Mode   |           Task
@@ -68,7 +67,6 @@ with ConnectionManager().connect() as my_interface:
     eval_board.write_register_field(mc.FIELD.IHOLD, 1)      # IHOLD   | set Motor run current
     eval_board.write_register_field(mc.FIELD.MRES, M_RES)   # MRES    | set Microstep resolution (don't change!)
                                                             #         | (have a look at six_point_ramp_demo)
-
     print("Rotating...")
     eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # activate velocity mode in negative direction
     time.sleep(5)

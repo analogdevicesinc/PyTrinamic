@@ -27,6 +27,12 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
 from pytrinamic.helpers import to_signed_32
 
+M_RES = 3  # | M_res  = [0,1,2,3,4,5,6,7,8]
+def step2rotation(x):  # | converting Microsteps in rotation or rps or rps^2
+    return x / (micro_steps_per_mechanical_revolution / pow(2, M_RES))
+def rotation2step(x):  # | converting  rotation or rps or rps^2 in Microsteps
+    return x * (micro_steps_per_mechanical_revolution / pow(2, M_RES))
+
 micro_steps_per_mechanical_revolution = 53687   # unit [ppt] = [µsteps / t]
 
 """
@@ -59,12 +65,7 @@ with ConnectionManager().connect() as my_interface:
 
     # Set - other - parameters
     #########################                               # Name      |         Task
-    M_RES = 3                                               #           | M_res  = [0,1,2,3,4,5,6,7,8]
-    def step2rotation(x):                                   #           | converting Microsteps in rotation or rps or rps^2
-        return x / (micro_steps_per_mechanical_revolution / pow(2, M_RES))
-    def rotation2step(x):                                   #           | converting  rotation or rps or rps^2 in Microsteps
-        return x * (micro_steps_per_mechanical_revolution / pow(2, M_RES))
-    v_max = round(rotation2step(4))                   # Vmax = 4 rps
+    v_max = round(rotation2step(4))                         # Vmax      |
     eval_board.write_register_field(mc.FIELD.MRES, M_RES)   # MRES      | set Microstep resolution
     eval_board.write_register_field(mc.FIELD.XACTUAL, 0)    # XACTUAL   | Clear actual positions
     eval_board.write_register_field(mc.FIELD.VMAX,v_max)    # VMAX      | set max velocity
