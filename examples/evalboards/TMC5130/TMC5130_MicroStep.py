@@ -68,8 +68,6 @@ with ConnectionManager().connect() as my_interface:
     print("MSLUT_SEL:    0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSEL)))
     print("MSLUT_START:  0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSTART)))
 
-
-
     start = eval.read_register_field(ic.FIELD.START_SIN)
     values = [ (0, start) ]
 
@@ -107,19 +105,12 @@ with ConnectionManager().connect() as my_interface:
         print()
         print("Measuring")
         print("*********")
-        eval.write_register_field(ic.FIELD.IRUN, 10)
-        eval.write_register(ic.REG.A1, 10000)
-        eval.write_register(ic.REG.V1, 500000)
-        eval.write_register(ic.REG.D1, 10000)
-        eval.write_register(ic.REG.DMAX, 500)
-        eval.write_register(ic.REG.VSTART, 0)
-        eval.write_register(ic.REG.VSTOP, 10)
-        eval.write_register(ic.REG.AMAX, 1000)
 
-        if eval.read_register(ic.REG.MSCNT) != 0:
-            # ToDo: Move to 0 instead of erroring out
-            print("Error: Motor not at MS 0")
+        if eval.read_register(ic.REG.MSCNT) != 0:   # ensures that the microstep table is 0!
+            print("MSCNT = ",eval.read_register(ic.REG.MSCNT))
+            print("Error: Microstep table must be at 0! Please power cycle the TMC5130. ")
             exit(1)
+
 
         measured = []
         for i in range(0, 1025):
@@ -132,35 +123,42 @@ with ConnectionManager().connect() as my_interface:
             STEP  = eval.read_register_field(ic.FIELD.MSCNT)
 
             measured = measured + [(STEP, CUR_A, CUR_B)]
-            motor.move_to(1, 1000)
+            v_max= 1000
+            taraget_position = 1
+            eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
+            eval.write_register_field(ic.FIELD.XTARGET, taraget_position)  # set target position to 0
+            eval.write_register_field(ic.FIELD.RAMPMODE, 0)  # activate position mode
             time.sleep(0.1)
-            print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              #shows the progress
+            print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              # shows the progress
 
         print('\rProgress: 100 %')
-        motor.move_to(0, 1000)
+        v_max = 53678
+        taraget_position = 0
+        eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
+        eval.write_register_field(ic.FIELD.XTARGET, taraget_position)  # set target  position to 0
 
 print()
 print("Results:")
 print(values)
 print(measured)
 
-#1. Plot
+# 1. Plot
 fig1, ax1 = plt.subplots()
 ax1.plot([(x[1], x[2]) for x in values])
-ax1.legend(("CUR_A', 'CUR_B"))                                                    # add label
+ax1.legend(('CUR_A', 'CUR_B'))                                                    # add label
 ax1.set_xlabel("Microstep counter (MSCNT)")
 ax1.set_ylabel("Current [internal unit (-256 bit; 256 bit)]")
 ax1.set_title("Microstep Table for a full step")
 plt.show(block=False)
 
-#2. plot
+# 2. plot
 fig2, ax2 = plt.subplots()
 ax2.plot([x[1] for x in values], [x[2] for x in values], label="plot")     # add label
 ax2.add_artist(plt.Circle((0, 0), 248, fill=False, color="black"))
 ax2.set_xlabel("current_A [internal unit (-256 bit; 256 bit)]")
 ax2.set_ylabel("current_B [internal unit (-256 bit; 256 bit)]")
 ax2.set_title("current_B over current_A")
-plt.legend(loc="upper left")
+ax2.legend(loc="upper left")
 
 plt.show()
 

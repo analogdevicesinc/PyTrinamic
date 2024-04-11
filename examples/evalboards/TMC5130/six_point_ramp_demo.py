@@ -15,6 +15,9 @@ The acceleration is calculated. Position and speed are read out. The values are 
 
 In the current configuration, it uses a sixPoint ramp. That improves the control system ability.
 
+This is an advanced version of rotate_demo.py . It is more complex and shows more use case.
+For beginners it is recommended to understand at first the basic version!
+
 """
 import time
 import pytrinamic
@@ -22,8 +25,16 @@ import matplotlib.pyplot as plt
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5130_eval
+from pytrinamic.helpers import to_signed_32
+
+M_RES = 3  # | M_res  = [0,1,2,3,4,5,6,7,8]
+def step2rotation(x):  # | converting Microsteps in rotation or rps or rps^2
+    return x / (micro_steps_per_mechanical_revolution / pow(2, M_RES))
+def rotation2step(x):  # | converting  rotation or rps or rps^2 in Microsteps
+    return x * (micro_steps_per_mechanical_revolution / pow(2, M_RES))
 
 micro_steps_per_mechanical_revolution = 53687   # unit [ppt] = [µsteps / t]
+
 """
 Definition in the Datasheet page 36 and 75
 [ppt] = [µsteps / t]
@@ -34,10 +45,6 @@ v_pps = v_ppt * (f_CKL / 2 /2^23)
 a_pps = a_ppt * /2 *(512 * 265)/2^24
 
 """
-
-def speed_step2rotation(x): return x / micro_steps_per_mechanical_revolution
-def speed_rotation2step(x): return x * micro_steps_per_mechanical_revolution
-
 
 pytrinamic.show_info()
 
@@ -52,57 +59,67 @@ with ConnectionManager().connect() as my_interface:
     # it can be used with "Trapezoid Mode" (tapez.) : acceleration, constant speed, deacceleration
     # or the "6 Point Mode" where the acceleration and deceleration, are splitted in two stages
     # For "Trapezoid Mode" set A1 = D1 = AMAX = DMAX
-    # For symetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
+    # For symmetric "6 Point Mode" set V >>A1 = D1 > Amax = DMAX -> this is the mode right now
 
-    print("Preparing parameters...")                 # Name     |  Mode   |           Task
-    eval_board.write_register(mc.REG.A1, 8000)       # A1       | 6 piont | initial acceleration between VSTART and V1
-    eval_board.write_register(mc.REG.AMAX, 800)      # AMAX     | trapez. | accelaration in the end
-    eval_board.write_register(mc.REG.V1, 100000)     # V1       |         | threshold for the  first acceleration phase
-    eval_board.write_register(mc.REG.D1, 8000)       # D1       | 6 piont | de/acceleration in the  end / start
-    eval_board.write_register(mc.REG.DMAX, 800)      # DMAX     | trapez. | initial deacceleration
-    eval_board.write_register(mc.REG.VSTART, 0)      # VSTART   |         | Motor start velocity
-    eval_board.write_register(mc.REG.VSTOP, 10)      # VSTOP    |         | Motor stop velocity threshold
-    v_max = round(4 * micro_steps_per_mechanical_revolution)   # [rps]    | max velocity
+    print("Preparing parameters...")
 
-    # Set lower run/standby current
-    motor_current = 1
-    motor.set_axis_parameter(motor.AP.RunCurrent, motor_current)
-    motor.set_axis_parameter(motor.AP.StandbyCurrent, motor_current)
+    # Set - other - parameters
+    #########################                               # Name      |         Task
+    v_max = round(rotation2step(4))                         # Vmax      |
+    eval_board.write_register_field(mc.FIELD.MRES, M_RES)   # MRES      | set Microstep resolution
+    eval_board.write_register_field(mc.FIELD.XACTUAL, 0)    # XACTUAL   | Clear actual positions
+    eval_board.write_register_field(mc.FIELD.VMAX,v_max)    # VMAX      | set max velocity
+    eval_board.write_register_field(mc.FIELD.IRUN,2)        # IRUM      | set the standstill current
+    eval_board.write_register_field(mc.FIELD.IHOLD,2)       # IHOLD     | set Motor run current
+    eval_board.write_register_field(mc.FIELD.SG_STOP, 0)    # SG_STOP   | resets the StallGuard2 - Stop
+    eval_board.write_register_field(mc.FIELD.SGT, 0)        # SGT       | turns StallGuard2 off
 
-    # Clear actual positions
-    motor.actual_position = 0
+
+    # Set - ramp - parameters
+    #########################                                             # Name   |  Unit  |  Mode   |           Task
+    eval_board.write_register(mc.REG.A1, round(rotation2step(0.15)))      # A1     |  rps^2 | 6 piont | initial acceleration between VSTART and V1
+    eval_board.write_register(mc.REG.AMAX, round(rotation2step(0.015)))   # AMAX   |  rps^2 | trapez. | accelaration in the end
+    eval_board.write_register(mc.REG.V1, round(rotation2step(2)))         # V1     |  rps   |         | threshold for the  first acceleration phase
+    eval_board.write_register(mc.REG.D1, round(rotation2step(0.15)))      # D1     |  rps^2 | 6 piont | de/acceleration in the  end / start
+    eval_board.write_register(mc.REG.DMAX, round(rotation2step(0.015)))   # DMAX   |  rps^2 | trapez. | initial deacceleration
+    eval_board.write_register(mc.REG.VSTART, 0 )                          # VSTART | µsteps |         | Motor start velocity
+    eval_board.write_register(mc.REG.VSTOP, 10)                           # VSTOP  | µsteps |         | Motor stop velocity threshold
 
     print("Rotating...")
-    motor.rotate(-v_max)
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # activate velocity mode in negative direction
     time.sleep(5)
 
     print("Stopping...")
-    motor.stop()
+    eval_board.write_register_field(mc.FIELD.VMAX, 0)       # set speed to 0
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 2)   # apply changes
 
-    while motor.actual_velocity != 0:
+    while eval_board.read_register_field(mc.FIELD.VACTUAL) != 0:
         time.sleep(0.1)
 
     print("Moving back to 0...")
-    motor.move_to(0, -v_max)
+    traget_position = 0
+    eval_board.write_register_field(mc.FIELD.VMAX, v_max)                   # set max speed
+    eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)      # set target position to 0
+    eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)                   # activate position mode
 
     # Wait until position 0 is reached
-    i = 0                         # Sample count
-    T_s = 0.005                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
+    i = 0       # Sample count
+    T_s = 0.001 # Sampling Time [seconds] = Resolution of the plot ; Rage (0.5 ; 0.005) for M_res = 0 else smaler is possible
     values_position = []
     values_speed = []
     values_time = []
     time_ref = time.perf_counter()
 
-    while motor.actual_position != 0:
-        values_position.append(motor.actual_position)
-        values_speed.append(motor.actual_velocity)
+    while eval_board.read_register_field(mc.FIELD.XACTUAL) != traget_position:
+        values_position.append(to_signed_32(eval_board.read_register_field(mc.FIELD.XACTUAL)))
+        values_speed.append(eval_board.read_register_field(mc.FIELD.VACTUAL))
         values_time.append(time.perf_counter() - time_ref)
         print(f"Time: {values_time[i]:.2f}s\t\tActual position: {values_position[i]} \t Actual speed: {values_speed[i]}")
         i += 1
         time.sleep(T_s)
 
-    values_position.append(motor.actual_position)
-    values_speed.append(motor.actual_velocity)
+    values_position.append(eval_board.read_register_field(mc.FIELD.XACTUAL))
+    values_speed.append(eval_board.read_register_field(mc.FIELD.VACTUAL))
     values_time.append(time.perf_counter() - time_ref)
     print(f"Time: {time.perf_counter() - time_ref:.2f}s\t\tReached position 0\t\t Reached speed 0")
 
@@ -111,7 +128,7 @@ with ConnectionManager().connect() as my_interface:
     ax1.plot(values_time, values_position)
     ax1.set_xlabel("Time [s]")
     ax1.set_ylabel("Position [Microsteps]")
-    secax1 = ax1.secondary_yaxis('right', functions=(speed_step2rotation, speed_rotation2step))
+    secax1 = ax1.secondary_yaxis('right', functions=(step2rotation, rotation2step))
     secax1.set_ylabel("Position [ruonds]")
     ax1.set_title("Position")
     ax1.ticklabel_format(axis="y", scilimits=[-3, 3])
@@ -122,7 +139,7 @@ with ConnectionManager().connect() as my_interface:
     ax2.plot(values_time, values_speed)
     ax2.set_xlabel("Time [s]")
     ax2.set_ylabel("Speed [Microsteps / second]")
-    secax2 = ax2.secondary_yaxis('right', functions=(speed_step2rotation, speed_rotation2step))
+    secax2 = ax2.secondary_yaxis('right', functions=(step2rotation, rotation2step))
     secax2.set_ylabel("Speed [rps]")
     ax2.ticklabel_format(axis="y", scilimits=[-3, 3])
     ax2.set_title("Speed")
@@ -143,7 +160,7 @@ with ConnectionManager().connect() as my_interface:
     ax3.set_xlabel("Time [s]")
     ax3.set_ylabel("Acceleration [Microsteps /s^2]")
     ax3.set_title("Acceleration")
-    secax3 = ax3.secondary_yaxis("right", functions=(speed_step2rotation, speed_rotation2step))
+    secax3 = ax3.secondary_yaxis("right", functions=(step2rotation, rotation2step))
     secax3.set_ylabel("Acceleration [round/s^2]")
     ax3.ticklabel_format(axis='y', scilimits=[-3, 3])
     plt.show()
