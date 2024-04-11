@@ -106,10 +106,11 @@ with ConnectionManager().connect() as my_interface:
         print("Measuring")
         print("*********")
 
-        if (eval.read_register(ic.REG.MSCNT)) != 0 :
-                print("MSCNT = ", eval.read_register(ic.REG.MSCNT))
-                print("Error: Microstep table must be at 0 ! Please restart The TMC51030.")
-                exit(1)
+        if eval.read_register(ic.REG.MSCNT) != 0:   # ensures that the microstep table is 0!
+            print("MSCNT = ",eval.read_register(ic.REG.MSCNT))
+            print("Error: Microstep table must be at 0! Please power cycle the TMC5130. ")
+            exit(1)
+
 
         measured = []
         for i in range(0, 1025):
@@ -124,17 +125,17 @@ with ConnectionManager().connect() as my_interface:
             measured = measured + [(STEP, CUR_A, CUR_B)]
             v_max= 1000
             traget_position = 1
-            eval_board.write_register_field(mc.FIELD.VMAX, v_max)  # set max speed
-            eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)  # set traget position to 0
-            eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)  # aktivate position mode
+            eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
+            eval.write_register_field(ic.FIELD.XTARGET, traget_position)  # set traget position to 0
+            eval.write_register_field(ic.FIELD.RAMPMODE, 0)  # aktivate position mode
             time.sleep(0.1)
             print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              #shows the progress
 
         print('\rProgress: 100 %')
         v_max = 53678
         traget_position = 0
-        eval_board.write_register_field(mc.FIELD.VMAX, v_max)  # set max speed
-        eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)  # set traget position to 0
+        eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
+        eval.write_register_field(ic.FIELD.XTARGET, traget_position)  # set traget position to 0
 
 print()
 print("Results:")
