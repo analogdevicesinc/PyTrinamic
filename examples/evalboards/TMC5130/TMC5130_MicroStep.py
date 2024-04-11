@@ -68,8 +68,6 @@ with ConnectionManager().connect() as my_interface:
     print("MSLUT_SEL:    0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSEL)))
     print("MSLUT_START:  0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSTART)))
 
-
-
     start = eval.read_register_field(ic.FIELD.START_SIN)
     values = [ (0, start) ]
 
@@ -108,46 +106,10 @@ with ConnectionManager().connect() as my_interface:
         print("Measuring")
         print("*********")
 
-        eval_board = TMC5130_eval(my_interface)
-        mc = eval_board.ics[0]
-        motor = eval_board.motors[0]
-
-        # Set - ramp - parameters
-        #########################
-        eval.write_register(ic.REG.A1, 10000)
-        eval.write_register(ic.REG.V1, 500000)
-        eval.write_register(ic.REG.D1, 10000)
-        eval.write_register(ic.REG.DMAX, 500)
-        eval.write_register(ic.REG.VSTART, 0)
-        eval.write_register(ic.REG.VSTOP, 1)
-        eval.write_register(ic.REG.AMAX, 1000)
-
-        # Set - other - parameters
-        #########################                               # Name      |         Task
-        eval_board.write_register_field(mc.FIELD.XACTUAL, 0)    # XACTUAL   | Clear actual positions
-        eval_board.write_register_field(mc.FIELD.VMAX, 1000)    # VMAX      | set max velocity
-        eval_board.write_register_field(mc.FIELD.IRUN, 10)      # IRUM      | set the standstill current
-        eval_board.write_register_field(mc.FIELD.IHOLD, 1)      # IHOLD     | set Motor run current
-
-        if eval.read_register(ic.REG.MSCNT) != 0:   # ensures that the microstep table is 0!
-            print("Preparing parameters...")        # E.g. if the motor was previously tuned
-
-            print(eval.read_register(ic.REG.MSCNT))
-
-            Traget_position = -eval.read_register(ic.REG.MSCNT)
-            eval_board.write_register_field(mc.FIELD.VMAX, 53678)  # set max speed
-            eval_board.write_register_field(mc.FIELD.XTARGET, Traget_position)  # set traget position to 0
-            eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)  # aktivate position mode
-
-            while eval.read_register(ic.REG.MSCNT) != 0:
-                time.sleep(0.1)
-                i += 1
-                if i > 2 :
-                    print("Error: Motor could not reach position 0 on the Microstep table!")
-                    exit(1)
-            print(eval.read_register(ic.REG.MSCNT))
-
-
+        if (eval.read_register(ic.REG.MSCNT)) != 0 :
+                print("MSCNT = ", eval.read_register(ic.REG.MSCNT))
+                print("Error: Microstep table must be at 0 ! Please restart The TMC51030.")
+                exit(1)
 
         measured = []
         for i in range(0, 1025):
@@ -161,18 +123,18 @@ with ConnectionManager().connect() as my_interface:
 
             measured = measured + [(STEP, CUR_A, CUR_B)]
             v_max= 1000
-            Traget_position = 1
+            traget_position = 1
             eval_board.write_register_field(mc.FIELD.VMAX, v_max)  # set max speed
-            eval_board.write_register_field(mc.FIELD.XTARGET, Traget_position)  # set traget position to 0
+            eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)  # set traget position to 0
             eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)  # aktivate position mode
             time.sleep(0.1)
             print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              #shows the progress
 
         print('\rProgress: 100 %')
         v_max = 53678
-        Traget_position = 0
+        traget_position = 0
         eval_board.write_register_field(mc.FIELD.VMAX, v_max)  # set max speed
-        eval_board.write_register_field(mc.FIELD.XTARGET, Traget_position)  # set traget position to 0
+        eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)  # set traget position to 0
 
 print()
 print("Results:")

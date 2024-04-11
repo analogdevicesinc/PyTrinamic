@@ -25,6 +25,12 @@ from pytrinamic.helpers import to_signed_32
 
 micro_steps_per_mechanical_revolution = 53687   # unit [ppt] = [µsteps / t]
 
+M_RES = 0
+def step2rotation(x):  # | converting Microsteps in rotation or rps or rps^2
+    return x / (micro_steps_per_mechanical_revolution / pow(2, M_RES))
+def rotation2step(x):  # | converting  rotation or rps or rps^2 in Microsteps
+    return round(x * (micro_steps_per_mechanical_revolution / pow(2, M_RES)))
+
 pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
@@ -44,24 +50,24 @@ with ConnectionManager().connect() as my_interface:
     v_max = round(4 * micro_steps_per_mechanical_revolution)  # 4 rps --> [ppt]
 
     # Set - ramp - parameters
-    #########################                        # Name     |  Mode   |           Task
-    eval_board.write_register(mc.REG.A1, 1000)       # A1       | 6 piont | initial acceleration between VSTART and V1
-    eval_board.write_register(mc.REG.AMAX, 1000)     # AMAX     | trapez. | accelaration in the end
-    eval_board.write_register(mc.REG.V1, 100000)     # V1       |         | threshold for the  first acceleration phase
-    eval_board.write_register(mc.REG.D1, 1000)       # D1       | 6 piont | de/acceleration in the  end / start
-    eval_board.write_register(mc.REG.DMAX, 1000)     # DMAX     | trapez. | initial deacceleration
-    eval_board.write_register(mc.REG.VSTART, 0)      # VSTART   |         | Motor start velocity
-    eval_board.write_register(mc.REG.VSTOP, 10)      # VSTOP    |         | Motor stop velocity threshold
-    v_max = round( 4 * micro_steps_per_mechanical_revolution)   #         | max velocity = 4 rps
+    #########################                                       # Name   |  Unit  |  Mode   |           Task
+    eval_board.write_register(mc.REG.A1, rotation2step(0.018))      # A1     |  rps^2 | 6 piont | initial acceleration between VSTART and V1
+    eval_board.write_register(mc.REG.AMAX, rotation2step(0.018))    # AMAX   |  rps^2 | trapez. | accelaration in the end
+    eval_board.write_register(mc.REG.V1, rotation2step(2))          # V1     |  rps   |         | threshold for the  first acceleration phase
+    eval_board.write_register(mc.REG.D1, rotation2step(0.018))      # D1     |  rps^2 | 6 piont | de/acceleration in the  end / start
+    eval_board.write_register(mc.REG.DMAX, rotation2step(0.018))    # DMAX   |  rps^2 | trapez. | initial deacceleration
+    eval_board.write_register(mc.REG.VSTART, 0)                     # VSTART | µsteps |         | Motor start velocity
+    eval_board.write_register(mc.REG.VSTOP, 10)                     # VSTOP  | µsteps |         | Motor stop velocity threshold
+    v_max = rotation2step(4)                                        #        |  rps   |         | max velocity = 4 rps
 
     # Set - other - parameters
-    #########################                               # Name      |         Task
-    eval_board.write_register_field(mc.FIELD.XACTUAL, 0)    # XACTUAL   | Clear actual positions
-    eval_board.write_register_field(mc.FIELD.VMAX, v_max)   # VMAX      | set max velocity
-    eval_board.write_register_field(mc.FIELD.IRUN, 1)       # IRUM      | set the standstill current
-    eval_board.write_register_field(mc.FIELD.IHOLD, 1)      # IHOLD     | set Motor run current
-    eval_board.write_register_field(mc.FIELD.MRES, 0)       # MRES      | set Microstep resolution (don't change!)
-                                                            #           | (have a look at six_point_ramp_demo)
+    #########################                               # Name    |         Task
+    eval_board.write_register_field(mc.FIELD.XACTUAL, 0)    # XACTUAL | Clear actual positions
+    eval_board.write_register_field(mc.FIELD.VMAX, v_max)   # VMAX    | set max velocity
+    eval_board.write_register_field(mc.FIELD.IRUN, 1)       # IRUM    | set the standstill current
+    eval_board.write_register_field(mc.FIELD.IHOLD, 1)      # IHOLD   | set Motor run current
+    eval_board.write_register_field(mc.FIELD.MRES, M_RES)   # MRES    | set Microstep resolution (don't change!)
+                                                            #         | (have a look at six_point_ramp_demo)
 
     print("Rotating...")
     eval_board.write_register_field(mc.FIELD.RAMPMODE, 2) # aktivate velocity mode in negative direction
@@ -73,15 +79,15 @@ with ConnectionManager().connect() as my_interface:
     time.sleep(2)
 
     print("Moving back to 0...")
-    Traget_position = 10000
+    traget_position = 10000
     eval_board.write_register_field(mc.FIELD.VMAX, v_max)                   # set max speed
-    eval_board.write_register_field(mc.FIELD.XTARGET, Traget_position)      # set traget position to 0
+    eval_board.write_register_field(mc.FIELD.XTARGET, traget_position)      # set traget position to 0
     eval_board.write_register_field(mc.FIELD.RAMPMODE, 0)                   # aktivate position mode
 
     # Wait until position 0 is reached
     T_s = 0.2                   #Sampling Time [seconds]  = Resolution of the plot ; Rage (0.5 ; 0.005)
 
-    while eval_board.read_register_field(mc.FIELD.XACTUAL) != Traget_position:
+    while eval_board.read_register_field(mc.FIELD.XACTUAL) != traget_position:
         print(f"Actual position: {to_signed_32(eval_board.read_register_field(mc.FIELD.XACTUAL))} \t Actual speed: {eval_board.read_register_field(mc.FIELD.VACTUAL)}")
         time.sleep(T_s)
 
