@@ -137,7 +137,7 @@ class Channel():
     @classmethod
     def global_parameter(cls, bank, parameter_nr, eval_channel=0):
         channel_type = RAMDebug_Channel.CHANNEL_GLOBAL_PARAMETER
-        value = ((motor << 24) & 0xFF00_0000) | ((eval_channel << 16) & 0x0001_0000) | (parameter_nr & 0x0000_00FF)
+        value = ((bank << 24) & 0xFF00_0000) | ((eval_channel << 16) & 0x0001_0000) | (parameter_nr & 0x0000_00FF)
         # Error if value is bigger than 8 bits
         return cls(channel_type, value)
 
