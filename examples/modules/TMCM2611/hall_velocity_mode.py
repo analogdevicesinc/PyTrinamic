@@ -1,3 +1,7 @@
+################################################################################
+# Copyright © 2024 Analog Devices Inc. All Rights Reserved. This software is
+# proprietary & confidential to Analog Devices, Inc. and its licensors.
+################################################################################
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM2611
