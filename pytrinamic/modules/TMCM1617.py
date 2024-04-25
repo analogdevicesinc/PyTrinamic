@@ -11,6 +11,7 @@ from ..ic import TMC4671, TMC6200
 from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
 from ..features import ABNEncoderModule, DigitalHallModule, PIDModule
 from ..helpers import BitField
+from ..tmcl import TMCLCommand
 
 
 class TMCM1617(TMCLModule):
@@ -43,10 +44,10 @@ class TMCM1617(TMCLModule):
         self.connection.move_by(axis, difference, self.module_id)
 
     def write_register(self, ic_id, register_address, value):
-        return self.connection.write_mc_by_id(ic_id, register_address, value, self.module_id)
+        return self.connection.write_register(register_address, TMCLCommand.WRITE_MC, ic_id, value, self.module_id)
 
     def read_register(self, ic_id, register_address, signed=False):
-        return self.connection.read_mc_by_id(ic_id, register_address, self.module_id, signed)
+        return self.connection.read_register(register_address, TMCLCommand.READ_MC, ic_id, self.module_id, signed)
 
     def write_register_field(self, ic_id, field, value):
         return self.write_register(ic_id, field[0], BitField.field_set(self.read_register(ic_id, field[0]),
