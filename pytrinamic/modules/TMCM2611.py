@@ -44,6 +44,12 @@ class TMCM2611(TMCLModule):
             self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_by(axis, difference, self.module_id)
 
+    def store_axis_parameter(self, ap_type, axis):
+        """
+        Store an axis parameter setting in non-volatile memory of the module.
+        """
+        self.connection.store_axis_parameter(ap_type, axis, self.module_id, self.ap_index_bit_width)
+
     class _MotorTypeA(MotorControlModule):
         def __init__(self, module, axis):
             MotorControlModule.__init__(self, module, axis, self.AP)
