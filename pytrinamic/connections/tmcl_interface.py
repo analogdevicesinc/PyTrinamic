@@ -97,7 +97,8 @@ class TmclInterface(ABC):
         self._reply_check(reply)
 
         # Status codes below 100 indicate an error response.
-        if reply.status < 100:
+        # Ignore status when reading TMCL memory. 
+        if reply.status < 100 and request.command != TMCLCommand.READ_TMCL_MEMORY:
             raise TMCLReplyStatusError(reply)
 
         return reply
