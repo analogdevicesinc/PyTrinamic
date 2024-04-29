@@ -97,7 +97,8 @@ class TmclInterface(ABC):
         self._reply_check(reply)
 
         # Status codes below 100 indicate an error response.
-        if reply.status < 100:
+        # Ignore status when reading TMCL memory. 
+        if reply.status < 100 and request.command != TMCLCommand.READ_TMCL_MEMORY:
             raise TMCLReplyStatusError(reply)
 
         return reply
@@ -225,9 +226,17 @@ class TmclInterface(ABC):
         return self.read_register(register_address, TMCLCommand.READ_MC, 0, module_id, signed)
 
     def write_mc_by_id(self, ic_id, register_address, value, module_id=None):
+        """
+        .. deprecated:: 0.2.8
+        """
+        warnings.warn("Function write_mc_by_id() is going te be removed in future versions of pytrinamic!", DeprecationWarning)
         return self.write_register(register_address, TMCLCommand.WRITE_MC, ic_id, value, module_id)
 
     def read_mc_by_id(self, ic_id, register_address, module_id=None, signed=False):
+        """
+        .. deprecated:: 0.2.8
+        """
+        warnings.warn("Function read_mc_by_id() is going te be removed in future versions of pytrinamic!", DeprecationWarning)
         return self.read_register(register_address, TMCLCommand.READ_MC, ic_id, module_id, signed)
 
     def write_drv(self, register_address, value, module_id=None):

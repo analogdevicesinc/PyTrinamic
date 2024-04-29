@@ -6,21 +6,21 @@
 import time
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.evalboards import TMC5240_eval
+from pytrinamic.evalboards import TMC5262_eval
 
 pytrinamic.show_info()
 
 with ConnectionManager().connect() as my_interface:
     print(my_interface)
 
-    eval_board = TMC5240_eval(my_interface)
+    eval_board = TMC5262_eval(my_interface)
     motor = eval_board.motors[0]
     mc = eval_board.ics[0]
-    eval_board.write_register(mc.REG.AMAX, 51200)
+    eval_board.write_register(mc.REG.AMAX, 1000)
 
     print("Rotating...")
-    motor.rotate(51200)
-    time.sleep(2)
+    motor.rotate(10000)
+    time.sleep(5)
 
     print("Stopping...")
     motor.stop()

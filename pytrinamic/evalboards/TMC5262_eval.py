@@ -4,17 +4,17 @@
 ################################################################################
 
 from pytrinamic.evalboards import TMCLEval
-from pytrinamic.ic import TMC5240
+from pytrinamic.ic import TMC5262
 from pytrinamic.features import MotorControlModule
 
 
-class TMC5240_eval(TMCLEval):
+class TMC5262_eval(TMCLEval):
     """
-    This class represents a TMC5240 Evaluation board.
+    This class represents a TMC5262 Evaluation board.
     """
     def __init__(self, connection, module_id=1):
         """
-        Constructor for the TMC5240 evalboard instance.
+        Constructor for the TMC5262 evalboard instance.
 
         Parameters:
         connection: TMCL connection interface instance.
@@ -24,9 +24,9 @@ class TMC5240_eval(TMCLEval):
         """
         TMCLEval.__init__(self, connection, module_id)
         self.motors = [self._MotorTypeA(self, 0)]
-        self.ics = [TMC5240(self)]
+        self.ics = [TMC5262(self)]
 
-    # Use the driver controller functions for register access
+    # Use the motor controller functions for register access
 
     def write_register(self, register_address, value):
         return self._connection.write_mc(register_address, value, self._module_id)
@@ -81,13 +81,14 @@ class TMC5240_eval(TMCLEval):
             D2 = 23
             A2 = 24
             TVMax = 25
-            THIGH = 26
             VDCMIN = 27
             HighSpeedChopperMode = 28
             HighSpeedFullstepMode = 29
             MeasuredSpeed = 30
-            internal_Rsense = 34
-            GlobalCurrentScaler = 35
+            CurrentP = 31
+            CurrentI = 32
+            CurrentLimit = 37
+            CurrentAmplMeas = 40
             MicrostepResolution = 140
             ChopperBlankTime = 162
             ConstantTOffMode = 163
@@ -100,33 +101,26 @@ class TMC5240_eval(TMCLEval):
             smartEnergyHysteresis = 170
             SECUS = 171
             smartEnergyHysteresisStart = 172
-            SG4FilterEnable = 173
+            SG5FilterEnable = 173
             SG4Threshold = 174
             SG2FilterEnable = 175
             SG2Threshold = 176
             smartEnergyActualCurrent = 180
             smartEnergyStallVelocity = 181
             smartEnergyThresholdSpeed = 182
+            SG4FilterEnable = 183
             SGAngleOffset = 184
             ChopperSynchronization = 185
             PWMThresholdSpeed = 186
-            PWMGrad = 187
-            PWMAmplitude = 188
-            PWMFrequency = 191
-            PWMAutoscale = 192
-            PWMScaleSum = 193
             MSCNT = 194
             MEAS_SD_EN = 195
-            DIS_REG_STST = 196
-            FreewheelingMode = 204
             LoadValue = 206
             EncoderPosition = 209
             EncoderResolution = 210
-            CurrentScalingSelector = 211
             CurrentRange = 212
             ADCTemperature = 213
             ADCIN = 214
-            ADCSupply = 215
+            FSR_IREF = 215
             ADCOvervoltageLimit = 216
             ADCOvertemperatureWarningLimit = 217
             Temperature = 218

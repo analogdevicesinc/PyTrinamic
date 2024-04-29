@@ -2,7 +2,7 @@
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
+# Copyright © 2024 Analog Devices Inc. All Rights Reserved. This software is
 # proprietary & confidential to Analog Devices, Inc. and its licensors.
 ################################################################################
 
@@ -13,15 +13,11 @@ Visualize the microstep table of the TMC5130
 The connection to a Landungsbrücke is established over USB. TMCL commands are
 used for communicating with the IC.
 
-Created on 15.05.2019
-Updated on 27.03.2023 by ASU
-
-@author: LH
 """
 
 import time
 import math
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
 import pytrinamic
 
 from pytrinamic.connections.connection_manager import ConnectionManager
@@ -45,8 +41,8 @@ with ConnectionManager().connect() as my_interface:
     motor = eval.motors[0]
 
     MSLUT_ = [
-            eval.read_register(ic.REG.MSLUT_0),
-            eval.read_register(ic.REG.MSLUT_1),
+            eval.read_register(ic.REG.MSLUT_0),         # Description:
+            eval.read_register(ic.REG.MSLUT_1),         # Microstep  Lookup Table
             eval.read_register(ic.REG.MSLUT_2),
             eval.read_register(ic.REG.MSLUT_3),
             eval.read_register(ic.REG.MSLUT_4),
@@ -71,7 +67,6 @@ with ConnectionManager().connect() as my_interface:
 
     print("MSLUT_SEL:    0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSEL)))
     print("MSLUT_START:  0x{0:08X}".format(eval.read_register(ic.REG.MSLUTSTART)))
-    print()
 
     start = eval.read_register_field(ic.FIELD.START_SIN)
     values = [ (0, start) ]
@@ -107,19 +102,15 @@ with ConnectionManager().connect() as my_interface:
 
     # Measure the MS values from the IC directly. Can be skipped to save time
     if MEASURE:
-        eval.write_register_field(ic.FIELD.IRUN, 10)
-        eval.write_register(ic.REG.A1, 10000)
-        eval.write_register(ic.REG.V1, 500000)
-        eval.write_register(ic.REG.D1, 10000)
-        eval.write_register(ic.REG.DMAX, 500)
-        eval.write_register(ic.REG.VSTART, 0)
-        eval.write_register(ic.REG.VSTOP, 10)
-        eval.write_register(ic.REG.AMAX, 1000)
+        print()
+        print("Measuring")
+        print("*********")
 
-        if eval.read_register(ic.REG.MSCNT) != 0:
-            # ToDo: Move to 0 instead of erroring out
-            print("Error: Motor not at MS 0")
+        if eval.read_register(ic.REG.MSCNT) != 0:   # ensures that the microstep table is 0!
+            print("MSCNT = ",eval.read_register(ic.REG.MSCNT))
+            print("Error: Microstep table must be at 0! Please power cycle the TMC5130. ")
             exit(1)
+
 
         measured = []
         for i in range(0, 1025):
@@ -132,22 +123,43 @@ with ConnectionManager().connect() as my_interface:
             STEP  = eval.read_register_field(ic.FIELD.MSCNT)
 
             measured = measured + [(STEP, CUR_A, CUR_B)]
-            motor.move_to(1, 1000)
+            v_max= 1000
+            taraget_position = 1
+            eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
+            eval.write_register_field(ic.FIELD.XTARGET, taraget_position)  # set target position to 0
+            eval.write_register_field(ic.FIELD.RAMPMODE, 0)  # activate position mode
             time.sleep(0.1)
+            print("\rProgress: {0:.2f}%".format(i/1025*100), end="")              # shows the progress
 
-        motor.move_to(0, 1000)
+        print('\rProgress: 100 %')
+        v_max = 53678
+        taraget_position = 0
+        eval.write_register_field(ic.FIELD.VMAX, v_max)  # set max speed
+        eval.write_register_field(ic.FIELD.XTARGET, taraget_position)  # set target  position to 0
 
-
+print()
+print("Results:")
 print(values)
 print(measured)
 
-plot.figure(num=1, clear=True)
-plot.plot([(x[1], x[2]) for x in values])
-plot.show(block=False)
-plot.figure(num=2, clear=True)
-plot.plot([x[1] for x in values], [x[2] for x in values], '.')
-ax = plot.gca()
-ax.add_artist(plot.Circle((0, 0), 248, fill=False, color='black'))
-plot.show()
+# 1. Plot
+fig1, ax1 = plt.subplots()
+ax1.plot([(x[1], x[2]) for x in values])
+ax1.legend(('CUR_A', 'CUR_B'))                                                    # add label
+ax1.set_xlabel("Microstep counter (MSCNT)")
+ax1.set_ylabel("Current [internal unit (-256 bit; 256 bit)]")
+ax1.set_title("Microstep Table for a full step")
+plt.show(block=False)
 
-plot.close('all')
+# 2. plot
+fig2, ax2 = plt.subplots()
+ax2.plot([x[1] for x in values], [x[2] for x in values], label="plot")     # add label
+ax2.add_artist(plt.Circle((0, 0), 248, fill=False, color="black"))
+ax2.set_xlabel("current_A [internal unit (-256 bit; 256 bit)]")
+ax2.set_ylabel("current_B [internal unit (-256 bit; 256 bit)]")
+ax2.set_title("current_B over current_A")
+ax2.legend(loc="upper left")
+
+plt.show()
+
+plt.close('all')

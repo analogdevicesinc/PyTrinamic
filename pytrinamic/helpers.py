@@ -18,8 +18,15 @@ class BitField:
 
 
 def to_signed_32(x):
+    """Convert any unsigned integer to a 32 bit signed integer."""
     m = x & 0xffffffff
     return (m ^ 0x80000000) - 0x80000000
+
+
+def to_signed_16(x):
+    """Convert any unsigned integer to a 16 bit signed integer."""
+    m = x & 0x0000ffff
+    return (m ^ 0x00008000) - 0x00008000
 
 
 class EEPROM:

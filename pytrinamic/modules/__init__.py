@@ -10,6 +10,7 @@ from .TMCM1240 import TMCM1240
 from .TMCM1260 import TMCM1260
 from .TMCM1270 import TMCM1270
 from .TMCM1276 import TMCM1276
+from .TMCM1311 import TMCM1311
 from .TMCM1370 import TMCM1370
 from .TMCM1617 import TMCM1617
 from .TMCM1630 import TMCM1630
@@ -26,3 +27,4 @@ from .TMCM6110 import TMCM6110
 from .TMCM6212 import TMCM6212
 from .TMCM6214 import TMCM6214
 from .TMCM123x_0_1 import TMCM123x_0_1
+from .TMCM2611 import TMCM2611
