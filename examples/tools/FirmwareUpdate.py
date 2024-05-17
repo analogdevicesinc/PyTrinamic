@@ -123,9 +123,9 @@ else:
 found = None
 for segment in file.segments():
     print(segment)
-    start = segment[0]
-    length = segment[1] - segment[0]
-    firmware_bytes = file.gets(start, length)
+    segment_start = segment[0]
+    segment_length = segment[1] - segment[0]
+    firmware_bytes = file.gets(segment_start, segment_length)
     firmware_string = str(firmware_bytes, encoding="ascii", errors="ignore")
 
     found = re.search(pattern, firmware_string)
@@ -134,9 +134,6 @@ for segment in file.segments():
 else:
     print("Error: No matching version string found in firmware image")
     exit(1)
-
-start = file.minaddr()
-length = file.maxaddr() - start
 
 print("Bootloader version: " + bootloaderVersion)
 print("Firmware version:   " + found.group(0))
@@ -231,4 +228,4 @@ my_interface.send(TMCLCommand.BOOT_WRITE_LENGTH, 1, 0, checksum)
 
 # Restart the firmware
 print("Starting the firmware")
-my_interface.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0)
+my_interface.send_start_app()

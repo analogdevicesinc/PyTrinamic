@@ -121,7 +121,7 @@ class TmclInterface(ABC):
 
     def send_boot(self, module_id=None):
         """
-        Send the command for entering bootloader mode. This TMCL command does
+        Send the command for entering bootloader mode. This TMCL command does not
         result in a reply.
         """
         # If no module ID is given, use the default one
@@ -129,6 +129,22 @@ class TmclInterface(ABC):
             module_id = self._default_module_id
 
         request = TMCLRequest(module_id, TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6)
+
+        self.logger.debug("Tx: %s", request)
+
+        # Send the request
+        self._send(self._host_id, module_id, request.to_buffer())
+
+    def send_start_app(self, module_id=None):
+        """
+        Send the command for starting the application. This TMCL command does
+        not result in a reply.
+        """
+        # If no module ID is given, use the default one
+        if not module_id:
+            module_id = self._default_module_id
+
+        request = TMCLRequest(module_id, TMCLCommand.BOOT_START_APPL, 0, 0, 0)
 
         self.logger.debug("Tx: %s", request)
 
