@@ -60,7 +60,7 @@ file.padding = 0x00
 
 # Get the boundaries and size of the data
 start_address = file.minaddr()
-end_address = file.maxaddr()
+end_address = file.maxaddr() + 1
 length = end_address - start_address
 
 # Calculate the checksum
