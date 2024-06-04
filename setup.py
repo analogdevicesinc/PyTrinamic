@@ -17,7 +17,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=[
-        "python-can>=3,<4",
+        "python-can>=3",
         "canopen",
         "pyserial>=3"
     ],
