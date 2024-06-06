@@ -13,10 +13,8 @@ import builtins
 
 import pytest
 
-
-sys.path.insert(0, '../../../..')
-from pytrinamic.connections.connection_manager import ConnectionManager  # noqa: E402
-from pytrinamic.modules import TMCM1140  # noqa: E402
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.modules import TMCM1140
 
 
 class MockTmclInterface:
