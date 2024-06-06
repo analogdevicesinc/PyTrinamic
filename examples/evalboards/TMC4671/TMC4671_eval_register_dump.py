@@ -19,6 +19,7 @@ from pytrinamic.ic import TMC4671
 
 pytrinamic.show_info()
 my_interface = ConnectionManager().connect()
+#my_interface = ConnectionManager("--interface uart_ic --port COM14 --data-rate 9600").connect()  # Swap with previous line if you are not using the Landungsbrueck but a USB UART cable
 print(my_interface)
 
 if isinstance(my_interface, UartIcInterface):
