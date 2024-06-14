@@ -37,4 +37,9 @@ setuptools.setup(
     ],
     license="MIT",
     zip_safe=False,
+    entry_points={
+        "console_scripts": [
+            "tmclfwupload = pytrinamic.cli.tmclfwupload:main",
+        ]
+    }
 )
