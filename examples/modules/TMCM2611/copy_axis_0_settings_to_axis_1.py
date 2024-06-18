@@ -1,6 +1,6 @@
 ################################################################################
-# Copyright © 2024 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2024 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 """Copy the settings of axis 0 write them to axis 0 and store the settings in non-volatile memory.
 
