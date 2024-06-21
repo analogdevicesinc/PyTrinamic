@@ -106,14 +106,14 @@ time.sleep(1)
 
 # Retrieve the bootloader version
 bootloaderVersion = my_interface.get_version_string(1)
-found = re.search("\d\d\d\dB\d\d\d", bootloaderVersion)
+found = re.search(r"\d\d\d\dB\d\d\d", bootloaderVersion)
 if found:
-    pattern = found.group(0)[0:4] + "V\d\d\d"
+    pattern = found.group(0)[0:4] + r"V\d\d\d"
     logging.info(f"Scanning new firmware data for correct module string ({found.group(0)[0:4]}V###)")
 else:
-    found = re.search("\d\d\dB\d\.\d\d", bootloaderVersion)
+    found = re.search(r"\d\d\dB\d\.\d\d", bootloaderVersion)
     if found:
-        pattern = found.group(0)[0:3] + "V\d\.\d\d"
+        pattern = found.group(0)[0:3] + r"V\d\.\d\d"
         logging.info(f"Scanning new firmware data for correct module string ({found.group(0)[0:3]}V#.##)")
     else:
         logging.error(f"GetVersion returned invalid answer ({bootloaderVersion})")
