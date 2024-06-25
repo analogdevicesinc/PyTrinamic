@@ -10,9 +10,6 @@ from ..ic.tmc_ic import TMCIc
 
 # features
 from ..features.motor_control_ic import MotorControlIc
-# from pytrinamic.features.linear_ramp_ic import LinearRampIC
-# from pytrinamic.features.current_ic import CurrentIC
-# from pytrinamic.features.stallguard2_ic import StallGuard2IC
 
 
 class TMC5130(TMCIc):
@@ -42,9 +39,6 @@ class TMC5130(TMCIc):
         """
         def __init__(self, parent_eval, ic, axis):
             MotorControlIc.__init__(self, parent_eval, ic, axis)
-#            LinearRampIC.__init__(self)
-#            CurrentIC.__init__(self)
-#            StallGuard2IC.__init__(self)
 
     class REG:
         """
