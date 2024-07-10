@@ -1,9 +1,9 @@
-################################################################################
+###############################################################################
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 """
 Demonstrate usage of StallGuard2 homing with the TMC5031
@@ -17,12 +17,51 @@ objects the motor collides with when rotating.
 """
 
 import time
+import keyboard
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.evalboards.TMC5031_eval import TMC5031_eval
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.evalboards import TMC5031_eval
+
+
+def stallGuardDemo_stall_test(my_motor, direction):
+    ### Demo #######################################################################
+    # Direction of the rotation represented as [-1, 1]
+    # Multiply with the velocity constant to get the target velocity
+
+    global DELAY
+    global VELOCITY
+    global CHANGE_DIR
+
+    sg_stop_dic = {0:mc.FIELD.SG_STOP_M1, 1:mc.FIELD.SG_STOP_M2}
+    event_step_sg_dic = {0:mc.FIELD.EVENT_STOP_SG_M1, 1:mc.FIELD.EVENT_STOP_SG_M2}
+    #while True:
+    eval_board.write_register_field(sg_stop_dic[my_motor], 0)
+    print("\nMotor " + str(my_motor) + " speed up:")
+    eval_board.rotate(my_motor, direction * VELOCITY)
+    time.sleep(DELAY)  # wait for motor to start up
+    # Enable Stall guard
+    eval_board.write_register_field(sg_stop_dic[my_motor], 1)
+    print("Motor " + str(my_motor) + " Rotating")
+
+    print("Motor " + str(my_motor) + " waiting for a stall")
+    # Wait until the leading motor is stalled
+    while eval_board.read_register_field(event_step_sg_dic[my_motor]) == 0:
+        time.sleep(0.1)
+
+    # Stop motor once a stall has occured
+    eval_board.stop(my_motor)
+
+    print("Motor " + str(my_motor) + " stalled was detected. Motor was disabled.")
+
+    time.sleep(DELAY)
+
+    if CHANGE_DIR:
+        # Flip the direction around
+        return -direction
+
+
 
 connection_manager = ConnectionManager()
-
 my_interface = connection_manager.connect()
 
 ### Parameters #################################################################
@@ -49,86 +88,71 @@ pytrinamic.show_info()
 # Initialization
 
 TMC5031 = TMC5031_eval(my_interface)
-TMC5031.showChipInfo()
+eval_board = TMC5031_eval(my_interface)
+mc = eval_board.ics[0]
 
 ### Configuration
 print("Configuring")
 
 # Reset position references to 0
-TMC5031.writeRegisterField(TMC5031.fields.XACTUAL[0], 0)
-TMC5031.writeRegisterField(TMC5031.fields.XACTUAL[1], 0)
-TMC5031.writeRegisterField(TMC5031.fields.XTARGET[MOTOR_FOLLOWING], 0)
+eval_board.write_register_field(mc.FIELD.XACTUAL_M1, 0)
+eval_board.write_register_field(mc.FIELD.XACTUAL_M2, 0)
+eval_board.write_register_field(mc.FIELD.XTARGET_M1, 0)
+eval_board.write_register_field(mc.FIELD.XTARGET_M2, 0)
+
+# Set run current
+eval_board.write_register_field(mc.FIELD.IRUN_M1, 13)
+eval_board.write_register_field(mc.FIELD.IRUN_M2, 13)
 
 ## Configure leading motor for stallguard homing
 # Stall guard threshold
-TMC5031.writeRegisterField(TMC5031.fields.SGT[MOTOR_LEADING], SG_THRESHOLD)
+eval_board.write_register_field(mc.FIELD.SGT_M1, SG_THRESHOLD)
+eval_board.write_register_field(mc.FIELD.SGT_M2, SG_THRESHOLD)
 # Set stall guard minimum velocity
-TMC5031.writeRegisterField(TMC5031.fields.VCOOLTHRS[MOTOR_LEADING], SG_VELOCITY)
-# Enable Stall guard
-TMC5031.writeRegisterField(TMC5031.fields.SG_STOP[MOTOR_LEADING], 1)
+eval_board.write_register_field(mc.FIELD.VCOOLTHRS_M1, SG_VELOCITY)
+eval_board.write_register_field(mc.FIELD.VCOOLTHRS_M2, SG_VELOCITY)
+# disenable Stall guard (so that the motor is not stalling at the startup)
+eval_board.write_register_field(mc.FIELD.SG_STOP_M1, 0)
+eval_board.write_register_field(mc.FIELD.SG_STOP_M2, 0)
 
 ## Configure following motor for position ramping
-TMC5031.writeRegister(TMC5031.registers.V1[MOTOR_FOLLOWING], 0)
-TMC5031.writeRegister(TMC5031.registers.A1[MOTOR_FOLLOWING], 100)
-TMC5031.writeRegister(TMC5031.registers.D1[MOTOR_FOLLOWING], 100)
-TMC5031.writeRegister(TMC5031.registers.VSTART[MOTOR_FOLLOWING], 0)
-TMC5031.writeRegister(TMC5031.registers.VSTOP[MOTOR_FOLLOWING], 10)
-TMC5031.writeRegister(TMC5031.registers.AMAX[MOTOR_FOLLOWING], ACCELERATION)
-TMC5031.writeRegister(TMC5031.registers.DMAX[MOTOR_FOLLOWING], ACCELERATION)
+eval_board.write_register(mc.REG.V1[MOTOR_LEADING], 0)
+eval_board.write_register(mc.REG.A1[MOTOR_LEADING], 100)
+eval_board.write_register(mc.REG.D1[MOTOR_LEADING], 100)
+eval_board.write_register(mc.REG.VSTART[MOTOR_LEADING], 0)
+eval_board.write_register(mc.REG.VSTOP[MOTOR_LEADING], 10)
+eval_board.write_register(mc.REG.AMAX[MOTOR_LEADING], ACCELERATION)
+eval_board.write_register(mc.REG.DMAX[MOTOR_LEADING], ACCELERATION)
 
-### Demo #######################################################################
+eval_board.write_register(mc.REG.V1[MOTOR_FOLLOWING], 0)
+eval_board.write_register(mc.REG.A1[MOTOR_FOLLOWING], 100)
+eval_board.write_register(mc.REG.D1[MOTOR_FOLLOWING], 100)
+eval_board.write_register(mc.REG.VSTART[MOTOR_FOLLOWING], 0)
+eval_board.write_register(mc.REG.VSTOP[MOTOR_FOLLOWING], 10)
+eval_board.write_register(mc.REG.AMAX[MOTOR_FOLLOWING], ACCELERATION)
+eval_board.write_register(mc.REG.DMAX[MOTOR_FOLLOWING], ACCELERATION)
 
-# Direction of the rotation represented as [-1, 1]
-# Multiply with the velocity constant to get the target velocity
-direction = 1
+# Start the test. Alternating for each motor
+direction_M1 = 1
+direction_M2 = 1
+while True:
+    direction_M1 = stallGuardDemo_stall_test(MOTOR_LEADING, direction_M1)
+    direction_M2 = stallGuardDemo_stall_test(MOTOR_FOLLOWING,  direction_M2)
+    print("Press a key. Press 'q' for quiting:")
+    if keyboard.read_key() == "q":
+        break
 
-try:
-    while True:
-        print("")
-        print("Motor " + str(MOTOR_LEADING) + " Rotating")
-        TMC5031.rotate(MOTOR_LEADING, direction * VELOCITY)
 
-        print("Motor " + str(MOTOR_LEADING) + " waiting for a stall")
-        # Wait until the leading motor is stalled
-        while TMC5031.readRegisterField(TMC5031.fields.EVENT_STOP_SG[MOTOR_LEADING]) == 0:
-            pass
 
-        # Stop leading motor once a stall has occured
-        TMC5031.stop(MOTOR_LEADING)
-
-        print("Motor " + str(MOTOR_LEADING) + " stalled")
-
-        time.sleep(DELAY)
-
-        # Let the other motor follow
-        print("Motor " + str(MOTOR_FOLLOWING) + " following")
-        target = TMC5031.readRegisterField(TMC5031.fields.XACTUAL[MOTOR_LEADING])
-        TMC5031.moveTo(MOTOR_FOLLOWING, target, VELOCITY)
-
-        # Wait until the other motor reached the target
-        while TMC5031.readRegisterField(TMC5031.fields.POSITION_REACHED[MOTOR_FOLLOWING]) == 0:
-            pass
-
-        print("Motor " + str(MOTOR_FOLLOWING) + " caught up")
-
-        time.sleep(DELAY)
-
-        if CHANGE_DIR:
-            # Flip the direction around
-            direction = -direction
-except KeyboardInterrupt:
-    print("")
-
-print("Stopping motors")
+print("\nStopping motors")
 # Stop the motors
-TMC5031.stop(0)
-TMC5031.stop(1)
+eval_board.stop(0)
+eval_board.stop(1)
 
-# Wait until the motors are standing still
-while TMC5031.readRegisterField(TMC5031.fields.VACTUAL[0]) != 0 and TMC5031.readRegisterField(TMC5031.fields.VACTUAL[1]) != 0:
-    pass
+time.sleep(1)
 
 # Clear any remaining stalls
-TMC5031.readRegisterField(TMC5031.fields.EVENT_STOP_SG[MOTOR_LEADING])
+eval_board.write_register_field(mc.FIELD.SG_STOP_M1, 0)
+eval_board.write_register_field(mc.FIELD.SG_STOP_M2, 0)
 
 my_interface.close()
