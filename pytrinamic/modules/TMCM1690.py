@@ -9,13 +9,13 @@
 import pytrinamic
 
 " interfaces "
-from pytrinamic.modules import TMCLModule
-from pytrinamic.features import MotorControlModule, DriveSettingModule, LinearRampModule
-from pytrinamic.features import ABNEncoderModule, AbsoluteEncoderModule, DigitalHallModule, PIDModule
-from pytrinamic.features.ramp_settings_module import RampSettingsModule
+from ..modules import TMCLModule
+from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
+from ..features import ABNEncoderModule, AbsoluteEncoderModule, DigitalHallModule, PIDModule
 
-from brakechopper_module import BrakeChopperModule
-from referenceswitches_module import ReferenceSwitchesModule
+from ..features.ramp_settings_module import RampSettingsModule
+from ..features.brakechopper_module import BrakeChopperModule
+from ..features.referenceswitches_module import ReferenceSwitchesModule
 
 
 class TMCM1690(TMCLModule):

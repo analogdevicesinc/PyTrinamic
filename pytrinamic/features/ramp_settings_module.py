@@ -6,7 +6,7 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-from ramp_settings import RampSettings
+from ..features.ramp_settings import RampSettings
 
 
 class RampSettingsModule(RampSettings):

@@ -9,9 +9,10 @@
 if __name__ == '__main__':
     pass
 
-import pytrinamic, time
-from pytrinamic.connections.connection_manager import ConnectionManager
-from TMCM1690.TMCM1690 import TMCM1690
+import pytrinamic
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.modules import TMCM1690
+import time
 
 pytrinamic.show_info()
 

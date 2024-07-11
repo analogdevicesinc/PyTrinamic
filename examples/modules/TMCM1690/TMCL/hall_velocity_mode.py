@@ -9,14 +9,16 @@
 if __name__ == '__main__':
     pass
 
-import pytrinamic, time
-from pytrinamic.connections.connection_manager import ConnectionManager
-from TMCM1690.TMCM1690 import TMCM1690
+import pytrinamic
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.modules import TMCM1690
+import time
+
 pytrinamic.show_info()
 
 " please select your CAN adapter "
 # myInterface = ConnectionManager("--interface pcan_tmcl").connect()
-myInterface = ConnectionManager("--interface kvaser_tmcl").connect()
+myInterface = ConnectionManager("--interface kvaser_tmcl --module-id 1").connect()
 # myInterface = ConnectionManager("--interface serial_tmcl").connect()
 
 module = TMCM1690(myInterface)

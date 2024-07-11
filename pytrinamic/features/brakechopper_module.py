@@ -6,7 +6,7 @@
 # proprietary & confidential to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-from brakechopper import BrakeChopper
+from ..features.brakechopper import BrakeChopper
 
 
 class BrakeChopperModule(BrakeChopper):

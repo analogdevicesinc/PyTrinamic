@@ -6,7 +6,7 @@
 # proprietary & confidential to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-from referenceswitches import ReferenceSwitches
+from ..features.referenceswitches import ReferenceSwitches
 
 
 class ReferenceSwitchesModule(ReferenceSwitches):
