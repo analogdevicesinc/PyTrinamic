@@ -79,8 +79,10 @@ class CanTmclInterface(TmclInterface):
 
         if msg.arbitration_id != host_id:
             # The filter shouldn't let wrong messages through.
-            # This is just a sanity check
+            # This is just a sanity check.
             self.logger.warning("Received a CAN Frame with unexpected ID (received: %d; expected: %d)", msg.arbitration_id, host_id)
+            # Limit the arbitration ID as it is used for the module ID which is limited to 8 bit.
+            msg.arbitration_id &= 0xFF
 
         return bytearray([msg.arbitration_id]) + msg.data
 
