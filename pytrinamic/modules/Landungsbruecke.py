@@ -148,21 +148,3 @@ class Landungsbruecke:
         BoardAssignment      = 4
         HWID                 = 5
         PinState             = 6
-
-
-if __name__ == "__main__":
-    from pytrinamic.connections import ConnectionManager
-
-    cm = ConnectionManager()
-    interface = cm.connect()
-    LB = Landungsbruecke(interface)
-
-    print("ID EEPROM content:")
-    print("Mc: ", LB.eeprom_drv.read_id_info())
-    print("Drv:", LB.eeprom_mc.read_id_info())
-
-    print("Board IDs:")
-    print(LB.get_board_ids())
-
-    print("Board Names:")
-    print(LB.get_board_names())
