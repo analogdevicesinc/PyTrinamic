@@ -37,7 +37,7 @@ class MockTmclInterface(TmclInterface):
 
         self.get_checksum_result = None
 
-    def send(self, opcode, op_type, motor, value, module_id=None):
+    def send(self, opcode, op_type, motor, value, module_id=None, *, no_reply=False):
         class FakeReplyValue:
             def __init__(self, value):
                 self.value = value
@@ -62,15 +62,10 @@ class MockTmclInterface(TmclInterface):
             return FakeReplyValue(mp[op_type])
         elif opcode == TMCLCommand.BOOT_GET_CHECKSUM:
             return FakeReplyValue(self.get_checksum_result)
+        elif opcode == TMCLCommand.BOOT:
+            self._in_boot = True
+            return None
         return None
-
-    def send_boot(self, module_id=None):
-        """Note: Usually this would also trigger a send()"""
-        self._in_boot = True
-
-    def send_start_app(self, module_id=None):
-        """Note: Usually this would also trigger a send()"""
-        pass
 
     def close(self):
         pass
@@ -127,9 +122,13 @@ def test_minimal_upload(tmp_path, monkeypatch, mocker, inboot, module_number_str
     expected_calls = []
     expected_calls.extend([
         call(TMCLCommand.GET_FIRMWARE_VERSION, 0, 0, 0, None),
-        call(TMCLCommand.GET_FIRMWARE_VERSION, 0, 0, 0, 1),
     ])
+    if not inboot:
+        expected_calls.extend([
+            call(TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6, module_id=1, no_reply=True),
+        ])
     expected_calls.extend([
+        call(TMCLCommand.GET_FIRMWARE_VERSION, 0, 0, 0, 1),
         call(TMCLCommand.BOOT_GET_INFO, 0, 0, 0),
         call(TMCLCommand.BOOT_GET_INFO, 1, 0, 0),
         call(TMCLCommand.BOOT_GET_INFO, 2, 0, 0),
@@ -160,7 +159,10 @@ def test_minimal_upload(tmp_path, monkeypatch, mocker, inboot, module_number_str
         call(TMCLCommand.BOOT_GET_CHECKSUM, 0, 0, device_metadata.mem_start_address + fw_length - 1),
         call(TMCLCommand.BOOT_WRITE_LENGTH, 0, 0, fw_length),
         call(TMCLCommand.BOOT_WRITE_LENGTH, 1, 0, fw_checksum),
+        call(TMCLCommand.BOOT_START_APPL, 0, 0, 0, module_id=None, no_reply=True),
     ])
+
+    assert len(spy_send.call_args_list) == len(expected_calls)
 
     for call_n, expected_call_n in zip(spy_send.call_args_list, expected_calls):
         assert call_n == expected_call_n
