@@ -2,8 +2,8 @@
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
 import logging
@@ -82,14 +82,21 @@ class TmclInterface(ABC):
         """
         pass
 
-    def send_request(self, request):
+    def send_request(self, request, *, no_reply=False):
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
+
+        When no_reply is set, do not read back a reply. This must only be used for
+        special commands that do not send back a reply!
         """
         self.logger.debug("Tx: %s", request)
 
         self._send(self._host_id, request.moduleAddress, request.to_buffer())
+        if no_reply:
+            self.logger.debug("RX: Request expects no reply")
+            return None
+
         reply = TMCLReply.from_buffer(self._recv(self._host_id, request.moduleAddress))
 
         self.logger.debug("Rx: %s", reply)
@@ -103,10 +110,13 @@ class TmclInterface(ABC):
 
         return reply
 
-    def send(self, opcode, op_type, motor, value, module_id=None):
+    def send(self, opcode, op_type, motor, value, module_id=None, *, no_reply=False):
         """
         Send a TMCL datagram and read back a reply. This function blocks until
         the reply has been received.
+
+        When no_reply is set, do not read back a reply. This must only be used for
+        special commands that do not send back a reply!
         """
         if any(not isinstance(arg, int) for arg in [opcode, op_type, motor, value]):
             raise TypeError("Expected integer values!")
@@ -117,23 +127,21 @@ class TmclInterface(ABC):
 
         request = TMCLRequest(module_id, opcode, op_type, motor, value)
 
-        return self.send_request(request)
+        return self.send_request(request, no_reply=no_reply)
 
     def send_boot(self, module_id=None):
         """
-        Send the command for entering bootloader mode. This TMCL command does
+        Send the command for entering bootloader mode. This TMCL command does not
         result in a reply.
         """
-        # If no module ID is given, use the default one
-        if not module_id:
-            module_id = self._default_module_id
+        self.send(TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6, module_id=module_id, no_reply=True)
 
-        request = TMCLRequest(module_id, TMCLCommand.BOOT, 0x81, 0x92, 0xA3B4C5D6)
-
-        self.logger.debug("Tx: %s", request)
-
-        # Send the request
-        self._send(self._host_id, module_id, request.to_buffer())
+    def send_start_app(self, module_id=None):
+        """
+        Send the command for starting the application. This TMCL command does
+        not result in a reply.
+        """
+        self.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0, module_id=module_id, no_reply=True)
 
     def get_version_string(self, module_id=None):
         """

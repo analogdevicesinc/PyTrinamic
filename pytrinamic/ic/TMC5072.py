@@ -2,17 +2,14 @@
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
 from ..ic.tmc_ic import TMCIc
 
 # features
 from ..features.motor_control_ic import MotorControlIc
-# from pytrinamic.features.LinearRampIC import LinearRampIC
-# from pytrinamic.features.CurrentIC import CurrentIC
-# from pytrinamic.features.StallGuard2IC import StallGuard2IC
 
 
 class TMC5072(TMCIc):
@@ -42,9 +39,6 @@ class TMC5072(TMCIc):
         """
         def __init__(self, parent_eval, ic, axis):
             MotorControlIc.__init__(self, parent_eval, ic, axis)
-#            LinearRampIC.__init__(self)
-#            CurrentIC.__init__(self)
-#            StallGuard2IC.__init__(self)
 
     class REG:
         """

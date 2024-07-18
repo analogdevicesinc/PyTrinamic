@@ -2,8 +2,8 @@
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
 from pytrinamic.tmcl import TMCLCommand
@@ -104,6 +104,9 @@ class Landungsbruecke:
         25 : "TMC5062",
         26 : "TMC8461",
         27 : "TMC8462",
+        28 : "TMC5240",
+        29 : "TMC5272",
+        31 : "TMC5271",
     }
 
     drvIdNames = {
@@ -125,6 +128,15 @@ class Landungsbruecke:
         14 : "TMC2300",
         21 : "TMC6300",
         22 : "TMC2226",
+        23 : "TMC6140",
+        25 : "TMC6100_BOB",
+        28 : "TMC2240",
+        29 : "TMC2210",
+        30 : "MAX22216_EVAL",
+        31 : "MAX22216_BOB",
+        32 : "MAX22204_EVAL",
+        33 : "MAX22210_EVAL",
+        34 : "TMC8100",
     }
 
     class GP:
@@ -134,21 +146,3 @@ class Landungsbruecke:
         BoardAssignment      = 4
         HWID                 = 5
         PinState             = 6
-
-
-if __name__ == "__main__":
-    from pytrinamic.connections import ConnectionManager
-
-    cm = ConnectionManager()
-    interface = cm.connect()
-    LB = Landungsbruecke(interface)
-
-    print("ID EEPROM content:")
-    print("Mc: ", LB.eeprom_drv.read_id_info())
-    print("Drv:", LB.eeprom_mc.read_id_info())
-
-    print("Board IDs:")
-    print(LB.get_board_ids())
-
-    print("Board Names:")
-    print(LB.get_board_names())

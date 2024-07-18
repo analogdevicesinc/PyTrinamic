@@ -2,8 +2,8 @@
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
 # (now owned by Analog Devices Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2023 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
 import sys
@@ -12,9 +12,8 @@ import runpy
 
 import pytest
 
-sys.path.insert(0, '../../../..')
-from pytrinamic.connections.connection_manager import ConnectionManager  # noqa: E402
-from pytrinamic.modules import TMCM1636  # noqa: E402
+from pytrinamic.connections.connection_manager import ConnectionManager
+from pytrinamic.modules import TMCM1636
 
 
 class MockTmclInterface:
