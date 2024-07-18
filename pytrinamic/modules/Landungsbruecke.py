@@ -106,7 +106,6 @@ class Landungsbruecke:
         27 : "TMC8462",
         28 : "TMC5240",
         29 : "TMC5272",
-        30 : "TMC5262",
         31 : "TMC5271",
     }
 
@@ -138,7 +137,6 @@ class Landungsbruecke:
         32 : "MAX22204_EVAL",
         33 : "MAX22210_EVAL",
         34 : "TMC8100",
-        35 : "TMC2262",
     }
 
     class GP:

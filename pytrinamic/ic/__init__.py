@@ -26,7 +26,5 @@ from .TMC6300 import TMC6300
 from .TMC7300 import TMC7300
 from .TMC5272 import TMC5272
 from .TMC5271 import TMC5271
-from .TMC5262 import TMC5262
-from .TMC2262 import TMC2262
 
 
