@@ -43,7 +43,7 @@ class TMC2240_eval(TMCLEval):
     # Use the motion controller functions for register access
 
     def write_register(self, register_address, value):
-        return self._connection.read_drv(register_address, value, self._module_id)
+        return self._connection.write_drv(register_address, value, self._module_id)
 
     def read_register(self, register_address, signed=False):
         return self._connection.read_drv(register_address, self._module_id, signed)
