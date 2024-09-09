@@ -5,9 +5,10 @@
 # Copyright © 2023 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+import typing
 
-from pytrinamic.helpers import BitField, to_signed_32
-
+from pytrinamic.helpers import BitField
+from pytrinamic.ic import Register, Field, Access
 
 class TMCLEval(object):
 
@@ -58,6 +59,88 @@ class TMCLEval(object):
 
     def read_register_field(self, field):
         return BitField.field_get(self.read_register(field[0]), field[1], field[2])
+
+    def read_register(self, register_address, signed=False):
+        raise NotImplementedError
+
+    def write_register(self, register_address, value):
+        raise NotImplementedError
+
+    def read(self, read_target: typing.Union[Register, Field]) -> int:
+        """
+        Generic read function, will branch out to private read functions.
+
+        read_target: This is the main differentiating argument:
+                       - If read_target is a Register object, we do a register read.
+                       - If read_target is a Field object, we do a field read.
+        """
+        if isinstance(read_target, Field):
+            # Our target variable is a Field, we do field read in that case
+            register_address = read_target.parent.address
+            signed = bool(read_target.signed)
+            register_content = self.read_register(register_address, signed=signed)
+
+            value = (register_content & read_target.mask) >> read_target.shift
+            if signed:
+                base_mask = read_target.mask >> read_target.shift
+                sign_mask = base_mask & (~base_mask >> 1)
+                value = (value ^ sign_mask) - sign_mask
+            return value
+
+        elif isinstance(read_target, Register):
+            # Our target has the attributes of a register, we do register read in that case
+            signed = bool(read_target.signed)
+            register_address = read_target.address
+            return self.read_register(register_address, signed=signed)
+
+        else:
+            raise ValueError(
+                f"Input read_target does not appear to be either an address, a Field, or a Register. Or length is 0 for array read."
+            )
+
+    def write(self, write_target: typing.Union[Register, Field], value: typing.Union[int, bool], *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+        """
+        Generic write functions, will branch out to private write functions.
+
+        write_target: This is the main differentiating argument:
+                       - If read_target is a Field object, we do a field write.
+                       - If read_target is a Register object, we do a register write.
+        """
+        if isinstance(write_target, Field) and isinstance(value, int):
+            # Our target variable is a Field, we do field read in that case
+
+            if not omit_permission_checks:
+                if not write_target.access.is_writable():
+                    raise ValueError(f"This field has no write permission!!")
+
+            if not omit_bounds_check:
+                if not write_target.is_in_bounds(value):
+                    raise ValueError(f"The input value is not in the allowed value range!")
+
+            if write_target.access == Access.RWC:
+                register_content_new = (value << write_target.shift) & write_target.mask
+                self.write_register(write_target.parent.address, register_content_new)
+                return register_content_new
+
+            register_address = write_target.parent.address
+            register_content_old = self.read_register(register_address)
+            register_content_new = (register_content_old & ~write_target.mask) | (value << write_target.shift)
+            self.write_register(register_address, register_content_new)
+            return register_content_new
+
+        elif isinstance(write_target, Register) and isinstance(value, int):
+            # Our target has the attributes of a register, we do register write in that case
+
+            if not omit_permission_checks:
+                if not write_target.access.is_writable():
+                    raise ValueError(f"This field has no write permission!!")
+
+            register_address = write_target.address
+            return self.write_register(register_address, value)
+
+        else:
+            raise ValueError(f"Input write_target does not appear to be either an address, a Field, or a Register or value is invalid.")
+
 
     def write_axis_field(self, axis, field, value):
         """
