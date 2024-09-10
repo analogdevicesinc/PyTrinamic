@@ -118,3 +118,9 @@ class Register:
         fields.sort(key=lambda x: x.shift)
 
         return fields
+
+
+class Choice:
+    def __init__(self, value, parent) -> None:
+        self.value = value
+        self.parent = parent

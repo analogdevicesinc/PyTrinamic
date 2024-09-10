@@ -8,7 +8,7 @@
 import typing
 
 from pytrinamic.helpers import BitField
-from pytrinamic.ic import Register, Field, Access
+from pytrinamic.ic import Register, Field, Access, Choice
 
 class TMCLEval(object):
 
@@ -98,7 +98,7 @@ class TMCLEval(object):
                 f"Input read_target does not appear to be either an address, a Field, or a Register. Or length is 0 for array read."
             )
 
-    def write(self, write_target: typing.Union[Register, Field], value: typing.Union[int, bool], *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+    def write(self, write_target: typing.Union[Register, Field, Choice], value: typing.Union[int, bool] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
         """
         Generic write functions, will branch out to private write functions.
 
@@ -106,6 +106,9 @@ class TMCLEval(object):
                        - If read_target is a Field object, we do a field write.
                        - If read_target is a Register object, we do a register write.
         """
+        if isinstance(write_target, Choice) and (value == None):
+            # Our target variable is a Choice, we do a choice write in that case
+            return self.write(write_target.parent, write_target.value)
         if isinstance(write_target, Field) and isinstance(value, int):
             # Our target variable is a Field, we do field read in that case
 

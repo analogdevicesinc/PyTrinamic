@@ -3,6 +3,7 @@ from .tmc_ic import RegisterGroup
 from .tmc_ic import Register
 from .tmc_ic import Field
 from .tmc_ic import Access
+from .tmc_ic import Choice
 from .MAX22216 import MAX22216
 from .TMC2100 import TMC2100
 from .TMC2130 import TMC2130
