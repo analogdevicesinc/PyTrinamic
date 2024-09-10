@@ -53,7 +53,7 @@ def test_tmc4671_eval_read_write(mocker):
     write_mc_fn_spy.reset_mock()
 
 
-def test_tmc4671_eval_misc():
+def test_tmc4671_field():
     mock_tmcl_interface = MockTmclInterface()
     tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
     register = tmc4671_eval.ics[0].register
@@ -84,7 +84,22 @@ def test_tmc4671_eval_misc():
     assert not register.ADC_I0_SCALE_OFFSET.ADC_I0_SCALE.is_in_bounds(-0x8001)
     # Check out of bounds - upper bound
     assert not register.ADC_I0_SCALE_OFFSET.ADC_I0_SCALE.is_in_bounds(0x8000)  # TODO: Fix the generated code to have the correct signedness!
+
+    # Check access
+    ####################################################################################################
     
+    assert register.ADC_IWY_IUX.ADC_IUX.access == Access.R
+    assert register.ADC_IWY_IUX.ADC_IUX.access.name == "R"
+    assert not register.ADC_IWY_IUX.ADC_IUX.access.is_writable()
+    # .. also check a field that is writable
+    assert register.ADC_I0_SCALE_OFFSET.ADC_I0_OFFSET.access.is_writable()
+    
+
+def test_tmc4671_register():
+    mock_tmcl_interface = MockTmclInterface()
+    tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
+    register = tmc4671_eval.ics[0].register
+
     # Check is access
     ####################################################################################################
     # For a register
@@ -92,13 +107,28 @@ def test_tmc4671_eval_misc():
     assert register.ADC_I0_SCALE_OFFSET.access.name == "RW"
     assert register.ADC_I0_SCALE_OFFSET.access.is_writable()
 
-    # For a field
-    assert register.ADC_IWY_IUX.ADC_IUX.access == Access.R
-    assert register.ADC_IWY_IUX.ADC_IUX.access.name == "R"
-    assert not register.ADC_IWY_IUX.ADC_IUX.access.is_writable()
-    # .. also check a field that is writable
-    assert register.ADC_I0_SCALE_OFFSET.ADC_I0_OFFSET.access.is_writable()
-
     # Check names
     ####################################################################################################
     assert register.ABN_DECODER_COUNT.name == "ABN_DECODER_COUNT"
+
+    # Check fields
+    ####################################################################################################
+    fields_of_mode_ramp_mode_motion = register.MODE_RAMP_MODE_MOTION.fields()
+    assert fields_of_mode_ramp_mode_motion[0] == register.MODE_RAMP_MODE_MOTION.MODE_MOTION
+    assert fields_of_mode_ramp_mode_motion[1] == register.MODE_RAMP_MODE_MOTION.MODE_RAMP
+    assert fields_of_mode_ramp_mode_motion[2] == register.MODE_RAMP_MODE_MOTION.MODE_FF
+    assert fields_of_mode_ramp_mode_motion[3] == register.MODE_RAMP_MODE_MOTION.MODE_PID_SMPL
+    assert fields_of_mode_ramp_mode_motion[4] == register.MODE_RAMP_MODE_MOTION.MODE_PID_TYPE
+
+
+def test_tmc4671_register_group():
+    mock_tmcl_interface = MockTmclInterface()
+    tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
+    register = tmc4671_eval.ics[0].register
+
+    # Check find_register
+    assert register.find("ABN_DECODER_COUNT") == register.ABN_DECODER_COUNT
+
+    list_of_registers = register.registers()
+    assert list_of_registers[0] == register.CHIPINFO_DATA
+    assert list_of_registers[-1] == register.STATUS_MASK

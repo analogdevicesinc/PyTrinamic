@@ -44,67 +44,22 @@ class RegisterGroup:
         self.name = name
 
     def find(self, name: str):
-        segments = name.split(".")
+        for register in self.registers():
+            if register.name == name:
+                return register
 
-        if len(segments) == 0:
-            raise ValueError("Invalid name")
-
-        if segments[0] != self._NAME:
-            raise ValueError("Invalid name: RegisterGroup name doesn't match")
-
-        if len(segments) == 1:
-            return self
-
-        #We have for some register lists of the register. It iterates throug them and looks for a match and return the match.
-        if segments[1].find("[") != -1:
-            found = False
-            register = None
-            for key in self.__dir__():
-                if found: break
-                obj = getattr(self, key)
-                if isinstance(obj, list):
-                    if all([isinstance(x, Register) for x in obj]):
-                        i =0
-                        for key in obj:
-                            if obj[i].get_name() == segments[0]+"."+segments[1]:
-                                register =obj[i]
-                                found = True
-                                break
-                            i +=1
-
-        else:
-            # We have at least two segments -> search for the register
-            register = getattr(self, segments[1], None)
-
-        if not register :
-            raise ValueError(f"Invalid name: Register {segments[1]} not found in {self._NAME}")
-
-        if len(segments) == 2:
-            return register
-
-        # We have at least three segments -> search for field in register
-        field = getattr(register, segments[2])
-        if not field:
-            raise ValueError(f"Invalid name '{name}': Field {segments[2]} not found in register {register.get_name()}")
-
-        return field
-
-    def get_registers(self) -> list:
+    def registers(self) -> list:
         """
-        Returns a list of all the Register members of this AddressBlock object
+        Returns a list of all the Register attributes.
         """
-        regs = []
+        registers = []
         for key in self.__dir__():
-
             obj = getattr(self, key)
             if isinstance(obj, Register):
-                regs.append(obj)
-            if isinstance(obj, list):
-                if all([isinstance(x, Register) for x in obj]):
-                    regs += obj
-        regs.sort(key=lambda x: x._ADDRESS)
+                registers.append(obj)
+        registers.sort(key=lambda x: x.address)
 
-        return regs
+        return registers
 
 
 class Field:
@@ -150,10 +105,16 @@ class Register:
         self.access = access
         self.address = address
         self.signed = signed
-        
-    def find(self, name: str) -> Field:
-        field = getattr(self, name)
-        if not field or not isinstance(field, Field):
-            raise ValueError(f"Register {self.get_name()} does not have a field named {name}")
 
-        return field
+    def fields(self) -> list:
+        """
+        Returns a list of all the Field attributes.
+        """
+        fields = []
+        for key in self.__dir__():
+            obj = getattr(self, key)
+            if isinstance(obj, Field):
+                fields.append(obj)
+        fields.sort(key=lambda x: x.shift)
+
+        return fields
