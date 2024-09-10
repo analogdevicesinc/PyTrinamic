@@ -10,6 +10,7 @@ from pytrinamic.ic import Access
 
 PID_VELOCITY_LIMIT_REGISTER_ADDRESS = 0x60
 HALL_MODE_REGISTER_ADDRESS = 0x33
+CHIP_INFO_ADDRESS_ADDRESS = 0x01
 
 
 class MockTmclInterface(TmclInterface):
@@ -51,6 +52,15 @@ def test_tmc4671_eval_read_write(mocker):
     read_mc_fn_spy.reset_mock()
     write_mc_fn_spy.assert_called_once_with(register_address=HALL_MODE_REGISTER_ADDRESS, value=1, module_id=1)
     write_mc_fn_spy.reset_mock()
+
+    # Check Choice write
+    tmc4671_eval.write(register.CHIPINFO_ADDR.CHIP_INFO_ADDRESS.choice["SI_TYPE"])
+    write_mc_fn_spy.assert_called_once_with(register_address=CHIP_INFO_ADDRESS_ADDRESS, value=0, module_id=1)
+    write_mc_fn_spy.reset_mock()
+    tmc4671_eval.write(register.CHIPINFO_ADDR.CHIP_INFO_ADDRESS.choice["SI_VERSION"])
+    write_mc_fn_spy.assert_called_once_with(register_address=CHIP_INFO_ADDRESS_ADDRESS, value=1, module_id=1)
+    write_mc_fn_spy.reset_mock()
+
 
 
 def test_tmc4671_field():

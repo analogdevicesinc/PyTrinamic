@@ -30,7 +30,7 @@ with ConnectionManager().connect() as my_interface:
     tmc4671_eval.write(tmc4671_reg.PWM_POLARITIES, 0x00000000)
     tmc4671_eval.write(tmc4671_reg.PWM_MAXCNT, int(0x00000F9F))
     tmc4671_eval.write(tmc4671_reg.PWM_BBM_H_BBM_L, 0x00001414)
-    tmc4671_eval.write(tmc4671_reg.PWM_SV_CHOP.PWM_CHOP, 7)
+    tmc4671_eval.write(tmc4671_reg.PWM_SV_CHOP.PWM_CHOP.choice["centered PWM for FOC"])
     tmc4671_eval.write(tmc4671_reg.PWM_SV_CHOP.PWM_SV, 1)
 
     # ADC configuration
@@ -55,19 +55,18 @@ with ConnectionManager().connect() as my_interface:
     tmc4671_eval.write(tmc4671_reg.ADC_I0_SCALE_OFFSET, 0xFF000000 + int(adc_i0_offset))
     tmc4671_eval.write(tmc4671_reg.ADC_I1_SCALE_OFFSET, 0xFF000000 + int(adc_i1_offset))
 
-
-        # Open loop settings
-    tmc4671_eval.write(tmc4671_reg.OPENLOOP_MODE, 0x00000000)
+    # Open loop settings
+    tmc4671_eval.write(tmc4671_reg.OPENLOOP_MODE, 0)
     tmc4671_eval.write(tmc4671_reg.OPENLOOP_ACCELERATION, 100)
 
     # Feedback selection
-    tmc4671_eval.write(tmc4671_reg.PHI_E_SELECTION, 2)
+    tmc4671_eval.write(tmc4671_reg.PHI_E_SELECTION.PHI_E_SELECTION.choice["phi_e_openloop"])
     tmc4671_eval.write(tmc4671_reg.UQ_UD_EXT, 2000)
 
     # ===== Open loop test drive =====
 
     # Switch to open loop velocity mode
-    tmc4671_eval.write(tmc4671_reg.MODE_RAMP_MODE_MOTION, 8)
+    tmc4671_eval.write(tmc4671_reg.MODE_RAMP_MODE_MOTION.MODE_MOTION.choice["uq_ud_ext"])
 
     # Rotate right
     print("Rotate right...")
