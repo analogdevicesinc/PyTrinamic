@@ -7,21 +7,23 @@
 ################################################################################
 
 import struct
-from .TMC4671core import TMC4671Core
+from ..ic import TMCIc
+from .TMC4671map import TMC4671Map
 from ..helpers import BitField, to_signed_32
 
 DATAGRAM_FORMAT = ">BI"
 DATAGRAM_LENGTH = 5
 
 
-class TMC4671(TMC4671Core):
+class TMC4671(TMCIc):
     """
     The TMC4671 is a fully integrated servo controller, providing Field Oriented Control for BLDC/PMSM
     and 2-phase Stepper motors as well as DC motor support.
     """
     def __init__(self, connection=None):
-        super().__init__(self.__doc__)
+        super().__init__("TMC4671", self.__doc__)
         self._connection = connection
+        self.register = TMC4671Map().ALL_REGISTERS
 
     # Only used for direct UART access without EvalSystem
     def write_register(self, register_address, value):
