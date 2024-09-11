@@ -99,12 +99,19 @@ class Register:
 
     The main purpose is to give these classes an easy way to set the value of a field for use with the bulk write functionality of the reg module.
     """
-    def __init__(self, name, parent, access, address, signed=False) -> None:
+    def __init__(self, name, parent, access, address, signed=False, width=32) -> None:
         self.name = name
         self.parent = parent
         self.access = access
         self.address = address
         self.signed = signed
+        self.width = width
+
+    def is_in_bounds(self, value: int) -> bool:
+        if self.signed:
+            return -2**(self.width - 1) <= value <= 2**(self.width - 1) - 1
+        else:
+            return 0 <= value <= 2**self.width - 1
 
     def fields(self) -> list:
         """

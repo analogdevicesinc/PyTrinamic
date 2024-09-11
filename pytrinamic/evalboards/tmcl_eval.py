@@ -95,7 +95,7 @@ class TMCLEval(object):
 
         else:
             raise ValueError(
-                f"Input read_target does not appear to be either an address, a Field, or a Register. Or length is 0 for array read."
+                f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
             )
 
     def write(self, write_target: typing.Union[Register, Field, Choice], value: typing.Union[int, bool] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
@@ -103,8 +103,9 @@ class TMCLEval(object):
         Generic write functions, will branch out to private write functions.
 
         write_target: This is the main differentiating argument:
-                       - If read_target is a Field object, we do a field write.
-                       - If read_target is a Register object, we do a register write.
+                       - If write_target is a Choice object, we do a field write.
+                       - If write_target is a Field object, we do a field write.
+                       - If write_target is a Register object, we do a register write.
         """
         if isinstance(write_target, Choice) and (value == None):
             # Our target variable is a Choice, we do a choice write in that case
@@ -114,11 +115,11 @@ class TMCLEval(object):
 
             if not omit_permission_checks:
                 if not write_target.access.is_writable():
-                    raise ValueError(f"This field has no write permission!!")
+                    raise PermissionError(f"Field {write_target.name} has no write permission!!")
 
             if not omit_bounds_check:
                 if not write_target.is_in_bounds(value):
-                    raise ValueError(f"The input value is not in the allowed value range!")
+                    raise ValueError(f"Input value {value} is not in the allowed value range!")
 
             if write_target.access == Access.RWC:
                 register_content_new = (value << write_target.shift) & write_target.mask
@@ -136,13 +137,19 @@ class TMCLEval(object):
 
             if not omit_permission_checks:
                 if not write_target.access.is_writable():
-                    raise ValueError(f"This field has no write permission!!")
+                    raise PermissionError(f"Register {write_target.name} has no write permission!!")
+
+            if not omit_bounds_check:
+                if not write_target.is_in_bounds(value):
+                    raise ValueError(f"Input value {value} is not in the allowed value range!")
 
             register_address = write_target.address
             return self.write_register(register_address, value)
 
         else:
-            raise ValueError(f"Input write_target does not appear to be either an address, a Field, or a Register or value is invalid.")
+            raise ValueError(
+                f"Argument write_target {write_target} does not appear to be either a Register, Field or Choice, or the value is invalid."
+            )
 
 
     def write_axis_field(self, axis, field, value):
