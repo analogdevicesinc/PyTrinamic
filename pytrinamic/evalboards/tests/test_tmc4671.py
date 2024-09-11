@@ -2,6 +2,9 @@
 # Copyright © 2024 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""Test the dot Register/Field/Choice syntax and metadata in context of the TMC4671."""
+
+import pytest
 
 from pytrinamic.connections.tmcl_interface import TmclInterface
 from pytrinamic.evalboards import TMC4671_eval
@@ -14,6 +17,10 @@ CHIP_INFO_ADDRESS_ADDRESS = 0x01
 
 
 class MockTmclInterface(TmclInterface):
+    """This interface/connection is given to the Eval instead of a real connection.
+    
+    The `read_mc()` and `write_mc()` functions are mocked, and called instead of the real functions.
+    """
     def __init__(self):
         super().__init__()
 
@@ -25,6 +32,7 @@ class MockTmclInterface(TmclInterface):
 
 
 def test_tmc4671_eval_read_write(mocker):
+    """Test dot syntax read/write of registers, fields."""
     mock_tmcl_interface = MockTmclInterface()
     read_mc_fn_spy = mocker.spy(mock_tmcl_interface, "read_mc")
     write_mc_fn_spy = mocker.spy(mock_tmcl_interface, "write_mc")
@@ -62,21 +70,52 @@ def test_tmc4671_eval_read_write(mocker):
     write_mc_fn_spy.reset_mock()
 
 
+def test_tmc4671_out_of_bounds_exception():
+    
+    mock_tmcl_interface = MockTmclInterface()
+    tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
+    register = tmc4671_eval.ics[0].register
+        
+    # HALL_MODE.polarity is a bool, so 2 should not be allowed.
+    with pytest.raises(ValueError):
+        tmc4671_eval.write(register.HALL_MODE.polarity, 2)
+
+    # With omit_bounds_check=True, the write should not raise an exception.
+    tmc4671_eval.write(register.HALL_MODE.polarity, 2, omit_bounds_check=True)
+
+    # PID_VELOCITY_LIMIT is unsigned, so -1 should not be allowed.
+    with pytest.raises(ValueError):
+        tmc4671_eval.write(register.PID_VELOCITY_LIMIT, -1)
+
+    # With omit_bounds_check=True, the write should not raise an exception.
+    tmc4671_eval.write(register.PID_VELOCITY_LIMIT, -1, omit_bounds_check=True)
+
+
+def test_tmc4671_access_exception():
+    mock_tmcl_interface = MockTmclInterface()
+    tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
+    register = tmc4671_eval.ics[0].register
+
+    # CHIPINFO_DATA is read only so writing to it should raise a PermissionError.
+    with pytest.raises(PermissionError):
+        tmc4671_eval.write(register.CHIPINFO_DATA, 0)
+
+    # With omit_permission_checks=True, the write should not raise an exception.
+    tmc4671_eval.write(register.CHIPINFO_DATA, 0, omit_permission_checks=True)
+
 
 def test_tmc4671_field():
+    """Test field metadata and helper functions."""
+
     mock_tmcl_interface = MockTmclInterface()
     tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
     register = tmc4671_eval.ics[0].register
 
     # Check is signed
-    ####################################################################################################
-
     assert not register.PID_VELOCITY_LIMIT.signed
     assert register.PID_VELOCITY_TARGET.signed  # TODO: Fix the generated code to have the correct signedness!
 
-    # Check is is_in_bounds
-    ####################################################################################################
-
+    # Check is is_in_bounds - for unsigned fields
     # Because ADC_I0_OFFSET is unsigned -1 should not be in bounds.
     assert not register.ADC_I0_SCALE_OFFSET.ADC_I0_OFFSET.is_in_bounds(-1)
     # Check lower bound
@@ -86,6 +125,7 @@ def test_tmc4671_field():
     # Check out of bounds
     assert not register.ADC_I0_SCALE_OFFSET.ADC_I0_OFFSET.is_in_bounds(0x10000)
 
+    # Check is is_in_bounds - for signed fields
     # Check lower bound
     assert register.ADC_I0_SCALE_OFFSET.ADC_I0_SCALE.is_in_bounds(-0x8000)  # TODO: Fix the generated code to have the correct signedness!
     # Check upper bound
@@ -96,8 +136,6 @@ def test_tmc4671_field():
     assert not register.ADC_I0_SCALE_OFFSET.ADC_I0_SCALE.is_in_bounds(0x8000)  # TODO: Fix the generated code to have the correct signedness!
 
     # Check access
-    ####################################################################################################
-    
     assert register.ADC_IWY_IUX.ADC_IUX.access == Access.R
     assert register.ADC_IWY_IUX.ADC_IUX.access.name == "R"
     assert not register.ADC_IWY_IUX.ADC_IUX.access.is_writable()
@@ -110,20 +148,22 @@ def test_tmc4671_register():
     tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
     register = tmc4671_eval.ics[0].register
 
+    assert register.PID_VELOCITY_LIMIT.is_in_bounds(0)
+    assert register.PID_VELOCITY_LIMIT.is_in_bounds(0xFFFFFFFF)
+    assert not register.PID_VELOCITY_LIMIT.is_in_bounds(-1)
+    assert not register.PID_VELOCITY_LIMIT.is_in_bounds(0x100000000)
+
     # Check is access
-    ####################################################################################################
-    # For a register
     assert register.ADC_I0_SCALE_OFFSET.access == Access.RW
     assert register.ADC_I0_SCALE_OFFSET.access.name == "RW"
     assert register.ADC_I0_SCALE_OFFSET.access.is_writable()
 
     # Check names
-    ####################################################################################################
     assert register.ABN_DECODER_COUNT.name == "ABN_DECODER_COUNT"
 
-    # Check fields
-    ####################################################################################################
+    # Check the fields() function that gets you a list of all fields of a register.
     fields_of_mode_ramp_mode_motion = register.MODE_RAMP_MODE_MOTION.fields()
+    assert len(fields_of_mode_ramp_mode_motion) == 5
     assert fields_of_mode_ramp_mode_motion[0] == register.MODE_RAMP_MODE_MOTION.MODE_MOTION
     assert fields_of_mode_ramp_mode_motion[1] == register.MODE_RAMP_MODE_MOTION.MODE_RAMP
     assert fields_of_mode_ramp_mode_motion[2] == register.MODE_RAMP_MODE_MOTION.MODE_FF
@@ -136,9 +176,10 @@ def test_tmc4671_register_group():
     tmc4671_eval = TMC4671_eval(mock_tmcl_interface)
     register = tmc4671_eval.ics[0].register
 
-    # Check find_register
+    # Check the find register function of the TMC4671 register group.
     assert register.find("ABN_DECODER_COUNT") == register.ABN_DECODER_COUNT
 
+    # Check the list of registers function for the TMC4671 register group.
     list_of_registers = register.registers()
     assert list_of_registers[0] == register.CHIPINFO_DATA
     assert list_of_registers[-1] == register.STATUS_MASK
