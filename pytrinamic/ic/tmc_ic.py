@@ -49,9 +49,7 @@ class RegisterGroup:
                 return register
 
     def registers(self) -> list:
-        """
-        Returns a list of all the Register attributes.
-        """
+        """Returns a list of all the Register attributes."""
         registers = []
         for key in self.__dir__():
             obj = getattr(self, key)
@@ -70,10 +68,11 @@ class Field:
     Fields should be instantiated as class-wide attributes for a given register.
     The address is contained only as data used by the RegisterAccess class.
 
-    name: Field name as "PERIPHERAL.REGISTER.FIELD".
-    address: Address of the register that contains this field.
-    mask: Field mask, does not need to be shifted by shift to get the actual mask.
-    shift: Shift ammount for the field data.
+    name: The name of this field.
+    parent: The register that contains this field.
+    access: The type of access of this field.
+    mask: The binary mask without shift of this field.
+    shift: The position of the field inside the register.
     signed: If the field is signed or not.
     """
 
@@ -85,7 +84,27 @@ class Field:
         self.shift = shift
         self.signed = signed
 
+    def get(self, register_value: int) -> int:
+        """Get the field value of a register value.
+        
+        This comes in handy if you want to read a register just once, and then extract multiple field values.
+        """
+        if self.signed:
+            base_mask = self.mask >> self.shift
+            sign_mask = base_mask & (~base_mask >> 1)
+            return (register_value ^ sign_mask) - sign_mask
+        else:
+            return (register_value & self.mask) >> self.shift
+    
+    def set(self, register_value: int, new_field_value) -> int:
+        """Change the field value of a register value.
+
+        This comes in handy if you want to change multiple field values of a register in one write operation.
+        """
+        return (register_value & ~self.mask) | (new_field_value << self.shift)
+
     def is_in_bounds(self, value: typing.Union[int, bool]) -> bool:
+        """Check if the value is within the bounds of the field."""
         base_mask = self.mask >> self.shift
         if self.signed:
             return -base_mask//2 <= value <= base_mask//2

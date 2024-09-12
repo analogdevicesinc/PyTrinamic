@@ -79,13 +79,7 @@ class TMCLEval(object):
             register_address = read_target.parent.address
             signed = bool(read_target.signed)
             register_content = self.read_register(register_address, signed=signed)
-
-            value = (register_content & read_target.mask) >> read_target.shift
-            if signed:
-                base_mask = read_target.mask >> read_target.shift
-                sign_mask = base_mask & (~base_mask >> 1)
-                value = (value ^ sign_mask) - sign_mask
-            return value
+            return read_target.get(register_content)  # Mask and shift is done in the Field.get function
 
         elif isinstance(read_target, Register):
             # Our target has the attributes of a register, we do register read in that case
@@ -128,7 +122,7 @@ class TMCLEval(object):
 
             register_address = write_target.parent.address
             register_content_old = self.read_register(register_address)
-            register_content_new = (register_content_old & ~write_target.mask) | (value << write_target.shift)
+            register_content_new = write_target.set(register_content_old, value)  # Mask and shift is done in the Field.set function
             self.write_register(register_address, register_content_new)
             return register_content_new
 

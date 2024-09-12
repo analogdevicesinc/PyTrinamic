@@ -70,6 +70,37 @@ def test_tmc4671_eval_read_write(mocker):
     write_mc_fn_spy.reset_mock()
 
 
+def test_field_get():
+    
+    tmc4671_eval = TMC4671_eval(None)
+    register = tmc4671_eval.ics[0].register
+
+    register_value = 0x00000000
+    register_value = register.MOTOR_TYPE_N_POLE_PAIRS.MOTOR_TYPE.set(register_value, 0x03)
+    register_value = register.MOTOR_TYPE_N_POLE_PAIRS.N_POLE_PAIRS.set(register_value, 0xA5A5)
+    assert register_value == 0x0003A5A5
+
+    register_value = 0xFFFFFFFF
+    register_value = register.MOTOR_TYPE_N_POLE_PAIRS.MOTOR_TYPE.set(register_value, 0x03)
+    register_value = register.MOTOR_TYPE_N_POLE_PAIRS.N_POLE_PAIRS.set(register_value, 0xA5A5)
+    assert register_value == 0xFF03A5A5
+
+
+def test_field_set():
+    
+    tmc4671_eval = TMC4671_eval(None)
+    register = tmc4671_eval.ics[0].register
+
+    register_value = 0x00000000
+    assert register.MOTOR_TYPE_N_POLE_PAIRS.MOTOR_TYPE.get(register_value) == 0x00
+    assert register.MOTOR_TYPE_N_POLE_PAIRS.N_POLE_PAIRS.get(register_value) == 0x0000
+
+    register_value = 0x0003FEDC
+    assert register.MOTOR_TYPE_N_POLE_PAIRS.MOTOR_TYPE.get(register_value) == 0x03
+    assert register.MOTOR_TYPE_N_POLE_PAIRS.N_POLE_PAIRS.get(register_value) == 0xFEDC
+
+
+
 def test_tmc4671_out_of_bounds_exception():
     
     mock_tmcl_interface = MockTmclInterface()
