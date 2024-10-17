@@ -5,7 +5,7 @@
 # Copyright © 2023 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-import typing
+from typing import Union
 
 from pytrinamic.helpers import BitField
 from pytrinamic.ic import Register, Field, Access, Choice
@@ -66,7 +66,7 @@ class TMCLEval(object):
     def write_register(self, register_address, value):
         raise NotImplementedError
 
-    def read(self, read_target: typing.Union[Register, Field]) -> int:
+    def read(self, read_target: Union[Register, Field]) -> int:
         """
         Generic read function, will branch out to private read functions.
 
@@ -92,7 +92,7 @@ class TMCLEval(object):
                 f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
             )
 
-    def write(self, write_target: typing.Union[Register, Field, Choice], value: typing.Union[int, bool] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+    def write(self, write_target: Union[Register, Field, Choice], value: Union[int, bool] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
         """
         Generic write functions, will branch out to private write functions.
 

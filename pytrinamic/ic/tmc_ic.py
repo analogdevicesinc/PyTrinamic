@@ -6,7 +6,7 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 from __future__ import annotations      #start at python 3.7
-import typing
+from typing import Union
 from enum import IntEnum
 
 class TMCIc(object):
@@ -103,7 +103,7 @@ class Field:
         """
         return (register_value & ~self.mask) | (new_field_value << self.shift)
 
-    def is_in_bounds(self, value: typing.Union[int, bool]) -> bool:
+    def is_in_bounds(self, value: Union[int, bool]) -> bool:
         """Check if the value is within the bounds of the field."""
         base_mask = self.mask >> self.shift
         if self.signed:
