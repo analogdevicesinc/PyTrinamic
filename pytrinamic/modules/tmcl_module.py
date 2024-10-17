@@ -6,6 +6,11 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
+import enum
+
+from typing import Optional, Dict
+
+
 class TMCLModule(object):
 
     def __init__(self, connection, module_id=1, ap_index_bit_width=8):
@@ -151,3 +156,27 @@ class TMCLModule(object):
         x: Digital output index.
         """
         return self.connection.clear_digital_output(x, self.module_id)
+
+
+class Parameter:
+    class Access(enum.IntEnum):
+        R   = 0x01
+        W   = 0x02
+        RW  = 0x03
+        RWE = 0x07
+        
+    class Datatype(enum.IntEnum):
+        BOOLEAN = 0
+        UNSIGNED = 1
+        SIGNED = 2
+        ENUM = 3
+        FIELD = 4
+
+    def __init__(self, name: str, index: int, access: "Parameter.Access", datatype: "Parameter.Datatype"):
+        self.name = name
+        self.index = index
+        self.access = access
+        self.datatype = datatype
+
+    def __int__(self):
+        return self.index

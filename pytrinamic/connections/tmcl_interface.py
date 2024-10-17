@@ -185,6 +185,8 @@ class TmclInterface(ABC):
 
         axis_bit_width = 16 - index_bit_width
 
+        index = int(index)  # Get the integer value if a Parameter object is given
+
         if index >= 2**index_bit_width:
             raise ValueError(f"Value {index} for parameter index is outside the allowed range (0..{2**index_bit_width - 1})!")
         if axis >= 2**axis_bit_width:
@@ -213,13 +215,16 @@ class TmclInterface(ABC):
 
     # Global parameter access functions
     def get_global_parameter(self, command_type, bank, module_id=None, signed=False):
+        command_type = int(command_type)  # Get the integer value if a Parameter object is given
         value = self.send(TMCLCommand.GGP, command_type, bank, 0, module_id).value
         return to_signed_32(value) if signed else value
 
     def set_global_parameter(self, command_type, bank, value, module_id=None):
+        command_type = int(command_type)  # Get the integer value if a Parameter object is given
         return self.send(TMCLCommand.SGP, command_type, bank, value, module_id)
 
     def store_global_parameter(self, command_type, bank, module_id=None):
+        command_type = int(command_type)  # Get the integer value if a Parameter object is given
         return self.send(TMCLCommand.STGP, command_type, bank, 0, module_id)
 
     def set_and_store_global_parameter(self, command_type, bank, value, module_id=None):
