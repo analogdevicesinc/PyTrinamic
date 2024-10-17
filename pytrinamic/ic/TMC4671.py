@@ -7,8 +7,7 @@
 ################################################################################
 
 import struct
-from ..ic import TMCIc
-from .TMC4671map import TMC4671Map
+from ..ic.tmc_ic import TMCIc
 from ..helpers import BitField, to_signed_32
 
 DATAGRAM_FORMAT = ">BI"
@@ -23,7 +22,6 @@ class TMC4671(TMCIc):
     def __init__(self, connection=None):
         super().__init__("TMC4671", self.__doc__)
         self._connection = connection
-        self.register = TMC4671Map().ALL_REGISTERS
 
     # Only used for direct UART access without EvalSystem
     def write_register(self, register_address, value):
