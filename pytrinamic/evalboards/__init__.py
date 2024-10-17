@@ -28,3 +28,5 @@ from .TMC6300_eval import TMC6300_eval
 from .TMC7300_eval import TMC7300_eval
 from .TMC5272_eval import TMC5272_eval
 from .TMC5271_eval import TMC5271_eval
+from .TMC9660_eval import TMC9660_3PH_eval
+from .TMC9660_eval import TMC9660_STEPPER_eval
