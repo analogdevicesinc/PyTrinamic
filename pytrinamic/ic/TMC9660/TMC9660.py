@@ -5,16 +5,16 @@
 
 from typing import Union
 
-from ...ic.tmc_ic import TMCIc
+from ...ic.tmc_ic import TMCIc, UblApiDevice
 from ...modules import Parameter
+from ...tmcl import TMCLCommand
 
 from .TMC9660_ap import Ap
 from .TMC9660_bank0 import Bank0
 from .TMC9660_bank2 import Bank2
 from .TMC9660_bank3 import Bank3
 
-
-class TMC9660(TMCIc):
+class TMC9660(TMCIc, UblApiDevice):
     """
     """
     ap = Ap()
@@ -29,6 +29,14 @@ class TMC9660(TMCIc):
         self._connection = connection
         self.ap_index_bit_width = 12
         self.module_id = module_id
+
+    # Implementation of UblApiDevice-write_register
+    def write_register(self, register_address, block, value):
+        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self._module_id)
+
+    # Implementation of UblApiDevice-read_register
+    def read_register(self, register_address, block, signed=False):
+        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed)
     
     def get_axis_parameter(self, ap: Union[Parameter, int]):
         return self._connection.get_axis_parameter(ap, 0, self.module_id, index_bit_width=self.ap_index_bit_width)
