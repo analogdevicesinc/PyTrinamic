@@ -22,6 +22,98 @@ class TMCIc(object):
         return self.__info
 
 
+class UblApiDevice:
+
+    def read_register(self, register_address, block, signed=False):
+        raise NotImplementedError
+
+    def write_register(self, register_address, block, value):
+        raise NotImplementedError
+
+    def read(self, read_target: Union[Register, Field]) -> int:
+        """
+        Generic read function, will branch out to private read functions.
+
+        read_target: This is the main differentiating argument:
+                       - If read_target is a Register object, we do a register read.
+                       - If read_target is a Field object, we do a field read.
+        """
+        if isinstance(read_target, Field):
+            # Our target variable is a Field, we do field read in that case
+            register_address = read_target.parent.address
+            register_block = read_target.parent.block
+            signed = bool(read_target.signed)
+            register_content = self.read_register(register_address, register_block, signed=signed)
+            return read_target.get(register_content)  # Mask and shift is done in the Field.get function
+
+        elif isinstance(read_target, Register):
+            # Our target has the attributes of a register, we do register read in that case
+            signed = bool(read_target.signed)
+            register_address = read_target.address
+            register_block = read_target.block
+            return self.read_register(register_address, register_block, signed=signed)
+
+        else:
+            raise ValueError(
+                f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
+            )
+
+    def write(self, write_target: Union[Register, Field, Choice], value: Union[int, bool] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+        """
+        Generic write functions, will branch out to private write functions.
+
+        write_target: This is the main differentiating argument:
+                       - If write_target is a Choice object, we do a field write.
+                       - If write_target is a Field object, we do a field write.
+                       - If write_target is a Register object, we do a register write.
+        """
+        if isinstance(write_target, Choice) and (value == None):
+            # Our target variable is a Choice, we do a choice write in that case
+            return self.write(write_target.parent, write_target.value)
+        if isinstance(write_target, Field) and isinstance(value, int):
+            # Our target variable is a Field, we do field read in that case
+
+            if not omit_permission_checks:
+                if not write_target.access.is_writable():
+                    raise PermissionError(f"Field {write_target.name} has no write permission!!")
+
+            if not omit_bounds_check:
+                if not write_target.is_in_bounds(value):
+                    raise ValueError(f"Input value {value} is not in the allowed value range!")
+
+            if write_target.access == Access.RWC:
+                register_content_new = (value << write_target.shift) & write_target.mask
+                self.write_register(write_target.parent.address, write_target.parent.bloc, register_content_new)
+                return register_content_new
+
+            register_address = write_target.parent.address
+            register_block = write_target.parent.block
+            register_content_old = self.read_register(register_address, register_block)
+            register_content_new = write_target.set(register_content_old, value)  # Mask and shift is done in the Field.set function
+            self.write_register(register_address, register_block, register_content_new)
+            return register_content_new
+
+        elif isinstance(write_target, Register) and isinstance(value, int):
+            # Our target has the attributes of a register, we do register write in that case
+
+            if not omit_permission_checks:
+                if not write_target.access.is_writable():
+                    raise PermissionError(f"Register {write_target.name} has no write permission!!")
+
+            if not omit_bounds_check:
+                if not write_target.is_in_bounds(value):
+                    raise ValueError(f"Input value {value} is not in the allowed value range!")
+
+            register_address = write_target.address
+            register_block = write_target.block
+            return self.write_register(register_address, register_block, value)
+
+        else:
+            raise ValueError(
+                f"Argument write_target {write_target} does not appear to be either a Register, Field or Choice, or the value is invalid."
+            )
+
+
 class Access(IntEnum):
     R   = 0x01 # read
     W   = 0x02 # write
@@ -40,8 +132,9 @@ class RegisterGroup:
     The registers are added in a derived class as object attributes.
     It also contains convenience functions.
     """
-    def __init__(self, name) -> None:
+    def __init__(self, name, block) -> None:
         self.name = name
+        self.block = block
 
     def find(self, name: str):
         for register in self.registers():
@@ -118,11 +211,12 @@ class Register:
 
     The main purpose is to give these classes an easy way to set the value of a field for use with the bulk write functionality of the reg module.
     """
-    def __init__(self, name, parent, access, address, signed=False, width=32) -> None:
+    def __init__(self, name, parent, access, address, block, signed=False, width=32) -> None:
         self.name = name
         self.parent = parent
         self.access = access
         self.address = address
+        self.block = block
         self.signed = signed
         self.width = width
 
