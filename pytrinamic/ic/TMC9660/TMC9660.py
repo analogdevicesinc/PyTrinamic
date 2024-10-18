@@ -13,14 +13,32 @@ from .TMC9660_ap import Ap
 from .TMC9660_bank0 import Bank0
 from .TMC9660_bank2 import Bank2
 from .TMC9660_bank3 import Bank3
+from .MCCmap import MCCMap
+from .ADCmap import ADCMap
+from .SYS_CTRLmap import SYS_CTRLMap
+from .GPIOmap import GPIOMap
+from .SPI0map import SPI0Map
+from .SPI1map import SPI1Map
+from .I2Cmap import I2CMap
+from .TIM_ADVmap import TIM_ADVMap
 
 class TMC9660(TMCIc, UblApiDevice):
     """
     """
     ap = Ap()
+    
     gp_bank0 = Bank0()
     gp_bank2 = Bank2()
     gp_bank3 = Bank3()
+
+    MCC = MCCMap(block=0).ALL_REGISTERS
+    ADC = ADCMap(block=1).ALL_REGISTERS
+    SYS_CTRL = SYS_CTRLMap(block=2).ALL_REGISTERS
+    GPIO = GPIOMap(block=4).ALL_REGISTERS
+    SPI0 = SPI0Map(block=7).ALL_REGISTERS
+    SPI1 = SPI1Map(block=8).ALL_REGISTERS
+    I2C = I2CMap(block=10).ALL_REGISTERS
+    TIM_ADV = TIM_ADVMap(block=14).ALL_REGISTERS
     
     def __init__(self, connection=None, module_id=0):
         """You only need a module ID if you have multiple TMC9660 ICs on a shared RS485 bus."""
