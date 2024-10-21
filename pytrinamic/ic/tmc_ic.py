@@ -42,8 +42,7 @@ class UblApiDevice:
             # Our target variable is a Field, we do field read in that case
             register_address = read_target.parent.address
             register_block = read_target.parent.block
-            signed = bool(read_target.signed)
-            register_content = self.read_register(register_address, register_block, signed=signed)
+            register_content = self.read_register(register_address, register_block)
             return read_target.get(register_content)  # Mask and shift is done in the Field.get function
 
         elif isinstance(read_target, Register):
@@ -182,12 +181,12 @@ class Field:
         
         This comes in handy if you want to read a register just once, and then extract multiple field values.
         """
+        value = (register_value & self.mask) >> self.shift
         if self.signed:
             base_mask = self.mask >> self.shift
             sign_mask = base_mask & (~base_mask >> 1)
-            return (register_value ^ sign_mask) - sign_mask
-        else:
-            return (register_value & self.mask) >> self.shift
+            value = (value ^ sign_mask) - sign_mask
+        return value
     
     def set(self, register_value: int, new_field_value) -> int:
         """Change the field value of a register value.
