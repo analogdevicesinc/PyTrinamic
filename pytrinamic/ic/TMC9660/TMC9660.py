@@ -50,11 +50,11 @@ class TMC9660(TMCIc, UblApiDevice):
 
     # Implementation of UblApiDevice-write_register
     def write_register(self, register_address, block, value):
-        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self._module_id)
+        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self.module_id)
 
     # Implementation of UblApiDevice-read_register
     def read_register(self, register_address, block, signed=False):
-        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed)
+        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self.module_id, signed)
     
     def get_axis_parameter(self, ap: Union[Parameter, int]):
         return self._connection.get_axis_parameter(ap, 0, self.module_id, index_bit_width=self.ap_index_bit_width)
