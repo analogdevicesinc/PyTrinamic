@@ -7,7 +7,7 @@
 The TMC9660-3PH-EVAL/TMC9660-STEPPER-EVAL is used in headless mode for this example.
 
 Note: To run this script the EVAL first needs an uploaded/burned configuration
-and the parameter app must have been started.
+and the register app must have been started.
 
    --------+                       
            |  USB-UART Cable - Connected to the machine running this script.                                       
@@ -30,7 +30,10 @@ with ConnectionManager("--interface serial_tmcl --port COM5").connect() as my_in
 
     tmc9660 = TMC9660(my_interface)
 
-    for _ in range(10):
-        voltage_v = tmc9660.get_axis_parameter(tmc9660.ap.SUPPLY_VOLTAGE) / 10
-        print(f"Supply voltage: {voltage_v:.2f} V")
+    tmc9660.write(TMC9660.MCC.MOTOR_CONFIG.TYPE.choice["NONE No motor"])
+    tmc9660.write(TMC9660.MCC.MOTOR_CONFIG.N_POLE_PAIRS, 4)
+    
+    for _ in range(20):
+        print(f"I0 = {tmc9660.read(TMC9660.MCC.ADC_I1_I0_SCALED.ADC_SCALED_I0)}")
+        print(f"I1 = {tmc9660.read(TMC9660.MCC.ADC_I1_I0_SCALED.ADC_SCALED_I1)}")
         time.sleep(0.2)
