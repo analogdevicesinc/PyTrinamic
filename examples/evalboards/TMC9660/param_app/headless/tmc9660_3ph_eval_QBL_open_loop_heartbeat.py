@@ -6,6 +6,9 @@
 
 The TMC9660-3PH-EVAL is used in headless mode for this example.
 
+Note: To run this script the TMC9660-3PH-EVAL first needs an uploaded/burned configuration
+and the parameter app must have been started.
+
    --------+                       
            |  USB-UART Cable - Connected to the machine running this script.                                       
         +--|----------------+       +--------------+             

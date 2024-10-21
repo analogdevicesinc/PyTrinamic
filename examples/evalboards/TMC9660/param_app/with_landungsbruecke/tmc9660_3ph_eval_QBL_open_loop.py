@@ -5,7 +5,7 @@
 """Example on how to use TMC9660-3PH-EVKIT to spin a BLDC motor in open loop voltage mode.
 
 Note: To run this script the TMC9660-3PH-EVAL first needs an uploaded/burned configuration
-and the the app must have been started.
+and the parameter app must have been started.
 
                             +-----+  +-------------------+       +--------------+             
                      USB    |     |==|                   |-------|              |             
