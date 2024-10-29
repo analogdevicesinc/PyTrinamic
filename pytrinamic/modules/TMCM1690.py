@@ -23,7 +23,7 @@ class TMCM1690(TMCLModule):
     The TMCM-1690 is a single axis servo drive platform for 3-phase BLDC motors and DC motors. Supply voltage is 8-48V.
     """
     def __init__(self, connection, module_id=1):
-        super().__init__(connection, module_id)
+        super().__init__(connection, module_id, ap_index_bit_width=12)
 
         self.name = "TMCM-1690"
         self.desc = self.__doc__
@@ -334,6 +334,7 @@ class TMCM1690(TMCLModule):
             LinearRampPosition              = 270
             LinearVelocityOffset            = 271
             LinearSwitchOverVelocity        = 272
+            LinearCatchUpVelocity           = 273
 
         class ENUM:
             COMM_MODE_DISABLED              = 0
