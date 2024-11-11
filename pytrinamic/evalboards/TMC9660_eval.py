@@ -34,17 +34,19 @@ class TMC9660_eval(UblApiDevice):
         """Implementation of the UblApiDevice::read_register() function."""
         return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed)
         
-    def get_axis_parameter(self, ap: Union[Parameter, int]):
-        return self._connection.get_axis_parameter(ap, 0, index_bit_width=self._ap_index_bit_width)
+    def get_axis_parameter(self, ap: Parameter):
+        signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
+        return self._connection.get_axis_parameter(ap.index, 0, signed, index_bit_width=self._ap_index_bit_width)
 
-    def set_axis_parameter(self, ap: Union[Parameter, int], value):
-        return self._connection.set_axis_parameter(ap, 0, value, index_bit_width=self._ap_index_bit_width)
+    def set_axis_parameter(self, ap: Parameter, value):
+        return self._connection.set_axis_parameter(ap.index, 0, value, index_bit_width=self._ap_index_bit_width)
 
-    def get_global_parameter(self, gp: Union[Parameter, int], bank):
-        return self._connection.get_global_parameter(gp, bank)
+    def get_global_parameter(self, gp: Parameter, bank):
+        signed = True if gp.datatype == Parameter.Datatype.SIGNED else False
+        return self._connection.get_global_parameter(gp.index, bank, signed)
 
-    def set_global_parameter(self, gp: Union[Parameter, int], bank, value):
-        return self._connection.set_global_parameter(gp, bank, value)
+    def set_global_parameter(self, gp: Parameter, bank, value):
+        return self._connection.set_global_parameter(gp.index, bank, value)
     
 
 class TMC9660_3PH_eval(TMC9660_eval):
