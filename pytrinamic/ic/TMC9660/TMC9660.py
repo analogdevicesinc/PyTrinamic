@@ -22,8 +22,24 @@ from .SPI1map import SPI1Map
 from .I2Cmap import I2CMap
 from .TIM_ADVmap import TIM_ADVMap
 
+
 class TMC9660(TMCIc, UblApiDevice):
-    """
+    """TMC9660 IC class.
+
+    The TMC9660 class provides a simple interface for communication with a TMC9660 IC.
+
+    :cvar ap: The TMC9660's axis parameters. These are only available if parameter app is running.
+    :cvar gp_bank0: The TMC9660's global parameters bank 0. These are only available if parameter app is running.
+    :cvar gp_bank2: The TMC9660's global parameters bank 2. These are only available if parameter app is running.
+    :cvar gp_bank3: The TMC9660's global parameters bank 3. These are only available if parameter app is running.
+    :cvar MCC: The TMC9660's motion controller core registers. These are only available if register app is running.
+    :cvar ADC: The TMC9660's ADC registers. These are only available if register app is running.
+    :cvar SYS_CTRL: The TMC9660's system control registers. These are only available if register app is running.
+    :cvar GPIO: The TMC9660's GPIO registers. These are only available if register app is running.
+    :cvar SPI0: The TMC9660's SPI0 registers. These are only available if register app is running.
+    :cvar SPI1: The TMC9660's SPI1 registers. These are only available if register app is running.
+    :cvar I2C: The TMC9660's I2C registers. These are only available if register app is running.
+    :cvar TIM_ADV: The TMC9660's advanced timer registers. These are only available if register app is running.
     """
     ap = Ap()
     
@@ -48,22 +64,22 @@ class TMC9660(TMCIc, UblApiDevice):
         self.ap_index_bit_width = 12
         self.module_id = module_id
 
-    # Implementation of UblApiDevice-write_register
     def write_register(self, register_address, block, value):
+        """Implementation of the UblApiDevice::write_register() function."""
         return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self.module_id)
 
-    # Implementation of UblApiDevice-read_register
     def read_register(self, register_address, block, signed=False):
+        """Implementation of the UblApiDevice::read_register() function."""
         return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self.module_id, signed)
-    
+
     def get_axis_parameter(self, ap: Union[Parameter, int]):
         return self._connection.get_axis_parameter(ap, 0, self.module_id, index_bit_width=self.ap_index_bit_width)
 
-    def set_axis_parameter(self, ap: Union[Parameter, int], value):
+    def set_axis_parameter(self, ap: Union[Parameter, int], value: int):
         return self._connection.set_axis_parameter(ap, 0, value, self.module_id, self.ap_index_bit_width)
 
-    def get_global_parameter(self, gp: Union[Parameter, int], bank):
+    def get_global_parameter(self, gp: Union[Parameter, int], bank: int):
         return self._connection.get_global_parameter(gp, bank, self.module_id)
 
-    def set_global_parameter(self, gp: Union[Parameter, int], bank, value):
+    def set_global_parameter(self, gp: Union[Parameter, int], bank:int, value: int):
         return self._connection.set_global_parameter(gp, bank, value, self.module_id)
