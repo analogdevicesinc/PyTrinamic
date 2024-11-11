@@ -22,11 +22,12 @@ and the parameter app must have been started.
 import time
 
 from pytrinamic.connections import ConnectionManager
-
 from pytrinamic.ic import TMC9660
 
 
-with ConnectionManager("--interface serial_tmcl --port COM5").connect() as my_interface:
+com_port = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
+
+with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() as my_interface:
 
     tmc9660 = TMC9660(my_interface)
 
@@ -34,8 +35,7 @@ with ConnectionManager("--interface serial_tmcl --port COM5").connect() as my_in
     tmc9660.set_axis_parameter(tmc9660.ap.OPENLOOP_VOLTAGE, 1000)
     tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE, tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.VELOCITY_SCALING_FACTOR, 458)
-    tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 20)
+    tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
     
     start_time_s = time.time()
     while time.time() - start_time_s < 4:

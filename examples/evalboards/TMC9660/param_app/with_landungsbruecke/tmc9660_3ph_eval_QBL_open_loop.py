@@ -19,7 +19,6 @@ running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------
 import time
 
 from pytrinamic.connections import ConnectionManager
-
 from pytrinamic.ic import TMC9660
 from pytrinamic.evalboards import TMC9660_3PH_eval
 
@@ -32,8 +31,7 @@ with ConnectionManager().connect() as my_interface:
     tmc9660_eval.set_axis_parameter(TMC9660.ap.OPENLOOP_VOLTAGE, 1000)
     tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE, TMC9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
-    tmc9660_eval.set_axis_parameter(TMC9660.ap.VELOCITY_SCALING_FACTOR, 458)
-    tmc9660_eval.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 20)
+    tmc9660_eval.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 10_000)
     
     start_time_s = time.time()
     while time.time() - start_time_s < 4:

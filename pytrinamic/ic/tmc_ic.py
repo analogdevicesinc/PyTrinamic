@@ -6,8 +6,10 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 from __future__ import annotations      #start at python 3.7
-from typing import Union
+from typing import Optional, Union
 from enum import IntEnum
+from abc import ABC, abstractmethod
+
 
 class TMCIc(object):
 
@@ -22,21 +24,14 @@ class TMCIc(object):
         return self.__info
 
 
-class UblApiDevice:
-
-    def read_register(self, register_address, block, signed=False):
-        raise NotImplementedError
-
-    def write_register(self, register_address, block, value):
-        raise NotImplementedError
+class UblApiDevice(ABC):
 
     def read(self, read_target: Union[Register, Field]) -> int:
-        """
-        Generic read function, will branch out to private read functions.
+        """Generic read function to read a register or a field within a register
 
-        read_target: This is the main differentiating argument:
-                       - If read_target is a Register object, we do a register read.
-                       - If read_target is a Field object, we do a field read.
+        :param read_target: This is the main differentiating argument:
+            - If read_target is a Register object, we do a register read.
+            - If read_target is a Field object, we do a field read.
         """
         if isinstance(read_target, Field):
             # Our target variable is a Field, we do field read in that case
@@ -57,14 +52,13 @@ class UblApiDevice:
                 f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
             )
 
-    def write(self, write_target: Union[Register, Field, Choice], value: Union[int, bool] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
-        """
-        Generic write functions, will branch out to private write functions.
+    def write(self, write_target: Union[Register, Field, Choice], value: Optional[Union[int, bool]] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+        """Generic write function, to write a register or a field within a register
 
-        write_target: This is the main differentiating argument:
-                       - If write_target is a Choice object, we do a field write.
-                       - If write_target is a Field object, we do a field write.
-                       - If write_target is a Register object, we do a register write.
+        :param write_target: This is the main differentiating argument:
+            - If write_target is a Choice object, we do a field write.
+            - If write_target is a Field object, we do a field write.
+            - If write_target is a Register object, we do a register write.
         """
         if isinstance(write_target, Choice) and (value == None):
             # Our target variable is a Choice, we do a choice write in that case
@@ -111,6 +105,14 @@ class UblApiDevice:
             raise ValueError(
                 f"Argument write_target {write_target} does not appear to be either a Register, Field or Choice, or the value is invalid."
             )
+
+    @abstractmethod
+    def read_register(self, register_address: int, block: int, signed: bool = False):
+        raise NotImplementedError
+
+    @abstractmethod
+    def write_register(self, register_address: int, block: int, value: int):
+        raise NotImplementedError
 
 
 class Access(IntEnum):

@@ -2,7 +2,14 @@
 # Copyright © 2024 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""Implementation of TMC9660 eval boards.
 
+The following eval boards are implemented:
+
+* TMC9660-3PH-EVAL
+* TMC9660-STEPPER-EVAL
+
+"""
 from typing import Union
 
 from pytrinamic.modules import Parameter
@@ -19,12 +26,12 @@ class TMC9660_eval(UblApiDevice):
         self._module_id = 1
         self.ics = [TMC9660()]
 
-    # Implementation of UblApiDevice-write_register
     def write_register(self, register_address, block, value):
+        """Implementation of the UblApiDevice::write_register() function."""
         return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self._module_id)
 
-    # Implementation of UblApiDevice-read_register
     def read_register(self, register_address, block, signed=False):
+        """Implementation of the UblApiDevice::read_register() function."""
         return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed)
         
     def get_axis_parameter(self, ap: Union[Parameter, int]):
@@ -41,8 +48,10 @@ class TMC9660_eval(UblApiDevice):
     
 
 class TMC9660_3PH_eval(TMC9660_eval):
+    """Representation of the TMC9660-3PH-EVAL."""
     pass
 
 
 class TMC9660_STEPPER_eval(TMC9660_eval):
+    """Representation of the TMC9660-STEPPER-EVAL."""
     pass

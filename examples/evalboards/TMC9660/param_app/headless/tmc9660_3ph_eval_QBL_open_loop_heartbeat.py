@@ -22,11 +22,12 @@ and the parameter app must have been started.
 import time
 
 from pytrinamic.connections import ConnectionManager
-
 from pytrinamic.ic import TMC9660
 
 
-with ConnectionManager("--interface serial_tmcl --port COM5").connect() as my_interface:
+com_port = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
+
+with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() as my_interface:
 
     tmc9660 = TMC9660(my_interface)
 
@@ -34,17 +35,25 @@ with ConnectionManager("--interface serial_tmcl --port COM5").connect() as my_in
     tmc9660.set_axis_parameter(tmc9660.ap.OPENLOOP_VOLTAGE, 1000)
     tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE, tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.VELOCITY_SCALING_FACTOR, 458)
-    tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 20)
+    # Rotate the motor.
+    tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
     
+    # Set the heartbeat monitoring timeout to 3s and enable it.
     tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_TIMEOUT, 0, 3000)
     tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG, 0, tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG.choice.TMCL_UART_INTERFACE)
     
+    # Initially all should be fine. The motor should be rotating.
     print(f"Actual velocity: {tmc9660.get_axis_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")
     print(f"Commutation Mode: {tmc9660.get_axis_parameter(tmc9660.ap.COMMUTATION_MODE)}")
     print(f"HEARTBEAT_STOPPED: {bool(tmc9660.get_axis_parameter(tmc9660.ap.GENERAL_ERROR_FLAGS) & 0x04000000)}")
 
     time.sleep(4)
+
+    # At this point the motor should have stopped due to the heartbeat timeout.
+    # Meaning:
+    # * velocity should be zero,
+    # * commutation mode should be in SYSTEM_OFF,
+    # * and the heartbeat error flag should be set.
 
     print(f"Actual velocity: {tmc9660.get_axis_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")
     print(f"Commutation Mode: {tmc9660.get_axis_parameter(tmc9660.ap.COMMUTATION_MODE)}")
