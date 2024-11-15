@@ -25,6 +25,7 @@ from .TMCM1640 import TMCM1640
 from .TMCM1670 import TMCM1670
 from .TMCM1690 import TMCM1690
 from .TMCM3110 import TMCM3110
+from .TMCM3216 import TMCM3216
 from .TMCM3312 import TMCM3312
 from .TMCM3351 import TMCM3351
 from .TMCM6110 import TMCM6110

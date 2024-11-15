@@ -13,15 +13,16 @@ from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
 from ..features import StallGuard2Module, CoolStepModule
 
 
-class TMCM1270(TMCLModule):
+class TMCM3216(TMCLModule):
     """
-    The TMCM-1240 is a single axis controller/driver module. Supply voltage is 24V.
+    The TMCM-3216 is a three axis controller/driver module. Supply voltage is 24V.
     """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-        self.name = "TMCM-1270"
+        self.name = "TMCM-3216"
         self.desc = self.__doc__
-        self.motors = [self._MotorTypeA(self, 0)]
+        self.motors = [self._MotorTypeA(self, 0), self._MotorTypeA(self, 1), self._MotorTypeA(self, 2),
+                       self._MotorTypeA(self, 3), self._MotorTypeA(self, 4), self._MotorTypeA(self, 5)]
 
     def rotate(self, axis, velocity):
         """
@@ -102,14 +103,13 @@ class TMCM1270(TMCLModule):
             return self.get_axis_parameter(self.AP.PositionReachedFlag)
 
         class AP:
-            # Axis parameter map for this axis.
             TargetPosition                 = 0
             ActualPosition                 = 1
             TargetVelocity                 = 2
             ActualVelocity                 = 3
             MaxVelocity                    = 4
             MaxAcceleration                = 5
-            RunCurrent                     = 6
+            MaxCurrent                     = 6
             StandbyCurrent                 = 7
             PositionReachedFlag            = 8
             HomeSwitch                     = 9
@@ -127,37 +127,52 @@ class TMCM1270(TMCLModule):
             RampWaitTime                   = 21
             HighSpeedTheshold              = 22
             MinDcStepSpeed                 = 23
-            RightSwitchPolarity            = 24
-            LeftSwitchPolarity             = 25
-            Softstop                       = 26
+            RightLimitSwitchPolarity       = 24
+            LeftLimitSwitchPolarity        = 25
+            SoftStop                       = 26
             HighSpeedChopperMode           = 27
             HighSpeedFullstepMode          = 28
             MeasuredSpeed                  = 29
             PowerDownRamp                  = 31
             DcStepTime                     = 32
             DcStepStallGuard               = 33
-            RelativePositioningOptionCode  = 127
+            A2                             = 34
+            V2                             = 35
+            D2                             = 36
+            VMaxMiniumTime                 = 37
+            VirtualStopLeft                = 38
+            VirtualStopRight               = 39
+            VirtualStopFlags               = 40
+            VirtualStopEnable              = 41
+            VirtualStopEncoderMode         = 42
+            PosCompPosition                = 43
+            PosCompRepeat                  = 44
+            PosCompOutputMask              = 45
+            PosCompPulseLength             = 46
+            TargetReachedOutputMask        = 47
+            MotionStartInputMask           = 48
+            RelativePositioningOption      = 127
             MicrostepResolution            = 140
+            StepInterpolationEnable        = 160
             ChopperBlankTime               = 162
             ConstantTOffMode               = 163
             DisableFastDecayComparator     = 164
             ChopperHysteresisEnd           = 165
             ChopperHysteresisStart         = 166
             TOff                           = 167
-            SEIMIN                         = 168
-            SECDS                          = 169
+            SmartEnergyCurrentMinimum      = 168
+            SmartEnergyCurrentDownStep     = 169
             SmartEnergyHysteresis          = 170
-            SECUS                          = 171
+            SmartEnergyCurrentUpStep       = 171
             SmartEnergyHysteresisStart     = 172
-            SG2FilterEnable                = 173
-            SG2Threshold                   = 174
-            ShortToGroundProtection        = 177
-            VSense                         = 179
+            StallGuard2FilterEnable        = 173
+            StallGuard2Threshold           = 174
+            GlobalCurrentScaler            = 178
+            FullScaleCurrentRange          = 179
             SmartEnergyActualCurrent       = 180
-            SmartEnergyStallVelocity       = 181
+            StopOnStallVelocity            = 181
             SmartEnergyThresholdSpeed      = 182
-            RandomTOffMode                 = 184
-            ChopperSynchronization         = 185
+            PassiveFastDecayTime           = 185
             PWMThresholdSpeed              = 186
             PWMGrad                        = 187
             PWMAmplitude                   = 188
@@ -167,20 +182,24 @@ class TMCM1270(TMCLModule):
             PWMAutoscale                   = 192
             ReferenceSearchMode            = 193
             ReferenceSearchSpeed           = 194
-            RefSwitchSpeed                 = 195
-            RightLimitSwitchPosition       = 196
-            LastReferencePosition          = 197
+            ReferenceSwitchSpeed           = 195
+            ReferenceSwitchDistance        = 196
+            LastReferenceSwitchPosition    = 197
             EncoderMode                    = 201
-            MotorFullStepResolution        = 202
+            FullstepResolution             = 202
             FreewheelingMode               = 204
             LoadValue                      = 206
-            ErrorFlags                     = 207
-            StatusFlags                    = 208
+            ErrorFlags                     = 207  # ExtendedErrorFlags
+            StatusFlags                    = 208  # DrvStatusFlags
             EncoderPosition                = 209
             EncoderResolution              = 210
-            EncoderDeviationMax            = 212
+            MaxEncoderDeviation            = 212
             PowerDownDelay                 = 214
-            UnitMode                       = 255
+            StallGuard4Result              = 220
+            StallGuard4Threshold           = 221
+            StallGuard4FilterEnable        = 222
+            StallGuard4AngleOffset         = 223
+            ReverseShaft                   = 251
 
         class ENUM:
             """
@@ -200,16 +219,23 @@ class TMCM1270(TMCLModule):
         """
         Global parameter map for this module.
         """
+        RS485Baudrate                 = 65
+        SerialAddress                 = 66
+        SerialHeartbeat               = 68
         CANBitrate                    = 69
         CANSendId                     = 70
         CANReceiveId                  = 71
+        TelegramPauseTime             = 75
+        SerialHostAddress             = 76
         AutoStartMode                 = 77
         ProtectionMode                = 81
         CANHeartbeat                  = 82
         CANSecondaryAddress           = 83
         EepromCoordinateStore         = 84
         ZeroUserVariables             = 85
+        SerialSecondaryAddress        = 86
         ApplicationStatus             = 128
+        DownloadMode                  = 129
         ProgramCounter                = 130
         TickTimer                     = 132
         RandomNumber                  = 133
@@ -221,11 +247,24 @@ class TMCM1270(TMCLModule):
         Timer_2                        = 2
         StopLeft_0                     = 27
         StopRight_0                    = 28
+        StopLeft_1                     = 29
+        StopRight_1                    = 30
+        StopLeft_2                     = 31
+        StopRight_2                    = 32
         Input_0                        = 39
         Input_1                        = 40
         Input_2                        = 41
+        Input_3                        = 42
+
 
     class IO:
-        IN0 = 0
-        IN1 = 1
-        IN2 = 2
+        OUT0   = 0
+        OUT1   = 1
+        OUT2   = 2
+        OUT3   = 3
+        AIN0   = 0
+        AIN1   = 1
+        IN0    = 2
+        IN1    = 3
+        IN2    = 4
+        IN3    = 5

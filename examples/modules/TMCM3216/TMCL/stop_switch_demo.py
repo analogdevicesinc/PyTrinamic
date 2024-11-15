@@ -8,16 +8,16 @@
 
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.modules import TMCM1290
+from pytrinamic.modules import TMCM3216
 import time
 
 pytrinamic.show_info()
 
-# We are using RS485
-connection_manager = ConnectionManager("--interface serial_tmcl --data-rate 115200 --port interactive")
+# This example is using PCAN, if you want to use another connection please change the next line.
+connection_manager = ConnectionManager()
 
 with connection_manager.connect() as my_interface:
-    module = TMCM1290(my_interface)
+    module = TMCM3216(my_interface)
     motor = module.motors[0]
 
     print("Preparing parameters")

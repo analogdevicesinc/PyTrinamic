@@ -217,7 +217,6 @@ class TMCM6214(TMCLModule):
         CANBitrate                    = 69
         CANSendId                     = 70
         CANReceiveId                  = 71
-        CANSecondaryId                = 72 #not in datasheet
         TelegramPauseTime             = 75
         SerialHostAddress             = 76
         AutoStartMode                 = 77

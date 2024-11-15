@@ -145,7 +145,6 @@ class TMCM1276(TMCLModule):
         CANBitrate                     = 69
         CANSendId                      = 70
         CANReceiveId                   = 71
-        CANSecondaryId                 = 72
         AutoStartMode                  = 77
         ProtectionMode                 = 81
         CANHeartbeat                   = 82
