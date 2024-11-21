@@ -51,8 +51,8 @@ class TMC9660_eval(UblApiDevice):
         return self._connection.get_axis_parameter(
             ap.index,
             0,
-            signed,
             module_id=self._module_id,
+            signed=signed,
             index_bit_width=self._ap_index_bit_width,
         )
 
@@ -70,8 +70,8 @@ class TMC9660_eval(UblApiDevice):
         return self._connection.get_global_parameter(
             gp.index,
             bank,
-            signed,
             module_id=self._module_id,
+            signed=signed,
         )
 
     def set_global_parameter(self, gp: Parameter, bank, value):
