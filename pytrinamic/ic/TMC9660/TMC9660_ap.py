@@ -11,295 +11,295 @@ from pytrinamic.modules import Parameter
 class Ap:
 
     def __init__(self):
-        self.MOTOR_TYPE                                       =  _MOTOR_TYPE(0,                                         Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.MOTOR_POLE_PAIRS                                 =  _MOTOR_POLE_PAIRS(1,                                   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.MOTOR_DIRECTION                                  =  _MOTOR_DIRECTION(2,                                    Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.MOTOR_PWM_FREQUENCY                              =  _MOTOR_PWM_FREQUENCY(3,                                Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.COMMUTATION_MODE                                 =  _COMMUTATION_MODE(4,                                   Parameter.Access.RW,   Parameter.Datatype.ENUM)
-        self.OUTPUT_VOLTAGE_LIMIT                             =  _OUTPUT_VOLTAGE_LIMIT(5,                               Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.MAX_TORQUE                                       =  _MAX_TORQUE(6,                                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.MAX_FLUX                                         =  _MAX_FLUX(7,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.PWM_SWITCHING_SCHEME                             =  _PWM_SWITCHING_SCHEME(8,                               Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.IDLE_MOTOR_PWM_BEHAVIOR                          =  _IDLE_MOTOR_PWM_BEHAVIOR(9,                            Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ADC_SHUNT_TYPE                                   =  _ADC_SHUNT_TYPE(12,                                    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.ADC_I0_RAW                                       =  _ADC_I0_RAW(13,                                        Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ADC_I1_RAW                                       =  _ADC_I1_RAW(14,                                        Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ADC_I2_RAW                                       =  _ADC_I2_RAW(15,                                        Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ADC_I3_RAW                                       =  _ADC_I3_RAW(16,                                        Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.CSA_GAIN_ADC_I0_TO_ADC_I2                        =  _CSA_GAIN_ADC_I0_TO_ADC_I2(17,                         Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.CSA_GAIN_ADC_I3                                  =  _CSA_GAIN_ADC_I3(18,                                   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.CSA_FILTER_ADC_I0_TO_ADC_I2                      =  _CSA_FILTER_ADC_I0_TO_ADC_I2(19,                       Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.CSA_FILTER_ADC_I3                                =  _CSA_FILTER_ADC_I3(20,                                 Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.CURRENT_SCALING_FACTOR                           =  _CURRENT_SCALING_FACTOR(21,                            Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.PHASE_UX1_ADC_MAPPING                            =  _PHASE_UX1_ADC_MAPPING(22,                             Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.PHASE_VX2_ADC_MAPPING                            =  _PHASE_VX2_ADC_MAPPING(23,                             Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.PHASE_WY1_ADC_MAPPING                            =  _PHASE_WY1_ADC_MAPPING(24,                             Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.PHASE_Y2_ADC_MAPPING                             =  _PHASE_Y2_ADC_MAPPING(25,                              Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.ADC_I0_SCALE                                     =  _ADC_I0_SCALE(26,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ADC_I1_SCALE                                     =  _ADC_I1_SCALE(27,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ADC_I2_SCALE                                     =  _ADC_I2_SCALE(28,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ADC_I3_SCALE                                     =  _ADC_I3_SCALE(29,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ADC_I0_INVERTED                                  =  _ADC_I0_INVERTED(30,                                   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ADC_I1_INVERTED                                  =  _ADC_I1_INVERTED(31,                                   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ADC_I2_INVERTED                                  =  _ADC_I2_INVERTED(32,                                   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ADC_I3_INVERTED                                  =  _ADC_I3_INVERTED(33,                                   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ADC_I0_OFFSET                                    =  _ADC_I0_OFFSET(34,                                     Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ADC_I1_OFFSET                                    =  _ADC_I1_OFFSET(35,                                     Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ADC_I2_OFFSET                                    =  _ADC_I2_OFFSET(36,                                     Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ADC_I3_OFFSET                                    =  _ADC_I3_OFFSET(37,                                     Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ADC_I0                                           =  _ADC_I0(38,                                            Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ADC_I1                                           =  _ADC_I1(39,                                            Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ADC_I2                                           =  _ADC_I2(40,                                            Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ADC_I3                                           =  _ADC_I3(41,                                            Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.OPENLOOP_ANGLE                                   =  _OPENLOOP_ANGLE(45,                                    Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.OPENLOOP_CURRENT                                 =  _OPENLOOP_CURRENT(46,                                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.OPENLOOP_VOLTAGE                                 =  _OPENLOOP_VOLTAGE(47,                                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ACCELERATION_FF_GAIN                             =  _ACCELERATION_FF_GAIN(50,                              Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ACCELERATION_FF_SHIFT                            =  _ACCELERATION_FF_SHIFT(51,                             Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.RAMP_ENABLE                                      =  _RAMP_ENABLE(52,                                       Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.DIRECT_VELOCITY_MODE                             =  _DIRECT_VELOCITY_MODE(53,                              Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.RAMP_AMAX                                        =  _RAMP_AMAX(54,                                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_A1                                          =  _RAMP_A1(55,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_A2                                          =  _RAMP_A2(56,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_DMAX                                        =  _RAMP_DMAX(57,                                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_D1                                          =  _RAMP_D1(58,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_D2                                          =  _RAMP_D2(59,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_VMAX                                        =  _RAMP_VMAX(60,                                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_V1                                          =  _RAMP_V1(61,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_V2                                          =  _RAMP_V2(62,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_VSTART                                      =  _RAMP_VSTART(63,                                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_VSTOP                                       =  _RAMP_VSTOP(64,                                        Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RAMP_TVMAX                                       =  _RAMP_TVMAX(65,                                        Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.RAMP_TZEROWAIT                                   =  _RAMP_TZEROWAIT(66,                                    Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ACCELERATION_FEEDFORWARD                         =  _ACCELERATION_FEEDFORWARD(67,                          Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VELOCITY_FEEDFORWARD                             =  _VELOCITY_FEEDFORWARD(68,                              Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.RAMP_VELOCITY                                    =  _RAMP_VELOCITY(69,                                     Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.RAMP_POSITION                                    =  _RAMP_POSITION(70,                                     Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.HALL_PHI_E                                       =  _HALL_PHI_E(74,                                        Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.HALL_SECTOR_OFFSET                               =  _HALL_SECTOR_OFFSET(75,                                Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.HALL_FILTER_LENGTH                               =  _HALL_FILTER_LENGTH(76,                                Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.HALL_POSITION_0_OFFSET                           =  _HALL_POSITION_0_OFFSET(77,                            Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.HALL_POSITION_60_OFFSET                          =  _HALL_POSITION_60_OFFSET(78,                           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.HALL_POSITION_120_OFFSET                         =  _HALL_POSITION_120_OFFSET(79,                          Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.HALL_POSITION_180_OFFSET                         =  _HALL_POSITION_180_OFFSET(80,                          Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.HALL_POSITION_240_OFFSET                         =  _HALL_POSITION_240_OFFSET(81,                          Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.HALL_POSITION_300_OFFSET                         =  _HALL_POSITION_300_OFFSET(82,                          Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.HALL_INVERT_DIRECTION                            =  _HALL_INVERT_DIRECTION(83,                             Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.HALL_EXTRAPOLATION_ENABLE                        =  _HALL_EXTRAPOLATION_ENABLE(84,                         Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.HALL_PHI_E_OFFSET                                =  _HALL_PHI_E_OFFSET(85,                                 Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ABN_1_PHI_E                                      =  _ABN_1_PHI_E(89,                                       Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ABN_1_STEPS                                      =  _ABN_1_STEPS(90,                                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ABN_1_DIRECTION                                  =  _ABN_1_DIRECTION(91,                                   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ABN_1_INIT_METHOD                                =  _ABN_1_INIT_METHOD(92,                                 Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.ABN_1_INIT_STATE                                 =  _ABN_1_INIT_STATE(93,                                  Parameter.Access.R,    Parameter.Datatype.ENUM)
-        self.ABN_1_INIT_DELAY                                 =  _ABN_1_INIT_DELAY(94,                                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ABN_1_INIT_VELOCITY                              =  _ABN_1_INIT_VELOCITY(95,                               Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ABN_1_N_CHANNEL_PHI_E_OFFSET                     =  _ABN_1_N_CHANNEL_PHI_E_OFFSET(96,                      Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ABN_1_N_CHANNEL_INVERTED                         =  _ABN_1_N_CHANNEL_INVERTED(97,                          Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ABN_1_N_CHANNEL_FILTERING                        =  _ABN_1_N_CHANNEL_FILTERING(98,                         Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.ABN_1_CLEAR_ON_NEXT_NULL                         =  _ABN_1_CLEAR_ON_NEXT_NULL(99,                          Parameter.Access.RW,   Parameter.Datatype.BOOLEAN)
-        self.ABN_1_VALUE                                      =  _ABN_1_VALUE(100,                                      Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.TARGET_TORQUE                                    =  _TARGET_TORQUE(104,                                    Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.ACTUAL_TORQUE                                    =  _ACTUAL_TORQUE(105,                                    Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.TARGET_FLUX                                      =  _TARGET_FLUX(106,                                      Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.ACTUAL_FLUX                                      =  _ACTUAL_FLUX(107,                                      Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.TORQUE_OFFSET                                    =  _TORQUE_OFFSET(108,                                    Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.TORQUE_P                                         =  _TORQUE_P(109,                                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.TORQUE_I                                         =  _TORQUE_I(110,                                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.FLUX_P                                           =  _FLUX_P(111,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.FLUX_I                                           =  _FLUX_I(112,                                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SEPARATE_TORQUE_FLUX_PI_PARAMTERS                =  _SEPARATE_TORQUE_FLUX_PI_PARAMTERS(113,                Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.CURRENT_NORM_P                                   =  _CURRENT_NORM_P(114,                                   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.CURRENT_NORM_I                                   =  _CURRENT_NORM_I(115,                                   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.TORQUE_PI_ERROR                                  =  _TORQUE_PI_ERROR(116,                                  Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FLUX_PI_ERROR                                    =  _FLUX_PI_ERROR(117,                                    Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.TORQUE_PI_INTEGRATOR                             =  _TORQUE_PI_INTEGRATOR(118,                             Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FLUX_PI_INTEGRATOR                               =  _FLUX_PI_INTEGRATOR(119,                               Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FLUX_OFFSET                                      =  _FLUX_OFFSET(120,                                      Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.VELOCITY_SENSOR_SELECTION                        =  _VELOCITY_SENSOR_SELECTION(123,                        Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.TARGET_VELOCITY                                  =  _TARGET_VELOCITY(124,                                  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.ACTUAL_VELOCITY                                  =  _ACTUAL_VELOCITY(125,                                  Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.VELOCITY_OFFSET                                  =  _VELOCITY_OFFSET(126,                                  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.VELOCITY_P                                       =  _VELOCITY_P(127,                                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.VELOCITY_I                                       =  _VELOCITY_I(128,                                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.VELOCITY_NORM_P                                  =  _VELOCITY_NORM_P(129,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.VELOCITY_NORM_I                                  =  _VELOCITY_NORM_I(130,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.VELOCITY_PI_INTEGRATOR                           =  _VELOCITY_PI_INTEGRATOR(131,                           Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.VELOCITY_PI_ERROR                                =  _VELOCITY_PI_ERROR(132,                                Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.VELOCITY_SCALING_FACTOR                          =  _VELOCITY_SCALING_FACTOR(133,                          Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.STOP_ON_VELOCITY_DEVIATION                       =  _STOP_ON_VELOCITY_DEVIATION(134,                       Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.VELOCITY_LOOP_DOWNSAMPLING                       =  _VELOCITY_LOOP_DOWNSAMPLING(135,                       Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.VELOCITY_REACHED_THRESHOLD                       =  _VELOCITY_REACHED_THRESHOLD(136,                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.VELOCITY_METER_SWITCH_THRESHOLD                  =  _VELOCITY_METER_SWITCH_THRESHOLD(137,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.VELOCITY_METER_SWITCH_HYSTERESIS                 =  _VELOCITY_METER_SWITCH_HYSTERESIS(138,                 Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.VELOCITY_METER_MODE                              =  _VELOCITY_METER_MODE(139,                              Parameter.Access.R,    Parameter.Datatype.ENUM)
-        self.POSITION_SENSOR_SELECTION                        =  _POSITION_SENSOR_SELECTION(142,                        Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.TARGET_POSITION                                  =  _TARGET_POSITION(143,                                  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.ACTUAL_POSITION                                  =  _ACTUAL_POSITION(144,                                  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.POSITION_SCALING_FACTOR                          =  _POSITION_SCALING_FACTOR(145,                          Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.POSITION_P                                       =  _POSITION_P(146,                                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.POSITION_I                                       =  _POSITION_I(147,                                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.POSITION_NORM_P                                  =  _POSITION_NORM_P(148,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.POSITION_NORM_I                                  =  _POSITION_NORM_I(149,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.POSITION_PI_INTEGRATOR                           =  _POSITION_PI_INTEGRATOR(150,                           Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.POSITION_PI_ERROR                                =  _POSITION_PI_ERROR(151,                                Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.STOP_ON_POSITION_DEVIATION                       =  _STOP_ON_POSITION_DEVIATION(152,                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.POSITION_LOOP_DOWNSAMPLING                       =  _POSITION_LOOP_DOWNSAMPLING(153,                       Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.LATCH_POSITION                                   =  _LATCH_POSITION(154,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.POSITION_LIMIT_LOW                               =  _POSITION_LIMIT_LOW(155,                               Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.POSITION_LIMIT_HIGH                              =  _POSITION_LIMIT_HIGH(156,                              Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.POSITION_REACHED_THRESHOLD                       =  _POSITION_REACHED_THRESHOLD(157,                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.REFERENCE_SWITCH_ENABLE                          =  _REFERENCE_SWITCH_ENABLE(161,                          Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.REFERENCE_SWITCH_POLARITY_AND_SWAP               =  _REFERENCE_SWITCH_POLARITY_AND_SWAP(162,               Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.REFERENCE_SWITCH_LATCH_SETTINGS                  =  _REFERENCE_SWITCH_LATCH_SETTINGS(163,                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.EVENT_STOP_SETTINGS                              =  _EVENT_STOP_SETTINGS(164,                              Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.REFERENCE_SEARCH_MODE                            =  _REFERENCE_SEARCH_MODE(165,                            Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.REFERENCE_SEARCH_SPEED                           =  _REFERENCE_SEARCH_SPEED(166,                           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.REFERENCE_SWITCH_SPEED                           =  _REFERENCE_SWITCH_SPEED(167,                           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.RIGHT_LIMIT_SWITCH_POSITION                      =  _RIGHT_LIMIT_SWITCH_POSITION(168,                      Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.HOME_SWITCH_POSITION                             =  _HOME_SWITCH_POSITION(169,                             Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.LAST_REFERENCE_POSITION                          =  _LAST_REFERENCE_POSITION(170,                          Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ABN_2_STEPS                                      =  _ABN_2_STEPS(174,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ABN_2_DIRECTION                                  =  _ABN_2_DIRECTION(175,                                  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ABN_2_GEAR_RATIO                                 =  _ABN_2_GEAR_RATIO(176,                                 Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ABN_2_ENABLE                                     =  _ABN_2_ENABLE(177,                                     Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ABN_2_VALUE                                      =  _ABN_2_VALUE(178,                                      Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODE_CS_SETTLE_DELAY_TIME                  =  _SPI_ENCODE_CS_SETTLE_DELAY_TIME(181,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_CS_IDLE_DELAY_TIME                   =  _SPI_ENCODER_CS_IDLE_DELAY_TIME(182,                   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE               =  _SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE(183,               Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE          =  _SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE(184,          Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_TRANSFER_DATA_3_0                    =  _SPI_ENCODER_TRANSFER_DATA_3_0(185,                    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_TRANSFER_DATA_7_4                    =  _SPI_ENCODER_TRANSFER_DATA_7_4(186,                    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_TRANSFER_DATA_11_8                   =  _SPI_ENCODER_TRANSFER_DATA_11_8(187,                   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_TRANSFER_DATA_15_12                  =  _SPI_ENCODER_TRANSFER_DATA_15_12(188,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_TRANSFER                             =  _SPI_ENCODER_TRANSFER(189,                             Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.SPI_ENCODER_POSITION_COUNTER_MASK                =  _SPI_ENCODER_POSITION_COUNTER_MASK(190,                Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_POSITION_COUNTER_SHIFT               =  _SPI_ENCODER_POSITION_COUNTER_SHIFT(191,               Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_POSITION_COUNTER_VALUE               =  _SPI_ENCODER_POSITION_COUNTER_VALUE(192,               Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.SPI_ENCODER_COMMUTATION_ANGLE                    =  _SPI_ENCODER_COMMUTATION_ANGLE(193,                    Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.SPI_ENCODER_INITIALIZATION_METHOD                =  _SPI_ENCODER_INITIALIZATION_METHOD(194,                Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.SPI_ENCODER_DIRECTION                            =  _SPI_ENCODER_DIRECTION(195,                            Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.SPI_ENCODER_OFFSET                               =  _SPI_ENCODER_OFFSET(196,                               Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SPI_LUT_CORRECTION_ENABLE                        =  _SPI_LUT_CORRECTION_ENABLE(197,                        Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.SPI_LUT_ADDRESS_SELECT                           =  _SPI_LUT_ADDRESS_SELECT(198,                           Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.SPI_LUT_DATA                                     =  _SPI_LUT_DATA(199,                                     Parameter.Access.RW,   Parameter.Datatype.SIGNED)
-        self.SPI_LUT_COMMON_SHIFT_FACTOR                      =  _SPI_LUT_COMMON_SHIFT_FACTOR(201,                      Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.STEP_DIR_STEP_DIVIDER_SHIFT                      =  _STEP_DIR_STEP_DIVIDER_SHIFT(205,                      Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.STEP_DIR_ENABLE                                  =  _STEP_DIR_ENABLE(206,                                  Parameter.Access.RW,   Parameter.Datatype.BOOLEAN)
-        self.STEP_DIR_EXTRAPOLATION_ENABLE                    =  _STEP_DIR_EXTRAPOLATION_ENABLE(207,                    Parameter.Access.RW,   Parameter.Datatype.BOOLEAN)
-        self.STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT               =  _STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT(208,               Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY          =  _STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY(209,          Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.ENABLE_BRAKE_CHOPPER                             =  _ENABLE_BRAKE_CHOPPER(212,                             Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.BRAKE_CHOPPER_VOLTAGE_LIMIT                      =  _BRAKE_CHOPPER_VOLTAGE_LIMIT(213,                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.BRAKE_CHOPPER_HYSTERESIS                         =  _BRAKE_CHOPPER_HYSTERESIS(214,                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.RELEASE_BRAKE                                    =  _RELEASE_BRAKE(216,                                    Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.BRAKE_RELEASING_DUTY_CYCLE                       =  _BRAKE_RELEASING_DUTY_CYCLE(217,                       Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.BRAKE_HOLDING_DUTY_CYCLE                         =  _BRAKE_HOLDING_DUTY_CYCLE(218,                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.BRAKE_RELEASING_DURATION                         =  _BRAKE_RELEASING_DURATION(219,                         Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.INVERT_BRAKE_OUTPUT                              =  _INVERT_BRAKE_OUTPUT(221,                              Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.THERMAL_WINDING_TIME_CONSTANT_1                  =  _THERMAL_WINDING_TIME_CONSTANT_1(224,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IIT_LIMIT_1                                      =  _IIT_LIMIT_1(225,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IIT_SUM_1                                        =  _IIT_SUM_1(226,                                        Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.THERMAL_WINDING_TIME_CONSTANT_2                  =  _THERMAL_WINDING_TIME_CONSTANT_2(227,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IIT_LIMIT_2                                      =  _IIT_LIMIT_2(228,                                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IIT_SUM_2                                        =  _IIT_SUM_2(229,                                        Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.RESET_IIT_SUMS                                   =  _RESET_IIT_SUMS(230,                                   Parameter.Access.W,    Parameter.Datatype.UNSIGNED)
-        self.ACTUAL_TOTAL_MOTOR_CURRENT                       =  _ACTUAL_TOTAL_MOTOR_CURRENT(231,                       Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.PWM_L_OUTPUT_POLARITY                            =  _PWM_L_OUTPUT_POLARITY(233,                            Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.PWM_H_OUTPUT_POLARITY                            =  _PWM_H_OUTPUT_POLARITY(234,                            Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.BREAK_BEFORE_MAKE_TIME_LOW_UVW                   =  _BREAK_BEFORE_MAKE_TIME_LOW_UVW(235,                   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.BREAK_BEFORE_MAKE_TIME_HIGH_UVW                  =  _BREAK_BEFORE_MAKE_TIME_HIGH_UVW(236,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.BREAK_BEFORE_MAKE_TIME_LOW_Y2                    =  _BREAK_BEFORE_MAKE_TIME_LOW_Y2(237,                    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.BREAK_BEFORE_MAKE_TIME_HIGH_Y2                   =  _BREAK_BEFORE_MAKE_TIME_HIGH_Y2(238,                   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ADAPTIVE_DRIVE_TIME_UVW                          =  _ADAPTIVE_DRIVE_TIME_UVW(239,                          Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ADAPTIVE_DRIVE_TIME_Y2                           =  _ADAPTIVE_DRIVE_TIME_Y2(240,                           Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.DRIVE_TIME_SINK_UVW                              =  _DRIVE_TIME_SINK_UVW(241,                              Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.DRIVE_TIME_SOURCE_UVW                            =  _DRIVE_TIME_SOURCE_UVW(242,                            Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.DRIVE_TIME_SINK_Y2                               =  _DRIVE_TIME_SINK_Y2(243,                               Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.DRIVE_TIME_SOURCE_Y2                             =  _DRIVE_TIME_SOURCE_Y2(244,                             Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.UVW_SINK_CURRENT                                 =  _UVW_SINK_CURRENT(245,                                 Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.UVW_SOURCE_CURRENT                               =  _UVW_SOURCE_CURRENT(246,                               Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.Y2_SINK_CURRENT                                  =  _Y2_SINK_CURRENT(247,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.Y2_SOURCE_CURRENT                                =  _Y2_SOURCE_CURRENT(248,                                Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.BOOTSTRAP_CURRENT_LIMIT                          =  _BOOTSTRAP_CURRENT_LIMIT(249,                          Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.UVP_SUPPLY_LEVEL                                 =  _UVP_SUPPLY_LEVEL(250,                                 Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.UVP_VDRV_ENABLE                                  =  _UVP_VDRV_ENABLE(251,                                  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.UVP_BST_UVW_ENABLE                               =  _UVP_BST_UVW_ENABLE(252,                               Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.UVP_BST_Y2_ENABLE                                =  _UVP_BST_Y2_ENABLE(253,                                Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE      =  _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE(254,      Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE     =  _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE(255,     Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE       =  _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE(256,       Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE      =  _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE(257,      Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD   =  _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD(258,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD  =  _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD(259,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD    =  _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD(260,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD   =  _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD(261,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING    =  _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING(262,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING   =  _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING(263,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING     =  _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING(264,     Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING    =  _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING(265,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH    =  _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH(266,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH   =  _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH(267,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH     =  _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH(268,     Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH    =  _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH(269,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS     =  _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS(270,     Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS      =  _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS(271,      Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_UVW_LOW_SIDE_ON                              =  _VGS_UVW_LOW_SIDE_ON(272,                              Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_UVW_LOW_SIDE_OFF                             =  _VGS_UVW_LOW_SIDE_OFF(273,                             Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_UVW_HIGH_SIDE_ON                             =  _VGS_UVW_HIGH_SIDE_ON(274,                             Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_UVW_HIGH_SIDE_OFF                            =  _VGS_UVW_HIGH_SIDE_OFF(275,                            Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_Y2_LOW_SIDE_ON                               =  _VGS_Y2_LOW_SIDE_ON(276,                               Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_Y2_LOW_SIDE_OFF                              =  _VGS_Y2_LOW_SIDE_OFF(277,                              Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_Y2_HIGH_SIDE_ON                              =  _VGS_Y2_HIGH_SIDE_ON(278,                              Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_Y2_HIGH_SIDE_OFF                             =  _VGS_Y2_HIGH_SIDE_OFF(279,                             Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.VGS_UVW_BLANKING                                 =  _VGS_UVW_BLANKING(280,                                 Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.VGS_Y2_BLANKING                                  =  _VGS_Y2_BLANKING(281,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.VGS_UVW_DEGLITCH                                 =  _VGS_UVW_DEGLITCH(282,                                 Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.VGS_Y2_DEGLITCH                                  =  _VGS_Y2_DEGLITCH(283,                                  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.GDRV_RETRY_BEHAVIOUR                             =  _GDRV_RETRY_BEHAVIOUR(286,                             Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.DRIVE_FAULT_BEHAVIOUR                            =  _DRIVE_FAULT_BEHAVIOUR(287,                            Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.FAULT_HANDLER_NUMBER_OF_RETRIES                  =  _FAULT_HANDLER_NUMBER_OF_RETRIES(288,                  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.GENERAL_STATUS_FLAGS                             =  _GENERAL_STATUS_FLAGS(289,                             Parameter.Access.R,    Parameter.Datatype.FIELD)
-        self.SUPPLY_VOLTAGE                                   =  _SUPPLY_VOLTAGE(290,                                   Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.SUPPLY_OVERVOLTAGE_WARNING_THRESHOLD             =  _SUPPLY_OVERVOLTAGE_WARNING_THRESHOLD(291,             Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD            =  _SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD(292,            Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.EXTERNAL_TEMPERATURE                             =  _EXTERNAL_TEMPERATURE(293,                             Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD          =  _EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD(294,          Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.EXTERNAL_TEMPERATURE_WARNING_THRESHOLD           =  _EXTERNAL_TEMPERATURE_WARNING_THRESHOLD(295,           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.CHIP_TEMPERATURE                                 =  _CHIP_TEMPERATURE(296,                                 Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.CHIP_TEMPERATURE_SHUTDOWN_THRESHOLD              =  _CHIP_TEMPERATURE_SHUTDOWN_THRESHOLD(297,              Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.CHIP_TEMPERATURE_WARNING_THRESHOLD               =  _CHIP_TEMPERATURE_WARNING_THRESHOLD(298,               Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.GENERAL_ERROR_FLAGS                              =  _GENERAL_ERROR_FLAGS(299,                              Parameter.Access.R,    Parameter.Datatype.FIELD)
-        self.GDRV_ERROR_FLAGS                                 =  _GDRV_ERROR_FLAGS(300,                                 Parameter.Access.R,    Parameter.Datatype.FIELD)
-        self.ADC_STATUS_FLAGS                                 =  _ADC_STATUS_FLAGS(301,                                 Parameter.Access.R,    Parameter.Datatype.FIELD)
-        self.MCC_INPUTS_RAW                                   =  _MCC_INPUTS_RAW(304,                                   Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.FOC_VOLTAGE_UX                                   =  _FOC_VOLTAGE_UX(305,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FOC_VOLTAGE_WY                                   =  _FOC_VOLTAGE_WY(306,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FOC_VOLTAGE_V                                    =  _FOC_VOLTAGE_V(307,                                    Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FIELDWEAKENING_I                                 =  _FIELDWEAKENING_I(308,                                 Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.FIELDWEAKENING_VOLTAGE_THRESHOLD                 =  _FIELDWEAKENING_VOLTAGE_THRESHOLD(310,                 Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.FOC_CURRENT_UX                                   =  _FOC_CURRENT_UX(311,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FOC_CURRENT_V                                    =  _FOC_CURRENT_V(312,                                    Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FOC_CURRENT_WY                                   =  _FOC_CURRENT_WY(313,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FOC_VOLTAGE_UQ                                   =  _FOC_VOLTAGE_UQ(314,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.FOC_CURRENT_IQ                                   =  _FOC_CURRENT_IQ(315,                                   Parameter.Access.R,    Parameter.Datatype.SIGNED)
-        self.ENABLE_TARGET_TORQUE_BIQUAD_FILTER               =  _ENABLE_TARGET_TORQUE_BIQUAD_FILTER(318,               Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1             =  _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1(319,             Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_2             =  _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_2(320,             Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0             =  _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0(321,             Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_1             =  _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_1(322,             Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2             =  _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2(323,             Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ENABLE_ACTUAL_VELOCITY_BIQUAD_FILTER             =  _ENABLE_ACTUAL_VELOCITY_BIQUAD_FILTER(324,             Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1           =  _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1(325,           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_2           =  _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_2(326,           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0           =  _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0(327,           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_1           =  _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_1(328,           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2           =  _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2(329,           Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
-        self.TORQUE_FLUX_COMBINED_TARGET_VALUES               =  _TORQUE_FLUX_COMBINED_TARGET_VALUES(330,               Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.TORQUE_FLUX_COMBINED_ACTUAL_VALUES               =  _TORQUE_FLUX_COMBINED_ACTUAL_VALUES(331,               Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.VOLTAGE_D_Q_COMBINED_ACTUAL_VALUES               =  _VOLTAGE_D_Q_COMBINED_ACTUAL_VALUES(332,               Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.INTEGRATED_ACTUAL_TORQUE_VALUE                   =  _INTEGRATED_ACTUAL_TORQUE_VALUE(333,                   Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
-        self.INTEGRATED_ACTUAL_VELOCITY_VALUE                 =  _INTEGRATED_ACTUAL_VELOCITY_VALUE(334,                 Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.MOTOR_TYPE                                      =  _MOTOR_TYPE(                                      0,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.MOTOR_POLE_PAIRS                                =  _MOTOR_POLE_PAIRS(                                1,    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.MOTOR_DIRECTION                                 =  _MOTOR_DIRECTION(                                 2,    Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.MOTOR_PWM_FREQUENCY                             =  _MOTOR_PWM_FREQUENCY(                             3,    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.COMMUTATION_MODE                                =  _COMMUTATION_MODE(                                4,    Parameter.Access.RW,   Parameter.Datatype.ENUM)
+        self.OUTPUT_VOLTAGE_LIMIT                            =  _OUTPUT_VOLTAGE_LIMIT(                            5,    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.MAX_TORQUE                                      =  _MAX_TORQUE(                                      6,    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.MAX_FLUX                                        =  _MAX_FLUX(                                        7,    Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.PWM_SWITCHING_SCHEME                            =  _PWM_SWITCHING_SCHEME(                            8,    Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.IDLE_MOTOR_PWM_BEHAVIOR                         =  _IDLE_MOTOR_PWM_BEHAVIOR(                         9,    Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ADC_SHUNT_TYPE                                  =  _ADC_SHUNT_TYPE(                                  12,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.ADC_I0_RAW                                      =  _ADC_I0_RAW(                                      13,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ADC_I1_RAW                                      =  _ADC_I1_RAW(                                      14,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ADC_I2_RAW                                      =  _ADC_I2_RAW(                                      15,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ADC_I3_RAW                                      =  _ADC_I3_RAW(                                      16,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.CSA_GAIN_ADC_I0_TO_ADC_I2                       =  _CSA_GAIN_ADC_I0_TO_ADC_I2(                       17,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.CSA_GAIN_ADC_I3                                 =  _CSA_GAIN_ADC_I3(                                 18,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.CSA_FILTER_ADC_I0_TO_ADC_I2                     =  _CSA_FILTER_ADC_I0_TO_ADC_I2(                     19,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.CSA_FILTER_ADC_I3                               =  _CSA_FILTER_ADC_I3(                               20,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.CURRENT_SCALING_FACTOR                          =  _CURRENT_SCALING_FACTOR(                          21,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.PHASE_UX1_ADC_MAPPING                           =  _PHASE_UX1_ADC_MAPPING(                           22,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.PHASE_VX2_ADC_MAPPING                           =  _PHASE_VX2_ADC_MAPPING(                           23,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.PHASE_WY1_ADC_MAPPING                           =  _PHASE_WY1_ADC_MAPPING(                           24,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.PHASE_Y2_ADC_MAPPING                            =  _PHASE_Y2_ADC_MAPPING(                            25,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.ADC_I0_SCALE                                    =  _ADC_I0_SCALE(                                    26,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ADC_I1_SCALE                                    =  _ADC_I1_SCALE(                                    27,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ADC_I2_SCALE                                    =  _ADC_I2_SCALE(                                    28,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ADC_I3_SCALE                                    =  _ADC_I3_SCALE(                                    29,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ADC_I0_INVERTED                                 =  _ADC_I0_INVERTED(                                 30,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ADC_I1_INVERTED                                 =  _ADC_I1_INVERTED(                                 31,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ADC_I2_INVERTED                                 =  _ADC_I2_INVERTED(                                 32,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ADC_I3_INVERTED                                 =  _ADC_I3_INVERTED(                                 33,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ADC_I0_OFFSET                                   =  _ADC_I0_OFFSET(                                   34,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ADC_I1_OFFSET                                   =  _ADC_I1_OFFSET(                                   35,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ADC_I2_OFFSET                                   =  _ADC_I2_OFFSET(                                   36,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ADC_I3_OFFSET                                   =  _ADC_I3_OFFSET(                                   37,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ADC_I0                                          =  _ADC_I0(                                          38,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ADC_I1                                          =  _ADC_I1(                                          39,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ADC_I2                                          =  _ADC_I2(                                          40,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ADC_I3                                          =  _ADC_I3(                                          41,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.OPENLOOP_ANGLE                                  =  _OPENLOOP_ANGLE(                                  45,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.OPENLOOP_CURRENT                                =  _OPENLOOP_CURRENT(                                46,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.OPENLOOP_VOLTAGE                                =  _OPENLOOP_VOLTAGE(                                47,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ACCELERATION_FF_GAIN                            =  _ACCELERATION_FF_GAIN(                            50,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ACCELERATION_FF_SHIFT                           =  _ACCELERATION_FF_SHIFT(                           51,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.RAMP_ENABLE                                     =  _RAMP_ENABLE(                                     52,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.DIRECT_VELOCITY_MODE                            =  _DIRECT_VELOCITY_MODE(                            53,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.RAMP_AMAX                                       =  _RAMP_AMAX(                                       54,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_A1                                         =  _RAMP_A1(                                         55,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_A2                                         =  _RAMP_A2(                                         56,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_DMAX                                       =  _RAMP_DMAX(                                       57,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_D1                                         =  _RAMP_D1(                                         58,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_D2                                         =  _RAMP_D2(                                         59,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_VMAX                                       =  _RAMP_VMAX(                                       60,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_V1                                         =  _RAMP_V1(                                         61,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_V2                                         =  _RAMP_V2(                                         62,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_VSTART                                     =  _RAMP_VSTART(                                     63,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_VSTOP                                      =  _RAMP_VSTOP(                                      64,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RAMP_TVMAX                                      =  _RAMP_TVMAX(                                      65,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.RAMP_TZEROWAIT                                  =  _RAMP_TZEROWAIT(                                  66,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ACCELERATION_FEEDFORWARD_ENABLE                 =  _ACCELERATION_FEEDFORWARD_ENABLE(                 67,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VELOCITY_FEEDFORWARD_ENABLE                     =  _VELOCITY_FEEDFORWARD_ENABLE(                     68,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.RAMP_VELOCITY                                   =  _RAMP_VELOCITY(                                   69,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.RAMP_POSITION                                   =  _RAMP_POSITION(                                   70,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.HALL_PHI_E                                      =  _HALL_PHI_E(                                      74,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.HALL_SECTOR_OFFSET                              =  _HALL_SECTOR_OFFSET(                              75,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.HALL_FILTER_LENGTH                              =  _HALL_FILTER_LENGTH(                              76,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.HALL_POSITION_0_OFFSET                          =  _HALL_POSITION_0_OFFSET(                          77,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.HALL_POSITION_60_OFFSET                         =  _HALL_POSITION_60_OFFSET(                         78,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.HALL_POSITION_120_OFFSET                        =  _HALL_POSITION_120_OFFSET(                        79,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.HALL_POSITION_180_OFFSET                        =  _HALL_POSITION_180_OFFSET(                        80,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.HALL_POSITION_240_OFFSET                        =  _HALL_POSITION_240_OFFSET(                        81,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.HALL_POSITION_300_OFFSET                        =  _HALL_POSITION_300_OFFSET(                        82,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.HALL_INVERT_DIRECTION                           =  _HALL_INVERT_DIRECTION(                           83,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.HALL_EXTRAPOLATION_ENABLE                       =  _HALL_EXTRAPOLATION_ENABLE(                       84,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.HALL_PHI_E_OFFSET                               =  _HALL_PHI_E_OFFSET(                               85,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ABN_1_PHI_E                                     =  _ABN_1_PHI_E(                                     89,   Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ABN_1_STEPS                                     =  _ABN_1_STEPS(                                     90,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ABN_1_DIRECTION                                 =  _ABN_1_DIRECTION(                                 91,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ABN_1_INIT_METHOD                               =  _ABN_1_INIT_METHOD(                               92,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.ABN_1_INIT_STATE                                =  _ABN_1_INIT_STATE(                                93,   Parameter.Access.R,    Parameter.Datatype.ENUM)
+        self.ABN_1_INIT_DELAY                                =  _ABN_1_INIT_DELAY(                                94,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ABN_1_INIT_VELOCITY                             =  _ABN_1_INIT_VELOCITY(                             95,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ABN_1_N_CHANNEL_PHI_E_OFFSET                    =  _ABN_1_N_CHANNEL_PHI_E_OFFSET(                    96,   Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ABN_1_N_CHANNEL_INVERTED                        =  _ABN_1_N_CHANNEL_INVERTED(                        97,   Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ABN_1_N_CHANNEL_FILTERING                       =  _ABN_1_N_CHANNEL_FILTERING(                       98,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.ABN_1_CLEAR_ON_NEXT_NULL                        =  _ABN_1_CLEAR_ON_NEXT_NULL(                        99,   Parameter.Access.RW,   Parameter.Datatype.BOOLEAN)
+        self.ABN_1_VALUE                                     =  _ABN_1_VALUE(                                     100,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.TARGET_TORQUE                                   =  _TARGET_TORQUE(                                   104,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.ACTUAL_TORQUE                                   =  _ACTUAL_TORQUE(                                   105,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.TARGET_FLUX                                     =  _TARGET_FLUX(                                     106,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.ACTUAL_FLUX                                     =  _ACTUAL_FLUX(                                     107,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.TORQUE_OFFSET                                   =  _TORQUE_OFFSET(                                   108,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.TORQUE_P                                        =  _TORQUE_P(                                        109,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.TORQUE_I                                        =  _TORQUE_I(                                        110,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.FLUX_P                                          =  _FLUX_P(                                          111,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.FLUX_I                                          =  _FLUX_I(                                          112,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SEPARATE_TORQUE_FLUX_PI_PARAMTERS               =  _SEPARATE_TORQUE_FLUX_PI_PARAMTERS(               113,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.CURRENT_NORM_P                                  =  _CURRENT_NORM_P(                                  114,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.CURRENT_NORM_I                                  =  _CURRENT_NORM_I(                                  115,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.TORQUE_PI_ERROR                                 =  _TORQUE_PI_ERROR(                                 116,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FLUX_PI_ERROR                                   =  _FLUX_PI_ERROR(                                   117,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.TORQUE_PI_INTEGRATOR                            =  _TORQUE_PI_INTEGRATOR(                            118,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FLUX_PI_INTEGRATOR                              =  _FLUX_PI_INTEGRATOR(                              119,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FLUX_OFFSET                                     =  _FLUX_OFFSET(                                     120,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.VELOCITY_SENSOR_SELECTION                       =  _VELOCITY_SENSOR_SELECTION(                       123,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.TARGET_VELOCITY                                 =  _TARGET_VELOCITY(                                 124,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.ACTUAL_VELOCITY                                 =  _ACTUAL_VELOCITY(                                 125,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.VELOCITY_OFFSET                                 =  _VELOCITY_OFFSET(                                 126,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.VELOCITY_P                                      =  _VELOCITY_P(                                      127,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.VELOCITY_I                                      =  _VELOCITY_I(                                      128,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.VELOCITY_NORM_P                                 =  _VELOCITY_NORM_P(                                 129,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.VELOCITY_NORM_I                                 =  _VELOCITY_NORM_I(                                 130,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.VELOCITY_PI_INTEGRATOR                          =  _VELOCITY_PI_INTEGRATOR(                          131,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.VELOCITY_PI_ERROR                               =  _VELOCITY_PI_ERROR(                               132,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.VELOCITY_SCALING_FACTOR                         =  _VELOCITY_SCALING_FACTOR(                         133,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.STOP_ON_VELOCITY_DEVIATION                      =  _STOP_ON_VELOCITY_DEVIATION(                      134,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.VELOCITY_LOOP_DOWNSAMPLING                      =  _VELOCITY_LOOP_DOWNSAMPLING(                      135,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.VELOCITY_REACHED_THRESHOLD                      =  _VELOCITY_REACHED_THRESHOLD(                      136,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.VELOCITY_METER_SWITCH_THRESHOLD                 =  _VELOCITY_METER_SWITCH_THRESHOLD(                 137,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.VELOCITY_METER_SWITCH_HYSTERESIS                =  _VELOCITY_METER_SWITCH_HYSTERESIS(                138,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.VELOCITY_METER_MODE                             =  _VELOCITY_METER_MODE(                             139,  Parameter.Access.R,    Parameter.Datatype.ENUM)
+        self.POSITION_SENSOR_SELECTION                       =  _POSITION_SENSOR_SELECTION(                       142,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.TARGET_POSITION                                 =  _TARGET_POSITION(                                 143,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.ACTUAL_POSITION                                 =  _ACTUAL_POSITION(                                 144,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.POSITION_SCALING_FACTOR                         =  _POSITION_SCALING_FACTOR(                         145,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.POSITION_P                                      =  _POSITION_P(                                      146,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.POSITION_I                                      =  _POSITION_I(                                      147,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.POSITION_NORM_P                                 =  _POSITION_NORM_P(                                 148,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.POSITION_NORM_I                                 =  _POSITION_NORM_I(                                 149,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.POSITION_PI_INTEGRATOR                          =  _POSITION_PI_INTEGRATOR(                          150,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.POSITION_PI_ERROR                               =  _POSITION_PI_ERROR(                               151,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.STOP_ON_POSITION_DEVIATION                      =  _STOP_ON_POSITION_DEVIATION(                      152,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.POSITION_LOOP_DOWNSAMPLING                      =  _POSITION_LOOP_DOWNSAMPLING(                      153,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.LATCH_POSITION                                  =  _LATCH_POSITION(                                  154,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.POSITION_LIMIT_LOW                              =  _POSITION_LIMIT_LOW(                              155,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.POSITION_LIMIT_HIGH                             =  _POSITION_LIMIT_HIGH(                             156,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.POSITION_REACHED_THRESHOLD                      =  _POSITION_REACHED_THRESHOLD(                      157,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.REFERENCE_SWITCH_ENABLE                         =  _REFERENCE_SWITCH_ENABLE(                         161,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.REFERENCE_SWITCH_POLARITY_AND_SWAP              =  _REFERENCE_SWITCH_POLARITY_AND_SWAP(              162,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.REFERENCE_SWITCH_LATCH_SETTINGS                 =  _REFERENCE_SWITCH_LATCH_SETTINGS(                 163,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.EVENT_STOP_SETTINGS                             =  _EVENT_STOP_SETTINGS(                             164,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.REFERENCE_SWITCH_SEARCH_MODE                    =  _REFERENCE_SWITCH_SEARCH_MODE(                    165,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.REFERENCE_SWITCH_SEARCH_SPEED                   =  _REFERENCE_SWITCH_SEARCH_SPEED(                   166,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.REFERENCE_SWITCH_SPEED                          =  _REFERENCE_SWITCH_SPEED(                          167,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.RIGHT_LIMIT_SWITCH_POSITION                     =  _RIGHT_LIMIT_SWITCH_POSITION(                     168,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.HOME_SWITCH_POSITION                            =  _HOME_SWITCH_POSITION(                            169,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.LAST_REFERENCE_POSITION                         =  _LAST_REFERENCE_POSITION(                         170,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.ABN_2_STEPS                                     =  _ABN_2_STEPS(                                     174,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ABN_2_DIRECTION                                 =  _ABN_2_DIRECTION(                                 175,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ABN_2_GEAR_RATIO                                =  _ABN_2_GEAR_RATIO(                                176,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.ABN_2_ENABLE                                    =  _ABN_2_ENABLE(                                    177,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ABN_2_VALUE                                     =  _ABN_2_VALUE(                                     178,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODE_CS_SETTLE_DELAY_TIME                 =  _SPI_ENCODE_CS_SETTLE_DELAY_TIME(                 181,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_CS_IDLE_DELAY_TIME                  =  _SPI_ENCODER_CS_IDLE_DELAY_TIME(                  182,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE              =  _SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE(              183,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE         =  _SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE(         184,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_TRANSFER_DATA_3_0                   =  _SPI_ENCODER_TRANSFER_DATA_3_0(                   185,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_TRANSFER_DATA_7_4                   =  _SPI_ENCODER_TRANSFER_DATA_7_4(                   186,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_TRANSFER_DATA_11_8                  =  _SPI_ENCODER_TRANSFER_DATA_11_8(                  187,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_TRANSFER_DATA_15_12                 =  _SPI_ENCODER_TRANSFER_DATA_15_12(                 188,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_TRANSFER                            =  _SPI_ENCODER_TRANSFER(                            189,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.SPI_ENCODER_POSITION_COUNTER_MASK               =  _SPI_ENCODER_POSITION_COUNTER_MASK(               190,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_POSITION_COUNTER_SHIFT              =  _SPI_ENCODER_POSITION_COUNTER_SHIFT(              191,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_POSITION_COUNTER_VALUE              =  _SPI_ENCODER_POSITION_COUNTER_VALUE(              192,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.SPI_ENCODER_COMMUTATION_ANGLE                   =  _SPI_ENCODER_COMMUTATION_ANGLE(                   193,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.SPI_ENCODER_INITIALIZATION_METHOD               =  _SPI_ENCODER_INITIALIZATION_METHOD(               194,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.SPI_ENCODER_DIRECTION                           =  _SPI_ENCODER_DIRECTION(                           195,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.SPI_ENCODER_OFFSET                              =  _SPI_ENCODER_OFFSET(                              196,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SPI_LUT_CORRECTION_ENABLE                       =  _SPI_LUT_CORRECTION_ENABLE(                       197,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.SPI_LUT_ADDRESS_SELECT                          =  _SPI_LUT_ADDRESS_SELECT(                          198,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.SPI_LUT_DATA                                    =  _SPI_LUT_DATA(                                    199,  Parameter.Access.RW,   Parameter.Datatype.SIGNED)
+        self.SPI_LUT_COMMON_SHIFT_FACTOR                     =  _SPI_LUT_COMMON_SHIFT_FACTOR(                     201,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.STEP_DIR_STEP_DIVIDER_SHIFT                     =  _STEP_DIR_STEP_DIVIDER_SHIFT(                     205,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.STEP_DIR_ENABLE                                 =  _STEP_DIR_ENABLE(                                 206,  Parameter.Access.RW,   Parameter.Datatype.BOOLEAN)
+        self.STEP_DIR_EXTRAPOLATION_ENABLE                   =  _STEP_DIR_EXTRAPOLATION_ENABLE(                   207,  Parameter.Access.RW,   Parameter.Datatype.BOOLEAN)
+        self.STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT              =  _STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT(              208,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY         =  _STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY(         209,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.BRAKE_CHOPPER_ENABLE                            =  _BRAKE_CHOPPER_ENABLE(                            212,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.BRAKE_CHOPPER_VOLTAGE_LIMIT                     =  _BRAKE_CHOPPER_VOLTAGE_LIMIT(                     213,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.BRAKE_CHOPPER_HYSTERESIS                        =  _BRAKE_CHOPPER_HYSTERESIS(                        214,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.RELEASE_BRAKE                                   =  _RELEASE_BRAKE(                                   216,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.BRAKE_RELEASING_DUTY_CYCLE                      =  _BRAKE_RELEASING_DUTY_CYCLE(                      217,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.BRAKE_HOLDING_DUTY_CYCLE                        =  _BRAKE_HOLDING_DUTY_CYCLE(                        218,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.BRAKE_RELEASING_DURATION                        =  _BRAKE_RELEASING_DURATION(                        219,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.INVERT_BRAKE_OUTPUT                             =  _INVERT_BRAKE_OUTPUT(                             221,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.THERMAL_WINDING_TIME_CONSTANT_1                 =  _THERMAL_WINDING_TIME_CONSTANT_1(                 224,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IIT_LIMIT_1                                     =  _IIT_LIMIT_1(                                     225,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IIT_SUM_1                                       =  _IIT_SUM_1(                                       226,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.THERMAL_WINDING_TIME_CONSTANT_2                 =  _THERMAL_WINDING_TIME_CONSTANT_2(                 227,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IIT_LIMIT_2                                     =  _IIT_LIMIT_2(                                     228,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IIT_SUM_2                                       =  _IIT_SUM_2(                                       229,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.RESET_IIT_SUMS                                  =  _RESET_IIT_SUMS(                                  230,  Parameter.Access.W,    Parameter.Datatype.UNSIGNED)
+        self.ACTUAL_TOTAL_MOTOR_CURRENT                      =  _ACTUAL_TOTAL_MOTOR_CURRENT(                      231,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.PWM_L_OUTPUT_POLARITY                           =  _PWM_L_OUTPUT_POLARITY(                           233,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.PWM_H_OUTPUT_POLARITY                           =  _PWM_H_OUTPUT_POLARITY(                           234,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.BREAK_BEFORE_MAKE_TIME_LOW_UVW                  =  _BREAK_BEFORE_MAKE_TIME_LOW_UVW(                  235,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.BREAK_BEFORE_MAKE_TIME_HIGH_UVW                 =  _BREAK_BEFORE_MAKE_TIME_HIGH_UVW(                 236,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.BREAK_BEFORE_MAKE_TIME_LOW_Y2                   =  _BREAK_BEFORE_MAKE_TIME_LOW_Y2(                   237,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.BREAK_BEFORE_MAKE_TIME_HIGH_Y2                  =  _BREAK_BEFORE_MAKE_TIME_HIGH_Y2(                  238,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.USE_ADAPTIVE_DRIVE_TIME_UVW                     =  _USE_ADAPTIVE_DRIVE_TIME_UVW(                     239,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.USE_ADAPTIVE_DRIVE_TIME_Y2                      =  _USE_ADAPTIVE_DRIVE_TIME_Y2(                      240,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.DRIVE_TIME_SINK_UVW                             =  _DRIVE_TIME_SINK_UVW(                             241,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.DRIVE_TIME_SOURCE_UVW                           =  _DRIVE_TIME_SOURCE_UVW(                           242,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.DRIVE_TIME_SINK_Y2                              =  _DRIVE_TIME_SINK_Y2(                              243,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.DRIVE_TIME_SOURCE_Y2                            =  _DRIVE_TIME_SOURCE_Y2(                            244,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.UVW_SINK_CURRENT                                =  _UVW_SINK_CURRENT(                                245,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.UVW_SOURCE_CURRENT                              =  _UVW_SOURCE_CURRENT(                              246,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.Y2_SINK_CURRENT                                 =  _Y2_SINK_CURRENT(                                 247,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.Y2_SOURCE_CURRENT                               =  _Y2_SOURCE_CURRENT(                               248,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.BOOTSTRAP_CURRENT_LIMIT                         =  _BOOTSTRAP_CURRENT_LIMIT(                         249,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL            =  _UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL(            250,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.UNDERVOLTAGE_PROTECTION_VDRV_ENABLE             =  _UNDERVOLTAGE_PROTECTION_VDRV_ENABLE(             251,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.UNDERVOLTAGE_PROTECTION_BST_UVW_ENABLE          =  _UNDERVOLTAGE_PROTECTION_BST_UVW_ENABLE(          252,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.UNDERVOLTAGE_PROTECTION_BST_Y2_ENABLE           =  _UNDERVOLTAGE_PROTECTION_BST_Y2_ENABLE(           253,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.OVERCURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE      =  _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE(      254,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE     =  _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE(     255,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.OVERCURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE       =  _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE(       256,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE      =  _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE(      257,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.OVERCURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD   =  _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD(   258,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD  =  _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD(  259,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD    =  _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD(    260,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD   =  _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD(   261,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING    =  _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING(    262,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING   =  _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING(   263,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING     =  _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING(     264,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING    =  _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING(    265,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH    =  _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH(    266,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH   =  _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH(   267,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH     =  _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH(     268,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH    =  _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH(    269,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.OVERCURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS     =  _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS(     270,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.OVERCURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS      =  _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS(      271,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_ON_PROTECTION_UVW_LOW_SIDE_ENABLE     =  _VGS_SHORT_ON_PROTECTION_UVW_LOW_SIDE_ENABLE(     272,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_OFF_PROTECTION_UVW_LOW_SIDE_ENABLE    =  _VGS_SHORT_OFF_PROTECTION_UVW_LOW_SIDE_ENABLE(    273,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_ON_PROTECTION_UVW_HIGH_SIDE_ENABLE    =  _VGS_SHORT_ON_PROTECTION_UVW_HIGH_SIDE_ENABLE(    274,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_OFF_PROTECTION_UVW_HIGH_SIDE_ENABLE   =  _VGS_SHORT_OFF_PROTECTION_UVW_HIGH_SIDE_ENABLE(   275,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_ON_PROTECTION_Y2_LOW_SIDE_ENABLE      =  _VGS_SHORT_ON_PROTECTION_Y2_LOW_SIDE_ENABLE(      276,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_OFF_PROTECTION_Y2_LOW_SIDE_ENABLE     =  _VGS_SHORT_OFF_PROTECTION_Y2_LOW_SIDE_ENABLE(     277,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_ON_PROTECTION_Y2_HIGH_SIDE_ENABLE     =  _VGS_SHORT_ON_PROTECTION_Y2_HIGH_SIDE_ENABLE(     278,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_OFF_PROTECTION_Y2_HIGH_SIDE_ENABLE    =  _VGS_SHORT_OFF_PROTECTION_Y2_HIGH_SIDE_ENABLE(    279,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.VGS_SHORT_PROTECTION_UVW_BLANKING               =  _VGS_SHORT_PROTECTION_UVW_BLANKING(               280,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.VGS_SHORT_PROTECTION_Y2_BLANKING                =  _VGS_SHORT_PROTECTION_Y2_BLANKING(                281,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.VGS_SHORT_PROTECTION_UVW_DEGLITCH               =  _VGS_SHORT_PROTECTION_UVW_DEGLITCH(               282,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.VGS_SHORT_PROTECTION_Y2_DEGLITCH                =  _VGS_SHORT_PROTECTION_Y2_DEGLITCH(                283,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.GDRV_RETRY_BEHAVIOUR                            =  _GDRV_RETRY_BEHAVIOUR(                            286,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.DRIVE_FAULT_BEHAVIOUR                           =  _DRIVE_FAULT_BEHAVIOUR(                           287,  Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.FAULT_HANDLER_NUMBER_OF_RETRIES                 =  _FAULT_HANDLER_NUMBER_OF_RETRIES(                 288,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.GENERAL_STATUS_FLAGS                            =  _GENERAL_STATUS_FLAGS(                            289,  Parameter.Access.R,    Parameter.Datatype.FIELD)
+        self.SUPPLY_VOLTAGE                                  =  _SUPPLY_VOLTAGE(                                  290,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.SUPPLY_OVERVOLTAGE_WARNING_THRESHOLD            =  _SUPPLY_OVERVOLTAGE_WARNING_THRESHOLD(            291,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD           =  _SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD(           292,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.EXTERNAL_TEMPERATURE                            =  _EXTERNAL_TEMPERATURE(                            293,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD         =  _EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD(         294,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.EXTERNAL_TEMPERATURE_WARNING_THRESHOLD          =  _EXTERNAL_TEMPERATURE_WARNING_THRESHOLD(          295,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.CHIP_TEMPERATURE                                =  _CHIP_TEMPERATURE(                                296,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.CHIP_TEMPERATURE_SHUTDOWN_THRESHOLD             =  _CHIP_TEMPERATURE_SHUTDOWN_THRESHOLD(             297,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.CHIP_TEMPERATURE_WARNING_THRESHOLD              =  _CHIP_TEMPERATURE_WARNING_THRESHOLD(              298,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.GENERAL_ERROR_FLAGS                             =  _GENERAL_ERROR_FLAGS(                             299,  Parameter.Access.R,    Parameter.Datatype.FIELD)
+        self.GDRV_ERROR_FLAGS                                =  _GDRV_ERROR_FLAGS(                                300,  Parameter.Access.R,    Parameter.Datatype.FIELD)
+        self.ADC_STATUS_FLAGS                                =  _ADC_STATUS_FLAGS(                                301,  Parameter.Access.R,    Parameter.Datatype.FIELD)
+        self.MCC_INPUTS_RAW                                  =  _MCC_INPUTS_RAW(                                  304,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.FOC_VOLTAGE_UX                                  =  _FOC_VOLTAGE_UX(                                  305,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FOC_VOLTAGE_WY                                  =  _FOC_VOLTAGE_WY(                                  306,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FOC_VOLTAGE_V                                   =  _FOC_VOLTAGE_V(                                   307,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FIELDWEAKENING_I                                =  _FIELDWEAKENING_I(                                308,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.FIELDWEAKENING_VOLTAGE_THRESHOLD                =  _FIELDWEAKENING_VOLTAGE_THRESHOLD(                310,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.FOC_CURRENT_UX                                  =  _FOC_CURRENT_UX(                                  311,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FOC_CURRENT_V                                   =  _FOC_CURRENT_V(                                   312,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FOC_CURRENT_WY                                  =  _FOC_CURRENT_WY(                                  313,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FOC_VOLTAGE_UQ                                  =  _FOC_VOLTAGE_UQ(                                  314,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.FOC_CURRENT_IQ                                  =  _FOC_CURRENT_IQ(                                  315,  Parameter.Access.R,    Parameter.Datatype.SIGNED)
+        self.TARGET_TORQUE_BIQUAD_FILTER_ENABLE              =  _TARGET_TORQUE_BIQUAD_FILTER_ENABLE(              318,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1            =  _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1(            319,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_2            =  _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_2(            320,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0            =  _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0(            321,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_1            =  _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_1(            322,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2            =  _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2(            323,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ACTUAL_VELOCITY_BIQUAD_FILTER_ENABLE            =  _ACTUAL_VELOCITY_BIQUAD_FILTER_ENABLE(            324,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1          =  _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1(          325,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_2          =  _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_2(          326,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0          =  _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0(          327,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_1          =  _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_1(          328,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2          =  _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2(          329,  Parameter.Access.RWE,  Parameter.Datatype.SIGNED)
+        self.TORQUE_FLUX_COMBINED_TARGET_VALUES              =  _TORQUE_FLUX_COMBINED_TARGET_VALUES(              330,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.TORQUE_FLUX_COMBINED_ACTUAL_VALUES              =  _TORQUE_FLUX_COMBINED_ACTUAL_VALUES(              331,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.VOLTAGE_D_Q_COMBINED_ACTUAL_VALUES              =  _VOLTAGE_D_Q_COMBINED_ACTUAL_VALUES(              332,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.INTEGRATED_ACTUAL_TORQUE_VALUE                  =  _INTEGRATED_ACTUAL_TORQUE_VALUE(                  333,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
+        self.INTEGRATED_ACTUAL_VELOCITY_VALUE                =  _INTEGRATED_ACTUAL_VELOCITY_VALUE(                334,  Parameter.Access.R,    Parameter.Datatype.UNSIGNED)
 
 
 class _MOTOR_TYPE(Parameter):
@@ -329,8 +329,8 @@ class _MOTOR_DIRECTION(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
-            self.ROTATE_CLOCKWISE = False
-            self.ROTATE_COUNTERCLOCKWISE = True
+            self.NOT_INVERTED = False
+            self.INVERTED = True
 
     def __init__(self, index, access, datatype):
         super().__init__("MOTOR_DIRECTION", index, access, datatype)
@@ -923,7 +923,7 @@ class _RAMP_TZEROWAIT(Parameter):
         self.choice = None
 
 
-class _ACCELERATION_FEEDFORWARD(Parameter):
+class _ACCELERATION_FEEDFORWARD_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -931,12 +931,12 @@ class _ACCELERATION_FEEDFORWARD(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ACCELERATION_FEEDFORWARD", index, access, datatype)
+        super().__init__("ACCELERATION_FEEDFORWARD_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VELOCITY_FEEDFORWARD(Parameter):
+class _VELOCITY_FEEDFORWARD_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -944,7 +944,7 @@ class _VELOCITY_FEEDFORWARD(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VELOCITY_FEEDFORWARD", index, access, datatype)
+        super().__init__("VELOCITY_FEEDFORWARD_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
@@ -1100,7 +1100,7 @@ class _ABN_1_DIRECTION(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
-            self.NORMAL = False
+            self.NOT_INVERTED = False
             self.INVERTED = True
 
     def __init__(self, index, access, datatype):
@@ -1770,7 +1770,7 @@ class _EVENT_STOP_SETTINGS(Parameter):
         self.choice = self._Choices()
 
 
-class _REFERENCE_SEARCH_MODE(Parameter):
+class _REFERENCE_SWITCH_SEARCH_MODE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -1784,15 +1784,15 @@ class _REFERENCE_SEARCH_MODE(Parameter):
             self.HOME_SWITCH_POS_DIR_IGNORE_END_SWITCH = 8
 
     def __init__(self, index, access, datatype):
-        super().__init__("REFERENCE_SEARCH_MODE", index, access, datatype)
+        super().__init__("REFERENCE_SWITCH_SEARCH_MODE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _REFERENCE_SEARCH_SPEED(Parameter):
+class _REFERENCE_SWITCH_SEARCH_SPEED(Parameter):
 
     def __init__(self, index, access, datatype):
-        super().__init__("REFERENCE_SEARCH_SPEED", index, access, datatype)
+        super().__init__("REFERENCE_SWITCH_SEARCH_SPEED", index, access, datatype)
 
         self.choice = None
 
@@ -2007,7 +2007,7 @@ class _SPI_ENCODER_DIRECTION(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
-            self.NORMAL = False
+            self.NOT_INVERTED = False
             self.INVERTED = True
 
     def __init__(self, index, access, datatype):
@@ -2125,7 +2125,7 @@ class _STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY(Parameter):
         self.choice = None
 
 
-class _ENABLE_BRAKE_CHOPPER(Parameter):
+class _BRAKE_CHOPPER_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2133,7 +2133,7 @@ class _ENABLE_BRAKE_CHOPPER(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ENABLE_BRAKE_CHOPPER", index, access, datatype)
+        super().__init__("BRAKE_CHOPPER_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
@@ -2326,7 +2326,7 @@ class _BREAK_BEFORE_MAKE_TIME_HIGH_Y2(Parameter):
         self.choice = None
 
 
-class _ADAPTIVE_DRIVE_TIME_UVW(Parameter):
+class _USE_ADAPTIVE_DRIVE_TIME_UVW(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2334,12 +2334,12 @@ class _ADAPTIVE_DRIVE_TIME_UVW(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ADAPTIVE_DRIVE_TIME_UVW", index, access, datatype)
+        super().__init__("USE_ADAPTIVE_DRIVE_TIME_UVW", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _ADAPTIVE_DRIVE_TIME_Y2(Parameter):
+class _USE_ADAPTIVE_DRIVE_TIME_Y2(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2347,7 +2347,7 @@ class _ADAPTIVE_DRIVE_TIME_Y2(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ADAPTIVE_DRIVE_TIME_Y2", index, access, datatype)
+        super().__init__("USE_ADAPTIVE_DRIVE_TIME_Y2", index, access, datatype)
 
         self.choice = self._Choices()
 
@@ -2494,21 +2494,32 @@ class _Y2_SOURCE_CURRENT(Parameter):
 
 class _BOOTSTRAP_CURRENT_LIMIT(Parameter):
 
+    class _Choices:
+        def __init__(self) -> None:
+            self.CUR_45_MILLIAMP = 0
+            self.CUR_91_MILLIAMP = 1
+            self.CUR_141_MILLIAMP = 2
+            self.CUR_191_MILLIAMP = 3
+            self.CUR_267_MILLIAMP = 4
+            self.CUR_292_MILLIAMP = 5
+            self.CUR_341_MILLIAMP = 6
+            self.CUR_391_MILLIAMP = 7
+
     def __init__(self, index, access, datatype):
         super().__init__("BOOTSTRAP_CURRENT_LIMIT", index, access, datatype)
 
+        self.choice = self._Choices()
+
+
+class _UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL(Parameter):
+
+    def __init__(self, index, access, datatype):
+        super().__init__("UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL", index, access, datatype)
+
         self.choice = None
 
 
-class _UVP_SUPPLY_LEVEL(Parameter):
-
-    def __init__(self, index, access, datatype):
-        super().__init__("UVP_SUPPLY_LEVEL", index, access, datatype)
-
-        self.choice = None
-
-
-class _UVP_VDRV_ENABLE(Parameter):
+class _UNDERVOLTAGE_PROTECTION_VDRV_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2516,12 +2527,12 @@ class _UVP_VDRV_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("UVP_VDRV_ENABLE", index, access, datatype)
+        super().__init__("UNDERVOLTAGE_PROTECTION_VDRV_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _UVP_BST_UVW_ENABLE(Parameter):
+class _UNDERVOLTAGE_PROTECTION_BST_UVW_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2529,12 +2540,12 @@ class _UVP_BST_UVW_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("UVP_BST_UVW_ENABLE", index, access, datatype)
+        super().__init__("UNDERVOLTAGE_PROTECTION_BST_UVW_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _UVP_BST_Y2_ENABLE(Parameter):
+class _UNDERVOLTAGE_PROTECTION_BST_Y2_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2542,12 +2553,12 @@ class _UVP_BST_Y2_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("UVP_BST_Y2_ENABLE", index, access, datatype)
+        super().__init__("UNDERVOLTAGE_PROTECTION_BST_Y2_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2555,12 +2566,12 @@ class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2568,12 +2579,12 @@ class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2581,12 +2592,12 @@ class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2594,12 +2605,12 @@ class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2621,12 +2632,12 @@ class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD(Parameter):
             self.V_1000_OR_2350_MILLIVOLT = 15
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2648,12 +2659,12 @@ class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD(Parameter):
             self.V_2350_MILLIVOLT = 15
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2675,12 +2686,12 @@ class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD(Parameter):
             self.V_1000_OR_2350_MILLIVOLT = 15
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2702,12 +2713,12 @@ class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD(Parameter):
             self.V_2350_MILLIVOLT = 15
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2721,12 +2732,12 @@ class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2740,12 +2751,12 @@ class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2759,12 +2770,12 @@ class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2778,12 +2789,12 @@ class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2797,12 +2808,12 @@ class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2816,12 +2827,12 @@ class _OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2835,12 +2846,12 @@ class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2854,12 +2865,12 @@ class _OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS(Parameter):
+class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2867,12 +2878,12 @@ class _OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS(Parameter):
+class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2880,12 +2891,12 @@ class _OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("OVER_CURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS", index, access, datatype)
+        super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_UVW_LOW_SIDE_ON(Parameter):
+class _VGS_SHORT_ON_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2893,12 +2904,12 @@ class _VGS_UVW_LOW_SIDE_ON(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_UVW_LOW_SIDE_ON", index, access, datatype)
+        super().__init__("VGS_SHORT_ON_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_UVW_LOW_SIDE_OFF(Parameter):
+class _VGS_SHORT_OFF_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2906,12 +2917,12 @@ class _VGS_UVW_LOW_SIDE_OFF(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_UVW_LOW_SIDE_OFF", index, access, datatype)
+        super().__init__("VGS_SHORT_OFF_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_UVW_HIGH_SIDE_ON(Parameter):
+class _VGS_SHORT_ON_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2919,12 +2930,12 @@ class _VGS_UVW_HIGH_SIDE_ON(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_UVW_HIGH_SIDE_ON", index, access, datatype)
+        super().__init__("VGS_SHORT_ON_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_UVW_HIGH_SIDE_OFF(Parameter):
+class _VGS_SHORT_OFF_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2932,12 +2943,12 @@ class _VGS_UVW_HIGH_SIDE_OFF(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_UVW_HIGH_SIDE_OFF", index, access, datatype)
+        super().__init__("VGS_SHORT_OFF_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_Y2_LOW_SIDE_ON(Parameter):
+class _VGS_SHORT_ON_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2945,12 +2956,12 @@ class _VGS_Y2_LOW_SIDE_ON(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_Y2_LOW_SIDE_ON", index, access, datatype)
+        super().__init__("VGS_SHORT_ON_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_Y2_LOW_SIDE_OFF(Parameter):
+class _VGS_SHORT_OFF_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2958,12 +2969,12 @@ class _VGS_Y2_LOW_SIDE_OFF(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_Y2_LOW_SIDE_OFF", index, access, datatype)
+        super().__init__("VGS_SHORT_OFF_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_Y2_HIGH_SIDE_ON(Parameter):
+class _VGS_SHORT_ON_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2971,12 +2982,12 @@ class _VGS_Y2_HIGH_SIDE_ON(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_Y2_HIGH_SIDE_ON", index, access, datatype)
+        super().__init__("VGS_SHORT_ON_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_Y2_HIGH_SIDE_OFF(Parameter):
+class _VGS_SHORT_OFF_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2984,12 +2995,12 @@ class _VGS_Y2_HIGH_SIDE_OFF(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_Y2_HIGH_SIDE_OFF", index, access, datatype)
+        super().__init__("VGS_SHORT_OFF_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_UVW_BLANKING(Parameter):
+class _VGS_SHORT_PROTECTION_UVW_BLANKING(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -2999,12 +3010,12 @@ class _VGS_UVW_BLANKING(Parameter):
             self.T_1_MICROSEC = 3
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_UVW_BLANKING", index, access, datatype)
+        super().__init__("VGS_SHORT_PROTECTION_UVW_BLANKING", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_Y2_BLANKING(Parameter):
+class _VGS_SHORT_PROTECTION_Y2_BLANKING(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -3014,31 +3025,12 @@ class _VGS_Y2_BLANKING(Parameter):
             self.T_1_MICROSEC = 3
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_Y2_BLANKING", index, access, datatype)
+        super().__init__("VGS_SHORT_PROTECTION_Y2_BLANKING", index, access, datatype)
 
         self.choice = self._Choices()
 
 
-class _VGS_UVW_DEGLITCH(Parameter):
-
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
-
-    def __init__(self, index, access, datatype):
-        super().__init__("VGS_UVW_DEGLITCH", index, access, datatype)
-
-        self.choice = self._Choices()
-
-
-class _VGS_Y2_DEGLITCH(Parameter):
+class _VGS_SHORT_PROTECTION_UVW_DEGLITCH(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -3052,7 +3044,26 @@ class _VGS_Y2_DEGLITCH(Parameter):
             self.T_8_MICROSEC = 7
 
     def __init__(self, index, access, datatype):
-        super().__init__("VGS_Y2_DEGLITCH", index, access, datatype)
+        super().__init__("VGS_SHORT_PROTECTION_UVW_DEGLITCH", index, access, datatype)
+
+        self.choice = self._Choices()
+
+
+class _VGS_SHORT_PROTECTION_Y2_DEGLITCH(Parameter):
+
+    class _Choices:
+        def __init__(self) -> None:
+            self.OFF = 0
+            self.T_0_25_MICROSEC = 1
+            self.T_0_5_MICROSEC = 2
+            self.T_1_MICROSEC = 3
+            self.T_2_MICROSEC = 4
+            self.T_4_MICROSEC = 5
+            self.T_6_MICROSEC = 6
+            self.T_8_MICROSEC = 7
+
+    def __init__(self, index, access, datatype):
+        super().__init__("VGS_SHORT_PROTECTION_Y2_DEGLITCH", index, access, datatype)
 
         self.choice = self._Choices()
 
@@ -3285,7 +3296,7 @@ class _FOC_CURRENT_IQ(Parameter):
         self.choice = None
 
 
-class _ENABLE_TARGET_TORQUE_BIQUAD_FILTER(Parameter):
+class _TARGET_TORQUE_BIQUAD_FILTER_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -3293,7 +3304,7 @@ class _ENABLE_TARGET_TORQUE_BIQUAD_FILTER(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ENABLE_TARGET_TORQUE_BIQUAD_FILTER", index, access, datatype)
+        super().__init__("TARGET_TORQUE_BIQUAD_FILTER_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
@@ -3338,7 +3349,7 @@ class _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2(Parameter):
         self.choice = None
 
 
-class _ENABLE_ACTUAL_VELOCITY_BIQUAD_FILTER(Parameter):
+class _ACTUAL_VELOCITY_BIQUAD_FILTER_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -3346,7 +3357,7 @@ class _ENABLE_ACTUAL_VELOCITY_BIQUAD_FILTER(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ENABLE_ACTUAL_VELOCITY_BIQUAD_FILTER", index, access, datatype)
+        super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 

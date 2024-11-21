@@ -11,23 +11,23 @@ from pytrinamic.modules import Parameter
 class Bank0:
 
     def __init__(self):
-        self.SERIAL_ADDRESS                           =  _SERIAL_ADDRESS(1,                           Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.SERIAL_HOST_ADDRESS                      =  _SERIAL_HOST_ADDRESS(2,                      Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.HEARTBEAT_MONITORING_CONFIG              =  _HEARTBEAT_MONITORING_CONFIG(3,              Parameter.Access.RWE,  Parameter.Datatype.ENUM)
-        self.HEARTBEAT_MONITORING_TIMEOUT             =  _HEARTBEAT_MONITORING_TIMEOUT(4,             Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IO_DIRECTION_MASK                        =  _IO_DIRECTION_MASK(5,                        Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK     =  _IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK(6,     Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK  =  _IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK(7,  Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
-        self.ENABLE_WAKE_PIN_CONTROL                  =  _ENABLE_WAKE_PIN_CONTROL(10,                 Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.GO_TO_TIMEOUT_POWER_DOWN_STATE           =  _GO_TO_TIMEOUT_POWER_DOWN_STATE(11,          Parameter.Access.W,    Parameter.Datatype.ENUM)
-        self.STIMULUS_FSM_STATE                       =  _STIMULUS_FSM_STATE(25,                      Parameter.Access.RW,   Parameter.Datatype.ENUM)
-        self.STIMULUS_FREQUENCY_DIVISOR               =  _STIMULUS_FREQUENCY_DIVISOR(26,              Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.STIMULUS_CHANNEL_0_TARGET_ADDRESS        =  _STIMULUS_CHANNEL_0_TARGET_ADDRESS(27,       Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.STIMULUS_CHANNEL_1_TARGET_ADDRESS        =  _STIMULUS_CHANNEL_1_TARGET_ADDRESS(28,       Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.STIMULUS_CHANNEL_0_SCALING_FACTOR        =  _STIMULUS_CHANNEL_0_SCALING_FACTOR(29,       Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.STIMULUS_CHANNEL_1_SCALING_FACTOR        =  _STIMULUS_CHANNEL_1_SCALING_FACTOR(30,       Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
-        self.AUTO_START_MODE                          =  _AUTO_START_MODE(77,                         Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
-        self.CLEAR_USER_VARIABLES                     =  _CLEAR_USER_VARIABLES(85,                    Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.SERIAL_ADDRESS                           =  _SERIAL_ADDRESS(                           1,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.SERIAL_HOST_ADDRESS                      =  _SERIAL_HOST_ADDRESS(                      2,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.HEARTBEAT_MONITORING_CONFIG              =  _HEARTBEAT_MONITORING_CONFIG(              3,   Parameter.Access.RWE,  Parameter.Datatype.ENUM)
+        self.HEARTBEAT_MONITORING_TIMEOUT             =  _HEARTBEAT_MONITORING_TIMEOUT(             4,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IO_DIRECTION_MASK                        =  _IO_DIRECTION_MASK(                        5,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK     =  _IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK(     6,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK  =  _IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK(  7,   Parameter.Access.RWE,  Parameter.Datatype.UNSIGNED)
+        self.WAKE_PIN_CONTROL_ENABLE                  =  _WAKE_PIN_CONTROL_ENABLE(                  10,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.GO_TO_TIMEOUT_POWER_DOWN_STATE           =  _GO_TO_TIMEOUT_POWER_DOWN_STATE(           11,  Parameter.Access.W,    Parameter.Datatype.ENUM)
+        self.STIMULUS_FSM_STATE                       =  _STIMULUS_FSM_STATE(                       25,  Parameter.Access.RW,   Parameter.Datatype.ENUM)
+        self.STIMULUS_FREQUENCY_DIVISOR               =  _STIMULUS_FREQUENCY_DIVISOR(               26,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.STIMULUS_CHANNEL_0_TARGET_ADDRESS        =  _STIMULUS_CHANNEL_0_TARGET_ADDRESS(        27,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.STIMULUS_CHANNEL_1_TARGET_ADDRESS        =  _STIMULUS_CHANNEL_1_TARGET_ADDRESS(        28,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.STIMULUS_CHANNEL_0_SCALING_FACTOR        =  _STIMULUS_CHANNEL_0_SCALING_FACTOR(        29,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.STIMULUS_CHANNEL_1_SCALING_FACTOR        =  _STIMULUS_CHANNEL_1_SCALING_FACTOR(        30,  Parameter.Access.RW,   Parameter.Datatype.UNSIGNED)
+        self.AUTO_START_ENABLE                        =  _AUTO_START_ENABLE(                        77,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
+        self.CLEAR_USER_VARIABLES                     =  _CLEAR_USER_VARIABLES(                     85,  Parameter.Access.RWE,  Parameter.Datatype.BOOLEAN)
 
 
 class _SERIAL_ADDRESS(Parameter):
@@ -93,7 +93,7 @@ class _IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK(Parameter):
         self.choice = None
 
 
-class _ENABLE_WAKE_PIN_CONTROL(Parameter):
+class _WAKE_PIN_CONTROL_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -101,7 +101,7 @@ class _ENABLE_WAKE_PIN_CONTROL(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("ENABLE_WAKE_PIN_CONTROL", index, access, datatype)
+        super().__init__("WAKE_PIN_CONTROL_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
@@ -180,7 +180,7 @@ class _STIMULUS_CHANNEL_1_SCALING_FACTOR(Parameter):
         self.choice = None
 
 
-class _AUTO_START_MODE(Parameter):
+class _AUTO_START_ENABLE(Parameter):
 
     class _Choices:
         def __init__(self) -> None:
@@ -188,7 +188,7 @@ class _AUTO_START_MODE(Parameter):
             self.ENABLED = True
 
     def __init__(self, index, access, datatype):
-        super().__init__("AUTO_START_MODE", index, access, datatype)
+        super().__init__("AUTO_START_ENABLE", index, access, datatype)
 
         self.choice = self._Choices()
 
