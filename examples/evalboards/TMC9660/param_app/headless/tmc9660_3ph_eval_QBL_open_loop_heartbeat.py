@@ -31,20 +31,20 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
 
     tmc9660 = TMC9660(my_interface)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.MOTOR_TYPE, tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660.set_axis_parameter(tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
     tmc9660.set_axis_parameter(tmc9660.ap.OPENLOOP_VOLTAGE, 1000)
-    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE, tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
+    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
     # Rotate the motor.
     tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
     
     # Set the heartbeat monitoring timeout to 3s and enable it.
     tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_TIMEOUT, 0, 3000)
-    tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG, 0, tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG.choice.TMCL_UART_INTERFACE)
+    tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG.choice.TMCL_UART_INTERFACE, 0)
     
     # Initially all should be fine. The motor should be rotating.
     print(f"Actual velocity: {tmc9660.get_axis_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")
-    print(f"Commutation Mode: {tmc9660.get_axis_parameter(tmc9660.ap.COMMUTATION_MODE)}")
+    print(f"Commutation Mode: {tmc9660.get_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice).name}")
     print(f"HEARTBEAT_STOPPED: {bool(tmc9660.get_axis_parameter(tmc9660.ap.GENERAL_ERROR_FLAGS) & 0x04000000)}")
 
     time.sleep(4)
@@ -56,8 +56,8 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
     # * and the heartbeat error flag should be set.
 
     print(f"Actual velocity: {tmc9660.get_axis_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")
-    print(f"Commutation Mode: {tmc9660.get_axis_parameter(tmc9660.ap.COMMUTATION_MODE)}")
+    print(f"Commutation Mode: {tmc9660.get_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice).name}")
     print(f"HEARTBEAT_STOPPED: {bool(tmc9660.get_axis_parameter(tmc9660.ap.GENERAL_ERROR_FLAGS) & 0x04000000)}")
 
-    tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG, 0, tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG.choice.DISABLED)
+    tmc9660.set_global_parameter(tmc9660.gp_bank0.HEARTBEAT_MONITORING_CONFIG.choice.DISABLED, 0)
     tmc9660.set_axis_parameter(tmc9660.ap.GENERAL_ERROR_FLAGS, 0x04000000) # Clear heartbeat error flag, otherwise you cannot move the motor again.

@@ -26,7 +26,10 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC9660
 
 
-with ConnectionManager("--interface serial_tmcl --port COM5").connect() as my_interface:
+
+com_port = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
+
+with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() as my_interface:
 
     tmc9660 = TMC9660(my_interface)
 

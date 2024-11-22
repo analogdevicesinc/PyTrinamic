@@ -34,15 +34,11 @@ class _USER_VARIABLE_0(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_0", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_1", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_2(Parameter):
@@ -50,15 +46,11 @@ class _USER_VARIABLE_2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_2", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_3(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_3", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_4(Parameter):
@@ -66,15 +58,11 @@ class _USER_VARIABLE_4(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_4", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_5(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_5", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_6(Parameter):
@@ -82,15 +70,11 @@ class _USER_VARIABLE_6(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_6", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_7(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_7", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_8(Parameter):
@@ -98,15 +82,11 @@ class _USER_VARIABLE_8(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_8", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_9(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_9", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_10(Parameter):
@@ -114,15 +94,11 @@ class _USER_VARIABLE_10(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_10", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_11(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_11", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_12(Parameter):
@@ -130,15 +106,11 @@ class _USER_VARIABLE_12(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_12", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_13(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_13", index, access, datatype)
-
-        self.choice = None
 
 
 class _USER_VARIABLE_14(Parameter):
@@ -146,13 +118,9 @@ class _USER_VARIABLE_14(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_14", index, access, datatype)
 
-        self.choice = None
-
 
 class _USER_VARIABLE_15(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("USER_VARIABLE_15", index, access, datatype)
-
-        self.choice = None
 

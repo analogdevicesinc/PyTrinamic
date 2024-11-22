@@ -7,7 +7,7 @@
 ################################################################################
 from __future__ import annotations      #start at python 3.7
 from typing import Optional, Union
-from enum import IntEnum
+from enum import IntFlag
 from abc import ABC, abstractmethod
 
 
@@ -24,7 +24,7 @@ class TMCIc(object):
         return self.__info
 
 
-class UblApiDevice(ABC):
+class RegisterApiDevice(ABC):
 
     def read(self, read_target: Union[Register, Field]) -> int:
         """Generic read function to read a register or a field within a register
@@ -48,6 +48,7 @@ class UblApiDevice(ABC):
             return self.read_register(register_address, register_block, signed=signed)
 
         else:
+            # Our target is neither a Register nor a Field.
             raise ValueError(
                 f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
             )
@@ -102,6 +103,7 @@ class UblApiDevice(ABC):
             return self.write_register(register_address, register_block, value)
 
         else:
+            # Our target is neither a Register nor a Field, nor Choice.
             raise ValueError(
                 f"Argument write_target {write_target} does not appear to be either a Register, Field or Choice, or the value is invalid."
             )
@@ -115,7 +117,7 @@ class UblApiDevice(ABC):
         raise NotImplementedError
 
 
-class Access(IntEnum):
+class Access(IntFlag):
     R   = 0x01 # read
     W   = 0x02 # write
     RW  = 0x03 # read/write
@@ -124,7 +126,7 @@ class Access(IntEnum):
     RWC = 0x23 # read, flag register (write 1 to clear)
 
     def is_writable(self) -> bool:
-        return (self & type(self).W) != 0
+        return Access.W in self
 
 
 class RegisterGroup:

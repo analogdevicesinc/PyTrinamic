@@ -3,10 +3,8 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-from typing import Union
-
-from ...ic.tmc_ic import TMCIc, UblApiDevice
-from ...modules import Parameter
+from ...ic import TMCIc, RegisterApiDevice
+from ...modules import ParameterApiDevice
 from ...tmcl import TMCLCommand
 
 from .TMC9660_ap import Ap
@@ -23,7 +21,7 @@ from .I2Cmap import I2CMap
 from .TIM_ADVmap import TIM_ADVMap
 
 
-class TMC9660(TMCIc, UblApiDevice):
+class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
     """TMC9660 IC class.
 
     The TMC9660 class provides a simple interface for communication with a TMC9660 IC.
@@ -65,23 +63,47 @@ class TMC9660(TMCIc, UblApiDevice):
         self.module_id = module_id
 
     def write_register(self, register_address, block, value):
-        """Implementation of the UblApiDevice::write_register() function."""
+        """Implementation of the RegisterApiDevice::write_register() function."""
         return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self.module_id)
 
     def read_register(self, register_address, block, signed=False):
-        """Implementation of the UblApiDevice::read_register() function."""
+        """Implementation of the RegisterApiDevice::read_register() function."""
         return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self.module_id, signed)
+    
+    def _get_axis_parameter(self, index: int, signed: bool):
+        """Implementation of the ParameterApiDevice::_get_axis_parameter() function."""
+        return self._connection.get_axis_parameter(
+            index,
+            0,
+            module_id=self.module_id,
+            signed=signed,
+            index_bit_width=self.ap_index_bit_width,
+        )
 
-    def get_axis_parameter(self, ap: Parameter):
-        signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
-        return self._connection.get_axis_parameter(ap.index, 0, self.module_id, signed=signed, index_bit_width=self.ap_index_bit_width)
+    def _set_axis_parameter(self, index: int, value: int):
+        """Implementation of the ParameterApiDevice::_set_axis_parameter() function."""
+        return self._connection.set_axis_parameter(
+            index,
+            0,
+            value,
+            module_id=self.module_id,
+            index_bit_width=self.ap_index_bit_width,
+        )
 
-    def set_axis_parameter(self, ap: Union[Parameter, int], value: int):
-        return self._connection.set_axis_parameter(ap.index, 0, value, self.module_id, self.ap_index_bit_width)
+    def _get_global_parameter(self, index: int, bank: int, signed: bool):
+        """Implementation of the ParameterApiDevice::_get_global_parameter() function."""
+        return self._connection.get_global_parameter(
+            index,
+            bank,
+            module_id=self.module_id,
+            signed=signed,
+        )
 
-    def get_global_parameter(self, gp: Parameter, bank: int):
-        signed = True if gp.datatype == Parameter.Datatype.SIGNED else False
-        return self._connection.get_global_parameter(gp.index, bank, self.module_id, signed)
-
-    def set_global_parameter(self, gp: Parameter, bank:int, value: int):
-        return self._connection.set_global_parameter(gp.index, bank, value, self.module_id)
+    def _set_global_parameter(self, index, bank, value):
+        """Implementation of the ParameterApiDevice::_set_global_parameter() function."""
+        return self._connection.set_global_parameter(
+            index,
+            bank,
+            value,
+            module_id=self.module_id,
+        )

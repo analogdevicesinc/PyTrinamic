@@ -43,15 +43,11 @@ class _TIMER_0_PERIOD(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TIMER_0_PERIOD", index, access, datatype)
 
-        self.choice = None
-
 
 class _TIMER_1_PERIOD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TIMER_1_PERIOD", index, access, datatype)
-
-        self.choice = None
 
 
 class _TIMER_2_PERIOD(Parameter):
@@ -59,335 +55,355 @@ class _TIMER_2_PERIOD(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TIMER_2_PERIOD", index, access, datatype)
 
-        self.choice = None
-
 
 class _STOP_LEFT_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("STOP_LEFT_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _STOP_RIGHT_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("STOP_RIGHT_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _HOME_RIGHT_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("HOME_RIGHT_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_0_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_0_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_1_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_1_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_2_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_2_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_3_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_3_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_4_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_4_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_5_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_5_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_6_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_6_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_7_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_7_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_8_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_8_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_9_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_9_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_10_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_10_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_11_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_11_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_12_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_12_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_13_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_13_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_14_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_14_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_15_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_15_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_16_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_16_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_17_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_17_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _INPUT_18_TRIGGER_TRANSITION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.RISING = 1
-            self.FALLING = 2
-            self.BOTH = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.RISING = Parameter.Option(parent, 1, "RISING")
+            self.FALLING = Parameter.Option(parent, 2, "FALLING")
+            self.BOTH = Parameter.Option(parent, 3, "BOTH")
 
     def __init__(self, index, access, datatype):
         super().__init__("INPUT_18_TRIGGER_TRANSITION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 

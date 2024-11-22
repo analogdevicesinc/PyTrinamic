@@ -35,30 +35,27 @@ class _SERIAL_ADDRESS(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SERIAL_ADDRESS", index, access, datatype)
 
-        self.choice = None
-
 
 class _SERIAL_HOST_ADDRESS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SERIAL_HOST_ADDRESS", index, access, datatype)
 
-        self.choice = None
-
 
 class _HEARTBEAT_MONITORING_CONFIG(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = 0
-            self.TMCL_UART_INTERFACE = 1
-            self.SPI_INTERFACE = 2
-            self.TMCL_UART_AND_SPI_INTERFACE = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, 0, "DISABLED")
+            self.TMCL_UART_INTERFACE = Parameter.Option(parent, 1, "TMCL_UART_INTERFACE")
+            self.SPI_INTERFACE = Parameter.Option(parent, 2, "SPI_INTERFACE")
+            self.TMCL_UART_AND_SPI_INTERFACE = Parameter.Option(parent, 3, "TMCL_UART_AND_SPI_INTERFACE")
 
     def __init__(self, index, access, datatype):
         super().__init__("HEARTBEAT_MONITORING_CONFIG", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _HEARTBEAT_MONITORING_TIMEOUT(Parameter):
@@ -66,15 +63,11 @@ class _HEARTBEAT_MONITORING_TIMEOUT(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HEARTBEAT_MONITORING_TIMEOUT", index, access, datatype)
 
-        self.choice = None
-
 
 class _IO_DIRECTION_MASK(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("IO_DIRECTION_MASK", index, access, datatype)
-
-        self.choice = None
 
 
 class _IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK(Parameter):
@@ -82,62 +75,61 @@ class _IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("IO_INPUT_PULLUP_PULLDOWN_ENABLE_MASK", index, access, datatype)
 
-        self.choice = None
-
 
 class _IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("IO_INPUT_PULLUP_PULLDOWN_DIRECTION_MASK", index, access, datatype)
 
-        self.choice = None
-
 
 class _WAKE_PIN_CONTROL_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("WAKE_PIN_CONTROL_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _GO_TO_TIMEOUT_POWER_DOWN_STATE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.T_250_MILLISEC = 0
-            self.T_500_MILLISEC = 1
-            self.T_1_SEC = 2
-            self.T_2_SEC = 3
-            self.T_4_SEC = 4
-            self.T_8_SEC = 5
-            self.T_16_SEC = 6
-            self.T_32_SEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.T_250_MILLISEC = Parameter.Option(parent, 0, "T_250_MILLISEC")
+            self.T_500_MILLISEC = Parameter.Option(parent, 1, "T_500_MILLISEC")
+            self.T_1_SEC = Parameter.Option(parent, 2, "T_1_SEC")
+            self.T_2_SEC = Parameter.Option(parent, 3, "T_2_SEC")
+            self.T_4_SEC = Parameter.Option(parent, 4, "T_4_SEC")
+            self.T_8_SEC = Parameter.Option(parent, 5, "T_8_SEC")
+            self.T_16_SEC = Parameter.Option(parent, 6, "T_16_SEC")
+            self.T_32_SEC = Parameter.Option(parent, 7, "T_32_SEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("GO_TO_TIMEOUT_POWER_DOWN_STATE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _STIMULUS_FSM_STATE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.IDLE = 0
-            self.INITIALIZING = 1
-            self.RUNNING = 2
-            self.DONE = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.IDLE = Parameter.Option(parent, 0, "IDLE")
+            self.INITIALIZING = Parameter.Option(parent, 1, "INITIALIZING")
+            self.RUNNING = Parameter.Option(parent, 2, "RUNNING")
+            self.DONE = Parameter.Option(parent, 3, "DONE")
 
     def __init__(self, index, access, datatype):
         super().__init__("STIMULUS_FSM_STATE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _STIMULUS_FREQUENCY_DIVISOR(Parameter):
@@ -145,15 +137,11 @@ class _STIMULUS_FREQUENCY_DIVISOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("STIMULUS_FREQUENCY_DIVISOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _STIMULUS_CHANNEL_0_TARGET_ADDRESS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("STIMULUS_CHANNEL_0_TARGET_ADDRESS", index, access, datatype)
-
-        self.choice = None
 
 
 class _STIMULUS_CHANNEL_1_TARGET_ADDRESS(Parameter):
@@ -161,15 +149,11 @@ class _STIMULUS_CHANNEL_1_TARGET_ADDRESS(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("STIMULUS_CHANNEL_1_TARGET_ADDRESS", index, access, datatype)
 
-        self.choice = None
-
 
 class _STIMULUS_CHANNEL_0_SCALING_FACTOR(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("STIMULUS_CHANNEL_0_SCALING_FACTOR", index, access, datatype)
-
-        self.choice = None
 
 
 class _STIMULUS_CHANNEL_1_SCALING_FACTOR(Parameter):
@@ -177,31 +161,31 @@ class _STIMULUS_CHANNEL_1_SCALING_FACTOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("STIMULUS_CHANNEL_1_SCALING_FACTOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _AUTO_START_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("AUTO_START_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CLEAR_USER_VARIABLES(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.TRY_LOAD_FROM_STORAGE = False
-            self.CLEAR = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.TRY_LOAD_FROM_STORAGE = Parameter.Option(parent, False, "TRY_LOAD_FROM_STORAGE")
+            self.CLEAR = Parameter.Option(parent, True, "CLEAR")
 
     def __init__(self, index, access, datatype):
         super().__init__("CLEAR_USER_VARIABLES", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 

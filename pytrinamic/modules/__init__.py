@@ -1,4 +1,4 @@
-from .tmcl_module import TMCLModule, Parameter
+from .tmcl_module import TMCLModule, Parameter, ParameterApiDevice
 from .TMCC160 import TMCC160
 from .TMCM1021 import TMCM1021
 from .TMCM1110 import TMCM1110
