@@ -31,9 +31,9 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
 
     tmc9660 = TMC9660(my_interface)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.MOTOR_TYPE, tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660.set_axis_parameter(tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
     tmc9660.set_axis_parameter(tmc9660.ap.OPENLOOP_VOLTAGE, 1000)
-    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE, tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
+    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
     tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
     
@@ -44,4 +44,4 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
 
     tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 0)
     time.sleep(0.1)
-    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE, tmc9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)

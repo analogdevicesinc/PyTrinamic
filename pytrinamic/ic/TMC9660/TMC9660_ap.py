@@ -304,17 +304,18 @@ class Ap:
 
 class _MOTOR_TYPE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NO_MOTOR = 0
-            self.DC_MOTOR = 1
-            self.STEPPER_MOTOR = 2
-            self.BLDC_MOTOR = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NO_MOTOR = Parameter.Option(parent, 0, "NO_MOTOR")
+            self.DC_MOTOR = Parameter.Option(parent, 1, "DC_MOTOR")
+            self.STEPPER_MOTOR = Parameter.Option(parent, 2, "STEPPER_MOTOR")
+            self.BLDC_MOTOR = Parameter.Option(parent, 3, "BLDC_MOTOR")
 
     def __init__(self, index, access, datatype):
         super().__init__("MOTOR_TYPE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _MOTOR_POLE_PAIRS(Parameter):
@@ -322,20 +323,19 @@ class _MOTOR_POLE_PAIRS(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("MOTOR_POLE_PAIRS", index, access, datatype)
 
-        self.choice = None
-
 
 class _MOTOR_DIRECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("MOTOR_DIRECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _MOTOR_PWM_FREQUENCY(Parameter):
@@ -343,27 +343,26 @@ class _MOTOR_PWM_FREQUENCY(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("MOTOR_PWM_FREQUENCY", index, access, datatype)
 
-        self.choice = None
-
 
 class _COMMUTATION_MODE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SYSTEM_OFF = 0
-            self.SYSTEM_OFF_LOW_SIDE_FETS_ON = 1
-            self.SYSTEM_OFF_HIGH_SIDE_FETS_ON = 2
-            self.FOC_OPENLOOP_VOLTAGE_MODE = 3
-            self.FOC_OPENLOOP_CURRENT_MODE = 4
-            self.FOC_ABN = 5
-            self.FOC_HALL_SENSOR = 6
-            self.RESERVED = 7
-            self.FOC_SPI_ENC = 8
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SYSTEM_OFF = Parameter.Option(parent, 0, "SYSTEM_OFF")
+            self.SYSTEM_OFF_LOW_SIDE_FETS_ON = Parameter.Option(parent, 1, "SYSTEM_OFF_LOW_SIDE_FETS_ON")
+            self.SYSTEM_OFF_HIGH_SIDE_FETS_ON = Parameter.Option(parent, 2, "SYSTEM_OFF_HIGH_SIDE_FETS_ON")
+            self.FOC_OPENLOOP_VOLTAGE_MODE = Parameter.Option(parent, 3, "FOC_OPENLOOP_VOLTAGE_MODE")
+            self.FOC_OPENLOOP_CURRENT_MODE = Parameter.Option(parent, 4, "FOC_OPENLOOP_CURRENT_MODE")
+            self.FOC_ABN = Parameter.Option(parent, 5, "FOC_ABN")
+            self.FOC_HALL_SENSOR = Parameter.Option(parent, 6, "FOC_HALL_SENSOR")
+            self.RESERVED = Parameter.Option(parent, 7, "RESERVED")
+            self.FOC_SPI_ENC = Parameter.Option(parent, 8, "FOC_SPI_ENC")
 
     def __init__(self, index, access, datatype):
         super().__init__("COMMUTATION_MODE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OUTPUT_VOLTAGE_LIMIT(Parameter):
@@ -371,15 +370,11 @@ class _OUTPUT_VOLTAGE_LIMIT(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("OUTPUT_VOLTAGE_LIMIT", index, access, datatype)
 
-        self.choice = None
-
 
 class _MAX_TORQUE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("MAX_TORQUE", index, access, datatype)
-
-        self.choice = None
 
 
 class _MAX_FLUX(Parameter):
@@ -387,50 +382,51 @@ class _MAX_FLUX(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("MAX_FLUX", index, access, datatype)
 
-        self.choice = None
-
 
 class _PWM_SWITCHING_SCHEME(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.STANDARD = 0
-            self.SVPWM = 1
-            self.FLAT_BOTTOM = 2
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.STANDARD = Parameter.Option(parent, 0, "STANDARD")
+            self.SVPWM = Parameter.Option(parent, 1, "SVPWM")
+            self.FLAT_BOTTOM = Parameter.Option(parent, 2, "FLAT_BOTTOM")
 
     def __init__(self, index, access, datatype):
         super().__init__("PWM_SWITCHING_SCHEME", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _IDLE_MOTOR_PWM_BEHAVIOR(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.PWM_ON_WHEN_MOTOR_IDLE = False
-            self.PWM_OFF_WHEN_MOTOR_IDLE = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.PWM_ON_WHEN_MOTOR_IDLE = Parameter.Option(parent, False, "PWM_ON_WHEN_MOTOR_IDLE")
+            self.PWM_OFF_WHEN_MOTOR_IDLE = Parameter.Option(parent, True, "PWM_OFF_WHEN_MOTOR_IDLE")
 
     def __init__(self, index, access, datatype):
         super().__init__("IDLE_MOTOR_PWM_BEHAVIOR", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_SHUNT_TYPE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.INLINE_UVW = 0
-            self.INLINE_VW = 1
-            self.INLINE_UW = 2
-            self.INLINE_UV = 3
-            self.BOTTOM_SHUNTS = 4
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.INLINE_UVW = Parameter.Option(parent, 0, "INLINE_UVW")
+            self.INLINE_VW = Parameter.Option(parent, 1, "INLINE_VW")
+            self.INLINE_UW = Parameter.Option(parent, 2, "INLINE_UW")
+            self.INLINE_UV = Parameter.Option(parent, 3, "INLINE_UV")
+            self.BOTTOM_SHUNTS = Parameter.Option(parent, 4, "BOTTOM_SHUNTS")
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_SHUNT_TYPE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_I0_RAW(Parameter):
@@ -438,15 +434,11 @@ class _ADC_I0_RAW(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I0_RAW", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I1_RAW(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I1_RAW", index, access, datatype)
-
-        self.choice = None
 
 
 class _ADC_I2_RAW(Parameter):
@@ -454,77 +446,77 @@ class _ADC_I2_RAW(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I2_RAW", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I3_RAW(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I3_RAW", index, access, datatype)
 
-        self.choice = None
-
 
 class _CSA_GAIN_ADC_I0_TO_ADC_I2(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.GAIN_5X = 0
-            self.GAIN_10X = 1
-            self.GAIN_20X = 2
-            self.GAIN_40X = 3
-            self.GAIN_1X_BYPASS_CSA = 4
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.GAIN_5X = Parameter.Option(parent, 0, "GAIN_5X")
+            self.GAIN_10X = Parameter.Option(parent, 1, "GAIN_10X")
+            self.GAIN_20X = Parameter.Option(parent, 2, "GAIN_20X")
+            self.GAIN_40X = Parameter.Option(parent, 3, "GAIN_40X")
+            self.GAIN_1X_BYPASS_CSA = Parameter.Option(parent, 4, "GAIN_1X_BYPASS_CSA")
 
     def __init__(self, index, access, datatype):
         super().__init__("CSA_GAIN_ADC_I0_TO_ADC_I2", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CSA_GAIN_ADC_I3(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.GAIN_5X = 0
-            self.GAIN_10X = 1
-            self.GAIN_20X = 2
-            self.GAIN_40X = 3
-            self.GAIN_1X_BYPASS_CSA = 4
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.GAIN_5X = Parameter.Option(parent, 0, "GAIN_5X")
+            self.GAIN_10X = Parameter.Option(parent, 1, "GAIN_10X")
+            self.GAIN_20X = Parameter.Option(parent, 2, "GAIN_20X")
+            self.GAIN_40X = Parameter.Option(parent, 3, "GAIN_40X")
+            self.GAIN_1X_BYPASS_CSA = Parameter.Option(parent, 4, "GAIN_1X_BYPASS_CSA")
 
     def __init__(self, index, access, datatype):
         super().__init__("CSA_GAIN_ADC_I3", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CSA_FILTER_ADC_I0_TO_ADC_I2(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.T_0_55_MICROSEC = 0
-            self.T_0_75_MICROSEC = 1
-            self.T_1_0_MICROSEC = 2
-            self.T_1_35_MICROSEC = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.T_0_55_MICROSEC = Parameter.Option(parent, 0, "T_0_55_MICROSEC")
+            self.T_0_75_MICROSEC = Parameter.Option(parent, 1, "T_0_75_MICROSEC")
+            self.T_1_0_MICROSEC = Parameter.Option(parent, 2, "T_1_0_MICROSEC")
+            self.T_1_35_MICROSEC = Parameter.Option(parent, 3, "T_1_35_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("CSA_FILTER_ADC_I0_TO_ADC_I2", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CSA_FILTER_ADC_I3(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.T_0_55_MICROSEC = 0
-            self.T_0_75_MICROSEC = 1
-            self.T_1_0_MICROSEC = 2
-            self.T_1_35_MICROSEC = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.T_0_55_MICROSEC = Parameter.Option(parent, 0, "T_0_55_MICROSEC")
+            self.T_0_75_MICROSEC = Parameter.Option(parent, 1, "T_0_75_MICROSEC")
+            self.T_1_0_MICROSEC = Parameter.Option(parent, 2, "T_1_0_MICROSEC")
+            self.T_1_35_MICROSEC = Parameter.Option(parent, 3, "T_1_35_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("CSA_FILTER_ADC_I3", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CURRENT_SCALING_FACTOR(Parameter):
@@ -532,67 +524,69 @@ class _CURRENT_SCALING_FACTOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("CURRENT_SCALING_FACTOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _PHASE_UX1_ADC_MAPPING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ADC_I0 = 0
-            self.ADC_I1 = 1
-            self.ADC_I2 = 2
-            self.ADC_I3 = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ADC_I0 = Parameter.Option(parent, 0, "ADC_I0")
+            self.ADC_I1 = Parameter.Option(parent, 1, "ADC_I1")
+            self.ADC_I2 = Parameter.Option(parent, 2, "ADC_I2")
+            self.ADC_I3 = Parameter.Option(parent, 3, "ADC_I3")
 
     def __init__(self, index, access, datatype):
         super().__init__("PHASE_UX1_ADC_MAPPING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _PHASE_VX2_ADC_MAPPING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ADC_I0 = 0
-            self.ADC_I1 = 1
-            self.ADC_I2 = 2
-            self.ADC_I3 = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ADC_I0 = Parameter.Option(parent, 0, "ADC_I0")
+            self.ADC_I1 = Parameter.Option(parent, 1, "ADC_I1")
+            self.ADC_I2 = Parameter.Option(parent, 2, "ADC_I2")
+            self.ADC_I3 = Parameter.Option(parent, 3, "ADC_I3")
 
     def __init__(self, index, access, datatype):
         super().__init__("PHASE_VX2_ADC_MAPPING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _PHASE_WY1_ADC_MAPPING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ADC_I0 = 0
-            self.ADC_I1 = 1
-            self.ADC_I2 = 2
-            self.ADC_I3 = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ADC_I0 = Parameter.Option(parent, 0, "ADC_I0")
+            self.ADC_I1 = Parameter.Option(parent, 1, "ADC_I1")
+            self.ADC_I2 = Parameter.Option(parent, 2, "ADC_I2")
+            self.ADC_I3 = Parameter.Option(parent, 3, "ADC_I3")
 
     def __init__(self, index, access, datatype):
         super().__init__("PHASE_WY1_ADC_MAPPING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _PHASE_Y2_ADC_MAPPING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ADC_I0 = 0
-            self.ADC_I1 = 1
-            self.ADC_I2 = 2
-            self.ADC_I3 = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ADC_I0 = Parameter.Option(parent, 0, "ADC_I0")
+            self.ADC_I1 = Parameter.Option(parent, 1, "ADC_I1")
+            self.ADC_I2 = Parameter.Option(parent, 2, "ADC_I2")
+            self.ADC_I3 = Parameter.Option(parent, 3, "ADC_I3")
 
     def __init__(self, index, access, datatype):
         super().__init__("PHASE_Y2_ADC_MAPPING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_I0_SCALE(Parameter):
@@ -600,15 +594,11 @@ class _ADC_I0_SCALE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I0_SCALE", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I1_SCALE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I1_SCALE", index, access, datatype)
-
-        self.choice = None
 
 
 class _ADC_I2_SCALE(Parameter):
@@ -616,67 +606,67 @@ class _ADC_I2_SCALE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I2_SCALE", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I3_SCALE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I3_SCALE", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I0_INVERTED(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I0_INVERTED", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_I1_INVERTED(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I1_INVERTED", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_I2_INVERTED(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I2_INVERTED", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_I3_INVERTED(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I3_INVERTED", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ADC_I0_OFFSET(Parameter):
@@ -684,15 +674,11 @@ class _ADC_I0_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I0_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I1_OFFSET(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I1_OFFSET", index, access, datatype)
-
-        self.choice = None
 
 
 class _ADC_I2_OFFSET(Parameter):
@@ -700,15 +686,11 @@ class _ADC_I2_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I2_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I3_OFFSET(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I3_OFFSET", index, access, datatype)
-
-        self.choice = None
 
 
 class _ADC_I0(Parameter):
@@ -716,15 +698,11 @@ class _ADC_I0(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I0", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I1", index, access, datatype)
-
-        self.choice = None
 
 
 class _ADC_I2(Parameter):
@@ -732,15 +710,11 @@ class _ADC_I2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I2", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_I3(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_I3", index, access, datatype)
-
-        self.choice = None
 
 
 class _OPENLOOP_ANGLE(Parameter):
@@ -748,15 +722,11 @@ class _OPENLOOP_ANGLE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("OPENLOOP_ANGLE", index, access, datatype)
 
-        self.choice = None
-
 
 class _OPENLOOP_CURRENT(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("OPENLOOP_CURRENT", index, access, datatype)
-
-        self.choice = None
 
 
 class _OPENLOOP_VOLTAGE(Parameter):
@@ -764,59 +734,58 @@ class _OPENLOOP_VOLTAGE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("OPENLOOP_VOLTAGE", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACCELERATION_FF_GAIN(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ACCELERATION_FF_GAIN", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACCELERATION_FF_SHIFT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NO_SHIFT = 0
-            self.SHIFT_4_BIT = 1
-            self.SHIFT_8_BIT = 2
-            self.SHIFT_12_BIT = 3
-            self.SHIFT_16_BIT = 4
-            self.SHIFT_20_BIT = 5
-            self.SHIFT_24_BIT = 6
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NO_SHIFT = Parameter.Option(parent, 0, "NO_SHIFT")
+            self.SHIFT_4_BIT = Parameter.Option(parent, 1, "SHIFT_4_BIT")
+            self.SHIFT_8_BIT = Parameter.Option(parent, 2, "SHIFT_8_BIT")
+            self.SHIFT_12_BIT = Parameter.Option(parent, 3, "SHIFT_12_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 4, "SHIFT_16_BIT")
+            self.SHIFT_20_BIT = Parameter.Option(parent, 5, "SHIFT_20_BIT")
+            self.SHIFT_24_BIT = Parameter.Option(parent, 6, "SHIFT_24_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("ACCELERATION_FF_SHIFT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _RAMP_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _DIRECT_VELOCITY_MODE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("DIRECT_VELOCITY_MODE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _RAMP_AMAX(Parameter):
@@ -824,15 +793,11 @@ class _RAMP_AMAX(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_AMAX", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_A1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_A1", index, access, datatype)
-
-        self.choice = None
 
 
 class _RAMP_A2(Parameter):
@@ -840,15 +805,11 @@ class _RAMP_A2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_A2", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_DMAX(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_DMAX", index, access, datatype)
-
-        self.choice = None
 
 
 class _RAMP_D1(Parameter):
@@ -856,15 +817,11 @@ class _RAMP_D1(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_D1", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_D2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_D2", index, access, datatype)
-
-        self.choice = None
 
 
 class _RAMP_VMAX(Parameter):
@@ -872,15 +829,11 @@ class _RAMP_VMAX(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_VMAX", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_V1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_V1", index, access, datatype)
-
-        self.choice = None
 
 
 class _RAMP_V2(Parameter):
@@ -888,15 +841,11 @@ class _RAMP_V2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_V2", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_VSTART(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_VSTART", index, access, datatype)
-
-        self.choice = None
 
 
 class _RAMP_VSTOP(Parameter):
@@ -904,15 +853,11 @@ class _RAMP_VSTOP(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_VSTOP", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_TVMAX(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_TVMAX", index, access, datatype)
-
-        self.choice = None
 
 
 class _RAMP_TZEROWAIT(Parameter):
@@ -920,33 +865,33 @@ class _RAMP_TZEROWAIT(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_TZEROWAIT", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACCELERATION_FEEDFORWARD_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ACCELERATION_FEEDFORWARD_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VELOCITY_FEEDFORWARD_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_FEEDFORWARD_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _RAMP_VELOCITY(Parameter):
@@ -954,15 +899,11 @@ class _RAMP_VELOCITY(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_VELOCITY", index, access, datatype)
 
-        self.choice = None
-
 
 class _RAMP_POSITION(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("RAMP_POSITION", index, access, datatype)
-
-        self.choice = None
 
 
 class _HALL_PHI_E(Parameter):
@@ -970,24 +911,23 @@ class _HALL_PHI_E(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HALL_PHI_E", index, access, datatype)
 
-        self.choice = None
-
 
 class _HALL_SECTOR_OFFSET(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DEG_0 = 0
-            self.DEG_60 = 1
-            self.DEG_120 = 2
-            self.DEG_180 = 3
-            self.DEG_240 = 4
-            self.DEG_300 = 5
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DEG_0 = Parameter.Option(parent, 0, "DEG_0")
+            self.DEG_60 = Parameter.Option(parent, 1, "DEG_60")
+            self.DEG_120 = Parameter.Option(parent, 2, "DEG_120")
+            self.DEG_180 = Parameter.Option(parent, 3, "DEG_180")
+            self.DEG_240 = Parameter.Option(parent, 4, "DEG_240")
+            self.DEG_300 = Parameter.Option(parent, 5, "DEG_300")
 
     def __init__(self, index, access, datatype):
         super().__init__("HALL_SECTOR_OFFSET", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _HALL_FILTER_LENGTH(Parameter):
@@ -995,15 +935,11 @@ class _HALL_FILTER_LENGTH(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HALL_FILTER_LENGTH", index, access, datatype)
 
-        self.choice = None
-
 
 class _HALL_POSITION_0_OFFSET(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("HALL_POSITION_0_OFFSET", index, access, datatype)
-
-        self.choice = None
 
 
 class _HALL_POSITION_60_OFFSET(Parameter):
@@ -1011,15 +947,11 @@ class _HALL_POSITION_60_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HALL_POSITION_60_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _HALL_POSITION_120_OFFSET(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("HALL_POSITION_120_OFFSET", index, access, datatype)
-
-        self.choice = None
 
 
 class _HALL_POSITION_180_OFFSET(Parameter):
@@ -1027,15 +959,11 @@ class _HALL_POSITION_180_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HALL_POSITION_180_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _HALL_POSITION_240_OFFSET(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("HALL_POSITION_240_OFFSET", index, access, datatype)
-
-        self.choice = None
 
 
 class _HALL_POSITION_300_OFFSET(Parameter):
@@ -1043,33 +971,33 @@ class _HALL_POSITION_300_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HALL_POSITION_300_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _HALL_INVERT_DIRECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("HALL_INVERT_DIRECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _HALL_EXTRAPOLATION_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("HALL_EXTRAPOLATION_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _HALL_PHI_E_OFFSET(Parameter):
@@ -1077,15 +1005,11 @@ class _HALL_PHI_E_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("HALL_PHI_E_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_1_PHI_E(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_PHI_E", index, access, datatype)
-
-        self.choice = None
 
 
 class _ABN_1_STEPS(Parameter):
@@ -1093,50 +1017,51 @@ class _ABN_1_STEPS(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_STEPS", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_1_DIRECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_DIRECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_1_INIT_METHOD(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.FORCED_PHI_E_ZERO_WITH_ACTIVE_SWING = 0
-            self.FORCED_PHI_E_90_ZERO = 1
-            self.USE_HALL = 2
-            self.USE_N_CHANNEL_OFFSET = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.FORCED_PHI_E_ZERO_WITH_ACTIVE_SWING = Parameter.Option(parent, 0, "FORCED_PHI_E_ZERO_WITH_ACTIVE_SWING")
+            self.FORCED_PHI_E_90_ZERO = Parameter.Option(parent, 1, "FORCED_PHI_E_90_ZERO")
+            self.USE_HALL = Parameter.Option(parent, 2, "USE_HALL")
+            self.USE_N_CHANNEL_OFFSET = Parameter.Option(parent, 3, "USE_N_CHANNEL_OFFSET")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_INIT_METHOD", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_1_INIT_STATE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.IDLE = 0
-            self.BUSY = 1
-            self.WAIT = 2
-            self.DONE = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.IDLE = Parameter.Option(parent, 0, "IDLE")
+            self.BUSY = Parameter.Option(parent, 1, "BUSY")
+            self.WAIT = Parameter.Option(parent, 2, "WAIT")
+            self.DONE = Parameter.Option(parent, 3, "DONE")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_INIT_STATE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_1_INIT_DELAY(Parameter):
@@ -1144,15 +1069,11 @@ class _ABN_1_INIT_DELAY(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_INIT_DELAY", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_1_INIT_VELOCITY(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_INIT_VELOCITY", index, access, datatype)
-
-        self.choice = None
 
 
 class _ABN_1_N_CHANNEL_PHI_E_OFFSET(Parameter):
@@ -1160,49 +1081,50 @@ class _ABN_1_N_CHANNEL_PHI_E_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_N_CHANNEL_PHI_E_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_1_N_CHANNEL_INVERTED(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ACTIVE_HIGH = False
-            self.ACTIVE_LOW = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ACTIVE_HIGH = Parameter.Option(parent, False, "ACTIVE_HIGH")
+            self.ACTIVE_LOW = Parameter.Option(parent, True, "ACTIVE_LOW")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_N_CHANNEL_INVERTED", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_1_N_CHANNEL_FILTERING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.FILTERING_OFF = 0
-            self.N_EVENT_ON_A_HIGH_B_HIGH = 1
-            self.N_EVENT_ON_A_HIGH_B_LOW = 2
-            self.N_EVENT_ON_A_LOW_B_HIGH = 3
-            self.N_EVENT_ON_A_LOW_B_LOW = 4
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.FILTERING_OFF = Parameter.Option(parent, 0, "FILTERING_OFF")
+            self.N_EVENT_ON_A_HIGH_B_HIGH = Parameter.Option(parent, 1, "N_EVENT_ON_A_HIGH_B_HIGH")
+            self.N_EVENT_ON_A_HIGH_B_LOW = Parameter.Option(parent, 2, "N_EVENT_ON_A_HIGH_B_LOW")
+            self.N_EVENT_ON_A_LOW_B_HIGH = Parameter.Option(parent, 3, "N_EVENT_ON_A_LOW_B_HIGH")
+            self.N_EVENT_ON_A_LOW_B_LOW = Parameter.Option(parent, 4, "N_EVENT_ON_A_LOW_B_LOW")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_N_CHANNEL_FILTERING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_1_CLEAR_ON_NEXT_NULL(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_CLEAR_ON_NEXT_NULL", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_1_VALUE(Parameter):
@@ -1210,15 +1132,11 @@ class _ABN_1_VALUE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ABN_1_VALUE", index, access, datatype)
 
-        self.choice = None
-
 
 class _TARGET_TORQUE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE", index, access, datatype)
-
-        self.choice = None
 
 
 class _ACTUAL_TORQUE(Parameter):
@@ -1226,15 +1144,11 @@ class _ACTUAL_TORQUE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_TORQUE", index, access, datatype)
 
-        self.choice = None
-
 
 class _TARGET_FLUX(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_FLUX", index, access, datatype)
-
-        self.choice = None
 
 
 class _ACTUAL_FLUX(Parameter):
@@ -1242,15 +1156,11 @@ class _ACTUAL_FLUX(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_FLUX", index, access, datatype)
 
-        self.choice = None
-
 
 class _TORQUE_OFFSET(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_OFFSET", index, access, datatype)
-
-        self.choice = None
 
 
 class _TORQUE_P(Parameter):
@@ -1258,15 +1168,11 @@ class _TORQUE_P(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_P", index, access, datatype)
 
-        self.choice = None
-
 
 class _TORQUE_I(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_I", index, access, datatype)
-
-        self.choice = None
 
 
 class _FLUX_P(Parameter):
@@ -1274,54 +1180,53 @@ class _FLUX_P(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FLUX_P", index, access, datatype)
 
-        self.choice = None
-
 
 class _FLUX_I(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FLUX_I", index, access, datatype)
 
-        self.choice = None
-
 
 class _SEPARATE_TORQUE_FLUX_PI_PARAMTERS(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.TORQUE_FLUX_PI_COMBINED = False
-            self.TORQUE_FLUX_PI_SEPARATED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.TORQUE_FLUX_PI_COMBINED = Parameter.Option(parent, False, "TORQUE_FLUX_PI_COMBINED")
+            self.TORQUE_FLUX_PI_SEPARATED = Parameter.Option(parent, True, "TORQUE_FLUX_PI_SEPARATED")
 
     def __init__(self, index, access, datatype):
         super().__init__("SEPARATE_TORQUE_FLUX_PI_PARAMTERS", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CURRENT_NORM_P(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SHIFT_8_BIT = 0
-            self.SHIFT_16_BIT = 1
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SHIFT_8_BIT = Parameter.Option(parent, 0, "SHIFT_8_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 1, "SHIFT_16_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("CURRENT_NORM_P", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _CURRENT_NORM_I(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SHIFT_8_BIT = 0
-            self.SHIFT_16_BIT = 1
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SHIFT_8_BIT = Parameter.Option(parent, 0, "SHIFT_8_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 1, "SHIFT_16_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("CURRENT_NORM_I", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _TORQUE_PI_ERROR(Parameter):
@@ -1329,15 +1234,11 @@ class _TORQUE_PI_ERROR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_PI_ERROR", index, access, datatype)
 
-        self.choice = None
-
 
 class _FLUX_PI_ERROR(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FLUX_PI_ERROR", index, access, datatype)
-
-        self.choice = None
 
 
 class _TORQUE_PI_INTEGRATOR(Parameter):
@@ -1345,15 +1246,11 @@ class _TORQUE_PI_INTEGRATOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_PI_INTEGRATOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _FLUX_PI_INTEGRATOR(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FLUX_PI_INTEGRATOR", index, access, datatype)
-
-        self.choice = None
 
 
 class _FLUX_OFFSET(Parameter):
@@ -1361,23 +1258,22 @@ class _FLUX_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FLUX_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_SENSOR_SELECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SAME_AS_COMMUTATION = 0
-            self.DIGITAL_HALL = 1
-            self.ABN1_ENCODER = 2
-            self.ABN2_ENCODER = 3
-            self.SPI_ENCODER = 4
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SAME_AS_COMMUTATION = Parameter.Option(parent, 0, "SAME_AS_COMMUTATION")
+            self.DIGITAL_HALL = Parameter.Option(parent, 1, "DIGITAL_HALL")
+            self.ABN1_ENCODER = Parameter.Option(parent, 2, "ABN1_ENCODER")
+            self.ABN2_ENCODER = Parameter.Option(parent, 3, "ABN2_ENCODER")
+            self.SPI_ENCODER = Parameter.Option(parent, 4, "SPI_ENCODER")
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_SENSOR_SELECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _TARGET_VELOCITY(Parameter):
@@ -1385,15 +1281,11 @@ class _TARGET_VELOCITY(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_VELOCITY", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACTUAL_VELOCITY(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY", index, access, datatype)
-
-        self.choice = None
 
 
 class _VELOCITY_OFFSET(Parameter):
@@ -1401,15 +1293,11 @@ class _VELOCITY_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_P(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_P", index, access, datatype)
-
-        self.choice = None
 
 
 class _VELOCITY_I(Parameter):
@@ -1417,37 +1305,37 @@ class _VELOCITY_I(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_I", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_NORM_P(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NO_SHIFT = 0
-            self.SHIFT_8_BIT = 1
-            self.SHIFT_16_BIT = 2
-            self.SHIFT_24_BIT = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NO_SHIFT = Parameter.Option(parent, 0, "NO_SHIFT")
+            self.SHIFT_8_BIT = Parameter.Option(parent, 1, "SHIFT_8_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 2, "SHIFT_16_BIT")
+            self.SHIFT_24_BIT = Parameter.Option(parent, 3, "SHIFT_24_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_NORM_P", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VELOCITY_NORM_I(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SHIFT_8_BIT = 0
-            self.SHIFT_16_BIT = 1
-            self.SHIFT_24_BIT = 2
-            self.SHIFT_32_BIT = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SHIFT_8_BIT = Parameter.Option(parent, 0, "SHIFT_8_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 1, "SHIFT_16_BIT")
+            self.SHIFT_24_BIT = Parameter.Option(parent, 2, "SHIFT_24_BIT")
+            self.SHIFT_32_BIT = Parameter.Option(parent, 3, "SHIFT_32_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_NORM_I", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VELOCITY_PI_INTEGRATOR(Parameter):
@@ -1455,15 +1343,11 @@ class _VELOCITY_PI_INTEGRATOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_PI_INTEGRATOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_PI_ERROR(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_PI_ERROR", index, access, datatype)
-
-        self.choice = None
 
 
 class _VELOCITY_SCALING_FACTOR(Parameter):
@@ -1471,15 +1355,11 @@ class _VELOCITY_SCALING_FACTOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_SCALING_FACTOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _STOP_ON_VELOCITY_DEVIATION(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("STOP_ON_VELOCITY_DEVIATION", index, access, datatype)
-
-        self.choice = None
 
 
 class _VELOCITY_LOOP_DOWNSAMPLING(Parameter):
@@ -1487,15 +1367,11 @@ class _VELOCITY_LOOP_DOWNSAMPLING(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_LOOP_DOWNSAMPLING", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_REACHED_THRESHOLD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_REACHED_THRESHOLD", index, access, datatype)
-
-        self.choice = None
 
 
 class _VELOCITY_METER_SWITCH_THRESHOLD(Parameter):
@@ -1503,45 +1379,43 @@ class _VELOCITY_METER_SWITCH_THRESHOLD(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_METER_SWITCH_THRESHOLD", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_METER_SWITCH_HYSTERESIS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_METER_SWITCH_HYSTERESIS", index, access, datatype)
 
-        self.choice = None
-
 
 class _VELOCITY_METER_MODE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.PERIOD_METER = 0
-            self.FREQUENCY_METER = 1
-            self.SOFTWARE_METER = 2
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.PERIOD_METER = Parameter.Option(parent, 0, "PERIOD_METER")
+            self.FREQUENCY_METER = Parameter.Option(parent, 1, "FREQUENCY_METER")
+            self.SOFTWARE_METER = Parameter.Option(parent, 2, "SOFTWARE_METER")
 
     def __init__(self, index, access, datatype):
         super().__init__("VELOCITY_METER_MODE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _POSITION_SENSOR_SELECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SAME_AS_COMMUTATION = 0
-            self.DIGITAL_HALL = 1
-            self.ABN1_ENCODER = 2
-            self.ABN2_ENCODER = 3
-            self.SPI_ENCODER = 4
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SAME_AS_COMMUTATION = Parameter.Option(parent, 0, "SAME_AS_COMMUTATION")
+            self.DIGITAL_HALL = Parameter.Option(parent, 1, "DIGITAL_HALL")
+            self.ABN1_ENCODER = Parameter.Option(parent, 2, "ABN1_ENCODER")
+            self.ABN2_ENCODER = Parameter.Option(parent, 3, "ABN2_ENCODER")
+            self.SPI_ENCODER = Parameter.Option(parent, 4, "SPI_ENCODER")
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_SENSOR_SELECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _TARGET_POSITION(Parameter):
@@ -1549,15 +1423,11 @@ class _TARGET_POSITION(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_POSITION", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACTUAL_POSITION(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_POSITION", index, access, datatype)
-
-        self.choice = None
 
 
 class _POSITION_SCALING_FACTOR(Parameter):
@@ -1565,15 +1435,11 @@ class _POSITION_SCALING_FACTOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_SCALING_FACTOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _POSITION_P(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_P", index, access, datatype)
-
-        self.choice = None
 
 
 class _POSITION_I(Parameter):
@@ -1581,37 +1447,37 @@ class _POSITION_I(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_I", index, access, datatype)
 
-        self.choice = None
-
 
 class _POSITION_NORM_P(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NO_SHIFT = 0
-            self.SHIFT_8_BIT = 1
-            self.SHIFT_16_BIT = 2
-            self.SHIFT_24_BIT = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NO_SHIFT = Parameter.Option(parent, 0, "NO_SHIFT")
+            self.SHIFT_8_BIT = Parameter.Option(parent, 1, "SHIFT_8_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 2, "SHIFT_16_BIT")
+            self.SHIFT_24_BIT = Parameter.Option(parent, 3, "SHIFT_24_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_NORM_P", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _POSITION_NORM_I(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.SHIFT_8_BIT = 0
-            self.SHIFT_16_BIT = 1
-            self.SHIFT_24_BIT = 2
-            self.SHIFT_32_BIT = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.SHIFT_8_BIT = Parameter.Option(parent, 0, "SHIFT_8_BIT")
+            self.SHIFT_16_BIT = Parameter.Option(parent, 1, "SHIFT_16_BIT")
+            self.SHIFT_24_BIT = Parameter.Option(parent, 2, "SHIFT_24_BIT")
+            self.SHIFT_32_BIT = Parameter.Option(parent, 3, "SHIFT_32_BIT")
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_NORM_I", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _POSITION_PI_INTEGRATOR(Parameter):
@@ -1619,15 +1485,11 @@ class _POSITION_PI_INTEGRATOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_PI_INTEGRATOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _POSITION_PI_ERROR(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_PI_ERROR", index, access, datatype)
-
-        self.choice = None
 
 
 class _STOP_ON_POSITION_DEVIATION(Parameter):
@@ -1635,15 +1497,11 @@ class _STOP_ON_POSITION_DEVIATION(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("STOP_ON_POSITION_DEVIATION", index, access, datatype)
 
-        self.choice = None
-
 
 class _POSITION_LOOP_DOWNSAMPLING(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_LOOP_DOWNSAMPLING", index, access, datatype)
-
-        self.choice = None
 
 
 class _LATCH_POSITION(Parameter):
@@ -1651,15 +1509,11 @@ class _LATCH_POSITION(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("LATCH_POSITION", index, access, datatype)
 
-        self.choice = None
-
 
 class _POSITION_LIMIT_LOW(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_LIMIT_LOW", index, access, datatype)
-
-        self.choice = None
 
 
 class _POSITION_LIMIT_HIGH(Parameter):
@@ -1667,126 +1521,127 @@ class _POSITION_LIMIT_HIGH(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_LIMIT_HIGH", index, access, datatype)
 
-        self.choice = None
-
 
 class _POSITION_REACHED_THRESHOLD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("POSITION_REACHED_THRESHOLD", index, access, datatype)
 
-        self.choice = None
-
 
 class _REFERENCE_SWITCH_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NO_STOP_ON_SWITCH_TRIGGERED = 0
-            self.STOP_ON_L = 1
-            self.STOP_ON_R = 2
-            self.STOP_ON_R_AND_L = 3
-            self.STOP_ON_H = 4
-            self.STOP_ON_H_AND_L = 5
-            self.STOP_ON_H_AND_R = 6
-            self.STOP_ON_H_R_AND_L = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NO_STOP_ON_SWITCH_TRIGGERED = Parameter.Option(parent, 0, "NO_STOP_ON_SWITCH_TRIGGERED")
+            self.STOP_ON_L = Parameter.Option(parent, 1, "STOP_ON_L")
+            self.STOP_ON_R = Parameter.Option(parent, 2, "STOP_ON_R")
+            self.STOP_ON_R_AND_L = Parameter.Option(parent, 3, "STOP_ON_R_AND_L")
+            self.STOP_ON_H = Parameter.Option(parent, 4, "STOP_ON_H")
+            self.STOP_ON_H_AND_L = Parameter.Option(parent, 5, "STOP_ON_H_AND_L")
+            self.STOP_ON_H_AND_R = Parameter.Option(parent, 6, "STOP_ON_H_AND_R")
+            self.STOP_ON_H_R_AND_L = Parameter.Option(parent, 7, "STOP_ON_H_R_AND_L")
 
     def __init__(self, index, access, datatype):
         super().__init__("REFERENCE_SWITCH_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _REFERENCE_SWITCH_POLARITY_AND_SWAP(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_SWAPPED_NOT_INVERTED = 0
-            self.L_INVERTED = 1
-            self.R_INVERTED = 2
-            self.R_AND_L_INVERTED = 3
-            self.H_INVERTED = 4
-            self.H_AND_L_INVERTED = 5
-            self.H_AND_R_INVERTED = 6
-            self.H_R_AND_L_INVERTED = 7
-            self.L_R_SWAPPED_L_INVERTED = 8
-            self.L_R_SWAPPED_R_INVERTED = 9
-            self.L_R_SWAPPED_R_AND_L_INVERTED = 10
-            self.L_R_SWAPPED_H_INVERTED = 11
-            self.L_R_SWAPPED_H_AND_L_INVERTED = 12
-            self.L_R_SWAPPED = 13
-            self.L_R_SWAPPED_H_AND_R_INVERTED = 14
-            self.L_R_SWAPPED_H_R_AND_L_INVERTED = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_SWAPPED_NOT_INVERTED = Parameter.Option(parent, 0, "NOT_SWAPPED_NOT_INVERTED")
+            self.L_INVERTED = Parameter.Option(parent, 1, "L_INVERTED")
+            self.R_INVERTED = Parameter.Option(parent, 2, "R_INVERTED")
+            self.R_AND_L_INVERTED = Parameter.Option(parent, 3, "R_AND_L_INVERTED")
+            self.H_INVERTED = Parameter.Option(parent, 4, "H_INVERTED")
+            self.H_AND_L_INVERTED = Parameter.Option(parent, 5, "H_AND_L_INVERTED")
+            self.H_AND_R_INVERTED = Parameter.Option(parent, 6, "H_AND_R_INVERTED")
+            self.H_R_AND_L_INVERTED = Parameter.Option(parent, 7, "H_R_AND_L_INVERTED")
+            self.L_R_SWAPPED_L_INVERTED = Parameter.Option(parent, 8, "L_R_SWAPPED_L_INVERTED")
+            self.L_R_SWAPPED_R_INVERTED = Parameter.Option(parent, 9, "L_R_SWAPPED_R_INVERTED")
+            self.L_R_SWAPPED_R_AND_L_INVERTED = Parameter.Option(parent, 10, "L_R_SWAPPED_R_AND_L_INVERTED")
+            self.L_R_SWAPPED_H_INVERTED = Parameter.Option(parent, 11, "L_R_SWAPPED_H_INVERTED")
+            self.L_R_SWAPPED_H_AND_L_INVERTED = Parameter.Option(parent, 12, "L_R_SWAPPED_H_AND_L_INVERTED")
+            self.L_R_SWAPPED = Parameter.Option(parent, 13, "L_R_SWAPPED")
+            self.L_R_SWAPPED_H_AND_R_INVERTED = Parameter.Option(parent, 14, "L_R_SWAPPED_H_AND_R_INVERTED")
+            self.L_R_SWAPPED_H_R_AND_L_INVERTED = Parameter.Option(parent, 15, "L_R_SWAPPED_H_R_AND_L_INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("REFERENCE_SWITCH_POLARITY_AND_SWAP", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _REFERENCE_SWITCH_LATCH_SETTINGS(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NO_TRIGGER = 0
-            self.L_R_RISING_EDGE = 1
-            self.L_R_FALLING_EDGE = 2
-            self.L_R_BOTH_EDGES = 3
-            self.H_RISING_EDGE = 4
-            self.H_L_R_RISING_EDGE = 5
-            self.H_RISING_L_R_FALLING_EDGE = 6
-            self.H_RISING_L_R_BOTH_EDGES = 7
-            self.H_FALLING_EDGE = 8
-            self.H_FALLING_L_R_RISING_EDGE = 9
-            self.H_L_R_FALLING_EDGE = 10
-            self.H_FALLING_L_R_BOTH_EDGES = 11
-            self.H_BOTH_EDGES = 12
-            self.H_BOTH_L_R_RISING_EDGE = 13
-            self.H_BOTH_L_R_FALLING_EDGE = 14
-            self.H_L_R_BOTH_EDGES = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NO_TRIGGER = Parameter.Option(parent, 0, "NO_TRIGGER")
+            self.L_R_RISING_EDGE = Parameter.Option(parent, 1, "L_R_RISING_EDGE")
+            self.L_R_FALLING_EDGE = Parameter.Option(parent, 2, "L_R_FALLING_EDGE")
+            self.L_R_BOTH_EDGES = Parameter.Option(parent, 3, "L_R_BOTH_EDGES")
+            self.H_RISING_EDGE = Parameter.Option(parent, 4, "H_RISING_EDGE")
+            self.H_L_R_RISING_EDGE = Parameter.Option(parent, 5, "H_L_R_RISING_EDGE")
+            self.H_RISING_L_R_FALLING_EDGE = Parameter.Option(parent, 6, "H_RISING_L_R_FALLING_EDGE")
+            self.H_RISING_L_R_BOTH_EDGES = Parameter.Option(parent, 7, "H_RISING_L_R_BOTH_EDGES")
+            self.H_FALLING_EDGE = Parameter.Option(parent, 8, "H_FALLING_EDGE")
+            self.H_FALLING_L_R_RISING_EDGE = Parameter.Option(parent, 9, "H_FALLING_L_R_RISING_EDGE")
+            self.H_L_R_FALLING_EDGE = Parameter.Option(parent, 10, "H_L_R_FALLING_EDGE")
+            self.H_FALLING_L_R_BOTH_EDGES = Parameter.Option(parent, 11, "H_FALLING_L_R_BOTH_EDGES")
+            self.H_BOTH_EDGES = Parameter.Option(parent, 12, "H_BOTH_EDGES")
+            self.H_BOTH_L_R_RISING_EDGE = Parameter.Option(parent, 13, "H_BOTH_L_R_RISING_EDGE")
+            self.H_BOTH_L_R_FALLING_EDGE = Parameter.Option(parent, 14, "H_BOTH_L_R_FALLING_EDGE")
+            self.H_L_R_BOTH_EDGES = Parameter.Option(parent, 15, "H_L_R_BOTH_EDGES")
 
     def __init__(self, index, access, datatype):
         super().__init__("REFERENCE_SWITCH_LATCH_SETTINGS", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _EVENT_STOP_SETTINGS(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DO_HARD_STOP = 0
-            self.DO_SOFT_STOP = 1
-            self.STOP_ON_POS_DEVIATION = 2
-            self.STOP_ON_POS_DEVIATION_SOFT_STOP = 3
-            self.STOP_ON_VEL_DEVIATION = 4
-            self.STOP_ON_VEL_DEVIATION_SOFT_STOP = 5
-            self.STOP_ON_POS_VEL_DEVIATION = 6
-            self.STOP_ON_POS_VEL_DEVIATION_SOFT_STOP = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DO_HARD_STOP = Parameter.Option(parent, 0, "DO_HARD_STOP")
+            self.DO_SOFT_STOP = Parameter.Option(parent, 1, "DO_SOFT_STOP")
+            self.STOP_ON_POS_DEVIATION = Parameter.Option(parent, 2, "STOP_ON_POS_DEVIATION")
+            self.STOP_ON_POS_DEVIATION_SOFT_STOP = Parameter.Option(parent, 3, "STOP_ON_POS_DEVIATION_SOFT_STOP")
+            self.STOP_ON_VEL_DEVIATION = Parameter.Option(parent, 4, "STOP_ON_VEL_DEVIATION")
+            self.STOP_ON_VEL_DEVIATION_SOFT_STOP = Parameter.Option(parent, 5, "STOP_ON_VEL_DEVIATION_SOFT_STOP")
+            self.STOP_ON_POS_VEL_DEVIATION = Parameter.Option(parent, 6, "STOP_ON_POS_VEL_DEVIATION")
+            self.STOP_ON_POS_VEL_DEVIATION_SOFT_STOP = Parameter.Option(parent, 7, "STOP_ON_POS_VEL_DEVIATION_SOFT_STOP")
 
     def __init__(self, index, access, datatype):
         super().__init__("EVENT_STOP_SETTINGS", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _REFERENCE_SWITCH_SEARCH_MODE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.LEFT_SWITCH = 1
-            self.RIGHT_SWITCH_LEFT_SWITCH = 2
-            self.RIGHT_SWITCH_LEFT_SWITCH_BOTH_SIDES = 3
-            self.LEFT_SWITCH_BOTH_SIDES = 4
-            self.HOME_SWITCH_NEG_DIR_LEFT_END_SWITCH = 5
-            self.HOME_SWITCH_POS_DIR_RIGHT_END_SWITCH = 6
-            self.HOME_SWITCH_NEG_DIR_IGNORE_END_SWITCH = 7
-            self.HOME_SWITCH_POS_DIR_IGNORE_END_SWITCH = 8
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.LEFT_SWITCH = Parameter.Option(parent, 1, "LEFT_SWITCH")
+            self.RIGHT_SWITCH_LEFT_SWITCH = Parameter.Option(parent, 2, "RIGHT_SWITCH_LEFT_SWITCH")
+            self.RIGHT_SWITCH_LEFT_SWITCH_BOTH_SIDES = Parameter.Option(parent, 3, "RIGHT_SWITCH_LEFT_SWITCH_BOTH_SIDES")
+            self.LEFT_SWITCH_BOTH_SIDES = Parameter.Option(parent, 4, "LEFT_SWITCH_BOTH_SIDES")
+            self.HOME_SWITCH_NEG_DIR_LEFT_END_SWITCH = Parameter.Option(parent, 5, "HOME_SWITCH_NEG_DIR_LEFT_END_SWITCH")
+            self.HOME_SWITCH_POS_DIR_RIGHT_END_SWITCH = Parameter.Option(parent, 6, "HOME_SWITCH_POS_DIR_RIGHT_END_SWITCH")
+            self.HOME_SWITCH_NEG_DIR_IGNORE_END_SWITCH = Parameter.Option(parent, 7, "HOME_SWITCH_NEG_DIR_IGNORE_END_SWITCH")
+            self.HOME_SWITCH_POS_DIR_IGNORE_END_SWITCH = Parameter.Option(parent, 8, "HOME_SWITCH_POS_DIR_IGNORE_END_SWITCH")
 
     def __init__(self, index, access, datatype):
         super().__init__("REFERENCE_SWITCH_SEARCH_MODE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _REFERENCE_SWITCH_SEARCH_SPEED(Parameter):
@@ -1794,15 +1649,11 @@ class _REFERENCE_SWITCH_SEARCH_SPEED(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("REFERENCE_SWITCH_SEARCH_SPEED", index, access, datatype)
 
-        self.choice = None
-
 
 class _REFERENCE_SWITCH_SPEED(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("REFERENCE_SWITCH_SPEED", index, access, datatype)
-
-        self.choice = None
 
 
 class _RIGHT_LIMIT_SWITCH_POSITION(Parameter):
@@ -1810,15 +1661,11 @@ class _RIGHT_LIMIT_SWITCH_POSITION(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RIGHT_LIMIT_SWITCH_POSITION", index, access, datatype)
 
-        self.choice = None
-
 
 class _HOME_SWITCH_POSITION(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("HOME_SWITCH_POSITION", index, access, datatype)
-
-        self.choice = None
 
 
 class _LAST_REFERENCE_POSITION(Parameter):
@@ -1826,28 +1673,25 @@ class _LAST_REFERENCE_POSITION(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("LAST_REFERENCE_POSITION", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_2_STEPS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_2_STEPS", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_2_DIRECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NORMAL = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NORMAL = Parameter.Option(parent, False, "NORMAL")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_2_DIRECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_2_GEAR_RATIO(Parameter):
@@ -1855,20 +1699,19 @@ class _ABN_2_GEAR_RATIO(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ABN_2_GEAR_RATIO", index, access, datatype)
 
-        self.choice = None
-
 
 class _ABN_2_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ABN_2_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ABN_2_VALUE(Parameter):
@@ -1876,15 +1719,11 @@ class _ABN_2_VALUE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ABN_2_VALUE", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODE_CS_SETTLE_DELAY_TIME(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODE_CS_SETTLE_DELAY_TIME", index, access, datatype)
-
-        self.choice = None
 
 
 class _SPI_ENCODER_CS_IDLE_DELAY_TIME(Parameter):
@@ -1892,15 +1731,11 @@ class _SPI_ENCODER_CS_IDLE_DELAY_TIME(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_CS_IDLE_DELAY_TIME", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE", index, access, datatype)
-
-        self.choice = None
 
 
 class _SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE(Parameter):
@@ -1908,15 +1743,11 @@ class _SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_SECONDARY_TRANSFER_CMD_SIZE", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_TRANSFER_DATA_3_0(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_TRANSFER_DATA_3_0", index, access, datatype)
-
-        self.choice = None
 
 
 class _SPI_ENCODER_TRANSFER_DATA_7_4(Parameter):
@@ -1924,15 +1755,11 @@ class _SPI_ENCODER_TRANSFER_DATA_7_4(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_TRANSFER_DATA_7_4", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_TRANSFER_DATA_11_8(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_TRANSFER_DATA_11_8", index, access, datatype)
-
-        self.choice = None
 
 
 class _SPI_ENCODER_TRANSFER_DATA_15_12(Parameter):
@@ -1940,21 +1767,20 @@ class _SPI_ENCODER_TRANSFER_DATA_15_12(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_TRANSFER_DATA_15_12", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_TRANSFER(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.TRIGGER_SINGLE_TRANSFER = 1
-            self.CONTINUOUS_POSITION_COUNTER_READ = 2
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.TRIGGER_SINGLE_TRANSFER = Parameter.Option(parent, 1, "TRIGGER_SINGLE_TRANSFER")
+            self.CONTINUOUS_POSITION_COUNTER_READ = Parameter.Option(parent, 2, "CONTINUOUS_POSITION_COUNTER_READ")
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_TRANSFER", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _SPI_ENCODER_POSITION_COUNTER_MASK(Parameter):
@@ -1962,15 +1788,11 @@ class _SPI_ENCODER_POSITION_COUNTER_MASK(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_POSITION_COUNTER_MASK", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_POSITION_COUNTER_SHIFT(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_POSITION_COUNTER_SHIFT", index, access, datatype)
-
-        self.choice = None
 
 
 class _SPI_ENCODER_POSITION_COUNTER_VALUE(Parameter):
@@ -1978,42 +1800,40 @@ class _SPI_ENCODER_POSITION_COUNTER_VALUE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_POSITION_COUNTER_VALUE", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_COMMUTATION_ANGLE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_COMMUTATION_ANGLE", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_ENCODER_INITIALIZATION_METHOD(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.FORCED_PHI_E_ZERO_WITH_ACTIVE_SWING = 0
-            self.FORCED_PHI_E_90_ZERO = 1
-            self.USE_OFFSET = 2
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.FORCED_PHI_E_ZERO_WITH_ACTIVE_SWING = Parameter.Option(parent, 0, "FORCED_PHI_E_ZERO_WITH_ACTIVE_SWING")
+            self.FORCED_PHI_E_90_ZERO = Parameter.Option(parent, 1, "FORCED_PHI_E_90_ZERO")
+            self.USE_OFFSET = Parameter.Option(parent, 2, "USE_OFFSET")
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_INITIALIZATION_METHOD", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _SPI_ENCODER_DIRECTION(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NOT_INVERTED = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NOT_INVERTED = Parameter.Option(parent, False, "NOT_INVERTED")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_DIRECTION", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _SPI_ENCODER_OFFSET(Parameter):
@@ -2021,20 +1841,19 @@ class _SPI_ENCODER_OFFSET(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_ENCODER_OFFSET", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_LUT_CORRECTION_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_LUT_CORRECTION_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _SPI_LUT_ADDRESS_SELECT(Parameter):
@@ -2042,15 +1861,11 @@ class _SPI_LUT_ADDRESS_SELECT(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_LUT_ADDRESS_SELECT", index, access, datatype)
 
-        self.choice = None
-
 
 class _SPI_LUT_DATA(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SPI_LUT_DATA", index, access, datatype)
-
-        self.choice = None
 
 
 class _SPI_LUT_COMMON_SHIFT_FACTOR(Parameter):
@@ -2058,55 +1873,56 @@ class _SPI_LUT_COMMON_SHIFT_FACTOR(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SPI_LUT_COMMON_SHIFT_FACTOR", index, access, datatype)
 
-        self.choice = None
-
 
 class _STEP_DIR_STEP_DIVIDER_SHIFT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.STEP_MODE_FULL = 0
-            self.STEP_MODE_HALF = 1
-            self.STEP_MODE_QUARTER = 2
-            self.STEP_MODE_1_8TH = 3
-            self.STEP_MODE_1_16TH = 4
-            self.STEP_MODE_1_32ND = 5
-            self.STEP_MODE_1_64TH = 6
-            self.STEP_MODE_1_128TH = 7
-            self.STEP_MODE_1_256TH = 8
-            self.STEP_MODE_1_512TH = 9
-            self.STEP_MODE_1_1024TH = 10
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.STEP_MODE_FULL = Parameter.Option(parent, 0, "STEP_MODE_FULL")
+            self.STEP_MODE_HALF = Parameter.Option(parent, 1, "STEP_MODE_HALF")
+            self.STEP_MODE_QUARTER = Parameter.Option(parent, 2, "STEP_MODE_QUARTER")
+            self.STEP_MODE_1_8TH = Parameter.Option(parent, 3, "STEP_MODE_1_8TH")
+            self.STEP_MODE_1_16TH = Parameter.Option(parent, 4, "STEP_MODE_1_16TH")
+            self.STEP_MODE_1_32ND = Parameter.Option(parent, 5, "STEP_MODE_1_32ND")
+            self.STEP_MODE_1_64TH = Parameter.Option(parent, 6, "STEP_MODE_1_64TH")
+            self.STEP_MODE_1_128TH = Parameter.Option(parent, 7, "STEP_MODE_1_128TH")
+            self.STEP_MODE_1_256TH = Parameter.Option(parent, 8, "STEP_MODE_1_256TH")
+            self.STEP_MODE_1_512TH = Parameter.Option(parent, 9, "STEP_MODE_1_512TH")
+            self.STEP_MODE_1_1024TH = Parameter.Option(parent, 10, "STEP_MODE_1_1024TH")
 
     def __init__(self, index, access, datatype):
         super().__init__("STEP_DIR_STEP_DIVIDER_SHIFT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _STEP_DIR_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("STEP_DIR_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _STEP_DIR_EXTRAPOLATION_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("STEP_DIR_EXTRAPOLATION_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT(Parameter):
@@ -2114,28 +1930,25 @@ class _STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("STEP_DIR_STEP_SIGNAL_TIMEOUT_LIMIT", index, access, datatype)
 
-        self.choice = None
-
 
 class _STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("STEP_DIR_MAXIMUM_EXTRAPOLATION_VELOCITY", index, access, datatype)
 
-        self.choice = None
-
 
 class _BRAKE_CHOPPER_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("BRAKE_CHOPPER_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _BRAKE_CHOPPER_VOLTAGE_LIMIT(Parameter):
@@ -2143,28 +1956,25 @@ class _BRAKE_CHOPPER_VOLTAGE_LIMIT(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("BRAKE_CHOPPER_VOLTAGE_LIMIT", index, access, datatype)
 
-        self.choice = None
-
 
 class _BRAKE_CHOPPER_HYSTERESIS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("BRAKE_CHOPPER_HYSTERESIS", index, access, datatype)
 
-        self.choice = None
-
 
 class _RELEASE_BRAKE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.BRAKE_PWM_DEACTIVATED = False
-            self.BRAKE_PWM_ACTIVATED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.BRAKE_PWM_DEACTIVATED = Parameter.Option(parent, False, "BRAKE_PWM_DEACTIVATED")
+            self.BRAKE_PWM_ACTIVATED = Parameter.Option(parent, True, "BRAKE_PWM_ACTIVATED")
 
     def __init__(self, index, access, datatype):
         super().__init__("RELEASE_BRAKE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _BRAKE_RELEASING_DUTY_CYCLE(Parameter):
@@ -2172,15 +1982,11 @@ class _BRAKE_RELEASING_DUTY_CYCLE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("BRAKE_RELEASING_DUTY_CYCLE", index, access, datatype)
 
-        self.choice = None
-
 
 class _BRAKE_HOLDING_DUTY_CYCLE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("BRAKE_HOLDING_DUTY_CYCLE", index, access, datatype)
-
-        self.choice = None
 
 
 class _BRAKE_RELEASING_DURATION(Parameter):
@@ -2188,20 +1994,19 @@ class _BRAKE_RELEASING_DURATION(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("BRAKE_RELEASING_DURATION", index, access, datatype)
 
-        self.choice = None
-
 
 class _INVERT_BRAKE_OUTPUT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.NORMAL = False
-            self.INVERTED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.NORMAL = Parameter.Option(parent, False, "NORMAL")
+            self.INVERTED = Parameter.Option(parent, True, "INVERTED")
 
     def __init__(self, index, access, datatype):
         super().__init__("INVERT_BRAKE_OUTPUT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _THERMAL_WINDING_TIME_CONSTANT_1(Parameter):
@@ -2209,15 +2014,11 @@ class _THERMAL_WINDING_TIME_CONSTANT_1(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("THERMAL_WINDING_TIME_CONSTANT_1", index, access, datatype)
 
-        self.choice = None
-
 
 class _IIT_LIMIT_1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("IIT_LIMIT_1", index, access, datatype)
-
-        self.choice = None
 
 
 class _IIT_SUM_1(Parameter):
@@ -2225,15 +2026,11 @@ class _IIT_SUM_1(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("IIT_SUM_1", index, access, datatype)
 
-        self.choice = None
-
 
 class _THERMAL_WINDING_TIME_CONSTANT_2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("THERMAL_WINDING_TIME_CONSTANT_2", index, access, datatype)
-
-        self.choice = None
 
 
 class _IIT_LIMIT_2(Parameter):
@@ -2241,15 +2038,11 @@ class _IIT_LIMIT_2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("IIT_LIMIT_2", index, access, datatype)
 
-        self.choice = None
-
 
 class _IIT_SUM_2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("IIT_SUM_2", index, access, datatype)
-
-        self.choice = None
 
 
 class _RESET_IIT_SUMS(Parameter):
@@ -2257,41 +2050,39 @@ class _RESET_IIT_SUMS(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("RESET_IIT_SUMS", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACTUAL_TOTAL_MOTOR_CURRENT(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_TOTAL_MOTOR_CURRENT", index, access, datatype)
 
-        self.choice = None
-
 
 class _PWM_L_OUTPUT_POLARITY(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ACTIVE_HIGH = False
-            self.ACTIVE_LOW = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ACTIVE_HIGH = Parameter.Option(parent, False, "ACTIVE_HIGH")
+            self.ACTIVE_LOW = Parameter.Option(parent, True, "ACTIVE_LOW")
 
     def __init__(self, index, access, datatype):
         super().__init__("PWM_L_OUTPUT_POLARITY", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _PWM_H_OUTPUT_POLARITY(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.ACTIVE_HIGH = False
-            self.ACTIVE_LOW = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.ACTIVE_HIGH = Parameter.Option(parent, False, "ACTIVE_HIGH")
+            self.ACTIVE_LOW = Parameter.Option(parent, True, "ACTIVE_LOW")
 
     def __init__(self, index, access, datatype):
         super().__init__("PWM_H_OUTPUT_POLARITY", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _BREAK_BEFORE_MAKE_TIME_LOW_UVW(Parameter):
@@ -2299,15 +2090,11 @@ class _BREAK_BEFORE_MAKE_TIME_LOW_UVW(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("BREAK_BEFORE_MAKE_TIME_LOW_UVW", index, access, datatype)
 
-        self.choice = None
-
 
 class _BREAK_BEFORE_MAKE_TIME_HIGH_UVW(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("BREAK_BEFORE_MAKE_TIME_HIGH_UVW", index, access, datatype)
-
-        self.choice = None
 
 
 class _BREAK_BEFORE_MAKE_TIME_LOW_Y2(Parameter):
@@ -2315,41 +2102,39 @@ class _BREAK_BEFORE_MAKE_TIME_LOW_Y2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("BREAK_BEFORE_MAKE_TIME_LOW_Y2", index, access, datatype)
 
-        self.choice = None
-
 
 class _BREAK_BEFORE_MAKE_TIME_HIGH_Y2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("BREAK_BEFORE_MAKE_TIME_HIGH_Y2", index, access, datatype)
 
-        self.choice = None
-
 
 class _USE_ADAPTIVE_DRIVE_TIME_UVW(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("USE_ADAPTIVE_DRIVE_TIME_UVW", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _USE_ADAPTIVE_DRIVE_TIME_Y2(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("USE_ADAPTIVE_DRIVE_TIME_Y2", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _DRIVE_TIME_SINK_UVW(Parameter):
@@ -2357,15 +2142,11 @@ class _DRIVE_TIME_SINK_UVW(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("DRIVE_TIME_SINK_UVW", index, access, datatype)
 
-        self.choice = None
-
 
 class _DRIVE_TIME_SOURCE_UVW(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("DRIVE_TIME_SOURCE_UVW", index, access, datatype)
-
-        self.choice = None
 
 
 class _DRIVE_TIME_SINK_Y2(Parameter):
@@ -2373,142 +2154,143 @@ class _DRIVE_TIME_SINK_Y2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("DRIVE_TIME_SINK_Y2", index, access, datatype)
 
-        self.choice = None
-
 
 class _DRIVE_TIME_SOURCE_Y2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("DRIVE_TIME_SOURCE_Y2", index, access, datatype)
 
-        self.choice = None
-
 
 class _UVW_SINK_CURRENT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.CUR_50_MILLIAMP = 0
-            self.CUR_100_MILLIAMP = 1
-            self.CUR_160_MILLIAMP = 2
-            self.CUR_210_MILLIAMP = 3
-            self.CUR_270_MILLIAMP = 4
-            self.CUR_320_MILLIAMP = 5
-            self.CUR_380_MILLIAMP = 6
-            self.CUR_430_MILLIAMP = 7
-            self.CUR_580_MILLIAMP = 8
-            self.CUR_720_MILLIAMP = 9
-            self.CUR_860_MILLIAMP = 10
-            self.CUR_1000_MILLIAMP = 11
-            self.CUR_1250_MILLIAMP = 12
-            self.CUR_1510_MILLIAMP = 13
-            self.CUR_1770_MILLIAMP = 14
-            self.CUR_2000_MILLIAMP = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.CUR_50_MILLIAMP = Parameter.Option(parent, 0, "CUR_50_MILLIAMP")
+            self.CUR_100_MILLIAMP = Parameter.Option(parent, 1, "CUR_100_MILLIAMP")
+            self.CUR_160_MILLIAMP = Parameter.Option(parent, 2, "CUR_160_MILLIAMP")
+            self.CUR_210_MILLIAMP = Parameter.Option(parent, 3, "CUR_210_MILLIAMP")
+            self.CUR_270_MILLIAMP = Parameter.Option(parent, 4, "CUR_270_MILLIAMP")
+            self.CUR_320_MILLIAMP = Parameter.Option(parent, 5, "CUR_320_MILLIAMP")
+            self.CUR_380_MILLIAMP = Parameter.Option(parent, 6, "CUR_380_MILLIAMP")
+            self.CUR_430_MILLIAMP = Parameter.Option(parent, 7, "CUR_430_MILLIAMP")
+            self.CUR_580_MILLIAMP = Parameter.Option(parent, 8, "CUR_580_MILLIAMP")
+            self.CUR_720_MILLIAMP = Parameter.Option(parent, 9, "CUR_720_MILLIAMP")
+            self.CUR_860_MILLIAMP = Parameter.Option(parent, 10, "CUR_860_MILLIAMP")
+            self.CUR_1000_MILLIAMP = Parameter.Option(parent, 11, "CUR_1000_MILLIAMP")
+            self.CUR_1250_MILLIAMP = Parameter.Option(parent, 12, "CUR_1250_MILLIAMP")
+            self.CUR_1510_MILLIAMP = Parameter.Option(parent, 13, "CUR_1510_MILLIAMP")
+            self.CUR_1770_MILLIAMP = Parameter.Option(parent, 14, "CUR_1770_MILLIAMP")
+            self.CUR_2000_MILLIAMP = Parameter.Option(parent, 15, "CUR_2000_MILLIAMP")
 
     def __init__(self, index, access, datatype):
         super().__init__("UVW_SINK_CURRENT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _UVW_SOURCE_CURRENT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.CUR_25_MILLIAMP = 0
-            self.CUR_50_MILLIAMP = 1
-            self.CUR_80_MILLIAMP = 2
-            self.CUR_105_MILLIAMP = 3
-            self.CUR_135_MILLIAMP = 4
-            self.CUR_160_MILLIAMP = 5
-            self.CUR_190_MILLIAMP = 6
-            self.CUR_215_MILLIAMP = 7
-            self.CUR_290_MILLIAMP = 8
-            self.CUR_360_MILLIAMP = 9
-            self.CUR_430_MILLIAMP = 10
-            self.CUR_500_MILLIAMP = 11
-            self.CUR_625_MILLIAMP = 12
-            self.CUR_755_MILLIAMP = 13
-            self.CUR_855_MILLIAMP = 14
-            self.CUR_1000_MILLIAMP = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.CUR_25_MILLIAMP = Parameter.Option(parent, 0, "CUR_25_MILLIAMP")
+            self.CUR_50_MILLIAMP = Parameter.Option(parent, 1, "CUR_50_MILLIAMP")
+            self.CUR_80_MILLIAMP = Parameter.Option(parent, 2, "CUR_80_MILLIAMP")
+            self.CUR_105_MILLIAMP = Parameter.Option(parent, 3, "CUR_105_MILLIAMP")
+            self.CUR_135_MILLIAMP = Parameter.Option(parent, 4, "CUR_135_MILLIAMP")
+            self.CUR_160_MILLIAMP = Parameter.Option(parent, 5, "CUR_160_MILLIAMP")
+            self.CUR_190_MILLIAMP = Parameter.Option(parent, 6, "CUR_190_MILLIAMP")
+            self.CUR_215_MILLIAMP = Parameter.Option(parent, 7, "CUR_215_MILLIAMP")
+            self.CUR_290_MILLIAMP = Parameter.Option(parent, 8, "CUR_290_MILLIAMP")
+            self.CUR_360_MILLIAMP = Parameter.Option(parent, 9, "CUR_360_MILLIAMP")
+            self.CUR_430_MILLIAMP = Parameter.Option(parent, 10, "CUR_430_MILLIAMP")
+            self.CUR_500_MILLIAMP = Parameter.Option(parent, 11, "CUR_500_MILLIAMP")
+            self.CUR_625_MILLIAMP = Parameter.Option(parent, 12, "CUR_625_MILLIAMP")
+            self.CUR_755_MILLIAMP = Parameter.Option(parent, 13, "CUR_755_MILLIAMP")
+            self.CUR_855_MILLIAMP = Parameter.Option(parent, 14, "CUR_855_MILLIAMP")
+            self.CUR_1000_MILLIAMP = Parameter.Option(parent, 15, "CUR_1000_MILLIAMP")
 
     def __init__(self, index, access, datatype):
         super().__init__("UVW_SOURCE_CURRENT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _Y2_SINK_CURRENT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.CUR_50_MILLIAMP = 0
-            self.CUR_100_MILLIAMP = 1
-            self.CUR_160_MILLIAMP = 2
-            self.CUR_210_MILLIAMP = 3
-            self.CUR_270_MILLIAMP = 4
-            self.CUR_320_MILLIAMP = 5
-            self.CUR_380_MILLIAMP = 6
-            self.CUR_430_MILLIAMP = 7
-            self.CUR_580_MILLIAMP = 8
-            self.CUR_720_MILLIAMP = 9
-            self.CUR_860_MILLIAMP = 10
-            self.CUR_1000_MILLIAMP = 11
-            self.CUR_1250_MILLIAMP = 12
-            self.CUR_1510_MILLIAMP = 13
-            self.CUR_1770_MILLIAMP = 14
-            self.CUR_2000_MILLIAMP = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.CUR_50_MILLIAMP = Parameter.Option(parent, 0, "CUR_50_MILLIAMP")
+            self.CUR_100_MILLIAMP = Parameter.Option(parent, 1, "CUR_100_MILLIAMP")
+            self.CUR_160_MILLIAMP = Parameter.Option(parent, 2, "CUR_160_MILLIAMP")
+            self.CUR_210_MILLIAMP = Parameter.Option(parent, 3, "CUR_210_MILLIAMP")
+            self.CUR_270_MILLIAMP = Parameter.Option(parent, 4, "CUR_270_MILLIAMP")
+            self.CUR_320_MILLIAMP = Parameter.Option(parent, 5, "CUR_320_MILLIAMP")
+            self.CUR_380_MILLIAMP = Parameter.Option(parent, 6, "CUR_380_MILLIAMP")
+            self.CUR_430_MILLIAMP = Parameter.Option(parent, 7, "CUR_430_MILLIAMP")
+            self.CUR_580_MILLIAMP = Parameter.Option(parent, 8, "CUR_580_MILLIAMP")
+            self.CUR_720_MILLIAMP = Parameter.Option(parent, 9, "CUR_720_MILLIAMP")
+            self.CUR_860_MILLIAMP = Parameter.Option(parent, 10, "CUR_860_MILLIAMP")
+            self.CUR_1000_MILLIAMP = Parameter.Option(parent, 11, "CUR_1000_MILLIAMP")
+            self.CUR_1250_MILLIAMP = Parameter.Option(parent, 12, "CUR_1250_MILLIAMP")
+            self.CUR_1510_MILLIAMP = Parameter.Option(parent, 13, "CUR_1510_MILLIAMP")
+            self.CUR_1770_MILLIAMP = Parameter.Option(parent, 14, "CUR_1770_MILLIAMP")
+            self.CUR_2000_MILLIAMP = Parameter.Option(parent, 15, "CUR_2000_MILLIAMP")
 
     def __init__(self, index, access, datatype):
         super().__init__("Y2_SINK_CURRENT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _Y2_SOURCE_CURRENT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.CUR_25_MILLIAMP = 0
-            self.CUR_50_MILLIAMP = 1
-            self.CUR_80_MILLIAMP = 2
-            self.CUR_105_MILLIAMP = 3
-            self.CUR_135_MILLIAMP = 4
-            self.CUR_160_MILLIAMP = 5
-            self.CUR_190_MILLIAMP = 6
-            self.CUR_215_MILLIAMP = 7
-            self.CUR_290_MILLIAMP = 8
-            self.CUR_360_MILLIAMP = 9
-            self.CUR_430_MILLIAMP = 10
-            self.CUR_500_MILLIAMP = 11
-            self.CUR_625_MILLIAMP = 12
-            self.CUR_755_MILLIAMP = 13
-            self.CUR_855_MILLIAMP = 14
-            self.CUR_1000_MILLIAMP = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.CUR_25_MILLIAMP = Parameter.Option(parent, 0, "CUR_25_MILLIAMP")
+            self.CUR_50_MILLIAMP = Parameter.Option(parent, 1, "CUR_50_MILLIAMP")
+            self.CUR_80_MILLIAMP = Parameter.Option(parent, 2, "CUR_80_MILLIAMP")
+            self.CUR_105_MILLIAMP = Parameter.Option(parent, 3, "CUR_105_MILLIAMP")
+            self.CUR_135_MILLIAMP = Parameter.Option(parent, 4, "CUR_135_MILLIAMP")
+            self.CUR_160_MILLIAMP = Parameter.Option(parent, 5, "CUR_160_MILLIAMP")
+            self.CUR_190_MILLIAMP = Parameter.Option(parent, 6, "CUR_190_MILLIAMP")
+            self.CUR_215_MILLIAMP = Parameter.Option(parent, 7, "CUR_215_MILLIAMP")
+            self.CUR_290_MILLIAMP = Parameter.Option(parent, 8, "CUR_290_MILLIAMP")
+            self.CUR_360_MILLIAMP = Parameter.Option(parent, 9, "CUR_360_MILLIAMP")
+            self.CUR_430_MILLIAMP = Parameter.Option(parent, 10, "CUR_430_MILLIAMP")
+            self.CUR_500_MILLIAMP = Parameter.Option(parent, 11, "CUR_500_MILLIAMP")
+            self.CUR_625_MILLIAMP = Parameter.Option(parent, 12, "CUR_625_MILLIAMP")
+            self.CUR_755_MILLIAMP = Parameter.Option(parent, 13, "CUR_755_MILLIAMP")
+            self.CUR_855_MILLIAMP = Parameter.Option(parent, 14, "CUR_855_MILLIAMP")
+            self.CUR_1000_MILLIAMP = Parameter.Option(parent, 15, "CUR_1000_MILLIAMP")
 
     def __init__(self, index, access, datatype):
         super().__init__("Y2_SOURCE_CURRENT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _BOOTSTRAP_CURRENT_LIMIT(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.CUR_45_MILLIAMP = 0
-            self.CUR_91_MILLIAMP = 1
-            self.CUR_141_MILLIAMP = 2
-            self.CUR_191_MILLIAMP = 3
-            self.CUR_267_MILLIAMP = 4
-            self.CUR_292_MILLIAMP = 5
-            self.CUR_341_MILLIAMP = 6
-            self.CUR_391_MILLIAMP = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.CUR_45_MILLIAMP = Parameter.Option(parent, 0, "CUR_45_MILLIAMP")
+            self.CUR_91_MILLIAMP = Parameter.Option(parent, 1, "CUR_91_MILLIAMP")
+            self.CUR_141_MILLIAMP = Parameter.Option(parent, 2, "CUR_141_MILLIAMP")
+            self.CUR_191_MILLIAMP = Parameter.Option(parent, 3, "CUR_191_MILLIAMP")
+            self.CUR_267_MILLIAMP = Parameter.Option(parent, 4, "CUR_267_MILLIAMP")
+            self.CUR_292_MILLIAMP = Parameter.Option(parent, 5, "CUR_292_MILLIAMP")
+            self.CUR_341_MILLIAMP = Parameter.Option(parent, 6, "CUR_341_MILLIAMP")
+            self.CUR_391_MILLIAMP = Parameter.Option(parent, 7, "CUR_391_MILLIAMP")
 
     def __init__(self, index, access, datatype):
         super().__init__("BOOTSTRAP_CURRENT_LIMIT", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL(Parameter):
@@ -2516,584 +2298,617 @@ class _UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("UNDERVOLTAGE_PROTECTION_SUPPLY_LEVEL", index, access, datatype)
 
-        self.choice = None
-
 
 class _UNDERVOLTAGE_PROTECTION_VDRV_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("UNDERVOLTAGE_PROTECTION_VDRV_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _UNDERVOLTAGE_PROTECTION_BST_UVW_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("UNDERVOLTAGE_PROTECTION_BST_UVW_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _UNDERVOLTAGE_PROTECTION_BST_Y2_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("UNDERVOLTAGE_PROTECTION_BST_Y2_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.V_80_OR_63_MILLIVOLT = 0
-            self.V_165_OR_125_MILLIVOLT = 1
-            self.V_250_OR_187_MILLIVOLT = 2
-            self.V_330_OR_248_MILLIVOLT = 3
-            self.V_415_OR_312_MILLIVOLT = 4
-            self.V_500_OR_374_MILLIVOLT = 5
-            self.V_582_OR_434_MILLIVOLT = 6
-            self.V_660_OR_504_MILLIVOLT = 7
-            self.V_125_OR_705_MILLIVOLT = 8
-            self.V_250_OR_940_MILLIVOLT = 9
-            self.V_375_OR_1180_MILLIVOLT = 10
-            self.V_500_OR_1410_MILLIVOLT = 11
-            self.V_625_OR_1650_MILLIVOLT = 12
-            self.V_750_OR_1880_MILLIVOLT = 13
-            self.V_875_OR_2110_MILLIVOLT = 14
-            self.V_1000_OR_2350_MILLIVOLT = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.V_80_OR_63_MILLIVOLT = Parameter.Option(parent, 0, "V_80_OR_63_MILLIVOLT")
+            self.V_165_OR_125_MILLIVOLT = Parameter.Option(parent, 1, "V_165_OR_125_MILLIVOLT")
+            self.V_250_OR_187_MILLIVOLT = Parameter.Option(parent, 2, "V_250_OR_187_MILLIVOLT")
+            self.V_330_OR_248_MILLIVOLT = Parameter.Option(parent, 3, "V_330_OR_248_MILLIVOLT")
+            self.V_415_OR_312_MILLIVOLT = Parameter.Option(parent, 4, "V_415_OR_312_MILLIVOLT")
+            self.V_500_OR_374_MILLIVOLT = Parameter.Option(parent, 5, "V_500_OR_374_MILLIVOLT")
+            self.V_582_OR_434_MILLIVOLT = Parameter.Option(parent, 6, "V_582_OR_434_MILLIVOLT")
+            self.V_660_OR_504_MILLIVOLT = Parameter.Option(parent, 7, "V_660_OR_504_MILLIVOLT")
+            self.V_125_OR_705_MILLIVOLT = Parameter.Option(parent, 8, "V_125_OR_705_MILLIVOLT")
+            self.V_250_OR_940_MILLIVOLT = Parameter.Option(parent, 9, "V_250_OR_940_MILLIVOLT")
+            self.V_375_OR_1180_MILLIVOLT = Parameter.Option(parent, 10, "V_375_OR_1180_MILLIVOLT")
+            self.V_500_OR_1410_MILLIVOLT = Parameter.Option(parent, 11, "V_500_OR_1410_MILLIVOLT")
+            self.V_625_OR_1650_MILLIVOLT = Parameter.Option(parent, 12, "V_625_OR_1650_MILLIVOLT")
+            self.V_750_OR_1880_MILLIVOLT = Parameter.Option(parent, 13, "V_750_OR_1880_MILLIVOLT")
+            self.V_875_OR_2110_MILLIVOLT = Parameter.Option(parent, 14, "V_875_OR_2110_MILLIVOLT")
+            self.V_1000_OR_2350_MILLIVOLT = Parameter.Option(parent, 15, "V_1000_OR_2350_MILLIVOLT")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_THRESHOLD", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.V_63_MILLIVOLT = 0
-            self.V_125_MILLIVOLT = 1
-            self.V_187_MILLIVOLT = 2
-            self.V_248_MILLIVOLT = 3
-            self.V_312_MILLIVOLT = 4
-            self.V_374_MILLIVOLT = 5
-            self.V_434_MILLIVOLT = 6
-            self.V_504_MILLIVOLT = 7
-            self.V_705_MILLIVOLT = 8
-            self.V_940_MILLIVOLT = 9
-            self.V_1180_MILLIVOLT = 10
-            self.V_1410_MILLIVOLT = 11
-            self.V_1650_MILLIVOLT = 12
-            self.V_1880_MILLIVOLT = 13
-            self.V_2110_MILLIVOLT = 14
-            self.V_2350_MILLIVOLT = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.V_63_MILLIVOLT = Parameter.Option(parent, 0, "V_63_MILLIVOLT")
+            self.V_125_MILLIVOLT = Parameter.Option(parent, 1, "V_125_MILLIVOLT")
+            self.V_187_MILLIVOLT = Parameter.Option(parent, 2, "V_187_MILLIVOLT")
+            self.V_248_MILLIVOLT = Parameter.Option(parent, 3, "V_248_MILLIVOLT")
+            self.V_312_MILLIVOLT = Parameter.Option(parent, 4, "V_312_MILLIVOLT")
+            self.V_374_MILLIVOLT = Parameter.Option(parent, 5, "V_374_MILLIVOLT")
+            self.V_434_MILLIVOLT = Parameter.Option(parent, 6, "V_434_MILLIVOLT")
+            self.V_504_MILLIVOLT = Parameter.Option(parent, 7, "V_504_MILLIVOLT")
+            self.V_705_MILLIVOLT = Parameter.Option(parent, 8, "V_705_MILLIVOLT")
+            self.V_940_MILLIVOLT = Parameter.Option(parent, 9, "V_940_MILLIVOLT")
+            self.V_1180_MILLIVOLT = Parameter.Option(parent, 10, "V_1180_MILLIVOLT")
+            self.V_1410_MILLIVOLT = Parameter.Option(parent, 11, "V_1410_MILLIVOLT")
+            self.V_1650_MILLIVOLT = Parameter.Option(parent, 12, "V_1650_MILLIVOLT")
+            self.V_1880_MILLIVOLT = Parameter.Option(parent, 13, "V_1880_MILLIVOLT")
+            self.V_2110_MILLIVOLT = Parameter.Option(parent, 14, "V_2110_MILLIVOLT")
+            self.V_2350_MILLIVOLT = Parameter.Option(parent, 15, "V_2350_MILLIVOLT")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_THRESHOLD", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.V_80_OR_63_MILLIVOLT = 0
-            self.V_165_OR_125_MILLIVOLT = 1
-            self.V_250_OR_187_MILLIVOLT = 2
-            self.V_330_OR_248_MILLIVOLT = 3
-            self.V_415_OR_312_MILLIVOLT = 4
-            self.V_500_OR_374_MILLIVOLT = 5
-            self.V_582_OR_434_MILLIVOLT = 6
-            self.V_660_OR_504_MILLIVOLT = 7
-            self.V_125_OR_705_MILLIVOLT = 8
-            self.V_250_OR_940_MILLIVOLT = 9
-            self.V_375_OR_1180_MILLIVOLT = 10
-            self.V_500_OR_1410_MILLIVOLT = 11
-            self.V_625_OR_1650_MILLIVOLT = 12
-            self.V_750_OR_1880_MILLIVOLT = 13
-            self.V_875_OR_2110_MILLIVOLT = 14
-            self.V_1000_OR_2350_MILLIVOLT = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.V_80_OR_63_MILLIVOLT = Parameter.Option(parent, 0, "V_80_OR_63_MILLIVOLT")
+            self.V_165_OR_125_MILLIVOLT = Parameter.Option(parent, 1, "V_165_OR_125_MILLIVOLT")
+            self.V_250_OR_187_MILLIVOLT = Parameter.Option(parent, 2, "V_250_OR_187_MILLIVOLT")
+            self.V_330_OR_248_MILLIVOLT = Parameter.Option(parent, 3, "V_330_OR_248_MILLIVOLT")
+            self.V_415_OR_312_MILLIVOLT = Parameter.Option(parent, 4, "V_415_OR_312_MILLIVOLT")
+            self.V_500_OR_374_MILLIVOLT = Parameter.Option(parent, 5, "V_500_OR_374_MILLIVOLT")
+            self.V_582_OR_434_MILLIVOLT = Parameter.Option(parent, 6, "V_582_OR_434_MILLIVOLT")
+            self.V_660_OR_504_MILLIVOLT = Parameter.Option(parent, 7, "V_660_OR_504_MILLIVOLT")
+            self.V_125_OR_705_MILLIVOLT = Parameter.Option(parent, 8, "V_125_OR_705_MILLIVOLT")
+            self.V_250_OR_940_MILLIVOLT = Parameter.Option(parent, 9, "V_250_OR_940_MILLIVOLT")
+            self.V_375_OR_1180_MILLIVOLT = Parameter.Option(parent, 10, "V_375_OR_1180_MILLIVOLT")
+            self.V_500_OR_1410_MILLIVOLT = Parameter.Option(parent, 11, "V_500_OR_1410_MILLIVOLT")
+            self.V_625_OR_1650_MILLIVOLT = Parameter.Option(parent, 12, "V_625_OR_1650_MILLIVOLT")
+            self.V_750_OR_1880_MILLIVOLT = Parameter.Option(parent, 13, "V_750_OR_1880_MILLIVOLT")
+            self.V_875_OR_2110_MILLIVOLT = Parameter.Option(parent, 14, "V_875_OR_2110_MILLIVOLT")
+            self.V_1000_OR_2350_MILLIVOLT = Parameter.Option(parent, 15, "V_1000_OR_2350_MILLIVOLT")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_THRESHOLD", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.V_63_MILLIVOLT = 0
-            self.V_125_MILLIVOLT = 1
-            self.V_187_MILLIVOLT = 2
-            self.V_248_MILLIVOLT = 3
-            self.V_312_MILLIVOLT = 4
-            self.V_374_MILLIVOLT = 5
-            self.V_434_MILLIVOLT = 6
-            self.V_504_MILLIVOLT = 7
-            self.V_705_MILLIVOLT = 8
-            self.V_940_MILLIVOLT = 9
-            self.V_1180_MILLIVOLT = 10
-            self.V_1410_MILLIVOLT = 11
-            self.V_1650_MILLIVOLT = 12
-            self.V_1880_MILLIVOLT = 13
-            self.V_2110_MILLIVOLT = 14
-            self.V_2350_MILLIVOLT = 15
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.V_63_MILLIVOLT = Parameter.Option(parent, 0, "V_63_MILLIVOLT")
+            self.V_125_MILLIVOLT = Parameter.Option(parent, 1, "V_125_MILLIVOLT")
+            self.V_187_MILLIVOLT = Parameter.Option(parent, 2, "V_187_MILLIVOLT")
+            self.V_248_MILLIVOLT = Parameter.Option(parent, 3, "V_248_MILLIVOLT")
+            self.V_312_MILLIVOLT = Parameter.Option(parent, 4, "V_312_MILLIVOLT")
+            self.V_374_MILLIVOLT = Parameter.Option(parent, 5, "V_374_MILLIVOLT")
+            self.V_434_MILLIVOLT = Parameter.Option(parent, 6, "V_434_MILLIVOLT")
+            self.V_504_MILLIVOLT = Parameter.Option(parent, 7, "V_504_MILLIVOLT")
+            self.V_705_MILLIVOLT = Parameter.Option(parent, 8, "V_705_MILLIVOLT")
+            self.V_940_MILLIVOLT = Parameter.Option(parent, 9, "V_940_MILLIVOLT")
+            self.V_1180_MILLIVOLT = Parameter.Option(parent, 10, "V_1180_MILLIVOLT")
+            self.V_1410_MILLIVOLT = Parameter.Option(parent, 11, "V_1410_MILLIVOLT")
+            self.V_1650_MILLIVOLT = Parameter.Option(parent, 12, "V_1650_MILLIVOLT")
+            self.V_1880_MILLIVOLT = Parameter.Option(parent, 13, "V_1880_MILLIVOLT")
+            self.V_2110_MILLIVOLT = Parameter.Option(parent, 14, "V_2110_MILLIVOLT")
+            self.V_2350_MILLIVOLT = Parameter.Option(parent, 15, "V_2350_MILLIVOLT")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_THRESHOLD", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_BLANKING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_BLANKING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_BLANKING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_BLANKING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_DEGLITCH", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_HIGH_SIDE_DEGLITCH", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_DEGLITCH", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_HIGH_SIDE_DEGLITCH", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_UVW_LOW_SIDE_USE_VDS", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _OVERCURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("OVERCURRENT_PROTECTION_Y2_LOW_SIDE_USE_VDS", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_ON_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_ON_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_OFF_PROTECTION_UVW_LOW_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_OFF_PROTECTION_UVW_LOW_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_ON_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_ON_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_OFF_PROTECTION_UVW_HIGH_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_OFF_PROTECTION_UVW_HIGH_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_ON_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_ON_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_OFF_PROTECTION_Y2_LOW_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_OFF_PROTECTION_Y2_LOW_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_ON_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_ON_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_OFF_PROTECTION_Y2_HIGH_SIDE_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_OFF_PROTECTION_Y2_HIGH_SIDE_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_PROTECTION_UVW_BLANKING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_PROTECTION_UVW_BLANKING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_PROTECTION_Y2_BLANKING(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_PROTECTION_Y2_BLANKING", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_PROTECTION_UVW_DEGLITCH(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_PROTECTION_UVW_DEGLITCH", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _VGS_SHORT_PROTECTION_Y2_DEGLITCH(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OFF = 0
-            self.T_0_25_MICROSEC = 1
-            self.T_0_5_MICROSEC = 2
-            self.T_1_MICROSEC = 3
-            self.T_2_MICROSEC = 4
-            self.T_4_MICROSEC = 5
-            self.T_6_MICROSEC = 6
-            self.T_8_MICROSEC = 7
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OFF = Parameter.Option(parent, 0, "OFF")
+            self.T_0_25_MICROSEC = Parameter.Option(parent, 1, "T_0_25_MICROSEC")
+            self.T_0_5_MICROSEC = Parameter.Option(parent, 2, "T_0_5_MICROSEC")
+            self.T_1_MICROSEC = Parameter.Option(parent, 3, "T_1_MICROSEC")
+            self.T_2_MICROSEC = Parameter.Option(parent, 4, "T_2_MICROSEC")
+            self.T_4_MICROSEC = Parameter.Option(parent, 5, "T_4_MICROSEC")
+            self.T_6_MICROSEC = Parameter.Option(parent, 6, "T_6_MICROSEC")
+            self.T_8_MICROSEC = Parameter.Option(parent, 7, "T_8_MICROSEC")
 
     def __init__(self, index, access, datatype):
         super().__init__("VGS_SHORT_PROTECTION_Y2_DEGLITCH", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _GDRV_RETRY_BEHAVIOUR(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OPEN_CIRCUIT = 0
-            self.ELECTRICAL_BRAKING = 1
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OPEN_CIRCUIT = Parameter.Option(parent, 0, "OPEN_CIRCUIT")
+            self.ELECTRICAL_BRAKING = Parameter.Option(parent, 1, "ELECTRICAL_BRAKING")
 
     def __init__(self, index, access, datatype):
         super().__init__("GDRV_RETRY_BEHAVIOUR", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _DRIVE_FAULT_BEHAVIOUR(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.OPEN_CIRCUIT = 0
-            self.ELECTRICAL_BRAKING = 1
-            self.MECHANICAL_BRAKING_AND_OPEN_CIRCUIT = 2
-            self.MECHANICAL_AND_ELECTRICAL_BRAKING = 3
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.OPEN_CIRCUIT = Parameter.Option(parent, 0, "OPEN_CIRCUIT")
+            self.ELECTRICAL_BRAKING = Parameter.Option(parent, 1, "ELECTRICAL_BRAKING")
+            self.MECHANICAL_BRAKING_AND_OPEN_CIRCUIT = Parameter.Option(parent, 2, "MECHANICAL_BRAKING_AND_OPEN_CIRCUIT")
+            self.MECHANICAL_AND_ELECTRICAL_BRAKING = Parameter.Option(parent, 3, "MECHANICAL_AND_ELECTRICAL_BRAKING")
 
     def __init__(self, index, access, datatype):
         super().__init__("DRIVE_FAULT_BEHAVIOUR", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _FAULT_HANDLER_NUMBER_OF_RETRIES(Parameter):
@@ -3101,15 +2916,11 @@ class _FAULT_HANDLER_NUMBER_OF_RETRIES(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FAULT_HANDLER_NUMBER_OF_RETRIES", index, access, datatype)
 
-        self.choice = None
-
 
 class _GENERAL_STATUS_FLAGS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("GENERAL_STATUS_FLAGS", index, access, datatype)
-
-        self.choice = None
 
 
 class _SUPPLY_VOLTAGE(Parameter):
@@ -3117,15 +2928,11 @@ class _SUPPLY_VOLTAGE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SUPPLY_VOLTAGE", index, access, datatype)
 
-        self.choice = None
-
 
 class _SUPPLY_OVERVOLTAGE_WARNING_THRESHOLD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("SUPPLY_OVERVOLTAGE_WARNING_THRESHOLD", index, access, datatype)
-
-        self.choice = None
 
 
 class _SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD(Parameter):
@@ -3133,15 +2940,11 @@ class _SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("SUPPLY_UNDERVOLTAGE_WARNING_THRESHOLD", index, access, datatype)
 
-        self.choice = None
-
 
 class _EXTERNAL_TEMPERATURE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("EXTERNAL_TEMPERATURE", index, access, datatype)
-
-        self.choice = None
 
 
 class _EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD(Parameter):
@@ -3149,15 +2952,11 @@ class _EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("EXTERNAL_TEMPERATURE_SHUTDOWN_THRESHOLD", index, access, datatype)
 
-        self.choice = None
-
 
 class _EXTERNAL_TEMPERATURE_WARNING_THRESHOLD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("EXTERNAL_TEMPERATURE_WARNING_THRESHOLD", index, access, datatype)
-
-        self.choice = None
 
 
 class _CHIP_TEMPERATURE(Parameter):
@@ -3165,15 +2964,11 @@ class _CHIP_TEMPERATURE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("CHIP_TEMPERATURE", index, access, datatype)
 
-        self.choice = None
-
 
 class _CHIP_TEMPERATURE_SHUTDOWN_THRESHOLD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("CHIP_TEMPERATURE_SHUTDOWN_THRESHOLD", index, access, datatype)
-
-        self.choice = None
 
 
 class _CHIP_TEMPERATURE_WARNING_THRESHOLD(Parameter):
@@ -3181,15 +2976,11 @@ class _CHIP_TEMPERATURE_WARNING_THRESHOLD(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("CHIP_TEMPERATURE_WARNING_THRESHOLD", index, access, datatype)
 
-        self.choice = None
-
 
 class _GENERAL_ERROR_FLAGS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("GENERAL_ERROR_FLAGS", index, access, datatype)
-
-        self.choice = None
 
 
 class _GDRV_ERROR_FLAGS(Parameter):
@@ -3197,15 +2988,11 @@ class _GDRV_ERROR_FLAGS(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("GDRV_ERROR_FLAGS", index, access, datatype)
 
-        self.choice = None
-
 
 class _ADC_STATUS_FLAGS(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ADC_STATUS_FLAGS", index, access, datatype)
-
-        self.choice = None
 
 
 class _MCC_INPUTS_RAW(Parameter):
@@ -3213,15 +3000,11 @@ class _MCC_INPUTS_RAW(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("MCC_INPUTS_RAW", index, access, datatype)
 
-        self.choice = None
-
 
 class _FOC_VOLTAGE_UX(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FOC_VOLTAGE_UX", index, access, datatype)
-
-        self.choice = None
 
 
 class _FOC_VOLTAGE_WY(Parameter):
@@ -3229,15 +3012,11 @@ class _FOC_VOLTAGE_WY(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FOC_VOLTAGE_WY", index, access, datatype)
 
-        self.choice = None
-
 
 class _FOC_VOLTAGE_V(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FOC_VOLTAGE_V", index, access, datatype)
-
-        self.choice = None
 
 
 class _FIELDWEAKENING_I(Parameter):
@@ -3245,15 +3024,11 @@ class _FIELDWEAKENING_I(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FIELDWEAKENING_I", index, access, datatype)
 
-        self.choice = None
-
 
 class _FIELDWEAKENING_VOLTAGE_THRESHOLD(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FIELDWEAKENING_VOLTAGE_THRESHOLD", index, access, datatype)
-
-        self.choice = None
 
 
 class _FOC_CURRENT_UX(Parameter):
@@ -3261,15 +3036,11 @@ class _FOC_CURRENT_UX(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FOC_CURRENT_UX", index, access, datatype)
 
-        self.choice = None
-
 
 class _FOC_CURRENT_V(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FOC_CURRENT_V", index, access, datatype)
-
-        self.choice = None
 
 
 class _FOC_CURRENT_WY(Parameter):
@@ -3277,15 +3048,11 @@ class _FOC_CURRENT_WY(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FOC_CURRENT_WY", index, access, datatype)
 
-        self.choice = None
-
 
 class _FOC_VOLTAGE_UQ(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("FOC_VOLTAGE_UQ", index, access, datatype)
-
-        self.choice = None
 
 
 class _FOC_CURRENT_IQ(Parameter):
@@ -3293,20 +3060,19 @@ class _FOC_CURRENT_IQ(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("FOC_CURRENT_IQ", index, access, datatype)
 
-        self.choice = None
-
 
 class _TARGET_TORQUE_BIQUAD_FILTER_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE_BIQUAD_FILTER_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1(Parameter):
@@ -3314,15 +3080,11 @@ class _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_1", index, access, datatype)
 
-        self.choice = None
-
 
 class _TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE_BIQUAD_FILTER_ACOEFF_2", index, access, datatype)
-
-        self.choice = None
 
 
 class _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0(Parameter):
@@ -3330,15 +3092,11 @@ class _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_0", index, access, datatype)
 
-        self.choice = None
-
 
 class _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_1", index, access, datatype)
-
-        self.choice = None
 
 
 class _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2(Parameter):
@@ -3346,20 +3104,19 @@ class _TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TARGET_TORQUE_BIQUAD_FILTER_BCOEFF_2", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACTUAL_VELOCITY_BIQUAD_FILTER_ENABLE(Parameter):
 
-    class _Choices:
-        def __init__(self) -> None:
-            self.DISABLED = False
-            self.ENABLED = True
+    class _Choice(Parameter.Choice):
+        def __init__(self, parent) -> None:
+            super().__init__(parent)
+            self.DISABLED = Parameter.Option(parent, False, "DISABLED")
+            self.ENABLED = Parameter.Option(parent, True, "ENABLED")
 
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_ENABLE", index, access, datatype)
 
-        self.choice = self._Choices()
+        self.choice = self._Choice(self)
 
 
 class _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1(Parameter):
@@ -3367,15 +3124,11 @@ class _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_1", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_2(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_ACOEFF_2", index, access, datatype)
-
-        self.choice = None
 
 
 class _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0(Parameter):
@@ -3383,15 +3136,11 @@ class _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_0", index, access, datatype)
 
-        self.choice = None
-
 
 class _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_1(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_1", index, access, datatype)
-
-        self.choice = None
 
 
 class _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2(Parameter):
@@ -3399,15 +3148,11 @@ class _ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("ACTUAL_VELOCITY_BIQUAD_FILTER_BCOEFF_2", index, access, datatype)
 
-        self.choice = None
-
 
 class _TORQUE_FLUX_COMBINED_TARGET_VALUES(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_FLUX_COMBINED_TARGET_VALUES", index, access, datatype)
-
-        self.choice = None
 
 
 class _TORQUE_FLUX_COMBINED_ACTUAL_VALUES(Parameter):
@@ -3415,15 +3160,11 @@ class _TORQUE_FLUX_COMBINED_ACTUAL_VALUES(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("TORQUE_FLUX_COMBINED_ACTUAL_VALUES", index, access, datatype)
 
-        self.choice = None
-
 
 class _VOLTAGE_D_Q_COMBINED_ACTUAL_VALUES(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("VOLTAGE_D_Q_COMBINED_ACTUAL_VALUES", index, access, datatype)
-
-        self.choice = None
 
 
 class _INTEGRATED_ACTUAL_TORQUE_VALUE(Parameter):
@@ -3431,13 +3172,9 @@ class _INTEGRATED_ACTUAL_TORQUE_VALUE(Parameter):
     def __init__(self, index, access, datatype):
         super().__init__("INTEGRATED_ACTUAL_TORQUE_VALUE", index, access, datatype)
 
-        self.choice = None
-
 
 class _INTEGRATED_ACTUAL_VELOCITY_VALUE(Parameter):
 
     def __init__(self, index, access, datatype):
         super().__init__("INTEGRATED_ACTUAL_VELOCITY_VALUE", index, access, datatype)
-
-        self.choice = None
 

@@ -34,21 +34,21 @@ with ConnectionManager().connect() as my_interface:
 
     tmc9660_eval = TMC9660_3PH_eval(my_interface)
 
-    tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE, TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
-    tmc9660_eval.set_axis_parameter(TMC9660.ap.MOTOR_TYPE, TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_eval.set_axis_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
     tmc9660_eval.set_axis_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
 
-    tmc9660_eval.set_axis_parameter(TMC9660.ap.VELOCITY_NORM_P, TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
+    tmc9660_eval.set_axis_parameter(TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
     tmc9660_eval.set_axis_parameter(TMC9660.ap.VELOCITY_P, 500)
     tmc9660_eval.set_axis_parameter(TMC9660.ap.VELOCITY_I, 5000)
 
     if feedback_select == "ABN encoder":
         tmc9660_eval.set_axis_parameter(TMC9660.ap.ABN_1_STEPS, 4096)
-        tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE, TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
+        tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
     elif feedback_select == "Digital hall":
         tmc9660_eval.set_axis_parameter(TMC9660.ap.HALL_INVERT_DIRECTION, 1)
-        tmc9660_eval.set_axis_parameter(TMC9660.ap.HALL_SECTOR_OFFSET, TMC9660.ap.HALL_SECTOR_OFFSET.choice.DEG_240)
-        tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE, TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
+        tmc9660_eval.set_axis_parameter(TMC9660.ap.HALL_SECTOR_OFFSET.choice.DEG_240)
+        tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
 
     tmc9660_eval.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 2_000_000)
     
@@ -59,4 +59,4 @@ with ConnectionManager().connect() as my_interface:
 
     tmc9660_eval.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 0)
     time.sleep(0.1)
-    tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE, TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_eval.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)

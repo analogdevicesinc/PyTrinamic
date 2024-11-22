@@ -7,8 +7,11 @@
 ################################################################################
 
 import enum
+import inspect
+import warnings
 
-from typing import Optional, Dict
+from typing import Optional, Union
+from abc import ABC, abstractmethod
 
 
 class TMCLModule(object):
@@ -166,11 +169,21 @@ class Parameter:
         RWE = 0x07
         
     class Datatype(enum.IntEnum):
-        BOOLEAN = 0
-        UNSIGNED = 1
-        SIGNED = 2
-        ENUM = 3
-        FIELD = 4
+        BOOLEAN = enum.auto()
+        UNSIGNED = enum.auto()
+        SIGNED = enum.auto()
+        ENUM = enum.auto()
+        FIELD = enum.auto()
+
+    class Choice:
+        def __init__(self, parent: "Parameter"):
+            self.parent = parent
+
+    class Option:
+        def __init__(self, parent: "Parameter", value: int, name: str):
+            self.parent = parent
+            self.value = value
+            self.name = name
 
     def __init__(self, name: str, index: int, access: "Parameter.Access", datatype: "Parameter.Datatype"):
         self.name = name
@@ -180,3 +193,92 @@ class Parameter:
 
     def __int__(self):
         return self.index
+    
+
+class ParameterApiDevice(ABC):
+    class ParameterType(enum.IntEnum):
+        AXIS = enum.auto()
+        GLOBAL = enum.auto()
+        
+    def get_axis_parameter(self, get_target: Union[Parameter, Parameter.Choice]):
+        return self._get_parameter(ParameterApiDevice.ParameterType.AXIS, get_target)
+        
+    def set_axis_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
+        return self._set_parameter(ParameterApiDevice.ParameterType.AXIS, set_target, value)
+    
+    def get_global_parameter(self, get_target: Union[Parameter, Parameter.Choice], bank: int):
+        return self._get_parameter(ParameterApiDevice.ParameterType.GLOBAL, get_target, bank)
+    
+    def set_global_parameter(self, set_target: Union[Parameter, Parameter.Option], bank: int, value: Optional[Union[int, bool]] = None):
+        return self._set_parameter(ParameterApiDevice.ParameterType.GLOBAL, set_target, value, bank)
+
+    def _get_parameter(self, parameter_type: ParameterType, get_target: Union[Parameter, Parameter.Choice], bank=None):
+        if isinstance(get_target, Parameter):
+            ap = get_target
+        elif isinstance(get_target, Parameter.Choice):
+            ap = get_target.parent
+        else:
+            raise ValueError("get_target must be a Parameter or Parameter.Choice object.")
+        signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
+        if parameter_type == ParameterApiDevice.ParameterType.AXIS:
+            value = self._get_axis_parameter(
+                ap.index,
+                signed=signed,
+            )
+        elif parameter_type == ParameterApiDevice.ParameterType.GLOBAL:
+            value = self._get_global_parameter(
+                ap.index,
+                bank=bank,
+                signed=signed,
+            )
+        else:
+            raise ValueError("Unsupported parameter type.")
+        if isinstance(get_target, Parameter.Choice):
+            try: 
+                return next(member for name, member in inspect.getmembers(ap.choice) if isinstance(member, Parameter.Option) and member.value == value)
+            except StopIteration:
+                raise IndexError(f"Unknown value {value} for choice parameter {ap.name}.")
+        else:
+            return value
+
+    def _set_parameter(self, parameter_type: ParameterType, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None, bank=None):
+        if isinstance(set_target, Parameter):
+            ap = set_target
+            if value is None:
+                raise ValueError("Value must be provided when setting a parameter.")
+        elif isinstance(set_target, Parameter.Option):
+            ap =  set_target.parent
+            if value is not None:
+                warnings.warn("Value is ignored when setting a choice parameter.")
+            value = set_target.value
+        else:
+            raise ValueError("set_target must be a Parameter or Parameter.Option object.")
+        if parameter_type == ParameterApiDevice.ParameterType.AXIS:
+            return self._set_axis_parameter(
+                ap.index,
+                value,
+            )
+        elif parameter_type == ParameterApiDevice.ParameterType.GLOBAL:
+            return self._set_global_parameter(
+                ap.index,
+                bank=bank,
+                value=value,
+            )
+        else:
+            raise ValueError("Unsupported parameter type.")
+    
+    @abstractmethod
+    def _get_axis_parameter(self, index: int, signed: bool):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _set_axis_parameter(self, index: int, value: int):
+        raise NotImplementedError
+    
+    @abstractmethod
+    def _get_global_parameter(self, index: int, bank: int, signed: bool):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _set_global_parameter(self, index: int, bank: int, value: int):
+        raise NotImplementedError
