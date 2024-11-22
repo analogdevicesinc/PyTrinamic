@@ -59,25 +59,25 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
 
         super().__init__("TMC9660", self.__doc__)
         self._connection = connection
-        self.ap_index_bit_width = 12
-        self.module_id = module_id
+        self._ap_index_bit_width = 12
+        self._module_id = module_id
 
     def write_register(self, register_address, block, value):
         """Implementation of the RegisterApiDevice::write_register() function."""
-        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self.module_id)
+        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self._module_id)
 
     def read_register(self, register_address, block, signed=False):
         """Implementation of the RegisterApiDevice::read_register() function."""
-        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self.module_id, signed)
+        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed)
     
     def _get_axis_parameter(self, index: int, signed: bool):
         """Implementation of the ParameterApiDevice::_get_axis_parameter() function."""
         return self._connection.get_axis_parameter(
             index,
             0,
-            module_id=self.module_id,
+            module_id=self._module_id,
             signed=signed,
-            index_bit_width=self.ap_index_bit_width,
+            index_bit_width=self._ap_index_bit_width,
         )
 
     def _set_axis_parameter(self, index: int, value: int):
@@ -86,8 +86,8 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
             index,
             0,
             value,
-            module_id=self.module_id,
-            index_bit_width=self.ap_index_bit_width,
+            module_id=self._module_id,
+            index_bit_width=self._ap_index_bit_width,
         )
 
     def _get_global_parameter(self, index: int, bank: int, signed: bool):
@@ -95,7 +95,7 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
         return self._connection.get_global_parameter(
             index,
             bank,
-            module_id=self.module_id,
+            module_id=self._module_id,
             signed=signed,
         )
 
@@ -105,5 +105,5 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
             index,
             bank,
             value,
-            module_id=self.module_id,
+            module_id=self._module_id,
         )
