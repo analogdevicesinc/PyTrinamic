@@ -5,6 +5,7 @@ from .can_tmcl.kvaser_tmcl_interface import KvaserTmclInterface
 from .serial_tmcl_interface import SerialTmclInterface
 from .uart_ic_interface import UartIcInterface
 from .usb_tmcl_interface import UsbTmclInterface
+from .can_tmcl_interface import CanTmclInterface
 from .can_tmcl.slcan_tmcl_interface import SlcanTmclInterface
 from .can_tmcl.ixxat_tmcl_interface import IxxatTmclInterface
 from .connection_manager import ConnectionManager
