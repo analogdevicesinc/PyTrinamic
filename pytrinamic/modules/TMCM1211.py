@@ -13,13 +13,13 @@ from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
 from ..features import StallGuard2Module, CoolStepModule
 
 
-class TMCM1316(TMCLModule):
+class TMCM1211(TMCLModule):
     """
-    The TMCM-1316 is a single axis stepper motor controller/driver module for closed loop stepper motor servos.
+    The TMCM-1211 is a single axis controller/driver module. Supply voltage is 9..30V.
     """
     def __init__(self, connection, module_id=1):
         super().__init__(connection, module_id)
-        self.name = "TMCM-1111"
+        self.name = "TMCM-1211"
         self.desc = self.__doc__
         self.motors = [self._MotorTypeA(self, 0)]
 
@@ -37,7 +37,7 @@ class TMCM1316(TMCLModule):
     def move_by(self, axis, difference, velocity=None):
         if velocity:
             self.motors[axis].linear_ramp.max_velocity = velocity
-        self.connection.move_by(axis, difference, self.module_id)
+        return self.connection.move_by(axis, difference, self.module_id)
 
     class _MotorTypeA(MotorControlModule):
 
@@ -56,66 +56,39 @@ class TMCM1316(TMCLModule):
             ActualPosition                 = 1
             TargetVelocity                 = 2
             ActualVelocity                 = 3
-            MaxPositioningSpeed            = 4
+            MaxVelocity                    = 4
             MaxAcceleration                = 5
-            maximumCurrent                 = 6
+            MaxCurrent                     = 6
             StandbyCurrent                 = 7
             PositionReachedFlag            = 8
             HomeSwitch                     = 9
             RightEndstop                   = 10
             LeftEndstop                    = 11
-            RightLimit                     = 12
-            LeftLimit                      = 13
-            RampType                       = 14
-            StartVelocity                  = 15
-            StartAcceleration              = 16
+            RightLimitSwitchDisable        = 12
+            LeftLimitSwitchDisable         = 13
+            SwapLimitSwitches              = 14
+            A1                             = 15
+            V1                             = 16
             MaxDeceleration                = 17
-            BreakVelocity                  = 18
-            FinalDeceleration              = 19 
+            D1                             = 18
+            StartVelocity                  = 19
             StopVelocity                   = 20
-            StopDeceleration               = 21 
-            Bow1                           = 22
-            Bow2                           = 23
-            Bow3                           = 24
-            Bow4                           = 25
-            VirtualStopLeft                = 26
-            VirtualStopRight               = 27
-            VirtualStopEnable              = 28
-            VirtualStopMode                = 29
-            SwapStopSwitches               = 33
-            EnableSoftStop                 = 34
-            BowScalingFactor               = 35
-            TorqueMode                     = 50
-            CLgammaVmin                    = 108
-            CLgammaVmax                    = 109
-            CLmaximumGamma                 = 110
-            CLbeta                         = 111
-            CLoffset                       = 112
-            CLcurrentMin                   = 113
-            CLcurrentMax                   = 114
-            CLcorrectionVelocityP          = 115
-            CLcorrectionVelocityI          = 116
-            CLcorrectionVelocityIClipping  = 117
-            CLcorrectionVelocityDVClock    = 118
-            CLcorrectionVelocityDVClipping = 119
-            CLupscaleDelay                 = 120
-            CLdownscaleDelay               = 121
-            ActualScalerValue              = 123
-            CLcorrectionPositionP          = 124
-            CLmaxCorrectionTolerance       = 125
-            CLstartUp                      = 126
+            RampWaitTime                   = 21
+            HighSpeedTheshold              = 22
+            MinDcStepSpeed                 = 23
+            RightLimitSwitchPolarity       = 24
+            LeftLimitSwitchPolarity        = 25
+            SoftStop                       = 26
+            HighSpeedChopperMode           = 27
+            HighSpeedFullstepMode          = 28
+            MeasuredSpeed                  = 29
+            PowerDownRamp                  = 31
+            DcStepTime                     = 32
+            DcStepStallGuard               = 33
             RelativePositioningOption      = 127
-            ClosedLoopMode                 = 129
-            MeasuredSpeed                  = 131
-            CurrentMeasuredSpeed           = 132
-            ClosedLoopInitFlag             = 133
-            PositioningWindow              = 134
-            EncMeanWait                    = 136
-            EncMeanFilter                  = 137
-            EncMeanInt                     = 138
             MicrostepResolution            = 140
-            EncoderInputSampleRate         = 150
-            EncoderInputFilterLength       = 151            
+            Intpol                         = 160
+            DoubleEdgeSteps                = 161
             ChopperBlankTime               = 162
             ConstantTOffMode               = 163
             DisableFastDecayComparator     = 164
@@ -129,6 +102,7 @@ class TMCM1316(TMCLModule):
             SmartEnergyHysteresisStart     = 172
             SG2FilterEnable                = 173
             SG2Threshold                   = 174
+            GlobalCurrentScaler            = 178
             SmartEnergyActualCurrent       = 180
             SmartEnergyStallVelocity       = 181
             SmartEnergyThresholdSpeed      = 182
@@ -140,70 +114,68 @@ class TMCM1316(TMCLModule):
             PWMScale                       = 189
             PWMMode                        = 190
             PWMFrequency                   = 191
-            PWMAutoscale                   = 192         
+            PWMAutoscale                   = 192
             ReferenceSearchMode            = 193
             ReferenceSearchSpeed           = 194
-            RefSwitchSpeed                 = 195
-            RightLimitSwitchPosition       = 196
-            LastReferencePosition          = 197
-            BoostCurrent                   = 200
+            ReferenceSwitchSpeed           = 195
+            ReferenceSwitchDistance        = 196
+            LastReferenceSwitchPosition    = 197
+            LatchedActualPosition          = 198
+            LatchedEncoderPosition         = 199
             EncoderMode                    = 201
-            MotorFullStepResolution        = 202
+            FullstepResolution             = 202
             FreewheelingMode               = 204
             LoadValue                      = 206
-            ErrorFlags                     = 207
-            StatusFlags                    = 208
+            ErrorFlags                     = 207  # ExtendedErrorFlags
+            StatusFlags                    = 208  # DrvStatusFlags
             EncoderPosition                = 209
             EncoderResolution              = 210
-            MaxPositionEncoderDeviation    = 212
-            MaxVelocityEncoderDeviation    = 213
+            MaxEncoderDeviation            = 212
             PowerDownDelay                 = 214
             ReverseShaft                   = 251
-            StepDirectionGearRatio         = 253
-            StepDirectionMode              = 254
+            UnitMode                       = 255
 
         class ENUM:
-            microstep_resolution_fullstep = 0
-            microstep_resolution_halfstep = 1
-            microstep_resolution_4_microsteps = 2
-            microstep_resolution_8_microsteps = 3
-            microstep_resolution_16_microsteps = 4
-            microstep_resolution_32_microsteps = 5
-            microstep_resolution_64_microsteps = 6
-            microstep_resolution_128_microsteps = 7
-            microstep_resolution_256_microsteps = 8
+            MicrostepResolutionFullstep      = 0
+            MicrostepResolutionHalfstep      = 1
+            MicrostepResolution4Microsteps   = 2
+            MicrostepResolution8Microsteps   = 3
+            MicrostepResolution16Microsteps  = 4
+            MicrostepResolution32Microsteps  = 5
+            MicrostepResolution64Microsteps  = 6
+            MicrostepResolution128Microsteps = 7
+            MicrostepResolution256Microsteps = 8
 
     class GP0:
-        SerialBaudRate      = 65
-        SerialAddress       = 66
-        SerialHearbeat      = 68
-        CANBitRate          = 69
-        CANsendID           = 70
-        CANreceiveID        = 71
-        TelegramPauseTime   = 75
-        SerialHostAddress   = 76
-        AutoStartMode       = 77
-        IOMask              = 78
-        TMCLCodeProtection  = 81
-        CANHeartbeat        = 82
-        CANSecondaryAddress = 83
-        eepromCoordinateStore          = 84
-        zeroUserVariables              = 85
-        serialSecondaryAddress         = 87
-        ApplicationStatus   = 128
-        DownloadMode        = 129
-        ProgramCounter      = 130
-        LastTmclError       = 131
-        TickTimer           = 132
-        RandomNumber        = 133
-        SuppressReply     = 255
+        SerialBaudRate                 = 65
+        SerialAddress                  = 66
+        SerialHeartbeat                = 68
+        CANBitRate                     = 69
+        CANsendID                      = 70
+        CANreceiveID                   = 71
+        TelegramPauseTime              = 75
+        SerialHostAddress              = 76
+        AutoStartMode                  = 77
+        IOMode                         = 78
+        ProtectionMode                 = 81
+        CANHeartbeat                   = 82
+        CANSecondaryAddress            = 83
+        EepromCoordinateStore          = 84
+        ZeroUserVariables              = 85
+        SerialSecondaryAddress         = 87
+        ApplicationStatus              = 128
+        DownloadMode                   = 129
+        ProgramCounter                 = 130
+        TickTimer                      = 132
+        RandomNumber                   = 133
+        SuppressReply                  = 255
 
     class GP3:
-        timer_0                        = 0
-        timer_1                        = 1
-        timer_2                        = 2
-        stopLeft_0                     = 27
-        stopRight_0                    = 28
+        Timer_0                        = 0
+        Timer_1                        = 1
+        Timer_2                        = 2
+        StopLeft_0                     = 27
+        StopRight_0                    = 28
         input_0                        = 39
         input_1                        = 40
         input_2                        = 41

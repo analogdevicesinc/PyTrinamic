@@ -224,4 +224,3 @@ class TMCM1111(TMCLModule):
         IN4    = 4
         IN5    = 5
         IN6    = 6
-        IN7    = 7
