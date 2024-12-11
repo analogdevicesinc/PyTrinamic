@@ -4,8 +4,14 @@
 ################################################################################
 """Example on how to use TMC9660-3PH-EVKIT to spin a BLDC motor with feedback.
 
+The required TMC-EvalSystem firmware is 3.10.7 or later.
+
 Note: To run this script the TMC9660-3PH-EVAL first needs an uploaded/burned configuration
 and the parameter app must have been started.
+On Windows this can be done with:
+    python ubltools_1.0.1\ubl_evalsystem_wrapper.py <COM-PORT> write config ubltools_1.0.1\ioconfig_tmc9660-3ph-eval.toml
+    python ubltools_1.0.1\ubl_evalsystem_wrapper.py <COM-PORT> start
+Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
                             +-----+  +-------------------+       +---++--------------+             
                      USB    |     |==|                   |-------|   ||              |             
