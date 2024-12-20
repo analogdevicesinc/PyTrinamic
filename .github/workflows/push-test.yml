@@ -1,9 +1,9 @@
-name: Manual Triggered Test
+name: Push Triggered Testrun
 
-on: workflow_dispatch
+on: push
 
 jobs:
-  deploy:
+  test:
 
     runs-on: ubuntu-latest
 
@@ -21,7 +21,7 @@ jobs:
       run: pip install .
     - name: Run the example tests
       working-directory: examples
-      run: pytest -v --html=pytest_examples_report.html
+      run: pytest -v --html=pytest_examples_report.html --self-contained-html
     - name: Upload test report
       if: always()
       uses: actions/upload-artifact@v4
