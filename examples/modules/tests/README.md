@@ -5,6 +5,6 @@ Also the `time.sleep()` function is mocked away with an empty implementation so 
 
 To run the tests:
 
-* install PyTrinamic via `python -m pip install -e <path-to-the-pytrinamic-repo>`
-* install `pytest`
-* go into this directory and call `pytest` from the terminal
+* Install PyTrinamic via `python -m pip install -e <path-to-the-pytrinamic-repo>`
+* Install `pytest`
+* Call `pytest` from the terminal within this directory or from within the above directories.
