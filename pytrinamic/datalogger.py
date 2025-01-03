@@ -9,7 +9,7 @@ class DataLogger:
 
     @dataclass
     class Info:
-        base_frequency: int
+        base_frequency_hz: int
         sample_limit: int
         number_of_channels: int
 
@@ -22,8 +22,14 @@ class DataLogger:
             self.axis = axis
     
     class SignalTypeRegister(SignalType):
-        def __init__(self, address):
+        def __init__(self, channel, address):
+            self.channel = channel
             self.address = address
+
+    @dataclass
+    class Data:
+        rate_hz: float
+        samples: list
 
     class TriggerType(enum.IntEnum):
         TRIGGER_UNCONDITIONAL         = 0
@@ -36,17 +42,26 @@ class DataLogger:
 
     def __init__(self, connection):
         self._connection = connection
-        self.signals = None
-        self.prescaler = 0
-        self.number_of_samples = None
+        self.data = None
+        self.down_sampling_factor = 0
+        self.samples_per_channel = None
         self.trigger_type = None
-        self.result = {}
+        self.data = {}
 
     def get_info(self) -> DataLogger.Info:
         pass
 
-    def start(self) -> None:
+    def log_data(self, data: dict) -> None:
         pass
 
-    def has_stopped(self) -> bool:
+    def activate_trigger(self) -> None:
+        pass
+
+    def got_triggered(self) -> bool:
+        pass
+
+    def is_done(self) -> bool:
+        pass
+
+    def download_data(self) -> None:
         pass
