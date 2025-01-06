@@ -6,14 +6,17 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import sys
 import time
+import pathlib
 import runpy
 
 import pytest
 
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules import TMCM1636
+
+
+this_files_directory = pathlib.Path(__file__).parent
 
 
 class MockTmclInterface:
@@ -66,12 +69,12 @@ class MockTmclInterface:
             return 0
 
 
-@pytest.mark.parametrize('example_script_path', [
-    f'../TMCM1636/TMCL/encoder_position_mode.py',
-    f'../TMCM1636/TMCL/hall_digital_input.py',
-    f'../TMCM1636/TMCL/hall_endstop.py',
-    f'../TMCM1636/TMCL/hall_position_mode.py',
-    f'../TMCM1636/TMCL/position_abn_abs.py',
+@pytest.mark.parametrize("example_script_path", [
+    this_files_directory / "../TMCM1636/TMCL/encoder_position_mode.py",
+    this_files_directory / "../TMCM1636/TMCL/hall_digital_input.py",
+    this_files_directory / "../TMCM1636/TMCL/hall_endstop.py",
+    this_files_directory / "../TMCM1636/TMCL/hall_position_mode.py",
+    this_files_directory / "../TMCM1636/TMCL/position_abn_abs.py",
 ])
 def test(monkeypatch, example_script_path):
 
@@ -84,8 +87,8 @@ def test(monkeypatch, example_script_path):
     def mock_sleep(_):
         pass
 
-    monkeypatch.setattr(ConnectionManager, '__init__', mock_init)
-    monkeypatch.setattr(ConnectionManager, 'connect', mock_connect)
-    monkeypatch.setattr(time, 'sleep', mock_sleep)
+    monkeypatch.setattr(ConnectionManager, "__init__", mock_init)
+    monkeypatch.setattr(ConnectionManager, "connect", mock_connect)
+    monkeypatch.setattr(time, "sleep", mock_sleep)
 
     runpy.run_path(example_script_path)

@@ -6,8 +6,8 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import sys
 import time
+import pathlib
 import runpy
 import builtins
 
@@ -15,6 +15,9 @@ import pytest
 
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules import TMCM1140
+
+
+this_files_directory = pathlib.Path(__file__).parent
 
 
 class MockTmclInterface:
@@ -53,10 +56,10 @@ class MockTmclInterface:
         pass
 
 
-@pytest.mark.parametrize('example_script_path', [
-    f'../TMCM1140/TMCL/CoolStep_demo.py',
-    f'../TMCM1140/TMCL/rotate_demo.py',
-    f'../TMCM1140/TMCL/StallGuard2_demo.py',
+@pytest.mark.parametrize("example_script_path", [
+    this_files_directory / "../TMCM1140/TMCL/CoolStep_demo.py",
+    this_files_directory / "../TMCM1140/TMCL/rotate_demo.py",
+    this_files_directory / "../TMCM1140/TMCL/StallGuard2_demo.py",
 ])
 def test(monkeypatch, example_script_path):
 
@@ -72,9 +75,9 @@ def test(monkeypatch, example_script_path):
     def mock_input(_):
         pass
 
-    monkeypatch.setattr(ConnectionManager, '__init__', mock_init)
-    monkeypatch.setattr(ConnectionManager, 'connect', mock_connect)
-    monkeypatch.setattr(time, 'sleep', mock_sleep)
-    monkeypatch.setattr(builtins, 'input', mock_input)
+    monkeypatch.setattr(ConnectionManager, "__init__", mock_init)
+    monkeypatch.setattr(ConnectionManager, "connect", mock_connect)
+    monkeypatch.setattr(time, "sleep", mock_sleep)
+    monkeypatch.setattr(builtins, "input", mock_input)
 
     runpy.run_path(example_script_path)

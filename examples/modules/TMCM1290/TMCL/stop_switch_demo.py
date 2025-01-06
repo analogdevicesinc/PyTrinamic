@@ -13,7 +13,7 @@ import time
 
 pytrinamic.show_info()
 
-# This example is using PCAN, if you want to use another connection please change the next line.
+# We are using RS485
 connection_manager = ConnectionManager("--interface serial_tmcl --data-rate 115200 --port interactive")
 
 with connection_manager.connect() as my_interface:

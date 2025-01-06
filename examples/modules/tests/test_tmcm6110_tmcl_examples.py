@@ -6,15 +6,17 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import sys
 import time
+import pathlib
 import runpy
-import builtins
 
 import pytest
 
 from pytrinamic.connections.connection_manager import ConnectionManager
 from pytrinamic.modules import TMCM6110
+
+
+this_files_directory = pathlib.Path(__file__).parent
 
 
 class MockTmclInterface:
@@ -53,8 +55,8 @@ class MockTmclInterface:
         pass
 
 
-@pytest.mark.parametrize('example_script_path', [
-    f'../TMCM6110/TMCL/rotate_demo.py',
+@pytest.mark.parametrize("example_script_path", [
+    this_files_directory / "../TMCM6110/TMCL/rotate_demo.py",
 ])
 def test(monkeypatch, example_script_path):
 
@@ -67,8 +69,8 @@ def test(monkeypatch, example_script_path):
     def mock_sleep(_):
         pass
 
-    monkeypatch.setattr(ConnectionManager, '__init__', mock_init)
-    monkeypatch.setattr(ConnectionManager, 'connect', mock_connect)
-    monkeypatch.setattr(time, 'sleep', mock_sleep)
+    monkeypatch.setattr(ConnectionManager, "__init__", mock_init)
+    monkeypatch.setattr(ConnectionManager, "connect", mock_connect)
+    monkeypatch.setattr(time, "sleep", mock_sleep)
 
     runpy.run_path(example_script_path)

@@ -10,6 +10,10 @@ The TMC9660-3PH-EVAL/TMC9660-STEPPER-EVAL is used in headless mode for this exam
 
 Note: To run this script the EVAL first needs an uploaded/burned configuration
 and the parameter app must have been started.
+On Windows this can be done with:
+        ubltools_1.0.1/ublcli.exe --port <COM-PORT> write config ubltools_1.0.1/ioconfig_tmc9660-3ph-eval.toml
+        ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
+Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+                       
            |  USB-UART Cable - Connected to the machine running this script.                                       

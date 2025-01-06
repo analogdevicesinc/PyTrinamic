@@ -16,8 +16,8 @@ import intelhex
 import serial
 
 import pytrinamic
-from pytrinamic.connections.connection_manager import ConnectionManager
-from pytrinamic.connections.usb_tmcl_interface import UsbTmclInterface
+from pytrinamic.connections import ConnectionManager
+from pytrinamic.connections import UsbTmclInterface, CanTmclInterface
 from pytrinamic.tmcl import TMCLCommand
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
@@ -86,6 +86,12 @@ def firmware_update(iface, hex_file):
     logging.info("End address:   0x{0:08X}".format(end_address))
     logging.info("Length:        0x{0:08X}".format(length))
     logging.info("Checksum:      0x{0:08X}".format(checksum))
+
+    # Some TMCL-CAN based bootloaders use 0x7FF as CAN-identifier in the response frame, so we need to let it through. 
+    if isinstance(iface, CanTmclInterface):
+        filters = iface._connection.filters
+        filters.append({"can_id": 0x7FF, "can_mask": 0x7FF})
+        iface._connection.set_filters(filters)
 
     # ############################# Bootloader entry ################################
     # Connect to the evaluation board

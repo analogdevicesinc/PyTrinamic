@@ -1,0 +1,43 @@
+name: Push Triggered Testrun
+
+on: push
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-html
+
+    - name: Install pytrinamic from the checked out repository
+      run: pip install .
+
+    - name: Run the tests inside the project's root `tests` directory
+      working-directory: tests
+      run: pytest test_project_sanity.py -v --html=pytest_report.html --self-contained-html
+
+    - name: Run the tests inside the `examples` directory
+      working-directory: examples
+      run: pytest -v --html=pytest_examples_report.html --self-contained-html
+
+    - name: Upload the test reports even if tests fail
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: tests/pytest_report.html
+        path: examples/pytest_examples_report.html
+
+    

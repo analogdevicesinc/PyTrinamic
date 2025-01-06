@@ -1,0 +1,115 @@
+################################################################################
+# Boot configuration for TMC9660-3PH-EVAL
+################################################################################
+
+io_config_version = "v1.0"
+
+[app_settings]
+app_type = "param"   # "param", "reg"
+
+##### Communication interfaces #####
+### UART interface
+[uart]
+enabled         = true
+pin_ic_tx       = 6        # 0, 6
+pin_ic_rx       = 7        # 1, 7
+baud_rate       = "auto16" # 9600, 19200, 38400, 57600, 115200, 1000000, "auto8", "auto16"
+chip_address    = 1        # 1-255
+host_address    = 255      # 1-255 (different than chip_address)
+
+#pin_ic_txen     = 2        # 2, 8 (optional)
+#txen_pre_delay  = 10       # 0-255 (Required when pin_ic_txen is set)
+#txen_post_delay = 10       # 0-255 (Required when pin_ic_txen is set)
+
+#### SPI Slave ###
+[spi_slave]
+enabled = false
+
+##### Feedback interfaces #####
+### Hall encoder
+# When enabled, it requires pin_u, pin_v and pin_w to be set
+[hall]
+enabled = true
+pin_u   = 2         # 2, 7, 9
+pin_v   = 3         # 3, 15
+pin_w   = 4         # 4, 8, 10
+
+### ABN encoder 1
+# When enabled, it requires pin_a and pin_b to be set.
+# If using an N channel, define pin_n.
+[abn1]
+enabled = true
+pin_a   = 8         # 5, 8, 17
+pin_b   = 13        # 1, 13, 18
+pin_n   = 14        # 14, 16 (optional)
+
+### ABN encoder 2
+# When enabled, it requires pin_a and pin_b to be set.
+[abn2]
+enabled = true
+pin_a   = 15
+pin_b   = 16
+
+##### External memory #####
+[spi_flash]
+enabled      = false
+
+[ext_mem]
+tmcl_script       = "spi-flash"  # "spi-flash" or "i2c-eeprom" (optional)
+parameter_storage = "spi-flash"  # "spi-flash" or "i2c-eeprom" (optional)
+
+##### Other features #####
+#[ref_switch]
+#pin_left  = 16  # 2 12 16    (optional)
+#pin_home  = 17  # 4  7 15 17 (optional)
+#pin_right = 18  # 3 18       (optional)
+
+[ldo]
+vext1_voltage     = 5.0   # 0.0, 2.5, 3.3, 5.0 Volts
+vext1_slope_speed = 3.0   # 3.0, 1.5, 0.75, 0.37
+vext2_voltage     = 3.3   # 0.0, 2.5, 3.3, 5.0 Volts
+vext2_slope_speed = 3.0   # 3.0, 1.5, 0.75, 0.37
+fault_on_short    = false
+
+[pll]
+enabled       = true
+source        = "ExtOsc" # "IntOsc", "ExtOsc", "ExtClk"
+sys_frequency = 40000000 # 40000000, 30000000, 20000000, 15000000
+ext_frequency = 16000000 # Oscillator or ExtClk frequency. # ToDo: Values
+xtal_boost    = false    # Run the oscillator at maximum current while initializing the PLL (Required when source="ExtOsc")
+
+[watchdog]
+enabled = true
+timeout = 2000 # 250, 500, 750, 1000, 1250, 1500, 1750, 2000 ms
+
+[brakechopper]
+enabled          = true
+pin_brakechopper = "Y2" # 0-18 (using GPIO),
+                        # "Y2" (using 4th phase, high side driving a low-side FET)
+
+[mechanical_brake]
+enabled = true
+pin_mech_brake = "Y2" # 3, 10 (using advanced timer),
+                    # 18 (using basic timer),
+                    # "Y2" (using 4th phase low side)
+
+[spi_encoder]
+enabled      = true
+spi_block    = "SPI0"       # "SPI0" or "SPI1"
+pin_cs       = 12           # 8, 12, 13, 16 for SPI0, 15 for SPI1
+cs_polarity  = "active-low" # "active-low", "active-high"
+spi_mode     = 2            # 0-3
+frequency    = 2105263      # Hz
+pin_spi0_sck = 11           # 6, 11 (Required when spi_block = "SPI0")
+
+##### GPIOs #####
+[gpio17]
+type          = "input"    # "input", "output", "analog" (optional) (analog only supported on GPIO 2-5)
+pull_resistor = "pulldown" # "pulldown", "pullup" (optional)
+
+[gpio18]
+type          = "input"    # "input", "output", "analog" (optional) (analog only supported on GPIO 2-5)
+pull_resistor = "pulldown" # "pulldown", "pullup" (optional)
+
+[gpio5]
+type          = "analog"    # "input", "output", "analog" (optional) (analog only supported on GPIO 2-5)
