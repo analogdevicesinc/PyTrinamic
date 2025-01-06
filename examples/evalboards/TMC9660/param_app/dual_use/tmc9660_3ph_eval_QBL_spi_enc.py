@@ -4,7 +4,7 @@
 ################################################################################
 """Example on how to use TMC9660-3PH-EVKIT to spin a BLDC motor with SPI encoder feedback.
 
-An AS5047 SPI encoder is used as for the rotor position feedback in this example.
+An AS5047 SPI encoder is used for the rotor position feedback in this example.
 If you want to use VCC_IO from the board to power the encoder,
 keep in mind that you first upload the config before you connect VCC_IO to the encoders 3.3V input.
 
@@ -128,12 +128,12 @@ with cm.connect() as my_interface:
         time.sleep(0.1)
         tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
         # Do some checks
-        slope_open_loop_position = statistics.mean([c_int16(samples[i+1].open_loop_position - samples[i].open_loop_position).value for i in range(len(samples) - 1)]) * samples_per_s
-        slope_spi_enc_position = statistics.mean([c_int16(samples[i+1].spi_enc_position - samples[i].spi_enc_position).value for i in range(len(samples) - 1)]) * samples_per_s
-        slope_error = abs(slope_spi_enc_position - slope_open_loop_position) / 2**16
-        if abs(slope_spi_enc_position) / 2**16 < 0.1:
+        slope_open_loop_angle = statistics.mean([c_int16(samples[i+1].open_loop_position - samples[i].open_loop_position).value for i in range(len(samples) - 1)]) * samples_per_s
+        slope_spi_enc_angle = statistics.mean([c_int16(samples[i+1].spi_enc_position - samples[i].spi_enc_position).value for i in range(len(samples) - 1)]) * samples_per_s
+        slope_error = abs(slope_spi_enc_angle - slope_open_loop_angle) / 2**16
+        if abs(slope_spi_enc_angle) / 2**16 < 0.1:
             print("The SPI encoder angle does not or just barely change. Check the SPI encoder connection! Or maybe the open loop voltage is not high enough.")
-        elif slope_open_loop_position * slope_spi_enc_position < 0:
+        elif slope_open_loop_angle * slope_spi_enc_angle < 0:
             print("The the SPI encoder seems to be inverted. Try to invert the SPI_ENCODER_DIRECTION setting to fix this!")
         elif slope_error > 0.01:
             print(f"The SPI encoder angle slope is not parallel to the open-loop angle slope! The error is {slope_error:.3}.")
