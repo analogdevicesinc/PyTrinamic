@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pytrinamic"
 authors = [
-    { name="ADI Trinamic Software Team", email="tmc_info@trinamic.com" },
+    { name = "ADI Trinamic Software Team", email = "tmc_info@trinamic.com" },
 ]
 description = "TRINAMIC's Python Technology Access Package."
 readme = "README.md"
-license = {file = "LICENSE"}
+license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "Development Status :: 4 - Beta",
@@ -28,6 +28,7 @@ dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/analogdevicesinc/pytrinamic"
+Issues = "https://github.com/analogdevicesinc/pytrinamic/issues"
 
 [project.scripts]
 tmclfwupload = "pytrinamic.cli.tmclfwupload:main"
