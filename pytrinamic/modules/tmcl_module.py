@@ -185,6 +185,21 @@ class Parameter:
             self.value = value
             self.name = name
 
+    class Field:
+        def __init__(self, parent: "Parameter", name: str, mask: int, shift: int):
+            self.parent = parent
+            self.name = name
+            self.mask = mask
+            self.shift = shift
+
+        def get(self, parameter_value: int):
+            """Extracts the field value from a parameter value."""
+            return (parameter_value & self.mask) >> self.shift
+        
+        def set(self, parameter_value: int, new_field_value: int):
+            """Sets the field value in a parameter value."""
+            return (parameter_value & ~self.mask) | ((new_field_value << self.shift) & self.mask)
+
     def __init__(self, name: str, index: int, access: "Parameter.Access", datatype: "Parameter.Datatype"):
         self.name = name
         self.index = index
