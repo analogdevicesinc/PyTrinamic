@@ -309,7 +309,7 @@ class AxisParameterApiDevice(ABC):
     def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
         return self._set_parameter(set_target, value)
     
-    def _get_parameter(self, get_target: Union[Parameter], bank=None):
+    def _get_parameter(self, get_target: Union[Parameter]):
         if isinstance(get_target, Parameter):
             ap = get_target
         else:
@@ -321,7 +321,7 @@ class AxisParameterApiDevice(ABC):
         )
         return value
 
-    def _set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None, bank=None):
+    def _set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
         if isinstance(set_target, Parameter):
             ap = set_target
             if value is None:
