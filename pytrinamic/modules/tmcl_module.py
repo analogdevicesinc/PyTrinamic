@@ -179,6 +179,16 @@ class Parameter:
         def __init__(self, parent: "Parameter"):
             self.parent = parent
 
+        def options(self):
+            return [member for name, member in inspect.getmembers(self) if isinstance(member, Parameter.Option)]
+
+        def get(self, parameter_value):
+            """Extracts the choice value from a parameter value."""
+            try:
+                return next(option for option in self.options() if option.value == parameter_value)
+            except StopIteration:
+                raise IndexError(f"Unknown value {parameter_value} for choice parameter {self.parent.name}!")
+
     class Option:
         def __init__(self, parent: "Parameter", value: int, name: str):
             self.parent = parent
@@ -215,25 +225,23 @@ class ParameterApiDevice(ABC):
         AXIS = enum.auto()
         GLOBAL = enum.auto()
         
-    def get_axis_parameter(self, get_target: Union[Parameter, Parameter.Choice]):
+    def get_axis_parameter(self, get_target: Union[Parameter]):
         return self._get_parameter(ParameterApiDevice.ParameterType.AXIS, get_target)
         
     def set_axis_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
         return self._set_parameter(ParameterApiDevice.ParameterType.AXIS, set_target, value)
     
-    def get_global_parameter(self, get_target: Union[Parameter, Parameter.Choice], bank: int):
+    def get_global_parameter(self, get_target: Union[Parameter], bank: int):
         return self._get_parameter(ParameterApiDevice.ParameterType.GLOBAL, get_target, bank)
     
     def set_global_parameter(self, set_target: Union[Parameter, Parameter.Option], bank: int, value: Optional[Union[int, bool]] = None):
         return self._set_parameter(ParameterApiDevice.ParameterType.GLOBAL, set_target, value, bank)
 
-    def _get_parameter(self, parameter_type: ParameterType, get_target: Union[Parameter, Parameter.Choice], bank=None):
+    def _get_parameter(self, parameter_type: ParameterType, get_target: Union[Parameter], bank=None):
         if isinstance(get_target, Parameter):
             ap = get_target
-        elif isinstance(get_target, Parameter.Choice):
-            ap = get_target.parent
         else:
-            raise ValueError("get_target must be a Parameter or Parameter.Choice object.")
+            raise ValueError("get_target must be a Parameter!")
         signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
         if parameter_type == ParameterApiDevice.ParameterType.AXIS:
             value = self._get_axis_parameter(
@@ -248,13 +256,7 @@ class ParameterApiDevice(ABC):
             )
         else:
             raise ValueError("Unsupported parameter type.")
-        if isinstance(get_target, Parameter.Choice):
-            try: 
-                return next(member for name, member in inspect.getmembers(ap.choice) if isinstance(member, Parameter.Option) and member.value == value)
-            except StopIteration:
-                raise IndexError(f"Unknown value {value} for choice parameter {ap.name}.")
-        else:
-            return value
+        return value
 
     def _set_parameter(self, parameter_type: ParameterType, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None, bank=None):
         if isinstance(set_target, Parameter):
@@ -301,17 +303,15 @@ class ParameterApiDevice(ABC):
 
 class AxisParameterApiDevice(ABC):
         
-    def get_parameter(self, get_target: Union[Parameter, Parameter.Choice]):
+    def get_parameter(self, get_target: Union[Parameter]):
         return self._get_parameter(get_target)
         
     def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
         return self._set_parameter(set_target, value)
     
-    def _get_parameter(self, get_target: Union[Parameter, Parameter.Choice], bank=None):
+    def _get_parameter(self, get_target: Union[Parameter], bank=None):
         if isinstance(get_target, Parameter):
             ap = get_target
-        elif isinstance(get_target, Parameter.Choice):
-            ap = get_target.parent
         else:
             raise ValueError("get_target must be a Parameter or Parameter.Choice object.")
         signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
@@ -319,13 +319,7 @@ class AxisParameterApiDevice(ABC):
             ap.index,
             signed=signed,
         )
-        if isinstance(get_target, Parameter.Choice):
-            try: 
-                return next(member for name, member in inspect.getmembers(ap.choice) if isinstance(member, Parameter.Option) and member.value == value)
-            except StopIteration:
-                raise IndexError(f"Unknown value {value} for choice parameter {ap.name}.")
-        else:
-            return value
+        return value
 
     def _set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None, bank=None):
         if isinstance(set_target, Parameter):
