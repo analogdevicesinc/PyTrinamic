@@ -33,10 +33,11 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
 
     tmc9660 = TMC9660(my_interface)
 
-    tmc9660.write(TMC9660.MCC.MOTOR_CONFIG.TYPE.choice["NONE No motor"])
+    tmc9660.write(TMC9660.MCC.MOTOR_CONFIG.TYPE.choice.BLDC)
     tmc9660.write(TMC9660.MCC.MOTOR_CONFIG.N_POLE_PAIRS, 4)
     
     for _ in range(20):
-        print(f"I0 = {tmc9660.read(TMC9660.MCC.ADC_I1_I0_SCALED.ADC_SCALED_I0)}")
-        print(f"I1 = {tmc9660.read(TMC9660.MCC.ADC_I1_I0_SCALED.ADC_SCALED_I1)}")
+        print(f"I0 = {tmc9660.read(TMC9660.MCC.ADC_I1_I0_SCALED.I0)}")
+        print(f"I1 = {tmc9660.read(TMC9660.MCC.ADC_I1_I0_SCALED.I1)}")
+        print(f"I2 = {tmc9660.read(TMC9660.MCC.ADC_I3_I2_SCALED.I2)}")
         time.sleep(0.2)
