@@ -19,7 +19,6 @@ with canopen.Network() as network:
     tmcm_1240.nmt.state = 'OPERATIONAL'
     tmcm_1240.go_to_operation_enabled()
     tmcm_1240.shutdown()
-   
     tmcm_1240.sdo['Absolute Max Current 1'].raw = 80 #CURRENT SETTINGS 
     tmcm_1240.sdo['Switch Parameters 1'].raw = 3 #DISSABLE LIMIT SWITCHES 
     tmcm_1240.go_to_operation_enabled()
