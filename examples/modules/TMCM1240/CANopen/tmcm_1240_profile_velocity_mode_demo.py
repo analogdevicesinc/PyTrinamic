@@ -16,7 +16,6 @@ with canopen.Network() as network:
     network.add_node(tmcm_1240)
     # LOADING CONFIGURATION FROM CANOPEN NODE FILE 
     tmcm_1240.load_configuration()
-   
     tmcm_1240.nmt.state = 'OPERATIONAL'
     tmcm_1240.go_to_operation_enabled()
     tmcm_1240.shutdown()
