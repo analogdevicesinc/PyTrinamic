@@ -6,10 +6,10 @@ with canopen.Network() as network:
     
     network.connect(bustype='pcan', channel='PCAN_USBBUS1', bitrate=1_000_000) #PEAK CAN ADAPER SETTINGS 
    
-    tmcm_1240 = TmcmNode(1, 'TMCM-1240.eds') # TMCM-1240 EDS (ELECTRONIC DATASHEET IS CALLED,CANOPEN NODE .PY FRO PYTRINAMIC IS CALLED  )
+    tmcm_1240 = TmcmNode(1, 'TMCM-1240.eds') # TMCM-1240 EDS (ELECTRONIC DATASHEET IS CALLED,CANOPEN NODE .PY PYTRINAMIC IS CALLED  )
   
     network.add_node(tmcm_1240)
-#LOADING CONFIGURATION FOR CANOPEN NODE FILE 
+#LOADING CONFIGURATION FROM CANOPEN NODE FILE 
     tmcm_1240.load_configuration()
    
     tmcm_1240.nmt.state = 'OPERATIONAL'
