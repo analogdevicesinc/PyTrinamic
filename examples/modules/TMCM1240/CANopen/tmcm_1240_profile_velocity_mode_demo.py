@@ -8,7 +8,7 @@ import canopen
 from pytrinamic.modules.canopen_node import TmcmNode
 
 with canopen.Network() as network:
-    # PEAK CAN ADAPER SETTINGS FOR CAN CONECTION 
+    # PEAK CAN ADAPER SETTINGS FOR CAN CONNECTION 
     network.connect(bustype='pcan', channel='PCAN_USBBUS1', bitrate=1_000_000) 
     # TMCM-1240 EDS (ELECTRONIC DATASHEET IS CALLED,CANOPEN NODE .PY PYTRINAMIC IS CALLED  )
     tmcm_1240 = TmcmNode(1, 'TMCM-1240.eds') 
