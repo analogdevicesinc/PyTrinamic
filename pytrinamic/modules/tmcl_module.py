@@ -304,10 +304,16 @@ class ParameterApiDevice(ABC):
 class AxisParameterApiDevice(ABC):
         
     def get_parameter(self, get_target: Union[Parameter]):
+        """Get an axis parameter value via the GAP command."""
         return self._get_parameter(get_target)
         
     def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
+        """Set an axis parameter value via the SAP command."""
         return self._set_parameter(set_target, value)
+
+    def store_parameter(self, store_target: Union[Parameter]):
+        """Store an axis parameter value via the STAP command."""
+        return self._store_parameter(store_target)
     
     def _get_parameter(self, get_target: Union[Parameter]):
         if isinstance(get_target, Parameter):
@@ -338,12 +344,25 @@ class AxisParameterApiDevice(ABC):
             value,
         )
     
+    def _store_parameter(self, store_target: Union[Parameter]):
+        if isinstance(store_target, Parameter):
+            ap = store_target
+        else:
+            raise ValueError("store_target must be a Parameter object.")
+        return self._store_axis_parameter(
+            ap.index,
+        )
+    
     @abstractmethod
     def _get_axis_parameter(self, index: int, signed: bool):
         raise NotImplementedError
 
     @abstractmethod
     def _set_axis_parameter(self, index: int, value: int):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _store_axis_parameter(self, index: int):
         raise NotImplementedError
 
 
