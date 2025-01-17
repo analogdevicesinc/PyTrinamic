@@ -71,14 +71,14 @@ with cm.connect() as my_interface:
     write_value = 0  # Keep the value for all other flags at 0 to not change their state.
     write_value = TMC9660.ap.GENERAL_ERROR_FLAGS.ITT_1_EXCEEDED.set(write_value, 1)
     write_value = TMC9660.ap.GENERAL_ERROR_FLAGS.ITT_2_EXCEEDED.set(write_value, 1)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.GENERAL_ERROR_FLAGS, write_value)
+    tmc9660_device.set_parameter(TMC9660.ap.GENERAL_ERROR_FLAGS, write_value)
 
     #############################################################################################################
     # Read
     #############################################################################################################
     
     # Read all flags into an integer
-    general_status_flags = tmc9660_device.get_axis_parameter(TMC9660.ap.GENERAL_STATUS_FLAGS)
+    general_status_flags = tmc9660_device.get_parameter(TMC9660.ap.GENERAL_STATUS_FLAGS)
 
     # Extract a singled flag's state
     regulation_stopped = TMC9660.ap.GENERAL_STATUS_FLAGS.REGULATION_STOPPED.get(general_status_flags)

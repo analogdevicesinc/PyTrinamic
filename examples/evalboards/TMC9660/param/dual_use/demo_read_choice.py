@@ -65,7 +65,7 @@ with cm.connect() as my_interface:
         tmc9660_device = TMC9660(my_interface)
 
     # Read the current value of the commutation mode as an integer
-    commutation_mode = tmc9660_device.get_axis_parameter(TMC9660.ap.COMMUTATION_MODE)
+    commutation_mode = tmc9660_device.get_parameter(TMC9660.ap.COMMUTATION_MODE)
 
     # Get the name of the commutation mode
     commutation_mode_name = TMC9660.ap.COMMUTATION_MODE.choice.get(commutation_mode).name

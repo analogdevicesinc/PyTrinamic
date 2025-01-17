@@ -8,9 +8,9 @@ from ...modules import ParameterApiDevice
 from ...tmcl import TMCLCommand
 
 from .TMC9660_ap import Ap
-from .TMC9660_bank0 import Bank0
-from .TMC9660_bank2 import Bank2
-from .TMC9660_bank3 import Bank3
+from .TMC9660_gpbank0 import GpBank0
+from .TMC9660_gpbank2 import GpBank2
+from .TMC9660_gpbank3 import GpBank3
 from .MCCmap import MCCMap
 from .ADCmap import ADCMap
 from .SYS_CTRLmap import SYS_CTRLMap
@@ -31,9 +31,9 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
     """
     ap = Ap()
     
-    gp_bank0 = Bank0()
-    gp_bank2 = Bank2()
-    gp_bank3 = Bank3()
+    gp_bank0 = GpBank0()
+    gp_bank2 = GpBank2()
+    gp_bank3 = GpBank3()
 
     MCC = MCCMap(block=0).ALL_REGISTERS
     ADC = ADCMap(block=1).ALL_REGISTERS

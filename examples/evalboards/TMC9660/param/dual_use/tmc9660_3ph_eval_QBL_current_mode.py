@@ -106,22 +106,22 @@ with cm.connect() as my_interface:
         tmc9660_device = TMC9660(my_interface)
 
     # Set the commutation mode to system off - in case it was on before
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
     # Increase the output voltage limit
-    tmc9660_device.set_axis_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
+    tmc9660_device.set_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
     
     # Set the motor parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
 
     # Set current related parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.CSA_GAIN_ADC_I0_TO_ADC_I2.choice.GAIN_10X)
+    tmc9660_device.set_parameter(TMC9660.ap.CSA_GAIN_ADC_I0_TO_ADC_I2.choice.GAIN_10X)
     print(f"CURRENT_SCALING_FACTOR: {current_scaling_factor}")
-    tmc9660_device.set_axis_parameter(TMC9660.ap.CURRENT_SCALING_FACTOR, current_scaling_factor)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MAX_FLUX, 2000)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.OPENLOOP_CURRENT, 2000)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_CURRENT_MODE)
+    tmc9660_device.set_parameter(TMC9660.ap.CURRENT_SCALING_FACTOR, current_scaling_factor)
+    tmc9660_device.set_parameter(TMC9660.ap.MAX_FLUX, 2000)
+    tmc9660_device.set_parameter(TMC9660.ap.OPENLOOP_CURRENT, 2000)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_CURRENT_MODE)
     
     # Move the motor in open loop current mode, while recording the ADC values of the phase currents measurement ADCs.
     # Note that the ADC values are not the actual phase currents, but the raw ADC values!
@@ -130,16 +130,16 @@ with cm.connect() as my_interface:
     samples_i2: List[Sample] = []
     samples_current: List[Sample] = []
     for target_velocity, timeout in [(10000, 4), (0, 1)]:
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, target_velocity)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, target_velocity)
         timer = TimeoutTimer(timeout)
         while not timer.has_expired():
-            samples_i0.append(Sample(time.perf_counter(), tmc9660_device.get_axis_parameter(TMC9660.ap.ADC_I0)))
-            samples_i1.append(Sample(time.perf_counter(), tmc9660_device.get_axis_parameter(TMC9660.ap.ADC_I1)))
-            samples_i2.append(Sample(time.perf_counter(), tmc9660_device.get_axis_parameter(TMC9660.ap.ADC_I2)))
-            samples_current.append(Sample(time.perf_counter(), tmc9660_device.get_axis_parameter(TMC9660.ap.ACTUAL_TOTAL_MOTOR_CURRENT)))
+            samples_i0.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ADC_I0)))
+            samples_i1.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ADC_I1)))
+            samples_i2.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ADC_I2)))
+            samples_current.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ACTUAL_TOTAL_MOTOR_CURRENT)))
 
     # Remove power from the motor
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
 # Plot the phase currents and the actual total motor current
 fig, ax = plt.subplots()

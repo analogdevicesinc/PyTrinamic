@@ -38,6 +38,6 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
     tmc9660 = TMC9660(my_interface)
 
     for _ in range(10):
-        voltage_v = tmc9660.get_axis_parameter(tmc9660.ap.SUPPLY_VOLTAGE) / 10
+        voltage_v = tmc9660.get_parameter(tmc9660.ap.SUPPLY_VOLTAGE) / 10
         print(f"Supply voltage: {voltage_v:.2f} V")
         time.sleep(0.2)

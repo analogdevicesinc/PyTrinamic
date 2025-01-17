@@ -35,17 +35,17 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
 
     tmc9660 = TMC9660(my_interface)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
-    tmc9660.set_axis_parameter(tmc9660.ap.OPENLOOP_VOLTAGE, 1000)
-    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
+    tmc9660.set_parameter(tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660.set_parameter(tmc9660.ap.OPENLOOP_VOLTAGE, 1000)
+    tmc9660.set_parameter(tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
+    tmc9660.set_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
     
     start_time_s = time.time()
     while time.time() - start_time_s < 4:
-        print(f"Actual velocity: {tmc9660.get_axis_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")
+        print(f"Actual velocity: {tmc9660.get_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")
         time.sleep(0.1)
 
-    tmc9660.set_axis_parameter(tmc9660.ap.TARGET_VELOCITY, 0)
+    tmc9660.set_parameter(tmc9660.ap.TARGET_VELOCITY, 0)
     time.sleep(0.1)
-    tmc9660.set_axis_parameter(tmc9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660.set_parameter(tmc9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
