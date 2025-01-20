@@ -11,6 +11,8 @@ The following eval boards are implemented:
 
 """
 
+from typing import Union
+
 from pytrinamic.modules import ParameterApiDevice
 from pytrinamic.ic import TMC9660
 from pytrinamic.ic import RegisterApiDevice
@@ -44,6 +46,30 @@ class TMC9660_eval(RegisterApiDevice, ParameterApiDevice):
             module_id=self._module_id,
             signed=signed,
         )
+    
+    def get_digital_input(self, gpio_target: Union[int, TMC9660._Io.Gpio]):
+        """Get the digital input state."""
+        if isinstance(gpio_target, int):
+            if gpio_target < 0 or gpio_target > 18:
+                raise ValueError("gpio_target must be in the range [0, 18].")
+            x = gpio_target
+        elif isinstance(gpio_target, TMC9660._Io.Gpio):
+            x = gpio_target.index
+        else:
+            raise ValueError("gpio_target must be an integer or a TMC9660.IO.GPIOx object.")
+        return self._connection.get_digital_input(x, self._module_id)
+    
+    def set_digital_output(self, gpio_target: Union[int, TMC9660._Io.Gpio], value: bool):
+        if isinstance(gpio_target, int):
+            if gpio_target < 0 or gpio_target > 18:
+                raise ValueError("gpio_target must be in the range [0, 18].")
+            x = gpio_target
+        elif isinstance(gpio_target, TMC9660._Io.Gpio):
+            x = gpio_target.index
+        else:
+            raise ValueError("gpio_target must be an integer or a TMC9660.IO.GPIOx object.")
+
+        self._connection.send(TMCLCommand.SIO, x, 0, 1 if value else 0, self._module_id)
     
     def _get_axis_parameter(self, index: int, signed: bool):
         """Implementation of the ParameterApiDevice::_get_axis_parameter() function."""
