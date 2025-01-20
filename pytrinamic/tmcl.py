@@ -6,7 +6,10 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
+import inspect
 import struct
+import ctypes
+import textwrap
 
 _PACKAGE_STRUCTURE = ">BBBBIB"
 
@@ -126,6 +129,14 @@ class TMCLCommand:
     BOOT_WRITE_LENGTH          = 208
     BOOT                       = 242
 
+    @classmethod
+    def get_name(cls, value):
+        for name, member in inspect.getmembers(cls):
+            if not name.startswith("__") and member == value:
+                return name
+        else:
+            return "UNKNOWN"
+
 
 class TMCLStatus:
     SUCCESS               = 100
@@ -143,8 +154,17 @@ class TMCLStatus:
         3: "Wrong Type",
         4: "Invalid Value",
         5: "EEPROM Locked",
-        6: "Command not Available"
+        6: "Command not Available",
+        100: "Success",
+        101: "Command Loaded"
     }
+
+    @classmethod
+    def get_name(cls, value):
+        try:
+            return cls.messages[value]
+        except KeyError:
+            return "UNKNOWN"
 
 
 class TMCLRequest:
@@ -179,7 +199,18 @@ class TMCLRequest:
             self.commandType,
             self.motorBank,
             self.value,
-            self.checksum
+            self.checksum,
+        )
+    
+    def oneline_str_repr(self):
+        return "TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X} -> {6}(type={2}, idx={3}, value=0x{4:08X})".format(
+            self.moduleAddress,
+            self.command,
+            self.commandType,
+            self.motorBank,
+            self.value,
+            self.checksum,
+            TMCLCommand.get_name(self.command),
         )
 
 
@@ -219,7 +250,7 @@ class TMCLReply:
             self.status,
             self.command,
             self.value,
-            self.checksum
+            self.checksum,
         )
 
     def value(self):
@@ -231,6 +262,41 @@ class TMCLReply:
     def version_string(self):
         byte_string = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
         return str(byte_string, "ascii")
+    
+    def oneline_str_repr(self):
+        return "TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X} <- {6}(status=\"{7}\", value=0x{4:08X})".format(
+            self.reply_address,
+            self.module_address,
+            self.status,
+            self.command,
+            self.value,
+            self.checksum,
+            TMCLCommand.get_name(self.command),
+            TMCLStatus.get_name(self.status),
+        )
+    
+    def detailed_str_repr(self):
+        repr = """\
+            TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}
+                          |  |  |  |  |        `Checksum: {5}
+                          |  |  |  |   `Value Unsigned: {4}
+                          |  |  |  |   `Value Signed: {6}
+                          |  |  |   `Command: {3} ({7})
+                          |  |   `Status: {2} ({8})
+                          |   `Module Address: {1}
+                           `Reply Address: {0}
+        """.format(
+            self.reply_address,
+            self.module_address,
+            self.status,
+            self.command,
+            self.value,
+            self.checksum,
+            ctypes.c_int32(self.value).value,
+            TMCLCommand.get_name(self.command),
+            TMCLStatus.get_name(self.status),
+        )
+        return textwrap.dedent(repr)
 
 
 class TMCLReplyError(Exception):
@@ -252,3 +318,6 @@ class TMCLReplyStatusError(TMCLReplyError):
 
     status_code = property(__get_status_code)
     error_description = property(__get_error_description)
+
+    def __str__(self):
+        return textwrap.indent("\n" + self.reply.detailed_str_repr(), "    ")

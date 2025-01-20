@@ -90,7 +90,7 @@ class TmclInterface(ABC):
         When no_reply is set, do not read back a reply. This must only be used for
         special commands that do not send back a reply!
         """
-        self.logger.debug("Tx: %s", request)
+        self.logger.debug("Tx: %s", request.oneline_str_repr())
 
         self._send(self._host_id, request.moduleAddress, request.to_buffer())
         if no_reply:
@@ -99,7 +99,7 @@ class TmclInterface(ABC):
 
         reply = TMCLReply.from_buffer(self._recv(self._host_id, request.moduleAddress))
 
-        self.logger.debug("Rx: %s", reply)
+        self.logger.debug("Rx: %s", reply.oneline_str_repr())
 
         self._reply_check(reply)
 
