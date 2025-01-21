@@ -11,7 +11,6 @@ import inspect
 import warnings
 
 from typing import Optional, Union
-from abc import ABC, abstractmethod
 
 
 class TMCLModule(object):
@@ -241,9 +240,10 @@ class Parameter:
         return self.parent.category
     
 
-class ParameterApiDevice(ABC):
+class ParameterApiDevice:
 
     def get_parameter(self, get_target: Union[Parameter]):
+        """Get the value of a parameter using the GAP or GGP command."""
         if isinstance(get_target, Parameter):
             parameter = get_target
         else:
@@ -261,10 +261,11 @@ class ParameterApiDevice(ABC):
                 signed=signed,
             )
         else:
-            raise ValueError("Unsupported parameter type.")
+            raise ValueError("Unsupported ParameterGroup.Category!")
         return value
 
     def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
+        """Set the value of a parameter using the SAP or SGP command."""
         if isinstance(set_target, Parameter):
             parameter = set_target
             if value is None:
@@ -288,20 +289,40 @@ class ParameterApiDevice(ABC):
                 value=value,
             )
         else:
-            raise ValueError("Unsupported parameter type.")
+            raise ValueError("Unsupported ParameterGroup.Category!")
+        
+    def store_parameter(self, store_target: Parameter):
+        """Store the value of a parameter using the STAP or STGP command."""
+        if isinstance(store_target, Parameter):
+            parameter = store_target
+        else:
+            raise ValueError("store_target must be a Parameter!")
+        if parameter.category == ParameterGroup.Category.AXIS:
+            return self._store_axis_parameter(
+                parameter.index,
+            )
+        elif parameter.category == ParameterGroup.Category.GLOBAL:
+            return self._store_global_parameter(
+                parameter.index,
+                bank=parameter.block,
+            )
+        else:
+            raise ValueError("Unsupported ParameterGroup.Category!")
     
-    @abstractmethod
     def _get_axis_parameter(self, index: int, signed: bool):
         raise NotImplementedError
 
-    @abstractmethod
     def _set_axis_parameter(self, index: int, value: int):
         raise NotImplementedError
     
-    @abstractmethod
     def _get_global_parameter(self, index: int, bank: int, signed: bool):
         raise NotImplementedError
 
-    @abstractmethod
     def _set_global_parameter(self, index: int, bank: int, value: int):
+        raise NotImplementedError
+    
+    def _store_axis_parameter(self, index: int):
+        raise NotImplementedError
+
+    def _store_global_parameter(self, index: int, bank: int):
         raise NotImplementedError
