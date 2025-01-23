@@ -37,3 +37,4 @@ from .TMC5262_eval import TMC5262_eval
 from .TMC2262_eval import TMC2262_eval
 from .TMC6460_eval import TMC6460_eval
 from .TMC5222_eval import TMC5222_eval
+from .TMC5221_eval import TMC5221_eval
