@@ -9,6 +9,7 @@ from __future__ import annotations      #start at python 3.7
 from typing import Optional, Union
 from enum import IntFlag
 from abc import ABC, abstractmethod
+import inspect
 
 
 class TMCIc(object):
@@ -243,7 +244,23 @@ class Register:
         return fields
 
 
-class Choice:
-    def __init__(self, value, parent) -> None:
+class Option:
+    def __init__(self, value, parent, name=None) -> None:
         self.value = value
         self.parent = parent
+        self.name = name
+
+
+class Choice:
+    def __init__(self, parent) -> None:
+        self.parent = parent
+
+    def options(self):
+        return sorted([member for name, member in inspect.getmembers(self) if isinstance(member, Option)], key=lambda x: x.value)
+
+    def get(self, value):
+        """Extracts the option name from a value."""
+        try:
+            return next(option for option in self.options() if option.value == value)
+        except StopIteration:
+            raise IndexError(f"Unknown value {value} for choice {self.parent.name}!")
