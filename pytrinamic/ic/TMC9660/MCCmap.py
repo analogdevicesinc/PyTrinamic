@@ -5,7 +5,7 @@
 
 # This file was generated. Do not modify it manually!
 
-from pytrinamic.ic import Access, RegisterGroup, Choice, Field, Register
+from pytrinamic.ic import Access, RegisterGroup, Choice, Option, Field, Register
 
 
 class MCCMap:
@@ -222,74 +222,79 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _UX1_SELECT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC_I0 = Choice(0, parent)
-                    self.ADC_I1 = Choice(1, parent)
-                    self.ADC_I2 = Choice(2, parent)
-                    self.ADC_I3 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC_I0  =  Option(0,  parent,  "ADC_I0")
+                    self.ADC_I1  =  Option(1,  parent,  "ADC_I1")
+                    self.ADC_I2  =  Option(2,  parent,  "ADC_I2")
+                    self.ADC_I3  =  Option(3,  parent,  "ADC_I3")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("UX1_SELECT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _VX2_SELECT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC_I0 = Choice(0, parent)
-                    self.ADC_I1 = Choice(1, parent)
-                    self.ADC_I2 = Choice(2, parent)
-                    self.ADC_I3 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC_I0  =  Option(0,  parent,  "ADC_I0")
+                    self.ADC_I1  =  Option(1,  parent,  "ADC_I1")
+                    self.ADC_I2  =  Option(2,  parent,  "ADC_I2")
+                    self.ADC_I3  =  Option(3,  parent,  "ADC_I3")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VX2_SELECT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _WY1_SELECT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC_I0 = Choice(0, parent)
-                    self.ADC_I1 = Choice(1, parent)
-                    self.ADC_I2 = Choice(2, parent)
-                    self.ADC_I3 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC_I0  =  Option(0,  parent,  "ADC_I0")
+                    self.ADC_I1  =  Option(1,  parent,  "ADC_I1")
+                    self.ADC_I2  =  Option(2,  parent,  "ADC_I2")
+                    self.ADC_I3  =  Option(3,  parent,  "ADC_I3")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("WY1_SELECT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _Y2_SELECT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC_I0 = Choice(0, parent)
-                    self.ADC_I1 = Choice(1, parent)
-                    self.ADC_I2 = Choice(2, parent)
-                    self.ADC_I3 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC_I0  =  Option(0,  parent,  "ADC_I0")
+                    self.ADC_I1  =  Option(1,  parent,  "ADC_I1")
+                    self.ADC_I2  =  Option(2,  parent,  "ADC_I2")
+                    self.ADC_I3  =  Option(3,  parent,  "ADC_I3")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("Y2_SELECT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _MEASUREMENT_MODE(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.INLINE = Choice(0, parent)
-                    self.INLINE_VW = Choice(1, parent)
-                    self.INLINE_UW = Choice(2, parent)
-                    self.INLINE_UV = Choice(3, parent)
-                    self.BOTTOM = Choice(4, parent)
+                    super().__init__(parent)
+                    self.INLINE     =  Option(0,  parent,  "INLINE")
+                    self.INLINE_VW  =  Option(1,  parent,  "INLINE_VW")
+                    self.INLINE_UW  =  Option(2,  parent,  "INLINE_UW")
+                    self.INLINE_UV  =  Option(3,  parent,  "INLINE_UV")
+                    self.BOTTOM     =  Option(4,  parent,  "BOTTOM")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("MEASUREMENT_MODE", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _TRIGGER_SELECT(Field):
 
@@ -715,17 +720,18 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _TYPE(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.NONE = Choice(0, parent)
-                    self.DC = Choice(1, parent)
-                    self.STEPPER = Choice(2, parent)
-                    self.BLDC = Choice(3, parent)
+                    super().__init__(parent)
+                    self.NONE     =  Option(0,  parent,  "NONE")
+                    self.DC       =  Option(1,  parent,  "DC")
+                    self.STEPPER  =  Option(2,  parent,  "STEPPER")
+                    self.BLDC     =  Option(3,  parent,  "BLDC")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("TYPE", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("MOTOR_CONFIG", parent, access, address, block, signed)
@@ -736,23 +742,24 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _MOTION_MODE(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.STOPPED = Choice(0, parent)
-                    self.TORQUE = Choice(1, parent)
-                    self.VELOCITY = Choice(2, parent)
-                    self.POSITION = Choice(3, parent)
-                    self.PRBS_FLUX = Choice(4, parent)
-                    self.PRBS_TORQUE = Choice(5, parent)
-                    self.PRBS_VELOCITY = Choice(6, parent)
-                    self.PRBS_POSITION = Choice(7, parent)
-                    self.VOLTAGE_EXT = Choice(8, parent)
-                    self.PRBS_UD = Choice(9, parent)
+                    super().__init__(parent)
+                    self.STOPPED        =  Option(0,  parent,  "STOPPED")
+                    self.TORQUE         =  Option(1,  parent,  "TORQUE")
+                    self.VELOCITY       =  Option(2,  parent,  "VELOCITY")
+                    self.POSITION       =  Option(3,  parent,  "POSITION")
+                    self.PRBS_FLUX      =  Option(4,  parent,  "PRBS_FLUX")
+                    self.PRBS_TORQUE    =  Option(5,  parent,  "PRBS_TORQUE")
+                    self.PRBS_VELOCITY  =  Option(6,  parent,  "PRBS_VELOCITY")
+                    self.PRBS_POSITION  =  Option(7,  parent,  "PRBS_POSITION")
+                    self.VOLTAGE_EXT    =  Option(8,  parent,  "VOLTAGE_EXT")
+                    self.PRBS_UD        =  Option(9,  parent,  "PRBS_UD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("MOTION_MODE", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _RAMP_ENABLE(Field):
 
@@ -770,17 +777,18 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _FEEDFORWARD(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DISABLED = Choice(0, parent)
-                    self.MCC_RAMPER_V_ACTUAL = Choice(1, parent)
-                    self.MCC_RAMPER_A_ACTUAL = Choice(2, parent)
-                    self.BOTH = Choice(3, parent)
+                    super().__init__(parent)
+                    self.DISABLED             =  Option(0,  parent,  "DISABLED")
+                    self.MCC_RAMPER_V_ACTUAL  =  Option(1,  parent,  "MCC_RAMPER_V_ACTUAL")
+                    self.MCC_RAMPER_A_ACTUAL  =  Option(2,  parent,  "MCC_RAMPER_A_ACTUAL")
+                    self.BOTH                 =  Option(3,  parent,  "BOTH")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("FEEDFORWARD", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("MOTION_CONFIG", parent, access, address, block, signed)
@@ -793,19 +801,20 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _PHI_E_SELECTION(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.RESERVED = Choice(0, parent)
-                    self.PHI_E_EXT = Choice(1, parent)
-                    self.PHI_E_RAMP = Choice(2, parent)
-                    self.PHI_E_ABN = Choice(3, parent)
-                    self.RAMP_X_ACTUAL = Choice(4, parent)
-                    self.PHI_E_HAL = Choice(5, parent)
+                    super().__init__(parent)
+                    self.RESERVED       =  Option(0,  parent,  "RESERVED")
+                    self.PHI_E_EXT      =  Option(1,  parent,  "PHI_E_EXT")
+                    self.PHI_E_RAMP     =  Option(2,  parent,  "PHI_E_RAMP")
+                    self.PHI_E_ABN      =  Option(3,  parent,  "PHI_E_ABN")
+                    self.RAMP_X_ACTUAL  =  Option(4,  parent,  "RAMP_X_ACTUAL")
+                    self.PHI_E_HAL      =  Option(5,  parent,  "PHI_E_HAL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("PHI_E_SELECTION", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("PHI_E_SELECTION", parent, access, address, block, signed)
@@ -828,48 +837,51 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CHOP(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.OFF_FREE = Choice(0, parent)
-                    self.OFF_LSON = Choice(1, parent)
-                    self.OFF_HSON = Choice(2, parent)
-                    self.OFF_FREE2 = Choice(3, parent)
-                    self.OFF_FREE3 = Choice(4, parent)
-                    self.LSPWM_HSOFF = Choice(5, parent)
-                    self.HSPWM_LSOFF = Choice(6, parent)
-                    self.CENTERED = Choice(7, parent)
+                    super().__init__(parent)
+                    self.OFF_FREE     =  Option(0,  parent,  "OFF_FREE")
+                    self.OFF_LSON     =  Option(1,  parent,  "OFF_LSON")
+                    self.OFF_HSON     =  Option(2,  parent,  "OFF_HSON")
+                    self.OFF_FREE2    =  Option(3,  parent,  "OFF_FREE2")
+                    self.OFF_FREE3    =  Option(4,  parent,  "OFF_FREE3")
+                    self.LSPWM_HSOFF  =  Option(5,  parent,  "LSPWM_HSOFF")
+                    self.HSPWM_LSOFF  =  Option(6,  parent,  "HSPWM_LSOFF")
+                    self.CENTERED     =  Option(7,  parent,  "CENTERED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CHOP", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _SV_MODE(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DISABLED = Choice(0, parent)
-                    self.HARMONIC = Choice(1, parent)
-                    self.BOTTOM = Choice(2, parent)
-                    self.BOTTOM_OFFSET = Choice(3, parent)
+                    super().__init__(parent)
+                    self.DISABLED       =  Option(0,  parent,  "DISABLED")
+                    self.HARMONIC       =  Option(1,  parent,  "HARMONIC")
+                    self.BOTTOM         =  Option(2,  parent,  "BOTTOM")
+                    self.BOTTOM_OFFSET  =  Option(3,  parent,  "BOTTOM_OFFSET")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("SV_MODE", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _Y2_HS_SRC(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.Y2_HS = Choice(0, parent)
-                    self.Y2_ALT = Choice(1, parent)
-                    self.TIM_BASIC = Choice(2, parent)
+                    super().__init__(parent)
+                    self.Y2_HS      =  Option(0,  parent,  "Y2_HS")
+                    self.Y2_ALT     =  Option(1,  parent,  "Y2_ALT")
+                    self.TIM_BASIC  =  Option(2,  parent,  "TIM_BASIC")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("Y2_HS_SRC", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ENABLE_UX1(Field):
 
@@ -1148,21 +1160,22 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ORDER(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.UVW = Choice(0, parent)
-                    self.VWU = Choice(1, parent)
-                    self.WUV = Choice(2, parent)
-                    self.RESERVED = Choice(3, parent)
-                    self.UWV = Choice(4, parent)
-                    self.VUW = Choice(5, parent)
-                    self.WVU = Choice(6, parent)
-                    self.RESERVED2 = Choice(7, parent)
+                    super().__init__(parent)
+                    self.UVW        =  Option(0,  parent,  "UVW")
+                    self.VWU        =  Option(1,  parent,  "VWU")
+                    self.WUV        =  Option(2,  parent,  "WUV")
+                    self.RESERVED   =  Option(3,  parent,  "RESERVED")
+                    self.UWV        =  Option(4,  parent,  "UWV")
+                    self.VUW        =  Option(5,  parent,  "VUW")
+                    self.WVU        =  Option(6,  parent,  "WVU")
+                    self.RESERVED2  =  Option(7,  parent,  "RESERVED2")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ORDER", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _FILTER(Field):
 
@@ -1461,24 +1474,25 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _SELECTION(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.PHI_E = Choice(0, parent)
-                    self.PHI_E_EXT = Choice(1, parent)
-                    self.PHI_E_RAMP = Choice(2, parent)
-                    self.PHI_E_ABN = Choice(3, parent)
-                    self.RAMP_X_ACTUAL = Choice(4, parent)
-                    self.PHI_E_HAL = Choice(5, parent)
-                    self.PHI_M_EXT = Choice(6, parent)
-                    self.Reserved = Choice(11, parent)
-                    self.ABN_COUNT = Choice(8, parent)
-                    self.PHI_M_ABN = Choice(9, parent)
-                    self.HALL_COUNT = Choice(12, parent)
+                    super().__init__(parent)
+                    self.PHI_E          =  Option(0,   parent,  "PHI_E")
+                    self.PHI_E_EXT      =  Option(1,   parent,  "PHI_E_EXT")
+                    self.PHI_E_RAMP     =  Option(2,   parent,  "PHI_E_RAMP")
+                    self.PHI_E_ABN      =  Option(3,   parent,  "PHI_E_ABN")
+                    self.RAMP_X_ACTUAL  =  Option(4,   parent,  "RAMP_X_ACTUAL")
+                    self.PHI_E_HAL      =  Option(5,   parent,  "PHI_E_HAL")
+                    self.PHI_M_EXT      =  Option(6,   parent,  "PHI_M_EXT")
+                    self.Reserved       =  Option(11,  parent,  "Reserved")
+                    self.ABN_COUNT      =  Option(8,   parent,  "ABN_COUNT")
+                    self.PHI_M_ABN      =  Option(9,   parent,  "PHI_M_ABN")
+                    self.HALL_COUNT     =  Option(12,  parent,  "HALL_COUNT")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("SELECTION", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _METER_SYNC_PULSE(Field):
 
@@ -1489,34 +1503,36 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _METER_TYPE(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.VELOCITY_PER = Choice(0, parent)
-                    self.VELOCITY_FREQ = Choice(1, parent)
-                    self.VELOCITY_EXT = Choice(2, parent)
+                    super().__init__(parent)
+                    self.VELOCITY_PER   =  Option(0,  parent,  "VELOCITY_PER")
+                    self.VELOCITY_FREQ  =  Option(1,  parent,  "VELOCITY_FREQ")
+                    self.VELOCITY_EXT   =  Option(2,  parent,  "VELOCITY_EXT")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("METER_TYPE", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _MOVING_AVRG_FILTER_SAMPLES(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.AVRG_1 = Choice(0, parent)
-                    self.AVRG_2 = Choice(1, parent)
-                    self.AVRG_3 = Choice(2, parent)
-                    self.AVRG_4 = Choice(3, parent)
-                    self.AVRG_5 = Choice(4, parent)
-                    self.AVRG_6 = Choice(5, parent)
-                    self.AVRG_7 = Choice(6, parent)
-                    self.AVRG_8 = Choice(7, parent)
+                    super().__init__(parent)
+                    self.AVRG_1  =  Option(0,  parent,  "AVRG_1")
+                    self.AVRG_2  =  Option(1,  parent,  "AVRG_2")
+                    self.AVRG_3  =  Option(2,  parent,  "AVRG_3")
+                    self.AVRG_4  =  Option(3,  parent,  "AVRG_4")
+                    self.AVRG_5  =  Option(4,  parent,  "AVRG_5")
+                    self.AVRG_6  =  Option(5,  parent,  "AVRG_6")
+                    self.AVRG_7  =  Option(6,  parent,  "AVRG_7")
+                    self.AVRG_8  =  Option(7,  parent,  "AVRG_8")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("MOVING_AVRG_FILTER_SAMPLES", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("VELOCITY_CONFIG", parent, access, address, block, signed)
@@ -1576,24 +1592,25 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _SELECTION(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.PHI_E = Choice(0, parent)
-                    self.PHI_E_EXT = Choice(1, parent)
-                    self.PHI_E_RAMP = Choice(2, parent)
-                    self.PHI_E_ABN = Choice(3, parent)
-                    self.RAMP_X_ACTUAL = Choice(4, parent)
-                    self.PHI_E_HAL = Choice(5, parent)
-                    self.PHI_M_EXT = Choice(6, parent)
-                    self.Reserved = Choice(11, parent)
-                    self.ABN_COUNT = Choice(8, parent)
-                    self.PHI_M_ABN = Choice(9, parent)
-                    self.HALL_COUNT = Choice(12, parent)
+                    super().__init__(parent)
+                    self.PHI_E          =  Option(0,   parent,  "PHI_E")
+                    self.PHI_E_EXT      =  Option(1,   parent,  "PHI_E_EXT")
+                    self.PHI_E_RAMP     =  Option(2,   parent,  "PHI_E_RAMP")
+                    self.PHI_E_ABN      =  Option(3,   parent,  "PHI_E_ABN")
+                    self.RAMP_X_ACTUAL  =  Option(4,   parent,  "RAMP_X_ACTUAL")
+                    self.PHI_E_HAL      =  Option(5,   parent,  "PHI_E_HAL")
+                    self.PHI_M_EXT      =  Option(6,   parent,  "PHI_M_EXT")
+                    self.Reserved       =  Option(11,  parent,  "Reserved")
+                    self.ABN_COUNT      =  Option(8,   parent,  "ABN_COUNT")
+                    self.PHI_M_ABN      =  Option(9,   parent,  "PHI_M_ABN")
+                    self.HALL_COUNT     =  Option(12,  parent,  "HALL_COUNT")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("SELECTION", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("POSITION_CONFIG", parent, access, address, block, signed)
@@ -2184,20 +2201,21 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _SHIFT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SHIFT_0 = Choice(0, parent)
-                    self.SHIFT_4 = Choice(1, parent)
-                    self.SHIFT_8 = Choice(2, parent)
-                    self.SHIFT_12 = Choice(3, parent)
-                    self.SHIFT_16 = Choice(4, parent)
-                    self.SHIFT_20 = Choice(5, parent)
-                    self.SHIFT_24 = Choice(6, parent)
+                    super().__init__(parent)
+                    self.SHIFT_0   =  Option(0,  parent,  "SHIFT_0")
+                    self.SHIFT_4   =  Option(1,  parent,  "SHIFT_4")
+                    self.SHIFT_8   =  Option(2,  parent,  "SHIFT_8")
+                    self.SHIFT_12  =  Option(3,  parent,  "SHIFT_12")
+                    self.SHIFT_16  =  Option(4,  parent,  "SHIFT_16")
+                    self.SHIFT_20  =  Option(5,  parent,  "SHIFT_20")
+                    self.SHIFT_24  =  Option(6,  parent,  "SHIFT_24")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("SHIFT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("RAMPER_ACC_FF", parent, access, address, block, signed)
@@ -2281,59 +2299,63 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _VELOCITY_NORM_P(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SHIFT_0 = Choice(0, parent)
-                    self.SHIFT_8 = Choice(1, parent)
-                    self.SHIFT_16 = Choice(2, parent)
-                    self.SHIFT_24 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.SHIFT_0   =  Option(0,  parent,  "SHIFT_0")
+                    self.SHIFT_8   =  Option(1,  parent,  "SHIFT_8")
+                    self.SHIFT_16  =  Option(2,  parent,  "SHIFT_16")
+                    self.SHIFT_24  =  Option(3,  parent,  "SHIFT_24")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VELOCITY_NORM_P", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _VELOCITY_NORM_I(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SHIFT_8 = Choice(0, parent)
-                    self.SHIFT_16 = Choice(1, parent)
-                    self.SHIFT_24 = Choice(2, parent)
-                    self.SHIFT_32 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.SHIFT_8   =  Option(0,  parent,  "SHIFT_8")
+                    self.SHIFT_16  =  Option(1,  parent,  "SHIFT_16")
+                    self.SHIFT_24  =  Option(2,  parent,  "SHIFT_24")
+                    self.SHIFT_32  =  Option(3,  parent,  "SHIFT_32")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VELOCITY_NORM_I", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _POSITION_NORM_P(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SHIFT_0 = Choice(0, parent)
-                    self.SHIFT_8 = Choice(1, parent)
-                    self.SHIFT_16 = Choice(2, parent)
-                    self.SHIFT_24 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.SHIFT_0   =  Option(0,  parent,  "SHIFT_0")
+                    self.SHIFT_8   =  Option(1,  parent,  "SHIFT_8")
+                    self.SHIFT_16  =  Option(2,  parent,  "SHIFT_16")
+                    self.SHIFT_24  =  Option(3,  parent,  "SHIFT_24")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("POSITION_NORM_P", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _POSITION_NORM_I(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SHIFT_8 = Choice(0, parent)
-                    self.SHIFT_16 = Choice(1, parent)
-                    self.SHIFT_24 = Choice(2, parent)
-                    self.SHIFT_32 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.SHIFT_8   =  Option(0,  parent,  "SHIFT_8")
+                    self.SHIFT_16  =  Option(1,  parent,  "SHIFT_16")
+                    self.SHIFT_24  =  Option(2,  parent,  "SHIFT_24")
+                    self.SHIFT_32  =  Option(3,  parent,  "SHIFT_32")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("POSITION_NORM_I", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _VEL_SCALE(Field):
 
@@ -3646,107 +3668,111 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _IGATE_SINK_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SINK_50MA = Choice(0, parent)
-                    self.SINK_100MA = Choice(1, parent)
-                    self.SINK_160MA = Choice(2, parent)
-                    self.SINK_210MA = Choice(3, parent)
-                    self.SINK_270MA = Choice(4, parent)
-                    self.SINK_320MA = Choice(5, parent)
-                    self.SINK_380MA = Choice(6, parent)
-                    self.SINK_430MA = Choice(7, parent)
-                    self.SINK_580MA = Choice(8, parent)
-                    self.SINK_720MA = Choice(9, parent)
-                    self.SINK_860MA = Choice(10, parent)
-                    self.SINK_1000MA = Choice(11, parent)
-                    self.SINK_1250MA = Choice(12, parent)
-                    self.SINK_1510MA = Choice(13, parent)
-                    self.SINK_1770MA = Choice(14, parent)
-                    self.SINK_2000MA = Choice(15, parent)
+                    super().__init__(parent)
+                    self.SINK_50MA    =  Option(0,   parent,  "SINK_50MA")
+                    self.SINK_100MA   =  Option(1,   parent,  "SINK_100MA")
+                    self.SINK_160MA   =  Option(2,   parent,  "SINK_160MA")
+                    self.SINK_210MA   =  Option(3,   parent,  "SINK_210MA")
+                    self.SINK_270MA   =  Option(4,   parent,  "SINK_270MA")
+                    self.SINK_320MA   =  Option(5,   parent,  "SINK_320MA")
+                    self.SINK_380MA   =  Option(6,   parent,  "SINK_380MA")
+                    self.SINK_430MA   =  Option(7,   parent,  "SINK_430MA")
+                    self.SINK_580MA   =  Option(8,   parent,  "SINK_580MA")
+                    self.SINK_720MA   =  Option(9,   parent,  "SINK_720MA")
+                    self.SINK_860MA   =  Option(10,  parent,  "SINK_860MA")
+                    self.SINK_1000MA  =  Option(11,  parent,  "SINK_1000MA")
+                    self.SINK_1250MA  =  Option(12,  parent,  "SINK_1250MA")
+                    self.SINK_1510MA  =  Option(13,  parent,  "SINK_1510MA")
+                    self.SINK_1770MA  =  Option(14,  parent,  "SINK_1770MA")
+                    self.SINK_2000MA  =  Option(15,  parent,  "SINK_2000MA")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("IGATE_SINK_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _IGATE_SOURCE_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SOURCE_25MA = Choice(0, parent)
-                    self.SOURCE_50MA = Choice(1, parent)
-                    self.SOURCE_80MA = Choice(2, parent)
-                    self.SOURCE_105MA = Choice(3, parent)
-                    self.SOURCE_135MA = Choice(4, parent)
-                    self.SOURCE_160MA = Choice(5, parent)
-                    self.SOURCE_190MA = Choice(6, parent)
-                    self.SOURCE_215MA = Choice(7, parent)
-                    self.SOURCE_290MA = Choice(8, parent)
-                    self.SOURCE_360MA = Choice(9, parent)
-                    self.SOURCE_430MA = Choice(10, parent)
-                    self.SOURCE_500MA = Choice(11, parent)
-                    self.SOURCE_625MA = Choice(12, parent)
-                    self.SOURCE_755MA = Choice(13, parent)
-                    self.SOURCE_885MA = Choice(14, parent)
-                    self.SOURCE_1000MA = Choice(15, parent)
+                    super().__init__(parent)
+                    self.SOURCE_25MA    =  Option(0,   parent,  "SOURCE_25MA")
+                    self.SOURCE_50MA    =  Option(1,   parent,  "SOURCE_50MA")
+                    self.SOURCE_80MA    =  Option(2,   parent,  "SOURCE_80MA")
+                    self.SOURCE_105MA   =  Option(3,   parent,  "SOURCE_105MA")
+                    self.SOURCE_135MA   =  Option(4,   parent,  "SOURCE_135MA")
+                    self.SOURCE_160MA   =  Option(5,   parent,  "SOURCE_160MA")
+                    self.SOURCE_190MA   =  Option(6,   parent,  "SOURCE_190MA")
+                    self.SOURCE_215MA   =  Option(7,   parent,  "SOURCE_215MA")
+                    self.SOURCE_290MA   =  Option(8,   parent,  "SOURCE_290MA")
+                    self.SOURCE_360MA   =  Option(9,   parent,  "SOURCE_360MA")
+                    self.SOURCE_430MA   =  Option(10,  parent,  "SOURCE_430MA")
+                    self.SOURCE_500MA   =  Option(11,  parent,  "SOURCE_500MA")
+                    self.SOURCE_625MA   =  Option(12,  parent,  "SOURCE_625MA")
+                    self.SOURCE_755MA   =  Option(13,  parent,  "SOURCE_755MA")
+                    self.SOURCE_885MA   =  Option(14,  parent,  "SOURCE_885MA")
+                    self.SOURCE_1000MA  =  Option(15,  parent,  "SOURCE_1000MA")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("IGATE_SOURCE_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _IGATE_SINK_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SINK_50MA = Choice(0, parent)
-                    self.SINK_100MA = Choice(1, parent)
-                    self.SINK_160MA = Choice(2, parent)
-                    self.SINK_210MA = Choice(3, parent)
-                    self.SINK_270MA = Choice(4, parent)
-                    self.SINK_320MA = Choice(5, parent)
-                    self.SINK_380MA = Choice(6, parent)
-                    self.SINK_430MA = Choice(7, parent)
-                    self.SINK_580MA = Choice(8, parent)
-                    self.SINK_720MA = Choice(9, parent)
-                    self.SINK_860MA = Choice(10, parent)
-                    self.SINK_1000MA = Choice(11, parent)
-                    self.SINK_1250MA = Choice(12, parent)
-                    self.SINK_1510MA = Choice(13, parent)
-                    self.SINK_1770MA = Choice(14, parent)
-                    self.SINK_2000MA = Choice(15, parent)
+                    super().__init__(parent)
+                    self.SINK_50MA    =  Option(0,   parent,  "SINK_50MA")
+                    self.SINK_100MA   =  Option(1,   parent,  "SINK_100MA")
+                    self.SINK_160MA   =  Option(2,   parent,  "SINK_160MA")
+                    self.SINK_210MA   =  Option(3,   parent,  "SINK_210MA")
+                    self.SINK_270MA   =  Option(4,   parent,  "SINK_270MA")
+                    self.SINK_320MA   =  Option(5,   parent,  "SINK_320MA")
+                    self.SINK_380MA   =  Option(6,   parent,  "SINK_380MA")
+                    self.SINK_430MA   =  Option(7,   parent,  "SINK_430MA")
+                    self.SINK_580MA   =  Option(8,   parent,  "SINK_580MA")
+                    self.SINK_720MA   =  Option(9,   parent,  "SINK_720MA")
+                    self.SINK_860MA   =  Option(10,  parent,  "SINK_860MA")
+                    self.SINK_1000MA  =  Option(11,  parent,  "SINK_1000MA")
+                    self.SINK_1250MA  =  Option(12,  parent,  "SINK_1250MA")
+                    self.SINK_1510MA  =  Option(13,  parent,  "SINK_1510MA")
+                    self.SINK_1770MA  =  Option(14,  parent,  "SINK_1770MA")
+                    self.SINK_2000MA  =  Option(15,  parent,  "SINK_2000MA")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("IGATE_SINK_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _IGATE_SOURCE_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.SOURCE_25MA = Choice(0, parent)
-                    self.SOURCE_50MA = Choice(1, parent)
-                    self.SOURCE_80MA = Choice(2, parent)
-                    self.SOURCE_105MA = Choice(3, parent)
-                    self.SOURCE_135MA = Choice(4, parent)
-                    self.SOURCE_160MA = Choice(5, parent)
-                    self.SOURCE_190MA = Choice(6, parent)
-                    self.SOURCE_215MA = Choice(7, parent)
-                    self.SOURCE_290MA = Choice(8, parent)
-                    self.SOURCE_360MA = Choice(9, parent)
-                    self.SOURCE_430MA = Choice(10, parent)
-                    self.SOURCE_500MA = Choice(11, parent)
-                    self.SOURCE_625MA = Choice(12, parent)
-                    self.SOURCE_755MA = Choice(13, parent)
-                    self.SOURCE_885MA = Choice(14, parent)
-                    self.SOURCE_1000MA = Choice(15, parent)
+                    super().__init__(parent)
+                    self.SOURCE_25MA    =  Option(0,   parent,  "SOURCE_25MA")
+                    self.SOURCE_50MA    =  Option(1,   parent,  "SOURCE_50MA")
+                    self.SOURCE_80MA    =  Option(2,   parent,  "SOURCE_80MA")
+                    self.SOURCE_105MA   =  Option(3,   parent,  "SOURCE_105MA")
+                    self.SOURCE_135MA   =  Option(4,   parent,  "SOURCE_135MA")
+                    self.SOURCE_160MA   =  Option(5,   parent,  "SOURCE_160MA")
+                    self.SOURCE_190MA   =  Option(6,   parent,  "SOURCE_190MA")
+                    self.SOURCE_215MA   =  Option(7,   parent,  "SOURCE_215MA")
+                    self.SOURCE_290MA   =  Option(8,   parent,  "SOURCE_290MA")
+                    self.SOURCE_360MA   =  Option(9,   parent,  "SOURCE_360MA")
+                    self.SOURCE_430MA   =  Option(10,  parent,  "SOURCE_430MA")
+                    self.SOURCE_500MA   =  Option(11,  parent,  "SOURCE_500MA")
+                    self.SOURCE_625MA   =  Option(12,  parent,  "SOURCE_625MA")
+                    self.SOURCE_755MA   =  Option(13,  parent,  "SOURCE_755MA")
+                    self.SOURCE_885MA   =  Option(14,  parent,  "SOURCE_885MA")
+                    self.SOURCE_1000MA  =  Option(15,  parent,  "SOURCE_1000MA")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("IGATE_SOURCE_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADAPTIVE_MODE_UVW(Field):
 
@@ -3764,29 +3790,30 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _VS_UVLO_LVL(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.VSUVLO_44 = Choice(0, parent)
-                    self.VSUVLO_46 = Choice(1, parent)
-                    self.VSUVLO_48 = Choice(2, parent)
-                    self.VSUVLO_50 = Choice(3, parent)
-                    self.VSUVLO_52 = Choice(4, parent)
-                    self.VSUVLO_54 = Choice(5, parent)
-                    self.VSUVLO_56 = Choice(6, parent)
-                    self.VSUVLO_58 = Choice(7, parent)
-                    self.VSUVLO_60 = Choice(8, parent)
-                    self.VSUVLO_63 = Choice(9, parent)
-                    self.VSUVLO_66 = Choice(10, parent)
-                    self.VSUVLO_69 = Choice(11, parent)
-                    self.VSUVLO_72 = Choice(12, parent)
-                    self.VSUVLO_75 = Choice(13, parent)
-                    self.VSUVLO_78 = Choice(14, parent)
-                    self.VSUVLO_81 = Choice(15, parent)
+                    super().__init__(parent)
+                    self.VSUVLO_44  =  Option(0,   parent,  "VSUVLO_44")
+                    self.VSUVLO_46  =  Option(1,   parent,  "VSUVLO_46")
+                    self.VSUVLO_48  =  Option(2,   parent,  "VSUVLO_48")
+                    self.VSUVLO_50  =  Option(3,   parent,  "VSUVLO_50")
+                    self.VSUVLO_52  =  Option(4,   parent,  "VSUVLO_52")
+                    self.VSUVLO_54  =  Option(5,   parent,  "VSUVLO_54")
+                    self.VSUVLO_56  =  Option(6,   parent,  "VSUVLO_56")
+                    self.VSUVLO_58  =  Option(7,   parent,  "VSUVLO_58")
+                    self.VSUVLO_60  =  Option(8,   parent,  "VSUVLO_60")
+                    self.VSUVLO_63  =  Option(9,   parent,  "VSUVLO_63")
+                    self.VSUVLO_66  =  Option(10,  parent,  "VSUVLO_66")
+                    self.VSUVLO_69  =  Option(11,  parent,  "VSUVLO_69")
+                    self.VSUVLO_72  =  Option(12,  parent,  "VSUVLO_72")
+                    self.VSUVLO_75  =  Option(13,  parent,  "VSUVLO_75")
+                    self.VSUVLO_78  =  Option(14,  parent,  "VSUVLO_78")
+                    self.VSUVLO_81  =  Option(15,  parent,  "VSUVLO_81")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VS_UVLO_LVL", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("GDRV_CFG", parent, access, address, block, signed)
@@ -3876,123 +3903,131 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _VGS_DEGLITCH_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DEG_OFF = Choice(0, parent)
-                    self.DEG_250NS = Choice(1, parent)
-                    self.DEG_500NS = Choice(2, parent)
-                    self.DEG_1000NS = Choice(3, parent)
-                    self.DEG_2000NS = Choice(4, parent)
-                    self.DEG_4000NS = Choice(5, parent)
-                    self.DEG_6000NS = Choice(6, parent)
-                    self.DEG_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.DEG_OFF     =  Option(0,  parent,  "DEG_OFF")
+                    self.DEG_250NS   =  Option(1,  parent,  "DEG_250NS")
+                    self.DEG_500NS   =  Option(2,  parent,  "DEG_500NS")
+                    self.DEG_1000NS  =  Option(3,  parent,  "DEG_1000NS")
+                    self.DEG_2000NS  =  Option(4,  parent,  "DEG_2000NS")
+                    self.DEG_4000NS  =  Option(5,  parent,  "DEG_4000NS")
+                    self.DEG_6000NS  =  Option(6,  parent,  "DEG_6000NS")
+                    self.DEG_8000NS  =  Option(7,  parent,  "DEG_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VGS_DEGLITCH_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _VGS_BLANKING_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.BLK_OFF = Choice(0, parent)
-                    self.BLK_250NS = Choice(1, parent)
-                    self.BLK_500NS = Choice(2, parent)
-                    self.BLK_1000NS = Choice(3, parent)
+                    super().__init__(parent)
+                    self.BLK_OFF     =  Option(0,  parent,  "BLK_OFF")
+                    self.BLK_250NS   =  Option(1,  parent,  "BLK_250NS")
+                    self.BLK_500NS   =  Option(2,  parent,  "BLK_500NS")
+                    self.BLK_1000NS  =  Option(3,  parent,  "BLK_1000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VGS_BLANKING_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _VGS_DEGLITCH_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DEG_OFF = Choice(0, parent)
-                    self.DEG_250NS = Choice(1, parent)
-                    self.DEG_500NS = Choice(2, parent)
-                    self.DEG_1000NS = Choice(3, parent)
-                    self.DEG_2000NS = Choice(4, parent)
-                    self.DEG_4000NS = Choice(5, parent)
-                    self.DEG_6000NS = Choice(6, parent)
-                    self.DEG_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.DEG_OFF     =  Option(0,  parent,  "DEG_OFF")
+                    self.DEG_250NS   =  Option(1,  parent,  "DEG_250NS")
+                    self.DEG_500NS   =  Option(2,  parent,  "DEG_500NS")
+                    self.DEG_1000NS  =  Option(3,  parent,  "DEG_1000NS")
+                    self.DEG_2000NS  =  Option(4,  parent,  "DEG_2000NS")
+                    self.DEG_4000NS  =  Option(5,  parent,  "DEG_4000NS")
+                    self.DEG_6000NS  =  Option(6,  parent,  "DEG_6000NS")
+                    self.DEG_8000NS  =  Option(7,  parent,  "DEG_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VGS_DEGLITCH_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _VGS_BLANKING_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.BLK_OFF = Choice(0, parent)
-                    self.BLK_250NS = Choice(1, parent)
-                    self.BLK_500NS = Choice(2, parent)
-                    self.BLK_1000NS = Choice(3, parent)
+                    super().__init__(parent)
+                    self.BLK_OFF     =  Option(0,  parent,  "BLK_OFF")
+                    self.BLK_250NS   =  Option(1,  parent,  "BLK_250NS")
+                    self.BLK_500NS   =  Option(2,  parent,  "BLK_500NS")
+                    self.BLK_1000NS  =  Option(3,  parent,  "BLK_1000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("VGS_BLANKING_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_RETRIES_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.OFF = Choice(0, parent)
-                    self.ONE = Choice(1, parent)
-                    self.TWO = Choice(2, parent)
-                    self.THREE = Choice(3, parent)
+                    super().__init__(parent)
+                    self.OFF    =  Option(0,  parent,  "OFF")
+                    self.ONE    =  Option(1,  parent,  "ONE")
+                    self.TWO    =  Option(2,  parent,  "TWO")
+                    self.THREE  =  Option(3,  parent,  "THREE")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_RETRIES_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _HS_RETRIES_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.OFF = Choice(0, parent)
-                    self.ONE = Choice(1, parent)
-                    self.TWO = Choice(2, parent)
-                    self.THREE = Choice(3, parent)
+                    super().__init__(parent)
+                    self.OFF    =  Option(0,  parent,  "OFF")
+                    self.ONE    =  Option(1,  parent,  "ONE")
+                    self.TWO    =  Option(2,  parent,  "TWO")
+                    self.THREE  =  Option(3,  parent,  "THREE")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("HS_RETRIES_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_RETRIES_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.OFF = Choice(0, parent)
-                    self.ONE = Choice(1, parent)
-                    self.TWO = Choice(2, parent)
-                    self.THREE = Choice(3, parent)
+                    super().__init__(parent)
+                    self.OFF    =  Option(0,  parent,  "OFF")
+                    self.ONE    =  Option(1,  parent,  "ONE")
+                    self.TWO    =  Option(2,  parent,  "TWO")
+                    self.THREE  =  Option(3,  parent,  "THREE")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_RETRIES_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _HS_RETRIES_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.OFF = Choice(0, parent)
-                    self.ONE = Choice(1, parent)
-                    self.TWO = Choice(2, parent)
-                    self.THREE = Choice(3, parent)
+                    super().__init__(parent)
+                    self.OFF    =  Option(0,  parent,  "OFF")
+                    self.ONE    =  Option(1,  parent,  "ONE")
+                    self.TWO    =  Option(2,  parent,  "TWO")
+                    self.THREE  =  Option(3,  parent,  "THREE")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("HS_RETRIES_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _TERM_PWM_ON_SHORT(Field):
 
@@ -4017,65 +4052,68 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _LS_OCP_DEGLITCH_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DEG_OFF = Choice(0, parent)
-                    self.DEG_250NS = Choice(1, parent)
-                    self.DEG_500NS = Choice(2, parent)
-                    self.DEG_1000NS = Choice(3, parent)
-                    self.DEG_2000NS = Choice(4, parent)
-                    self.DEG_4000NS = Choice(5, parent)
-                    self.DEG_6000NS = Choice(6, parent)
-                    self.DEG_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.DEG_OFF     =  Option(0,  parent,  "DEG_OFF")
+                    self.DEG_250NS   =  Option(1,  parent,  "DEG_250NS")
+                    self.DEG_500NS   =  Option(2,  parent,  "DEG_500NS")
+                    self.DEG_1000NS  =  Option(3,  parent,  "DEG_1000NS")
+                    self.DEG_2000NS  =  Option(4,  parent,  "DEG_2000NS")
+                    self.DEG_4000NS  =  Option(5,  parent,  "DEG_4000NS")
+                    self.DEG_6000NS  =  Option(6,  parent,  "DEG_6000NS")
+                    self.DEG_8000NS  =  Option(7,  parent,  "DEG_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_OCP_DEGLITCH_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_OCP_BLANKING_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.BLK_OFF = Choice(0, parent)
-                    self.BLK_250NS = Choice(1, parent)
-                    self.BLK_500NS = Choice(2, parent)
-                    self.BLK_1000NS = Choice(3, parent)
-                    self.BLK_2000NS = Choice(4, parent)
-                    self.BLK_4000NS = Choice(5, parent)
-                    self.BLK_6000NS = Choice(6, parent)
-                    self.BLK_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.BLK_OFF     =  Option(0,  parent,  "BLK_OFF")
+                    self.BLK_250NS   =  Option(1,  parent,  "BLK_250NS")
+                    self.BLK_500NS   =  Option(2,  parent,  "BLK_500NS")
+                    self.BLK_1000NS  =  Option(3,  parent,  "BLK_1000NS")
+                    self.BLK_2000NS  =  Option(4,  parent,  "BLK_2000NS")
+                    self.BLK_4000NS  =  Option(5,  parent,  "BLK_4000NS")
+                    self.BLK_6000NS  =  Option(6,  parent,  "BLK_6000NS")
+                    self.BLK_8000NS  =  Option(7,  parent,  "BLK_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_OCP_BLANKING_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_OCP_THRES_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.THRES_80_63MV = Choice(0, parent)
-                    self.THRES_165_125MV = Choice(1, parent)
-                    self.THRES_250_187MV = Choice(2, parent)
-                    self.THRES_330_248MV = Choice(3, parent)
-                    self.THRES_415_312MV = Choice(4, parent)
-                    self.THRES_500_374MV = Choice(5, parent)
-                    self.THRES_582_434MV = Choice(6, parent)
-                    self.THRES_660_504MV = Choice(7, parent)
-                    self.THRES_125_705MV = Choice(8, parent)
-                    self.THRES_250_940MV = Choice(9, parent)
-                    self.THRES_375_1180MV = Choice(10, parent)
-                    self.THRES_500_1410MV = Choice(11, parent)
-                    self.THRES_625_1650MV = Choice(12, parent)
-                    self.THRES_750_1880MV = Choice(13, parent)
-                    self.THRES_873_2110MV = Choice(14, parent)
-                    self.THRES_1000_2350MV = Choice(15, parent)
+                    super().__init__(parent)
+                    self.THRES_80_63MV      =  Option(0,   parent,  "THRES_80_63MV")
+                    self.THRES_165_125MV    =  Option(1,   parent,  "THRES_165_125MV")
+                    self.THRES_250_187MV    =  Option(2,   parent,  "THRES_250_187MV")
+                    self.THRES_330_248MV    =  Option(3,   parent,  "THRES_330_248MV")
+                    self.THRES_415_312MV    =  Option(4,   parent,  "THRES_415_312MV")
+                    self.THRES_500_374MV    =  Option(5,   parent,  "THRES_500_374MV")
+                    self.THRES_582_434MV    =  Option(6,   parent,  "THRES_582_434MV")
+                    self.THRES_660_504MV    =  Option(7,   parent,  "THRES_660_504MV")
+                    self.THRES_125_705MV    =  Option(8,   parent,  "THRES_125_705MV")
+                    self.THRES_250_940MV    =  Option(9,   parent,  "THRES_250_940MV")
+                    self.THRES_375_1180MV   =  Option(10,  parent,  "THRES_375_1180MV")
+                    self.THRES_500_1410MV   =  Option(11,  parent,  "THRES_500_1410MV")
+                    self.THRES_625_1650MV   =  Option(12,  parent,  "THRES_625_1650MV")
+                    self.THRES_750_1880MV   =  Option(13,  parent,  "THRES_750_1880MV")
+                    self.THRES_873_2110MV   =  Option(14,  parent,  "THRES_873_2110MV")
+                    self.THRES_1000_2350MV  =  Option(15,  parent,  "THRES_1000_2350MV")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_OCP_THRES_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_OCP_USE_VDS_UVW(Field):
 
@@ -4086,39 +4124,41 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _HS_OCP_DEGLITCH_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DEG_OFF = Choice(0, parent)
-                    self.DEG_250NS = Choice(1, parent)
-                    self.DEG_500NS = Choice(2, parent)
-                    self.DEG_1000NS = Choice(3, parent)
-                    self.DEG_2000NS = Choice(4, parent)
-                    self.DEG_4000NS = Choice(5, parent)
-                    self.DEG_6000NS = Choice(6, parent)
-                    self.DEG_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.DEG_OFF     =  Option(0,  parent,  "DEG_OFF")
+                    self.DEG_250NS   =  Option(1,  parent,  "DEG_250NS")
+                    self.DEG_500NS   =  Option(2,  parent,  "DEG_500NS")
+                    self.DEG_1000NS  =  Option(3,  parent,  "DEG_1000NS")
+                    self.DEG_2000NS  =  Option(4,  parent,  "DEG_2000NS")
+                    self.DEG_4000NS  =  Option(5,  parent,  "DEG_4000NS")
+                    self.DEG_6000NS  =  Option(6,  parent,  "DEG_6000NS")
+                    self.DEG_8000NS  =  Option(7,  parent,  "DEG_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("HS_OCP_DEGLITCH_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _HS_OCP_BLANKING_UVW(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.BLK_OFF = Choice(0, parent)
-                    self.BLK_250NS = Choice(1, parent)
-                    self.BLK_500NS = Choice(2, parent)
-                    self.BLK_1000NS = Choice(3, parent)
-                    self.BLK_2000NS = Choice(4, parent)
-                    self.BLK_4000NS = Choice(5, parent)
-                    self.BLK_6000NS = Choice(6, parent)
-                    self.BLK_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.BLK_OFF     =  Option(0,  parent,  "BLK_OFF")
+                    self.BLK_250NS   =  Option(1,  parent,  "BLK_250NS")
+                    self.BLK_500NS   =  Option(2,  parent,  "BLK_500NS")
+                    self.BLK_1000NS  =  Option(3,  parent,  "BLK_1000NS")
+                    self.BLK_2000NS  =  Option(4,  parent,  "BLK_2000NS")
+                    self.BLK_4000NS  =  Option(5,  parent,  "BLK_4000NS")
+                    self.BLK_6000NS  =  Option(6,  parent,  "BLK_6000NS")
+                    self.BLK_8000NS  =  Option(7,  parent,  "BLK_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("HS_OCP_BLANKING_UVW", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _HS_OCP_THRES_UVW(Field):
 
@@ -4141,65 +4181,68 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _LS_OCP_DEGLITCH_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DEG_OFF = Choice(0, parent)
-                    self.DEG_250NS = Choice(1, parent)
-                    self.DEG_500NS = Choice(2, parent)
-                    self.DEG_1000NS = Choice(3, parent)
-                    self.DEG_2000NS = Choice(4, parent)
-                    self.DEG_4000NS = Choice(5, parent)
-                    self.DEG_6000NS = Choice(6, parent)
-                    self.DEG_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.DEG_OFF     =  Option(0,  parent,  "DEG_OFF")
+                    self.DEG_250NS   =  Option(1,  parent,  "DEG_250NS")
+                    self.DEG_500NS   =  Option(2,  parent,  "DEG_500NS")
+                    self.DEG_1000NS  =  Option(3,  parent,  "DEG_1000NS")
+                    self.DEG_2000NS  =  Option(4,  parent,  "DEG_2000NS")
+                    self.DEG_4000NS  =  Option(5,  parent,  "DEG_4000NS")
+                    self.DEG_6000NS  =  Option(6,  parent,  "DEG_6000NS")
+                    self.DEG_8000NS  =  Option(7,  parent,  "DEG_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_OCP_DEGLITCH_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_OCP_BLANKING_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.BLK_OFF = Choice(0, parent)
-                    self.BLK_250NS = Choice(1, parent)
-                    self.BLK_500NS = Choice(2, parent)
-                    self.BLK_1000NS = Choice(3, parent)
-                    self.BLK_2000NS = Choice(4, parent)
-                    self.BLK_4000NS = Choice(5, parent)
-                    self.BLK_6000NS = Choice(6, parent)
-                    self.BLK_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.BLK_OFF     =  Option(0,  parent,  "BLK_OFF")
+                    self.BLK_250NS   =  Option(1,  parent,  "BLK_250NS")
+                    self.BLK_500NS   =  Option(2,  parent,  "BLK_500NS")
+                    self.BLK_1000NS  =  Option(3,  parent,  "BLK_1000NS")
+                    self.BLK_2000NS  =  Option(4,  parent,  "BLK_2000NS")
+                    self.BLK_4000NS  =  Option(5,  parent,  "BLK_4000NS")
+                    self.BLK_6000NS  =  Option(6,  parent,  "BLK_6000NS")
+                    self.BLK_8000NS  =  Option(7,  parent,  "BLK_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_OCP_BLANKING_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_OCP_THRES_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.THRES_80_63MV = Choice(0, parent)
-                    self.THRES_165_125MV = Choice(1, parent)
-                    self.THRES_250_187MV = Choice(2, parent)
-                    self.THRES_330_248MV = Choice(3, parent)
-                    self.THRES_415_312MV = Choice(4, parent)
-                    self.THRES_500_374MV = Choice(5, parent)
-                    self.THRES_582_434MV = Choice(6, parent)
-                    self.THRES_660_504MV = Choice(7, parent)
-                    self.THRES_125_705MV = Choice(8, parent)
-                    self.THRES_250_940MV = Choice(9, parent)
-                    self.THRES_375_1180MV = Choice(10, parent)
-                    self.THRES_500_1410MV = Choice(11, parent)
-                    self.THRES_625_1650MV = Choice(12, parent)
-                    self.THRES_750_1880MV = Choice(13, parent)
-                    self.THRES_873_2110MV = Choice(14, parent)
-                    self.THRES_1000_2350MV = Choice(15, parent)
+                    super().__init__(parent)
+                    self.THRES_80_63MV      =  Option(0,   parent,  "THRES_80_63MV")
+                    self.THRES_165_125MV    =  Option(1,   parent,  "THRES_165_125MV")
+                    self.THRES_250_187MV    =  Option(2,   parent,  "THRES_250_187MV")
+                    self.THRES_330_248MV    =  Option(3,   parent,  "THRES_330_248MV")
+                    self.THRES_415_312MV    =  Option(4,   parent,  "THRES_415_312MV")
+                    self.THRES_500_374MV    =  Option(5,   parent,  "THRES_500_374MV")
+                    self.THRES_582_434MV    =  Option(6,   parent,  "THRES_582_434MV")
+                    self.THRES_660_504MV    =  Option(7,   parent,  "THRES_660_504MV")
+                    self.THRES_125_705MV    =  Option(8,   parent,  "THRES_125_705MV")
+                    self.THRES_250_940MV    =  Option(9,   parent,  "THRES_250_940MV")
+                    self.THRES_375_1180MV   =  Option(10,  parent,  "THRES_375_1180MV")
+                    self.THRES_500_1410MV   =  Option(11,  parent,  "THRES_500_1410MV")
+                    self.THRES_625_1650MV   =  Option(12,  parent,  "THRES_625_1650MV")
+                    self.THRES_750_1880MV   =  Option(13,  parent,  "THRES_750_1880MV")
+                    self.THRES_873_2110MV   =  Option(14,  parent,  "THRES_873_2110MV")
+                    self.THRES_1000_2350MV  =  Option(15,  parent,  "THRES_1000_2350MV")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("LS_OCP_THRES_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _LS_OCP_USE_VDS_Y2(Field):
 
@@ -4210,39 +4253,41 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _HS_OCP_DEGLITCH_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.DEG_OFF = Choice(0, parent)
-                    self.DEG_250NS = Choice(1, parent)
-                    self.DEG_500NS = Choice(2, parent)
-                    self.DEG_1000NS = Choice(3, parent)
-                    self.DEG_2000NS = Choice(4, parent)
-                    self.DEG_4000NS = Choice(5, parent)
-                    self.DEG_6000NS = Choice(6, parent)
-                    self.DEG_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.DEG_OFF     =  Option(0,  parent,  "DEG_OFF")
+                    self.DEG_250NS   =  Option(1,  parent,  "DEG_250NS")
+                    self.DEG_500NS   =  Option(2,  parent,  "DEG_500NS")
+                    self.DEG_1000NS  =  Option(3,  parent,  "DEG_1000NS")
+                    self.DEG_2000NS  =  Option(4,  parent,  "DEG_2000NS")
+                    self.DEG_4000NS  =  Option(5,  parent,  "DEG_4000NS")
+                    self.DEG_6000NS  =  Option(6,  parent,  "DEG_6000NS")
+                    self.DEG_8000NS  =  Option(7,  parent,  "DEG_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("HS_OCP_DEGLITCH_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _HS_OCP_BLANKING_Y2(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.BLK_OFF = Choice(0, parent)
-                    self.BLK_250NS = Choice(1, parent)
-                    self.BLK_500NS = Choice(2, parent)
-                    self.BLK_1000NS = Choice(3, parent)
-                    self.BLK_2000NS = Choice(4, parent)
-                    self.BLK_4000NS = Choice(5, parent)
-                    self.BLK_6000NS = Choice(6, parent)
-                    self.BLK_8000NS = Choice(7, parent)
+                    super().__init__(parent)
+                    self.BLK_OFF     =  Option(0,  parent,  "BLK_OFF")
+                    self.BLK_250NS   =  Option(1,  parent,  "BLK_250NS")
+                    self.BLK_500NS   =  Option(2,  parent,  "BLK_500NS")
+                    self.BLK_1000NS  =  Option(3,  parent,  "BLK_1000NS")
+                    self.BLK_2000NS  =  Option(4,  parent,  "BLK_2000NS")
+                    self.BLK_4000NS  =  Option(5,  parent,  "BLK_4000NS")
+                    self.BLK_6000NS  =  Option(6,  parent,  "BLK_6000NS")
+                    self.BLK_8000NS  =  Option(7,  parent,  "BLK_8000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("HS_OCP_BLANKING_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _HS_OCP_THRES_Y2(Field):
 

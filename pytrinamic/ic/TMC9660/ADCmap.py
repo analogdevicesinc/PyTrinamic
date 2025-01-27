@@ -5,7 +5,7 @@
 
 # This file was generated. Do not modify it manually!
 
-from pytrinamic.ic import Access, RegisterGroup, Choice, Field, Register
+from pytrinamic.ic import Access, RegisterGroup, Choice, Option, Field, Register
 
 
 class ADCMap:
@@ -20,45 +20,48 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC0_MUX0_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC0_MUX0_OFF = Choice(0, parent)
-                    self.ADC0_MUX0_1ST = Choice(1, parent)
-                    self.ADC0_MUX0_2ND = Choice(2, parent)
-                    self.ADC0_MUX0_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC0_MUX0_OFF  =  Option(0,  parent,  "ADC0_MUX0_OFF")
+                    self.ADC0_MUX0_1ST  =  Option(1,  parent,  "ADC0_MUX0_1ST")
+                    self.ADC0_MUX0_2ND  =  Option(2,  parent,  "ADC0_MUX0_2ND")
+                    self.ADC0_MUX0_3RD  =  Option(3,  parent,  "ADC0_MUX0_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC0_MUX0_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC0_MUX1_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC0_MUX1_OFF = Choice(0, parent)
-                    self.ADC0_MUX1_1ST = Choice(1, parent)
-                    self.ADC0_MUX1_2ND = Choice(2, parent)
-                    self.ADC0_MUX1_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC0_MUX1_OFF  =  Option(0,  parent,  "ADC0_MUX1_OFF")
+                    self.ADC0_MUX1_1ST  =  Option(1,  parent,  "ADC0_MUX1_1ST")
+                    self.ADC0_MUX1_2ND  =  Option(2,  parent,  "ADC0_MUX1_2ND")
+                    self.ADC0_MUX1_3RD  =  Option(3,  parent,  "ADC0_MUX1_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC0_MUX1_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC0_MUX2_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC0_MUX2_OFF = Choice(0, parent)
-                    self.ADC0_MUX2_1ST = Choice(1, parent)
-                    self.ADC0_MUX2_2ND = Choice(2, parent)
-                    self.ADC0_MUX2_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC0_MUX2_OFF  =  Option(0,  parent,  "ADC0_MUX2_OFF")
+                    self.ADC0_MUX2_1ST  =  Option(1,  parent,  "ADC0_MUX2_1ST")
+                    self.ADC0_MUX2_2ND  =  Option(2,  parent,  "ADC0_MUX2_2ND")
+                    self.ADC0_MUX2_3RD  =  Option(3,  parent,  "ADC0_MUX2_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC0_MUX2_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC0_MUX3_DIS(Field):
 
@@ -76,45 +79,48 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC1_MUX0_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC1_MUX0_OFF = Choice(0, parent)
-                    self.ADC1_MUX0_1ST = Choice(1, parent)
-                    self.ADC1_MUX0_2ND = Choice(2, parent)
-                    self.ADC1_MUX0_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC1_MUX0_OFF  =  Option(0,  parent,  "ADC1_MUX0_OFF")
+                    self.ADC1_MUX0_1ST  =  Option(1,  parent,  "ADC1_MUX0_1ST")
+                    self.ADC1_MUX0_2ND  =  Option(2,  parent,  "ADC1_MUX0_2ND")
+                    self.ADC1_MUX0_3RD  =  Option(3,  parent,  "ADC1_MUX0_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC1_MUX0_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC1_MUX1_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC1_MUX1_OFF = Choice(0, parent)
-                    self.ADC1_MUX1_1ST = Choice(1, parent)
-                    self.ADC1_MUX1_2ND = Choice(2, parent)
-                    self.ADC1_MUX1_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC1_MUX1_OFF  =  Option(0,  parent,  "ADC1_MUX1_OFF")
+                    self.ADC1_MUX1_1ST  =  Option(1,  parent,  "ADC1_MUX1_1ST")
+                    self.ADC1_MUX1_2ND  =  Option(2,  parent,  "ADC1_MUX1_2ND")
+                    self.ADC1_MUX1_3RD  =  Option(3,  parent,  "ADC1_MUX1_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC1_MUX1_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC1_MUX2_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC1_MUX2_OFF = Choice(0, parent)
-                    self.ADC1_MUX2_1ST = Choice(1, parent)
-                    self.ADC1_MUX2_2ND = Choice(2, parent)
-                    self.ADC1_MUX2_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC1_MUX2_OFF  =  Option(0,  parent,  "ADC1_MUX2_OFF")
+                    self.ADC1_MUX2_1ST  =  Option(1,  parent,  "ADC1_MUX2_1ST")
+                    self.ADC1_MUX2_2ND  =  Option(2,  parent,  "ADC1_MUX2_2ND")
+                    self.ADC1_MUX2_3RD  =  Option(3,  parent,  "ADC1_MUX2_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC1_MUX2_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC1_MUX2_DETOUR(Field):
 
@@ -125,45 +131,48 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC2_MUX0_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC2_MUX0_OFF = Choice(0, parent)
-                    self.ADC2_MUX0_1ST = Choice(1, parent)
-                    self.ADC2_MUX0_2ND = Choice(2, parent)
-                    self.ADC2_MUX0_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC2_MUX0_OFF  =  Option(0,  parent,  "ADC2_MUX0_OFF")
+                    self.ADC2_MUX0_1ST  =  Option(1,  parent,  "ADC2_MUX0_1ST")
+                    self.ADC2_MUX0_2ND  =  Option(2,  parent,  "ADC2_MUX0_2ND")
+                    self.ADC2_MUX0_3RD  =  Option(3,  parent,  "ADC2_MUX0_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC2_MUX0_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC2_MUX1_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC2_MUX1_OFF = Choice(0, parent)
-                    self.ADC2_MUX1_1ST = Choice(1, parent)
-                    self.ADC2_MUX1_2ND = Choice(2, parent)
-                    self.ADC2_MUX1_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC2_MUX1_OFF  =  Option(0,  parent,  "ADC2_MUX1_OFF")
+                    self.ADC2_MUX1_1ST  =  Option(1,  parent,  "ADC2_MUX1_1ST")
+                    self.ADC2_MUX1_2ND  =  Option(2,  parent,  "ADC2_MUX1_2ND")
+                    self.ADC2_MUX1_3RD  =  Option(3,  parent,  "ADC2_MUX1_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC2_MUX1_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC2_MUX2_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC2_MUX2_OFF = Choice(0, parent)
-                    self.ADC2_MUX2_1ST = Choice(1, parent)
-                    self.ADC2_MUX2_2ND = Choice(2, parent)
-                    self.ADC2_MUX2_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC2_MUX2_OFF  =  Option(0,  parent,  "ADC2_MUX2_OFF")
+                    self.ADC2_MUX2_1ST  =  Option(1,  parent,  "ADC2_MUX2_1ST")
+                    self.ADC2_MUX2_2ND  =  Option(2,  parent,  "ADC2_MUX2_2ND")
+                    self.ADC2_MUX2_3RD  =  Option(3,  parent,  "ADC2_MUX2_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC2_MUX2_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC2_MUX3_DIS(Field):
 
@@ -181,45 +190,48 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC3_MUX0_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC3_MUX0_OFF = Choice(0, parent)
-                    self.ADC3_MUX0_1ST = Choice(1, parent)
-                    self.ADC3_MUX0_2ND = Choice(2, parent)
-                    self.ADC3_MUX0_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC3_MUX0_OFF  =  Option(0,  parent,  "ADC3_MUX0_OFF")
+                    self.ADC3_MUX0_1ST  =  Option(1,  parent,  "ADC3_MUX0_1ST")
+                    self.ADC3_MUX0_2ND  =  Option(2,  parent,  "ADC3_MUX0_2ND")
+                    self.ADC3_MUX0_3RD  =  Option(3,  parent,  "ADC3_MUX0_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC3_MUX0_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC3_MUX1_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC3_MUX1_OFF = Choice(0, parent)
-                    self.ADC3_MUX1_1ST = Choice(1, parent)
-                    self.ADC3_MUX1_2ND = Choice(2, parent)
-                    self.ADC3_MUX1_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC3_MUX1_OFF  =  Option(0,  parent,  "ADC3_MUX1_OFF")
+                    self.ADC3_MUX1_1ST  =  Option(1,  parent,  "ADC3_MUX1_1ST")
+                    self.ADC3_MUX1_2ND  =  Option(2,  parent,  "ADC3_MUX1_2ND")
+                    self.ADC3_MUX1_3RD  =  Option(3,  parent,  "ADC3_MUX1_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC3_MUX1_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC3_MUX2_CFG(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC3_MUX2_OFF = Choice(0, parent)
-                    self.ADC3_MUX2_1ST = Choice(1, parent)
-                    self.ADC3_MUX2_2ND = Choice(2, parent)
-                    self.ADC3_MUX2_3RD = Choice(3, parent)
+                    super().__init__(parent)
+                    self.ADC3_MUX2_OFF  =  Option(0,  parent,  "ADC3_MUX2_OFF")
+                    self.ADC3_MUX2_1ST  =  Option(1,  parent,  "ADC3_MUX2_1ST")
+                    self.ADC3_MUX2_2ND  =  Option(2,  parent,  "ADC3_MUX2_2ND")
+                    self.ADC3_MUX2_3RD  =  Option(3,  parent,  "ADC3_MUX2_3RD")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC3_MUX2_CFG", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _ADC3_MUX2_DETOUR(Field):
 
@@ -253,29 +265,30 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC_SHIFT_SAMPLE(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.ADC_SHIFT_500NS = Choice(0, parent)
-                    self.ADC_SHIFT_600NS = Choice(1, parent)
-                    self.ADC_SHIFT_700NS = Choice(2, parent)
-                    self.ADC_SHIFT_800NS = Choice(3, parent)
-                    self.ADC_SHIFT_900NS = Choice(4, parent)
-                    self.ADC_SHIFT_1000NS = Choice(5, parent)
-                    self.ADC_SHIFT_1100NS = Choice(6, parent)
-                    self.ADC_SHIFT_1200NS = Choice(7, parent)
-                    self.ADC_SHIFT_1300NS = Choice(8, parent)
-                    self.ADC_SHIFT_1400NS = Choice(9, parent)
-                    self.ADC_SHIFT_1500NS = Choice(10, parent)
-                    self.ADC_SHIFT_1600NS = Choice(11, parent)
-                    self.ADC_SHIFT_1700NS = Choice(12, parent)
-                    self.ADC_SHIFT_1800NS = Choice(13, parent)
-                    self.ADC_SHIFT_1900NS = Choice(14, parent)
-                    self.ADC_SHIFT_2000NS = Choice(15, parent)
+                    super().__init__(parent)
+                    self.ADC_SHIFT_500NS   =  Option(0,   parent,  "ADC_SHIFT_500NS")
+                    self.ADC_SHIFT_600NS   =  Option(1,   parent,  "ADC_SHIFT_600NS")
+                    self.ADC_SHIFT_700NS   =  Option(2,   parent,  "ADC_SHIFT_700NS")
+                    self.ADC_SHIFT_800NS   =  Option(3,   parent,  "ADC_SHIFT_800NS")
+                    self.ADC_SHIFT_900NS   =  Option(4,   parent,  "ADC_SHIFT_900NS")
+                    self.ADC_SHIFT_1000NS  =  Option(5,   parent,  "ADC_SHIFT_1000NS")
+                    self.ADC_SHIFT_1100NS  =  Option(6,   parent,  "ADC_SHIFT_1100NS")
+                    self.ADC_SHIFT_1200NS  =  Option(7,   parent,  "ADC_SHIFT_1200NS")
+                    self.ADC_SHIFT_1300NS  =  Option(8,   parent,  "ADC_SHIFT_1300NS")
+                    self.ADC_SHIFT_1400NS  =  Option(9,   parent,  "ADC_SHIFT_1400NS")
+                    self.ADC_SHIFT_1500NS  =  Option(10,  parent,  "ADC_SHIFT_1500NS")
+                    self.ADC_SHIFT_1600NS  =  Option(11,  parent,  "ADC_SHIFT_1600NS")
+                    self.ADC_SHIFT_1700NS  =  Option(12,  parent,  "ADC_SHIFT_1700NS")
+                    self.ADC_SHIFT_1800NS  =  Option(13,  parent,  "ADC_SHIFT_1800NS")
+                    self.ADC_SHIFT_1900NS  =  Option(14,  parent,  "ADC_SHIFT_1900NS")
+                    self.ADC_SHIFT_2000NS  =  Option(15,  parent,  "ADC_SHIFT_2000NS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC_SHIFT_SAMPLE", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("SETUP", parent, access, address, block, signed)
@@ -414,17 +427,18 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CSA012_GAIN(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.csa012_gain_x5 = Choice(0, parent)
-                    self.csa012_gain_x10 = Choice(1, parent)
-                    self.csa012_gain_x20 = Choice(2, parent)
-                    self.csa012_gain_x40 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.csa012_gain_x5   =  Option(0,  parent,  "csa012_gain_x5")
+                    self.csa012_gain_x10  =  Option(1,  parent,  "csa012_gain_x10")
+                    self.csa012_gain_x20  =  Option(2,  parent,  "csa012_gain_x20")
+                    self.csa012_gain_x40  =  Option(3,  parent,  "csa012_gain_x40")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA012_GAIN", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _CSA012_BYPASS(Field):
 
@@ -435,17 +449,18 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CSA3_GAIN(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.csa3_gain_x5 = Choice(0, parent)
-                    self.csa3_gain_x10 = Choice(1, parent)
-                    self.csa3_gain_x20 = Choice(2, parent)
-                    self.csa3_gain_x40 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.csa3_gain_x5   =  Option(0,  parent,  "csa3_gain_x5")
+                    self.csa3_gain_x10  =  Option(1,  parent,  "csa3_gain_x10")
+                    self.csa3_gain_x20  =  Option(2,  parent,  "csa3_gain_x20")
+                    self.csa3_gain_x40  =  Option(3,  parent,  "csa3_gain_x40")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA3_GAIN", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _CSA3_BYPASS(Field):
 
@@ -456,45 +471,48 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CSA012_FILT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.csa012_filt_0u55 = Choice(0, parent)
-                    self.csa012_filt_0u75 = Choice(1, parent)
-                    self.csa012_filt_1u00 = Choice(2, parent)
-                    self.csa012_filt_1u35 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.csa012_filt_0u55  =  Option(0,  parent,  "csa012_filt_0u55")
+                    self.csa012_filt_0u75  =  Option(1,  parent,  "csa012_filt_0u75")
+                    self.csa012_filt_1u00  =  Option(2,  parent,  "csa012_filt_1u00")
+                    self.csa012_filt_1u35  =  Option(3,  parent,  "csa012_filt_1u35")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA012_FILT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _CSA3_FILT(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.csa3_filt_0u55 = Choice(0, parent)
-                    self.csa3_filt_0u75 = Choice(1, parent)
-                    self.csa3_filt_1u00 = Choice(2, parent)
-                    self.csa3_filt_1u35 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.csa3_filt_0u55  =  Option(0,  parent,  "csa3_filt_0u55")
+                    self.csa3_filt_0u75  =  Option(1,  parent,  "csa3_filt_0u75")
+                    self.csa3_filt_1u00  =  Option(2,  parent,  "csa3_filt_1u00")
+                    self.csa3_filt_1u35  =  Option(3,  parent,  "csa3_filt_1u35")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA3_FILT", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         class _CSA_AZ_FLTLNGTH_EXP(Field):
 
-            class _Choices:
+            class _Choice(Choice):
                 def __init__(self, parent) -> None:
-                    self.csa_az_filt_off = Choice(0, parent)
-                    self.csa_az_filt_2 = Choice(1, parent)
-                    self.csa_az_filt_4 = Choice(2, parent)
-                    self.csa_az_filt_8 = Choice(3, parent)
+                    super().__init__(parent)
+                    self.csa_az_filt_off  =  Option(0,  parent,  "csa_az_filt_off")
+                    self.csa_az_filt_2    =  Option(1,  parent,  "csa_az_filt_2")
+                    self.csa_az_filt_4    =  Option(2,  parent,  "csa_az_filt_4")
+                    self.csa_az_filt_8    =  Option(3,  parent,  "csa_az_filt_8")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA_AZ_FLTLNGTH_EXP", parent, access, mask, shift, signed=signed)
 
-                self.choice = self._Choices(self)
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, block, signed):
             super().__init__("CSA_SETUP", parent, access, address, block, signed)
