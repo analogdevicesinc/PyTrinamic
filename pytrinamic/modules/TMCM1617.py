@@ -12,6 +12,7 @@ from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
 from ..features import ABNEncoderModule, DigitalHallModule, PIDModule
 from ..helpers import BitField
 from ..tmcl import TMCLCommand
+from ..datalogger import DataLogger
 
 
 class TMCM1617(TMCLModule):
@@ -26,6 +27,7 @@ class TMCM1617(TMCLModule):
         self.desc = self.__doc__
         self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC4671(), TMC6200()]
+        self.datalogger = DataLogger(connection, module_id=module_id)
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)

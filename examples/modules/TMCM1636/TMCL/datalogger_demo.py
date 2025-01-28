@@ -19,18 +19,18 @@ with connection_manager.connect() as my_interface:
     dl_info = dl.get_info()  # This will read some information from the module.
     print(f"RAMdebug's base frequency is {dl_info.base_frequency_hz} Hz.")
     print(f"RAMdebug can sample up to {dl_info.number_of_channels} signals in parallel.")
-    print(f"RAMdebug's total number of samples is {dl_info.sample_limit}")
-    print(f"  If you sample 1 signal, you can have up to {dl_info.sample_limit} samples.")
-    print(f"  If you sample 2 signals, you can have up to {dl_info.sample_limit // 2} samples.")
+    print(f"RAMdebug's total number of samples is {dl_info.sample_buffer_length}")
+    print(f"  If you sample 1 signal, you can have up to {dl_info.sample_buffer_length} samples.")
+    print(f"  If you sample 2 signals, you can have up to {dl_info.sample_buffer_length // 2} samples.")
     
     # Configure
-    dl.log_data({
-        "actual_velocity": dl.SignalTypeAp(ap=motor.AP.ActualVelocity),
-        "actual_position": dl.SignalTypeAp(ap=motor.AP.ActualPosition),
-    })
-    dl.down_sampling_factor = 2
-    dl.samples_per_channel = 128
-    dl.trigger_type = dl.TriggerType.TRIGGER_UNCONDITIONAL
+    dl.config.log_data = {
+        "actual_velocity": dl.DataTypeAp(motor.AP.ActualVelocity),
+        "actual_position": dl.DataTypeAp(motor.AP.ActualPosition),
+    }
+    dl.config.down_sampling_factor = 2
+    dl.config.samples_per_channel = 128
+    dl.config.trigger_type = dl.TriggerType.UNCONDITIONAL
 
     # Do the logging
     dl.activate_trigger()
@@ -40,11 +40,11 @@ with connection_manager.connect() as my_interface:
         pass
 
     # Pull the data from the module
-    dl.download_data()
+    dl.download_logs()
 
     # Access the logged data
-    actual_velocity = dl.data["actual_velocity"]
-    actual_position = dl.data["actual_position"]
+    actual_velocity = dl.logs["actual_velocity"]
+    actual_position = dl.logs["actual_position"]
 
 
 

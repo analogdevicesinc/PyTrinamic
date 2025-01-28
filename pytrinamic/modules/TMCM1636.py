@@ -25,7 +25,7 @@ class TMCM1636(TMCLModule):
         self.name = "TMCM-1636"
         self.desc = self.__doc__
         self.motors = [self._MotorTypeA(self, 0)]
-        self.datalogger = DataLogger(connection)
+        self.datalogger = DataLogger(connection, module_id)
 
     def rotate(self, axis, velocity):
         self.connection.rotate(axis, velocity, self.module_id)

@@ -23,14 +23,14 @@ with ConnectionManager().connect() as my_interface:
     # Get a reference to the eval's DataLogger instance
     dl = mc_eval.datalogger
     # Configure the data to be logged
-    dl.log_data({
-        "actual_velocity": dl.SignalTypeRegister(channel=0, address=TMC4671.REG.PID_VELOCITY_ACTUAL),
-        "actual_position": dl.SignalTypeRegister(channel=0, address=TMC4671.REG.PID_POSITION_ACTUAL),
-    })
+    dl.config.log_data = {
+        "actual_velocity": dl.DataTypeRegister(channel=0, address=TMC4671.REG.PID_VELOCITY_ACTUAL),
+        "actual_position": dl.DataTypeRegister(channel=0, address=TMC4671.REG.PID_POSITION_ACTUAL),
+    }
     # Update the logging settings
-    dl.down_sampling_factor = 2
-    dl.samples_per_channel = 128
-    dl.trigger_type = dl.TriggerType.TRIGGER_UNCONDITIONAL
+    dl.config.down_sampling_factor = 2
+    dl.config.samples_per_channel = 128
+    dl.config.trigger_type = dl.TriggerType.UNCONDITIONAL
     # Start the logging
     dl.activate_trigger()
     # Wait until the logging is triggered
@@ -42,12 +42,12 @@ with ConnectionManager().connect() as my_interface:
         pass
     print("Logging done.")
     # Pull the data from the eval
-    dl.download_data()
+    dl.download_logs()
     # Access the logged data
-    actual_velocity_data = dl.data["actual_velocity"]
-    actual_position_data = dl.data["actual_position"]
-    print(f"Actual velocity data: {actual_velocity_data}")
-    print(f"Actual position data: {actual_position_data}")
+    actual_velocity_samples = dl.log["actual_velocity"].samples
+    actual_position_samples = dl.log["actual_position"].samples
+    print(f"Actual velocity data: {actual_velocity_samples}")
+    print(f"Actual position data: {actual_position_samples}")
 
     # Logging end
     ################################################################################################

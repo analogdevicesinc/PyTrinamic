@@ -20,7 +20,7 @@ class TMC4671_eval(TMCLEval):
         TMCLEval.__init__(self, connection, module_id)
         self.motors = [self._MotorTypeA(self, 0)]
         self.ics = [TMC4671(connection)]
-        self.datalogger = DataLogger(connection)
+        self.datalogger = DataLogger(connection, module_id)
 
     # Use the motion controller channel for register access
     def move_to(self, axis, position, velocity=None):
