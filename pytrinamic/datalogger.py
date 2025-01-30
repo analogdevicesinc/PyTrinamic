@@ -4,10 +4,7 @@ TODO:
 * Add pre-trigger and its config parameters
 * Field merge and extraction
 * Write more tests against TMCM-1617 -> use latest firmware on the master branch of TMCL-Weasel
-* Allow for TMCL commands while downloading
-    * A: Have a optional callback that is called after each single sample download
-    * B: Request the user to call the download method in a loop till it returns True
-    * Both: Have a progress information in callback or return value
+* Add the option to use a list of Parameter/Register/Filed objects for log_data
 """
 
 from __future__ import annotations
@@ -142,7 +139,10 @@ class DataLogger:
         self.logs = {}
         self._info = None
         self._channels_used_count = 0
-        self._total_samples_count = 0
+        self._total_number_of_samples = 0
+        self._download_is_done = True
+        self._download_offset = 0
+        self._downloaded_raw_data = []
 
     def get_info(self) -> DataLogger.Info:
         return DataLogger.Info(
@@ -156,10 +156,10 @@ class DataLogger:
             raise DataLoggerConfigError("No samples per channel specified!")
         self._info = self.get_info()
         self._channels_used_count = len(self.config.log_data)
-        self._total_samples_count = self.config.samples_per_channel*self._channels_used_count
+        self._total_number_of_samples = self.config.samples_per_channel*self._channels_used_count
         if self._channels_used_count > self._info.number_of_channels:
             raise DataLoggerConfigError("Exceeding number of channels!")
-        if self._total_samples_count > self._info.sample_buffer_length:
+        if self._total_number_of_samples > self._info.sample_buffer_length:
             raise DataLoggerConfigError("Samples per channel exceeds sample buffer length!")
         self.rd.init()
         self.rd.set_sample_count(self.config.samples_per_channel*self._channels_used_count)
@@ -191,15 +191,17 @@ class DataLogger:
     def is_done(self) -> bool:
         return self.rd.get_state() == Rd.State.COMPLETE
 
-    def download_logs(self) -> None:
-        raw_data = []
-        for i in range(self._total_samples_count):
-            raw_data.append(self.rd.get_sample(i))
+    def download_logs_step(self) -> bool:
+        self._download_is_done = False
+        self._downloaded_raw_data.append(self.rd.get_sample(self._download_offset))
+        self._download_offset += 1
+        if self._download_offset < self._total_number_of_samples:
+            return True
 
         self.logs = {}
         for i in range(len(self.config.log_data)):
             name, datatype = list(self.config.log_data.items())[i]
-            samples = raw_data[i::self._channels_used_count]
+            samples = self._downloaded_raw_data[i::self._channels_used_count]
             if isinstance(datatype, DataLogger.DataTypeField):
                 samples = [datatype.get(sample) for sample in samples]
             else:
@@ -209,6 +211,14 @@ class DataLogger:
                 rate_hz=self._info.base_frequency_hz/self.config.down_sampling_factor,
                 samples=samples
             )
+        self._downloaded_raw_data = []
+        self._download_offset = 0
+        self._download_is_done = True
+        return False
+    
+    def download_logs(self) -> None:
+        while self.download_logs_step():
+            pass
 
     def _get_channel_type_and_select(self, datatype):
         if isinstance(datatype, DataLogger.DataTypeAp):
@@ -222,3 +232,10 @@ class DataLogger:
             return self.rd.Channel.REGISTER, select
         else:
             raise ValueError("Unknown DataType")
+        
+    @property
+    def download_progress(self) -> float:
+        if self._download_is_done:
+            return 100.0
+        else:
+            return 100*self._download_offset/self._total_number_of_samples

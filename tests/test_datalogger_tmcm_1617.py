@@ -158,7 +158,8 @@ def test_info(tmcm1617: TMCM1617Ex):
     assert info.number_of_channels == 4
 
 
-def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex):
+@pytest.mark.parametrize("download_stepwise", [False, True])
+def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise):
 
     motor = tmcm1617.motors[0]
 
@@ -175,7 +176,12 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex):
     while not dl.is_done():
         pass
 
-    dl.download_logs()
+    if download_stepwise:
+        while dl.download_logs_step():
+            assert 0.0 < dl.download_progress < 100.0
+        assert dl.download_progress == 100.0
+    else:
+        dl.download_logs()
 
     for log in [dl.logs["ADC_I0"], dl.logs["ADC_I1"]]:
         assert len(log.samples) == 10

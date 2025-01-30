@@ -3,6 +3,8 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
+import math
+
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1636
 
@@ -13,15 +15,15 @@ with connection_manager.connect() as my_interface:
     module = TMCM1636(my_interface)
     motor = module.motors[0]
 
-    # Add a shorter reference to the modules DataLogger.
+    # Create a shorter reference to the modules DataLogger.
     dl = module.datalogger
 
     dl_info = dl.get_info()  # This will read some information from the module.
     print(f"RAMdebug's base frequency is {dl_info.base_frequency_hz} Hz.")
     print(f"RAMdebug can sample up to {dl_info.number_of_channels} signals in parallel.")
     print(f"RAMdebug's total number of samples is {dl_info.sample_buffer_length}")
-    print(f"  If you sample 1 signal, you can have up to {dl_info.sample_buffer_length} samples.")
-    print(f"  If you sample 2 signals, you can have up to {dl_info.sample_buffer_length // 2} samples.")
+    for i in range(dl_info.number_of_channels):
+        print(f"  If you sample {i+1} signal, you can have up to {math.floor(dl_info.sample_buffer_length/(i+1))} samples.")
     
     # Configure
     dl.config.log_data = {
@@ -29,7 +31,7 @@ with connection_manager.connect() as my_interface:
         "actual_position": dl.DataTypeAp(motor.AP.ActualPosition),
     }
     dl.config.down_sampling_factor = 2
-    dl.config.samples_per_channel = 128
+    dl.config.samples_per_channel = 1024
     dl.config.trigger_type = dl.TriggerType.UNCONDITIONAL
 
     # Do the logging
@@ -40,7 +42,9 @@ with connection_manager.connect() as my_interface:
         pass
 
     # Pull the data from the module
-    dl.download_logs()
+    while dl.download_logs_step():
+        print(f"Download progress: {dl.download_progress:.2f}%")
+    print(f"Download progress: {dl.download_progress:.2f}%")
 
     # Access the logged data
     actual_velocity = dl.logs["actual_velocity"]
