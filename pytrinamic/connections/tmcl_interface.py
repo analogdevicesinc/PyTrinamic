@@ -31,7 +31,7 @@ class TmclInterface(ABC):
 
     """
 
-    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8, default_register_address_bit_width=10):
+    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8, default_register_address_bit_width=12):
         """
         :param int host_id: The ID of the TMCL host. This ID is the same for each module
             when communicating with multiple modules.
