@@ -135,11 +135,18 @@ class RegisterGroup:
     This base class represents an RegisterGroup, containing a list of registers.
     The registers are added in a derived class as object attributes.
     It also contains convenience functions.
+    
+    :param channel: Is used for the Eval-System board channel information (mc: 0; drv:1)
+    :param block: Is used for the register group's block information as used in the Read/Write register command.
+    :param width: Denotes the width of the registers in bits.
     """
     def __init__(self, name, channel, block, width) -> None:
         self.name = name
         self.channel = channel
-        self.block = block
+        if block is None:
+            self.block = 0
+        else:
+            self.block = block
         if width is None:
             self.width = 32
         else:
