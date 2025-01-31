@@ -4,15 +4,16 @@ TODO:
 * Add pre-trigger and its config parameters
 * Field merge and extraction
 * Write more tests against TMCM-1617 -> use latest firmware on the master branch of TMCL-Weasel
-* Add the option to use a list of Parameter/Register/Filed objects for log_data
 """
 
 from __future__ import annotations
+from typing import Union
 from dataclasses import dataclass
 from enum import IntEnum
+import copy
 
 from pytrinamic.rd import Rd
-from pytrinamic.modules.tmcl_module import Parameter
+from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
 from pytrinamic.ic.tmc_ic import Register, Field
 from pytrinamic.helpers import to_signed_32
 
@@ -68,10 +69,10 @@ class DataLogger:
             self.signed = signed
 
         @classmethod
-        def from_register(cls, register: Register, channel) -> DataLogger.DataTypeRegister:
+        def from_register(cls, register: Register) -> DataLogger.DataTypeRegister:
             return cls(
-                block=register.block,
-                channel=channel,
+                block=register.parent.block,
+                channel=register.parent.channel,
                 address=register.address,
                 signed=register.signed,
             )
@@ -86,13 +87,12 @@ class DataLogger:
             self.signed = signed
 
         @classmethod
-        def from_field(cls, field: Field, channel) -> DataLogger.DataTypeField:
+        def from_field(cls, field: Field) -> DataLogger.DataTypeField:
             return cls(
-                block=field.parent.block,
-                channel=channel,
-                address=field.parent.address,
-                mask=field.mask,
-                shift=field.shift
+                block=field.parent.parent.block,
+                field=(field.parent.address, field.mask, field.shift),
+                channel=field.parent.parent.channel,
+                signed=field.signed,
             )
 
         def get(self, register_value) -> int:
@@ -137,6 +137,7 @@ class DataLogger:
             trigger_threshold=None,
         )
         self.logs = {}
+        self._log_data = None
         self._info = None
         self._channels_used_count = 0
         self._total_number_of_samples = 0
@@ -167,10 +168,21 @@ class DataLogger:
         if self.config.trigger_type != self.TriggerType.UNCONDITIONAL:
             if self.config.trigger_on is None:
                 raise DataLoggerConfigError("Trigger type specified but no trigger data given in `config.trigger_on`!")
-            channel_type, select = self._get_channel_type_and_select(datatype=self.config.trigger_on)
+            if isinstance(self.config.trigger_on, (Parameter, Register, Field)):
+                channel_type, select = self._get_channel_type_and_select(datatype=self._transform_to_datatype(self.config.trigger_on))
+            else:
+                channel_type, select = self._get_channel_type_and_select(datatype=self.config.trigger_on)
             self.rd.set_trigger_channel(channel_type=channel_type, select=select)
         
-        for datatype in self.config.log_data.values():
+        if isinstance(self.config.log_data, list):
+            self._log_data = {}
+            for x in self.config.log_data:
+                self._log_data[x.name] = self._transform_to_datatype(x)
+        elif isinstance(self.config.log_data, dict):
+            self._log_data = copy.deepcopy(self.config.log_data)
+        else:
+            raise DataLoggerConfigError("`config.log_data` must be a list or a dict!")
+        for datatype in self._log_data.values():
             channel_type, select = self._get_channel_type_and_select(datatype=datatype)
             self.rd.set_channel(
                 channel_type=channel_type,
@@ -199,8 +211,8 @@ class DataLogger:
             return True
 
         self.logs = {}
-        for i in range(len(self.config.log_data)):
-            name, datatype = list(self.config.log_data.items())[i]
+        for i in range(len(self._log_data)):
+            name, datatype = list(self._log_data.items())[i]
             samples = self._downloaded_raw_data[i::self._channels_used_count]
             if isinstance(datatype, DataLogger.DataTypeField):
                 samples = [datatype.get(sample) for sample in samples]
@@ -232,6 +244,21 @@ class DataLogger:
             return self.rd.Channel.REGISTER, select
         else:
             raise ValueError("Unknown DataType")
+        
+    def _transform_to_datatype(self, x: Union[Parameter, Register, Field]) -> DataLogger.DataType:
+        if isinstance(x, Parameter):
+            if x.category == ParameterGroup.Category.AXIS:
+                return self.DataTypeAp.from_parameter(x)
+            elif x.category == ParameterGroup.Category.GLOBAL:
+                return self.DataTypeGp.from_parameter(x)
+            else:
+                raise DataLoggerConfigError("Parameter object parent in `config.log_data` must be of category AXIS or GLOBAL!")
+        elif isinstance(x, Register):
+            return self.DataTypeRegister.from_register(x)
+        elif isinstance(x, Field):
+            return self.DataTypeField.from_field(x)
+        else:
+            raise DataLoggerConfigError("If `config.log_data` is a list. It must contain only Parameter, Register or Field objects!")
         
     @property
     def download_progress(self) -> float:

@@ -11,7 +11,7 @@ import pytest
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1617
-from pytrinamic.modules.tmcl_module import Parameter
+from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
 from pytrinamic.datalogger import DataLoggerConfigError
 
 
@@ -159,17 +159,25 @@ def test_info(tmcm1617: TMCM1617Ex):
 
 
 @pytest.mark.parametrize("download_stepwise", [False, True])
-def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise):
+@pytest.mark.parametrize("use_log_data_list", [False, True])
+def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, use_log_data_list):
 
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
 
     dl.config.samples_per_channel = 10
-    dl.config.log_data = {
-        "ADC_I0": dl.DataTypeAp(index=motor.AP.AdcPhaseA),
-        "ADC_I1": dl.DataTypeAp.from_parameter(Parameter(None, None, motor.AP.AdcPhaseB, Parameter.Access.R, Parameter.Datatype.UNSIGNED)),
-    }
+    if use_log_data_list:
+        group = ParameterGroup("All", ParameterGroup.Category.AXIS, 0)
+        dl.config.log_data = [
+            Parameter(group, "ADC_I0", motor.AP.AdcPhaseA, Parameter.Access.R, Parameter.Datatype.UNSIGNED),
+            Parameter(group, "ADC_I1", motor.AP.AdcPhaseB, Parameter.Access.R, Parameter.Datatype.UNSIGNED),
+        ]
+    else:
+        dl.config.log_data = {
+            "ADC_I0": dl.DataTypeAp(index=motor.AP.AdcPhaseA),
+            "ADC_I1": dl.DataTypeAp.from_parameter(Parameter(None, None, motor.AP.AdcPhaseB, Parameter.Access.R, Parameter.Datatype.UNSIGNED)),
+        }
 
     dl.activate_trigger()
 
@@ -219,7 +227,8 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps, down_
     assert all(abs(d-expected_position_increase_per_sample) < 3 for d in diff)
 
 
-def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps):
+@pytest.mark.parametrize("use_parameter_class", [False, True])
+def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps, use_parameter_class):
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
@@ -230,7 +239,11 @@ def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps)
         "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
     }
     dl.config.trigger_type = dl.TriggerType.RISING_EDGE_SIGNED
-    dl.config.trigger_on = dl.DataTypeAp(index=motor.AP.ActualPosition)
+    if use_parameter_class:
+        group = ParameterGroup("All", ParameterGroup.Category.AXIS, 0)
+        dl.config.trigger_on = Parameter(group, "", motor.AP.ActualPosition, Parameter.Access.R, Parameter.Datatype.SIGNED)
+    else:
+        dl.config.trigger_on = dl.DataTypeAp(index=motor.AP.ActualPosition)
     dl.config.trigger_threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
 
     dl.activate_trigger()
