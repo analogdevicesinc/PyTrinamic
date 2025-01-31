@@ -67,9 +67,9 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
     gp_bank2 = GpBank2()
     gp_bank3 = GpBank3()
 
-    MCC = MCCMap(block=0).ALL_REGISTERS
-    ADC = ADCMap(block=1).ALL_REGISTERS
-    SYS_CTRL = SYS_CTRLMap(block=2).ALL_REGISTERS
+    MCC = MCCMap(channel=0, block=0).ALL_REGISTERS
+    ADC = ADCMap(channel=0, block=1).ALL_REGISTERS
+    SYS_CTRL = SYS_CTRLMap(channel=0, block=2).ALL_REGISTERS
 
     IO = _Io()
     

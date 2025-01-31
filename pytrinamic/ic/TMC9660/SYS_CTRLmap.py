@@ -10,8 +10,8 @@ from pytrinamic.ic import Access, RegisterGroup, Field, Register
 
 class SYS_CTRLMap:
 
-    def __init__(self, block=None):
-        self.ALL_REGISTERS = _ALL_REGISTERS(block)
+    def __init__(self, *, channel=None, block=None, width=None):
+        self.ALL_REGISTERS = _ALL_REGISTERS(channel, block, width)
 
 
 class _ALL_REGISTERS(RegisterGroup):
@@ -116,8 +116,8 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        def __init__(self, parent, access, address, block, signed):
-            super().__init__("FAULT_STS", parent, access, address, block, signed)
+        def __init__(self, parent, access, address, signed):
+            super().__init__("FAULT_STS", parent, access, address, signed)
             self.BCK_UVLO       =  self._BCK_UVLO(     self,  Access.R,  0x00000001,  0,   signed=False)
             self.BCK_SHORT      =  self._BCK_SHORT(    self,  Access.R,  0x00000002,  1,   signed=False)
             self.LDOEXT_TSD     =  self._LDOEXT_TSD(   self,  Access.R,  0x00000004,  2,   signed=False)
@@ -240,8 +240,8 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        def __init__(self, parent, access, address, block, signed):
-            super().__init__("FAULT_R_INT", parent, access, address, block, signed)
+        def __init__(self, parent, access, address, signed):
+            super().__init__("FAULT_R_INT", parent, access, address, signed)
             self.BCK_UVLO_LTC       =  self._BCK_UVLO_LTC(     self,  Access.RWC,  0x00000001,  0,   signed=False)
             self.BCK_SHORT_RE_LTC   =  self._BCK_SHORT_RE_LTC( self,  Access.RWC,  0x00000002,  1,   signed=False)
             self.LDOEXT_TSD_LTC     =  self._LDOEXT_TSD_LTC(   self,  Access.RWC,  0x00000004,  2,   signed=False)
@@ -358,8 +358,8 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        def __init__(self, parent, access, address, block, signed):
-            super().__init__("FAULT_R_ENA_F", parent, access, address, block, signed)
+        def __init__(self, parent, access, address, signed):
+            super().__init__("FAULT_R_ENA_F", parent, access, address, signed)
             self.BCK_UVLO_ENA_F       =  self._BCK_UVLO_ENA_F(     self,  Access.RW,  0x00000001,  0,   signed=False)
             self.BCK_SHORT_RE_ENA_F   =  self._BCK_SHORT_RE_ENA_F( self,  Access.RW,  0x00000002,  1,   signed=False)
             self.LDOEXT_TSD_ENA_F     =  self._LDOEXT_TSD_ENA_F(   self,  Access.RW,  0x00000004,  2,   signed=False)
@@ -384,8 +384,8 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        def __init__(self, parent, access, address, block, signed):
-            super().__init__("FAULT_F_INT", parent, access, address, block, signed)
+        def __init__(self, parent, access, address, signed):
+            super().__init__("FAULT_F_INT", parent, access, address, signed)
             self.V_EN_OK_FE_LTC  =  self._V_EN_OK_FE_LTC(self,  Access.RWC,  0x00002000,  13,  signed=False)
 
     class _FAULT_F_ENA_F(Register):
@@ -397,14 +397,14 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        def __init__(self, parent, access, address, block, signed):
-            super().__init__("FAULT_F_ENA_F", parent, access, address, block, signed)
+        def __init__(self, parent, access, address, signed):
+            super().__init__("FAULT_F_ENA_F", parent, access, address, signed)
             self.V_EN_OK_FE_ENA_F  =  self._V_EN_OK_FE_ENA_F(self,  Access.RW,  0x00002000,  13,  signed=False)
 
-    def __init__(self, block=None):
-        super().__init__("ALL_REGISTERS", block)
-        self.FAULT_STS      =  self._FAULT_STS(    self,  Access.R,    0x0008,  block,  False)
-        self.FAULT_R_INT    =  self._FAULT_R_INT(  self,  Access.RWC,  0x0009,  block,  False)
-        self.FAULT_R_ENA_F  =  self._FAULT_R_ENA_F(self,  Access.RW,   0x000A,  block,  False)
-        self.FAULT_F_INT    =  self._FAULT_F_INT(  self,  Access.RWC,  0x000C,  block,  False)
-        self.FAULT_F_ENA_F  =  self._FAULT_F_ENA_F(self,  Access.RW,   0x000D,  block,  False)
+    def __init__(self, channel, block, width):
+        super().__init__("ALL_REGISTERS", channel, block, width)
+        self.FAULT_STS      =  self._FAULT_STS(    self,  Access.R,    0x0008,  False)
+        self.FAULT_R_INT    =  self._FAULT_R_INT(  self,  Access.RWC,  0x0009,  False)
+        self.FAULT_R_ENA_F  =  self._FAULT_R_ENA_F(self,  Access.RW,   0x000A,  False)
+        self.FAULT_F_INT    =  self._FAULT_F_INT(  self,  Access.RWC,  0x000C,  False)
+        self.FAULT_F_ENA_F  =  self._FAULT_F_ENA_F(self,  Access.RW,   0x000D,  False)
