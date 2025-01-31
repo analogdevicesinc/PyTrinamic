@@ -23,6 +23,7 @@ class TMC9660_eval(RegisterApiDevice, ParameterApiDevice):
     """Generic class for TMC9660 eval boards."""
     def __init__(self, connection, default_module_id=3):
         self._connection = connection
+        self._connection._default_register_address_bit_width = 11
         self._ap_index_bit_width = 12
         self._module_id = default_module_id
         self.ics = [TMC9660()]
