@@ -226,9 +226,9 @@ class Register:
 
     def is_in_bounds(self, value: int) -> bool:
         if self.signed:
-            return -2**(self.width - 1) <= value <= 2**(self.width - 1) - 1
+            return -2**(self.parent.width - 1) <= value <= 2**(self.parent.width - 1) - 1
         else:
-            return 0 <= value <= 2**self.width - 1
+            return 0 <= value <= 2**self.parent.width - 1
 
     def fields(self) -> list:
         """
