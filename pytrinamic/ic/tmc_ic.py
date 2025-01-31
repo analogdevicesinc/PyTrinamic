@@ -136,11 +136,14 @@ class RegisterGroup:
     The registers are added in a derived class as object attributes.
     It also contains convenience functions.
     """
-    def __init__(self, name, channel, block, width=32) -> None:
+    def __init__(self, name, channel, block, width) -> None:
         self.name = name
         self.channel = channel
         self.block = block
-        self.width = width
+        if width is None:
+            self.width = 32
+        else:
+            self.width = width
 
     def find(self, name: str):
         for register in self.registers():
