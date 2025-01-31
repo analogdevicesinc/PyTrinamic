@@ -54,16 +54,16 @@ class RegisterApiDevice(ABC):
                 f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
             )
 
-    def write(self, write_target: Union[Register, Field, Choice], value: Optional[Union[int, bool]] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+    def write(self, write_target: Union[Register, Field, Option], value: Optional[Union[int, bool]] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
         """Generic write function, to write a register or a field within a register
 
         :param write_target: This is the main differentiating argument:
-            - If write_target is a Choice object, we do a field write.
+            - If write_target is a Option object, we do a field write.
             - If write_target is a Field object, we do a field write.
             - If write_target is a Register object, we do a register write.
         """
-        if isinstance(write_target, Choice) and (value == None):
-            # Our target variable is a Choice, we do a choice write in that case
+        if isinstance(write_target, Option) and (value == None):
+            # Our target variable is a Option, we do a field write in that case
             return self.write(write_target.parent, write_target.value)
         if isinstance(write_target, Field) and isinstance(value, int):
             # Our target variable is a Field, we do field read in that case
@@ -104,9 +104,9 @@ class RegisterApiDevice(ABC):
             return self.write_register(register_address, register_block, value)
 
         else:
-            # Our target is neither a Register nor a Field, nor Choice.
+            # Our target is neither a Register nor a Field, nor Option.
             raise ValueError(
-                f"Argument write_target {write_target} does not appear to be either a Register, Field or Choice, or the value is invalid."
+                f"Argument write_target {write_target} does not appear to be either a Register, Field or Option, or the value is invalid."
             )
 
     @abstractmethod
