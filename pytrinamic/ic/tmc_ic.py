@@ -37,7 +37,7 @@ class RegisterApiDevice(ABC):
         if isinstance(read_target, Field):
             # Our target variable is a Field, we do field read in that case
             register_address = read_target.parent.address
-            register_block = read_target.parent.block
+            register_block = read_target.parent.parent.block
             register_content = self.read_register(register_address, register_block)
             return read_target.get(register_content)  # Mask and shift is done in the Field.get function
 
@@ -45,7 +45,7 @@ class RegisterApiDevice(ABC):
             # Our target has the attributes of a register, we do register read in that case
             signed = bool(read_target.signed)
             register_address = read_target.address
-            register_block = read_target.block
+            register_block = read_target.parent.block
             return self.read_register(register_address, register_block, signed=signed)
 
         else:
@@ -82,7 +82,7 @@ class RegisterApiDevice(ABC):
                 return register_content_new
 
             register_address = write_target.parent.address
-            register_block = write_target.parent.block
+            register_block = write_target.parent.parent.block
             register_content_old = self.read_register(register_address, register_block)
             register_content_new = write_target.set(register_content_old, value)  # Mask and shift is done in the Field.set function
             self.write_register(register_address, register_block, register_content_new)
@@ -100,7 +100,7 @@ class RegisterApiDevice(ABC):
                     raise ValueError(f"Input value {value} is not in the allowed value range!")
 
             register_address = write_target.address
-            register_block = write_target.block
+            register_block = write_target.parent.block
             return self.write_register(register_address, register_block, value)
 
         else:
@@ -136,9 +136,11 @@ class RegisterGroup:
     The registers are added in a derived class as object attributes.
     It also contains convenience functions.
     """
-    def __init__(self, name, block) -> None:
+    def __init__(self, name, channel, block, width=32) -> None:
         self.name = name
+        self.channel = channel
         self.block = block
+        self.width = width
 
     def find(self, name: str):
         for register in self.registers():
@@ -215,14 +217,12 @@ class Register:
 
     The main purpose is to give these classes an easy way to set the value of a field for use with the bulk write functionality of the reg module.
     """
-    def __init__(self, name, parent, access, address, block, signed=False, width=32) -> None:
+    def __init__(self, name, parent, access, address, signed=False) -> None:
         self.name = name
         self.parent = parent
         self.access = access
         self.address = address
-        self.block = block
         self.signed = signed
-        self.width = width
 
     def is_in_bounds(self, value: int) -> bool:
         if self.signed:
