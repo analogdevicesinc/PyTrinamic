@@ -58,7 +58,12 @@ def test_datalogger_eval_4671(tmc4671_eval: TMC4671_eval, use_log_data_list):
     dl.download_logs()
 
     assert all(sample == 0x34363731 for sample in dl.logs["CHIPINFO_DATA"].samples)
-    for adc_channel in ["ADC_IUX", "ADC_IWY", "ADC_IV"]:
+    if use_log_data_list:
+        adc_channels = ["ADC_IWY_IUX.ADC_IUX", "ADC_IWY_IUX.ADC_IWY", "ADC_IV.ADC_IV"]
+    else:
+        adc_channels = ["ADC_IUX", "ADC_IWY", "ADC_IV"]
+
+    for adc_channel in adc_channels:
         assert len(dl.logs[adc_channel].samples) == 10
         assert all(-1000 <= sample <= 1000 for sample in dl.logs[adc_channel].samples)
         assert statistics.stdev(dl.logs[adc_channel].samples) != 0

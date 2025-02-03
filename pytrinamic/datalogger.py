@@ -3,7 +3,6 @@
 TODO:
 * Add pre-trigger and its config parameters
 * Write more tests against TMCM-1617 -> use latest firmware on the master branch of TMCL-Weasel
-* If an abstract field is used, generate log dict names from register + field not just the field name.
 """
 
 from __future__ import annotations
@@ -190,7 +189,11 @@ class DataLogger:
         if isinstance(self.config.log_data, list):
             self._log_data = {}
             for x in self.config.log_data:
-                self._log_data[x.name] = self._transform_to_datatype(x)
+                dt = self._transform_to_datatype(x)
+                if isinstance(x, Field):
+                    self._log_data[f"{x.parent.name}.{x.name}"] = dt
+                else:
+                    self._log_data[x.name] = dt
         elif isinstance(self.config.log_data, dict):
             self._log_data = copy.deepcopy(self.config.log_data)
         else:
