@@ -2,12 +2,12 @@
 
 TODO:
 * Add pre-trigger and its config parameters
-* Field merge and extraction
 * Write more tests against TMCM-1617 -> use latest firmware on the master branch of TMCL-Weasel
+* If an abstract field is used, generate log dict names from register + field not just the field name.
 """
 
 from __future__ import annotations
-from typing import Union
+from typing import Union, List
 from dataclasses import dataclass
 from enum import IntEnum
 import copy
@@ -31,10 +31,12 @@ class DataLogger:
         number_of_channels: int
 
     class DataType:
-        pass
+        def __init__(self):
+            self.reuse_obj = None
 
     class DataTypeAp(DataType):
         def __init__(self, index, axis=0, signed=False):
+            super().__init__()
             self.index = index
             self.axis = axis
             self.signed = signed
@@ -46,9 +48,18 @@ class DataLogger:
                 axis=axis,
                 signed=(parameter.datatype==Parameter.Datatype.SIGNED),
             )
+        
+        def __eq__(self, other):
+            if all([
+                isinstance(other, DataLogger.DataTypeAp),
+                self.index == other.index,
+                self.axis == other.axis,
+            ]):
+                return True
 
     class DataTypeGp(DataType):
         def __init__(self, index, bank=0, signed=False):
+            super().__init__()
             self.index = index
             self.bank = bank
             self.signed = signed
@@ -60,9 +71,18 @@ class DataLogger:
                 bank=parameter.block,
                 signed=(parameter.datatype==Parameter.Datatype.SIGNED),
             )
+        
+        def __eq__(self, other):
+            if all([
+                isinstance(other, DataLogger.DataTypeGp),
+                self.index == other.index,
+                self.bank == other.bank,
+            ]):
+                return True
     
     class DataTypeRegister(DataType):
         def __init__(self, block, channel, address, signed=False):
+            super().__init__()
             self.block = block
             self.channel = channel
             self.address = address
@@ -77,8 +97,18 @@ class DataLogger:
                 signed=register.signed,
             )
         
+        def __eq__(self, other):
+            if all([
+                isinstance(other, DataLogger.DataTypeRegister),
+                self.block == other.block,
+                self.channel == other.channel,
+                self.address == other.address,
+            ]):
+                return True
+        
     class DataTypeField(DataType):
         def __init__(self, block, field, channel, signed=False):
+            super().__init__()
             self.block = block
             self.channel = channel
             self.address = field[0]
@@ -138,6 +168,7 @@ class DataLogger:
         )
         self.logs = {}
         self._log_data = None
+        self._effectively_log_data = None
         self._info = None
         self._channels_used_count = 0
         self._total_number_of_samples = 0
@@ -155,8 +186,20 @@ class DataLogger:
     def activate_trigger(self) -> None:
         if self.config.samples_per_channel == 0:
             raise DataLoggerConfigError("No samples per channel specified!")
+        
+        if isinstance(self.config.log_data, list):
+            self._log_data = {}
+            for x in self.config.log_data:
+                self._log_data[x.name] = self._transform_to_datatype(x)
+        elif isinstance(self.config.log_data, dict):
+            self._log_data = copy.deepcopy(self.config.log_data)
+        else:
+            raise DataLoggerConfigError("`config.log_data` must be a list or a dict!")
+        
+        self._reduce()
+
         self._info = self.get_info()
-        self._channels_used_count = len(self.config.log_data)
+        self._channels_used_count = len(self._effectively_log_data)
         self._total_number_of_samples = self.config.samples_per_channel*self._channels_used_count
         if self._channels_used_count > self._info.number_of_channels:
             raise DataLoggerConfigError("Exceeding number of channels!")
@@ -174,15 +217,8 @@ class DataLogger:
                 channel_type, select = self._get_channel_type_and_select(datatype=self.config.trigger_on)
             self.rd.set_trigger_channel(channel_type=channel_type, select=select)
         
-        if isinstance(self.config.log_data, list):
-            self._log_data = {}
-            for x in self.config.log_data:
-                self._log_data[x.name] = self._transform_to_datatype(x)
-        elif isinstance(self.config.log_data, dict):
-            self._log_data = copy.deepcopy(self.config.log_data)
-        else:
-            raise DataLoggerConfigError("`config.log_data` must be a list or a dict!")
-        for datatype in self._log_data.values():
+        # Set channels
+        for datatype in self._effectively_log_data.values():
             channel_type, select = self._get_channel_type_and_select(datatype=datatype)
             self.rd.set_channel(
                 channel_type=channel_type,
@@ -196,7 +232,6 @@ class DataLogger:
                 raise DataLoggerConfigError("Trigger type specified is conditional but no threshold given in `config.trigger_threshold!")
             self.rd.enable_trigger(self.config.trigger_type, self.config.trigger_threshold)
 
-
     def got_triggered(self) -> bool:
         return self.rd.get_state() >= Rd.State.CAPTURE
 
@@ -204,25 +239,44 @@ class DataLogger:
         return self.rd.get_state() == Rd.State.COMPLETE
 
     def download_logs_step(self) -> bool:
+        @dataclass
+        class EffectiveDataSet:
+            name: str
+            datatype: DataLogger.DataType
+            samples: list
         self._download_is_done = False
         self._downloaded_raw_data.append(self.rd.get_sample(self._download_offset))
         self._download_offset += 1
         if self._download_offset < self._total_number_of_samples:
             return True
 
+        # Download is done - extract the data
+        log_samples: List[EffectiveDataSet] = []
         self.logs = {}
-        for i in range(len(self._log_data)):
-            name, datatype = list(self._log_data.items())[i]
+        for i in range(len(self._effectively_log_data)):
+            name, datatype = list(self._effectively_log_data.items())[i]
             samples = self._downloaded_raw_data[i::self._channels_used_count]
+            log_samples.append(EffectiveDataSet(name=name, datatype=datatype, samples=samples))
+
+        for name, datatype in self._log_data.items():
+            if datatype.reuse_obj is None:
+                use_datatype_obj = next((x for x in log_samples if x.datatype == datatype))
+            else:
+                use_datatype_obj = next((x for x in log_samples if x.datatype == datatype.reuse_obj))
+
             if isinstance(datatype, DataLogger.DataTypeField):
-                samples = [datatype.get(sample) for sample in samples]
+                samples = [datatype.get(sample) for sample in use_datatype_obj.samples]
             else:
                 if datatype.signed:
-                    samples = [to_signed_32(sample) for sample in samples]
+                    samples = [to_signed_32(sample) for sample in use_datatype_obj.samples]
+                else:
+                    samples = use_datatype_obj.samples
+
             self.logs[name] = DataLogger.Log(
                 rate_hz=self._info.base_frequency_hz/self.config.down_sampling_factor,
                 samples=samples
             )
+
         self._downloaded_raw_data = []
         self._download_offset = 0
         self._download_is_done = True
@@ -260,6 +314,31 @@ class DataLogger:
         else:
             raise DataLoggerConfigError("If `config.log_data` is a list. It must contain only Parameter, Register or Field objects!")
         
+    def _reduce(self):
+        self._effectively_log_data = {}
+        for name, datatype in self._log_data.items():
+            if isinstance(datatype, DataLogger.DataTypeRegister) or isinstance(datatype, DataLogger.DataTypeAp) or isinstance(datatype, DataLogger.DataTypeGp):
+                for existing_datatype in self._effectively_log_data.values():
+                    if datatype == existing_datatype:
+                        datatype.reuse_obj = existing_datatype
+                        break
+                else:
+                    self._effectively_log_data[name] = datatype
+            elif isinstance(datatype, DataLogger.DataTypeField):
+                for existing_datatype in self._effectively_log_data.values():
+                    if isinstance(existing_datatype, (DataLogger.DataTypeField, DataLogger.DataTypeRegister)):
+                        if all([
+                            datatype.block == existing_datatype.block,
+                            datatype.channel == existing_datatype.channel,
+                            datatype.address == existing_datatype.address,
+                        ]):
+                            datatype.reuse_obj = existing_datatype
+                            break
+                else:
+                    self._effectively_log_data[name] = datatype
+            else:
+                self._effectively_log_data[name] = datatype
+
     @property
     def download_progress(self) -> float:
         if self._download_is_done:

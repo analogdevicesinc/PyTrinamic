@@ -62,3 +62,68 @@ def test_datalogger_eval_4671(tmc4671_eval: TMC4671_eval, use_log_data_list):
         assert len(dl.logs[adc_channel].samples) == 10
         assert all(-1000 <= sample <= 1000 for sample in dl.logs[adc_channel].samples)
         assert statistics.stdev(dl.logs[adc_channel].samples) != 0
+
+
+def test_datalogger_eval_4671_register_copy(tmc4671_eval: TMC4671_eval):
+
+    dl = tmc4671_eval.datalogger
+
+    dl.config.samples_per_channel = 10
+
+    dl.config.log_data = {
+        "CHIPINFO_DATA_0": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.CHIPINFO_DATA),
+        "CHIPINFO_DATA_1": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.CHIPINFO_DATA),
+        "CHIPINFO_DATA_2": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.CHIPINFO_DATA),
+        "CHIPINFO_DATA_3": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.CHIPINFO_DATA),
+        "CHIPINFO_DATA_4": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.CHIPINFO_DATA),
+    }
+
+    dl.activate_trigger()
+
+    while not dl.is_done():
+        pass
+
+    dl.download_logs()
+
+    for i in range(len(dl.config.log_data)):
+        assert all(sample == 0x34363731 for sample in dl.logs[f"CHIPINFO_DATA_{i}"].samples)
+
+
+def test_datalogger_eval_4671_field_reduction(tmc4671_eval: TMC4671_eval):
+
+    tmc4671_eval.write_register_field(TMC4671.FIELD.N_POLE_PAIRS, 0x5A5A)
+    tmc4671_eval.write_register_field(TMC4671.FIELD.MOTOR_TYPE, 3)
+    tmc4671_eval.write_register_field(TMC4671.FIELD.HALL_POLARITY, 1)
+    tmc4671_eval.write_register_field(TMC4671.FIELD.HALL_INTERPOLATION, 0)
+    tmc4671_eval.write_register_field(TMC4671.FIELD.HALL_DIRECTION, 0)
+    tmc4671_eval.write_register_field(TMC4671.FIELD.HALL_HALL_BLANK, 1)
+
+    dl = tmc4671_eval.datalogger
+
+    dl.config.samples_per_channel = 10
+
+    dl.config.log_data = {
+        "MOTOR_TYPE_N_POLE_PAIRS": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.MOTOR_TYPE_N_POLE_PAIRS),
+        "N_POLE_PAIRS": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.N_POLE_PAIRS),
+        "MOTOR_TYPE": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.MOTOR_TYPE),
+        "HALL_POLARITY": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.HALL_POLARITY),
+        "HALL_INTERPOLATION": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.HALL_INTERPOLATION),
+        "HALL_DIRECTION": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.HALL_DIRECTION),
+        "HALL_HALL_BLANK": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.HALL_HALL_BLANK),
+    }
+
+    dl.activate_trigger()
+
+    while not dl.is_done():
+        pass
+
+    assert len(dl._effectively_log_data) == 2
+    dl.download_logs()
+
+    assert all(sample == 0x00035A5A for sample in dl.logs[f"MOTOR_TYPE_N_POLE_PAIRS"].samples)
+    assert all(sample == 0x5A5A for sample in dl.logs[f"N_POLE_PAIRS"].samples)
+    assert all(sample == 0x3 for sample in dl.logs[f"MOTOR_TYPE"].samples)
+    assert all(sample == 1 for sample in dl.logs[f"HALL_POLARITY"].samples)
+    assert all(sample == 0 for sample in dl.logs[f"HALL_INTERPOLATION"].samples)
+    assert all(sample == 0 for sample in dl.logs[f"HALL_DIRECTION"].samples)
+    assert all(sample == 1 for sample in dl.logs[f"HALL_HALL_BLANK"].samples)

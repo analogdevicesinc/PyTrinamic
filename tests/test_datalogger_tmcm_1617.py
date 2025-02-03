@@ -255,3 +255,30 @@ def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps,
 
     assert dl.logs["ActualPosition"].samples[0] >= dl.config.trigger_threshold
 
+
+def test_success_copies(tmcm1617: TMCM1617Ex):
+
+    motor = tmcm1617.motors[0]
+
+    dl = tmcm1617.datalogger
+
+    dl.config.samples_per_channel = 10
+
+    dl.config.log_data = {
+        "ADC_I0_A": dl.DataTypeAp(index=motor.AP.AdcPhaseA),
+        "ADC_I0_B": dl.DataTypeAp(index=motor.AP.AdcPhaseA),
+        "ADC_I1_A": dl.DataTypeAp(index=motor.AP.AdcPhaseB),
+        "ADC_I1_B": dl.DataTypeAp(index=motor.AP.AdcPhaseB),
+        "ADC_I1_C": dl.DataTypeAp(index=motor.AP.AdcPhaseB),
+    }
+
+    dl.activate_trigger()
+
+    while not dl.is_done():
+        pass
+
+    assert len(dl._effectively_log_data) == 2
+    
+    dl.download_logs()
+
+    assert all(sample_i0_a == sample_i0_b for sample_i0_a, sample_i0_b in zip(dl.logs["ADC_I0_A"].samples, dl.logs["ADC_I0_B"].samples))
