@@ -1,9 +1,4 @@
-"""Draft of a new shiny RAMDebug implementation
-
-TODO:
-* Add pre-trigger and its config parameters
-* Write more tests against TMCM-1617 -> use latest firmware on the master branch of TMCL-Weasel
-"""
+"""Draft of a new shiny RAMDebug implementation"""
 
 from __future__ import annotations
 from typing import Union, List
@@ -154,6 +149,7 @@ class DataLogger:
         trigger_type: None
         trigger_on: None
         trigger_threshold: int
+        pretrigger_samples: int
 
     def __init__(self, connection, module_id):
         self.rd = Rd(connection, module_id)
@@ -164,6 +160,7 @@ class DataLogger:
             trigger_type=self.TriggerType.UNCONDITIONAL,
             trigger_on=None,
             trigger_threshold=None,
+            pretrigger_samples=0,
         )
         self.logs = {}
         self._log_data = None
@@ -228,6 +225,7 @@ class DataLogger:
                 select=select
             )
 
+        self.rd.set_pretrigger_sample_count(self.config.pretrigger_samples)
         if self.config.trigger_type == self.TriggerType.UNCONDITIONAL:
             self.rd.enable_trigger(self.config.trigger_type, 0)
         else:

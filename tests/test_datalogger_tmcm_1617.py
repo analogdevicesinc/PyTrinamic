@@ -256,6 +256,34 @@ def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps,
     assert dl.logs["ActualPosition"].samples[0] >= dl.config.trigger_threshold
 
 
+def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps):
+    motor = tmcm1617.motors[0]
+
+    dl = tmcm1617.datalogger
+
+    dl.config.samples_per_channel = 1000
+    dl.config.down_sampling_factor = 4
+    dl.config.log_data = {
+        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
+    }
+    dl.config.trigger_type = dl.TriggerType.RISING_EDGE_SIGNED
+    dl.config.trigger_on = dl.DataTypeAp(index=motor.AP.ActualPosition)
+    dl.config.trigger_threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
+    dl.config.pretrigger_samples = 100
+
+    dl.activate_trigger()
+
+    while not dl.is_done():
+        pass
+
+    dl.download_logs()
+
+    expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.logs["ActualPosition"].rate_hz / 60
+
+    expected_first_sample_position = dl.config.trigger_threshold - expected_position_increase_per_sample * dl.config.pretrigger_samples
+    assert abs(dl.logs["ActualPosition"].samples[0] - expected_first_sample_position) < expected_position_increase_per_sample
+
+
 def test_success_copies(tmcm1617: TMCM1617Ex):
 
     motor = tmcm1617.motors[0]
