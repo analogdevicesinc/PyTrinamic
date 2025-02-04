@@ -17,6 +17,7 @@ from pytrinamic.modules import ParameterApiDevice
 from pytrinamic.ic import TMC9660
 from pytrinamic.ic import RegisterApiDevice
 from pytrinamic.tmcl import TMCLCommand
+from pytrinamic.datalogger import DataLogger
 
 
 class TMC9660_eval(RegisterApiDevice, ParameterApiDevice):
@@ -27,6 +28,7 @@ class TMC9660_eval(RegisterApiDevice, ParameterApiDevice):
         self._ap_index_bit_width = 12
         self._module_id = default_module_id
         self.ics = [TMC9660()]
+        self.datalogger = DataLogger(self._connection, self._module_id)
 
     def write_register(self, register_address, block, value):
         """Implementation of the RegisterApiDevice::write_register() function."""
