@@ -12,12 +12,17 @@ import pytest
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1617
 from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
-from pytrinamic.datalogger import DataLoggerConfigError
+from pytrinamic.datalogger import DataLogger, DataLoggerConfigError
 
 
 ENUM = TMCM1617._MotorTypeA.ENUM
 
 class TMCM1617Ex(TMCM1617):
+
+    def __init__(self, connection, module_id=1):
+        super().__init__(connection, module_id)
+        self.datalogger = DataLogger(connection, module_id)
+
     def adc_offset_correction(self):
         @dataclasses.dataclass
         class AdcChannel:
