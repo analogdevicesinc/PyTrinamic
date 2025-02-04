@@ -44,12 +44,12 @@ class DataLogger:
             )
         
         def __eq__(self, other):
-            if all([
-                isinstance(other, DataLogger.DataTypeAp),
-                self.index == other.index,
-                self.axis == other.axis,
-            ]):
+            if not isinstance(other, DataLogger.DataTypeAp):
+                return False
+            if self.index == other.index and self.axis == other.axis:
                 return True
+            else:
+                return False
 
     class DataTypeGp(DataType):
         def __init__(self, index, bank=0, signed=False):
@@ -67,12 +67,12 @@ class DataLogger:
             )
         
         def __eq__(self, other):
-            if all([
-                isinstance(other, DataLogger.DataTypeGp),
-                self.index == other.index,
-                self.bank == other.bank,
-            ]):
+            if not isinstance(other, DataLogger.DataTypeGp):
+                return False
+            if self.index == other.index and self.bank == other.bank:
                 return True
+            else:
+                return False
     
     class DataTypeRegister(DataType):
         def __init__(self, block, channel, address, signed=False):
@@ -92,13 +92,16 @@ class DataLogger:
             )
         
         def __eq__(self, other):
+            if not isinstance(other, DataLogger.DataTypeRegister):
+                return False
             if all([
-                isinstance(other, DataLogger.DataTypeRegister),
                 self.block == other.block,
                 self.channel == other.channel,
                 self.address == other.address,
             ]):
                 return True
+            else:
+                return False
         
     class DataTypeField(DataType):
         def __init__(self, block, field, channel, signed=False):

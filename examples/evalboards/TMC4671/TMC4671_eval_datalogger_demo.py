@@ -44,8 +44,8 @@ with ConnectionManager().connect() as my_interface:
     # Pull the data from the eval
     dl.download_logs()
     # Access the logged data
-    actual_velocity_samples = dl.log["actual_velocity"].samples
-    actual_position_samples = dl.log["actual_position"].samples
+    actual_velocity_samples = dl.logs["actual_velocity"].samples
+    actual_position_samples = dl.logs["actual_position"].samples
     print(f"Actual velocity data: {actual_velocity_samples}")
     print(f"Actual position data: {actual_position_samples}")
 
