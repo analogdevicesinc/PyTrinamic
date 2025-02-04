@@ -46,7 +46,6 @@ from typing import Literal
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC9660
 from pytrinamic.evalboards import TMC9660_3PH_eval
-from pytrinamic.datalogger import DataLogger
 
 
 # Select the connection mode
@@ -66,15 +65,16 @@ with cm.connect() as my_interface:
     elif connection_mode == "headless":
         tmc9660_device = TMC9660(my_interface)
 
-    dl = DataLogger(my_interface, module_id=3)
+    dl = tmc9660_device.datalogger
     print(dl.get_info())
 
     dl.config.samples_per_channel = 16
     dl.config.down_sampling_factor = 2
-    dl.config.log_data = {
-        "ADC_I0": dl.DataTypeAp.from_parameter(TMC9660.ap.ADC_I0),
-        "ADC_I1": dl.DataTypeAp.from_parameter(TMC9660.ap.ADC_I1),
-    }
+    dl.config.log_data = [
+        TMC9660.ap.ADC_I0,
+        TMC9660.ap.ADC_I1,
+        TMC9660.ap.ADC_I2,
+    ]
 
     dl.activate_trigger()
 
@@ -83,8 +83,9 @@ with cm.connect() as my_interface:
 
     dl.download_logs()
 
-    print(dl.logs["ADC_I0"].samples)
-    print(dl.logs["ADC_I1"].samples)
+    print(dl.logs["ADC_I0"])
+    print(dl.logs["ADC_I1"])
+    print(dl.logs["ADC_I2"])
 
     for name, log in dl.logs.items():
         print(f"Log {name}:")

@@ -6,6 +6,7 @@
 from ...ic import TMCIc, RegisterApiDevice
 from ...modules import ParameterApiDevice
 from ...tmcl import TMCLCommand
+from ...datalogger import DataLogger
 
 from .TMC9660_ap import Ap
 from .TMC9660_gpbank0 import GpBank0
@@ -81,6 +82,7 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
         self._connection = connection
         self._ap_index_bit_width = 12
         self._module_id = module_id
+        self.datalogger = DataLogger(connection, module_id=module_id)
 
     def write_register(self, register_address, block, value):
         """Implementation of the RegisterApiDevice::write_register() function."""
