@@ -26,12 +26,11 @@ with connection_manager.connect() as my_interface:
         "ADC_I0": dl.DataTypeAp(index=motor.AP.AdcPhaseA),
     }
 
-    # Do the logging - the default trigger is TRIGGER_UNCONDITIONAL which will start logging immediately
-    dl.activate_trigger()
+    # Do the logging logging immediately, without setting up any trigger condition.
+    dl.start_logging()
 
     # Wait for the logging to finish
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     # Pull the data from the module
     dl.download_logs()

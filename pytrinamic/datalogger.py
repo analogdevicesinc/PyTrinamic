@@ -1,10 +1,15 @@
-"""Draft of a new shiny RAMDebug implementation"""
+"""User interface for the RAMDebug feature of some ADI Trinamic produces
+
+Improvements/Todo:
+* Add an optional explode mode that will unpack all fields of a register in the logs.
+* Add a way to call download_logs() without waiting for the logging to be done.
+* Add parameters to download_logs() that allow to download only a part of the logs.
+"""
 
 from __future__ import annotations
 from typing import Union, List
 from dataclasses import dataclass
-from enum import IntEnum
-import copy
+from enum import Enum, auto
 
 from pytrinamic.rd import Rd
 from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
@@ -129,41 +134,36 @@ class DataLogger:
                 sign_mask = base_mask & (~base_mask >> 1)
                 value = (value ^ sign_mask) - sign_mask
             return value
+        
+    class TriggerEdge(Enum):
+        RISING = auto()
+        FALLING = auto()
+        BOTH = auto()
 
     @dataclass
     class Log:
         rate_hz: float
         samples: list
-
-    class TriggerType(IntEnum):
-        UNCONDITIONAL         = 0
-        RISING_EDGE_SIGNED    = 1
-        FALLING_EDGE_SIGNED   = 2
-        DUAL_EDGE_SIGNED      = 3
-        RISING_EDGE_UNSIGNED  = 4
-        FALLING_EDGE_UNSIGNED = 5
-        DUAL_EDGE_UNSIGNED    = 6
+        request_object: None
 
     @dataclass
     class Config:
         down_sampling_factor: int
         samples_per_channel: int
         log_data: dict
-        trigger_type: None
-        trigger_on: None
-        trigger_threshold: int
-        pretrigger_samples: int
 
-    def __init__(self, connection, module_id):
+    @dataclass
+    class _RequestEntry:
+        name: str
+        datatype: DataLogger.DataType
+        request_object: None
+
+    def __init__(self, connection, module_id=1):
         self.rd = Rd(connection, module_id)
         self.config = DataLogger.Config(
             down_sampling_factor=1,
             samples_per_channel=0,
-            log_data={},
-            trigger_type=self.TriggerType.UNCONDITIONAL,
-            trigger_on=None,
-            trigger_threshold=None,
-            pretrigger_samples=0,
+            log_data=None,
         )
         self.logs = {}
         self._log_data = None
@@ -174,6 +174,10 @@ class DataLogger:
         self._download_is_done = True
         self._download_offset = 0
         self._downloaded_raw_data = []
+        self._trigger_type = Rd.TriggerType.UNCONDITIONAL
+        self._trigger_on = None
+        self._trigger_threshold = None
+        self._pretrigger_samples = 0
 
     def get_info(self) -> DataLogger.Info:
         return DataLogger.Info(
@@ -181,21 +185,56 @@ class DataLogger:
             sample_buffer_length=self.rd.get_info(Rd.Info.BUFFER_ELEMENTS),
             number_of_channels=self.rd.get_info(Rd.Info.MAX_CHANNELS),
         )
+    
+    def start_logging(self):
+        self._trigger_type = Rd.TriggerType.UNCONDITIONAL
+        self._activation()
 
-    def activate_trigger(self) -> None:
+    def activate_trigger(
+            self,
+            *,
+            on_data: Union[Parameter, Register, Field, DataTypeAp, DataTypeGp, DataTypeRegister, DataTypeField],
+            threshold: int,
+            edge: TriggerEdge,
+            pretrigger_samples: int = 0,
+        ) -> None:
+        
+        if isinstance(on_data, (Parameter, Register, Field)):
+            self._trigger_on = self._transform_to_datatype(on_data)
+        else:
+            self._trigger_on = on_data
+        if self._trigger_on.signed:
+            if edge == DataLogger.TriggerEdge.RISING:
+                self._trigger_type = Rd.TriggerType.RISING_EDGE_SIGNED
+            elif edge == DataLogger.TriggerEdge.FALLING:
+                self._trigger_type = Rd.TriggerType.FALLING_EDGE_SIGNED
+            elif edge == DataLogger.TriggerEdge.BOTH:
+                self._trigger_type = Rd.TriggerType.DUAL_EDGE_SIGNED
+        else:
+            if edge == DataLogger.TriggerEdge.RISING:
+                self._trigger_type = Rd.TriggerType.RISING_EDGE_UNSIGNED
+            elif edge == DataLogger.TriggerEdge.FALLING:
+                self._trigger_type = Rd.TriggerType.FALLING_EDGE_UNSIGNED
+            elif edge == DataLogger.TriggerEdge.BOTH:
+                self._trigger_type = Rd.TriggerType.DUAL_EDGE_UNSIGNED
+        self._trigger_threshold = threshold
+        self._pretrigger_samples = pretrigger_samples
+        self._activation()
+
+    def _activation(self) -> None:
         if self.config.samples_per_channel == 0:
             raise DataLoggerConfigError("No samples per channel specified!")
         
         if isinstance(self.config.log_data, list):
-            self._log_data = {}
+            self._log_data = []
             for x in self.config.log_data:
                 dt = self._transform_to_datatype(x)
                 if isinstance(x, Field):
-                    self._log_data[f"{x.parent.name}.{x.name}"] = dt
+                    self._log_data.append(self._RequestEntry(name=f"{x.parent.name}.{x.name}", datatype=dt, request_object=x))
                 else:
-                    self._log_data[x.name] = dt
+                    self._log_data.append(self._RequestEntry(name=x.name, datatype=dt, request_object=x))
         elif isinstance(self.config.log_data, dict):
-            self._log_data = copy.deepcopy(self.config.log_data)
+            self._log_data = [self._RequestEntry(name=name, datatype=dt, request_object=dt) for name, dt in self.config.log_data.items()]
         else:
             raise DataLoggerConfigError("`config.log_data` must be a list or a dict!")
         
@@ -211,13 +250,10 @@ class DataLogger:
         self.rd.init()
         self.rd.set_sample_count(self.config.samples_per_channel*self._channels_used_count)
         self.rd.set_prescaler(self.config.down_sampling_factor)
-        if self.config.trigger_type != self.TriggerType.UNCONDITIONAL:
-            if self.config.trigger_on is None:
-                raise DataLoggerConfigError("Trigger type specified but no trigger data given in `config.trigger_on`!")
-            if isinstance(self.config.trigger_on, (Parameter, Register, Field)):
-                channel_type, select = self._get_channel_type_and_select(datatype=self._transform_to_datatype(self.config.trigger_on))
-            else:
-                channel_type, select = self._get_channel_type_and_select(datatype=self.config.trigger_on)
+        if self._trigger_type != Rd.TriggerType.UNCONDITIONAL:
+            if self._trigger_on is None:
+                raise DataLoggerConfigError("Trigger type specified but no trigger data given in `_trigger_on`!")
+            channel_type, select = self._get_channel_type_and_select(datatype=self._trigger_on)
             self.rd.set_trigger_channel(channel_type=channel_type, select=select)
         
         # Set channels
@@ -228,19 +264,27 @@ class DataLogger:
                 select=select
             )
 
-        self.rd.set_pretrigger_sample_count(self.config.pretrigger_samples)
-        if self.config.trigger_type == self.TriggerType.UNCONDITIONAL:
-            self.rd.enable_trigger(self.config.trigger_type, 0)
+        self.rd.set_pretrigger_sample_count(self._pretrigger_samples)
+        if self._trigger_type == Rd.TriggerType.UNCONDITIONAL:
+            self.rd.enable_trigger(self._trigger_type, 0)
         else:
-            if self.config.trigger_threshold is None:
-                raise DataLoggerConfigError("Trigger type specified is conditional but no threshold given in `config.trigger_threshold!")
-            self.rd.enable_trigger(self.config.trigger_type, self.config.trigger_threshold)
+            if self._trigger_threshold is None:
+                raise DataLoggerConfigError("Trigger type specified is conditional but no threshold given in `_trigger_threshold!")
+            self.rd.enable_trigger(self._trigger_type, self._trigger_threshold)
 
-    def got_triggered(self) -> bool:
+    def is_triggered(self) -> bool:
         return self.rd.get_state() >= Rd.State.CAPTURE
+    
+    def wait_for_trigger(self) -> None:
+        while not self.is_triggered():
+            pass
 
     def is_done(self) -> bool:
         return self.rd.get_state() == Rd.State.COMPLETE
+    
+    def wait_till_done(self) -> None:
+        while not self.is_done():
+            pass
 
     def download_logs_step(self) -> bool:
         @dataclass
@@ -262,23 +306,24 @@ class DataLogger:
             samples = self._downloaded_raw_data[i::self._channels_used_count]
             log_samples.append(EffectiveDataSet(name=name, datatype=datatype, samples=samples))
 
-        for name, datatype in self._log_data.items():
-            if datatype.reuse_obj is None:
-                use_datatype_obj = next((x for x in log_samples if x.datatype == datatype))
+        for entry in self._log_data:
+            if entry.datatype.reuse_obj is None:
+                use_datatype_obj = next((x for x in log_samples if x.datatype == entry.datatype))
             else:
-                use_datatype_obj = next((x for x in log_samples if x.datatype == datatype.reuse_obj))
+                use_datatype_obj = next((x for x in log_samples if x.datatype == entry.datatype.reuse_obj))
 
-            if isinstance(datatype, DataLogger.DataTypeField):
-                samples = [datatype.get(sample) for sample in use_datatype_obj.samples]
+            if isinstance(entry.datatype, DataLogger.DataTypeField):
+                samples = [entry.datatype.get(sample) for sample in use_datatype_obj.samples]
             else:
-                if datatype.signed:
+                if entry.datatype.signed:
                     samples = [to_signed_32(sample) for sample in use_datatype_obj.samples]
                 else:
                     samples = use_datatype_obj.samples
 
-            self.logs[name] = DataLogger.Log(
+            self.logs[entry.name] = DataLogger.Log(
                 rate_hz=self._info.base_frequency_hz/self.config.down_sampling_factor,
-                samples=samples
+                samples=samples,
+                request_object=entry.request_object,
             )
 
         self._downloaded_raw_data = []
@@ -310,38 +355,38 @@ class DataLogger:
             elif x.category == ParameterGroup.Category.GLOBAL:
                 return self.DataTypeGp.from_parameter(x)
             else:
-                raise DataLoggerConfigError("Parameter object parent in `config.log_data` must be of category AXIS or GLOBAL!")
+                raise DataLoggerConfigError("Parameter object must be of category AXIS or GLOBAL!")
         elif isinstance(x, Register):
             return self.DataTypeRegister.from_register(x)
         elif isinstance(x, Field):
             return self.DataTypeField.from_field(x)
         else:
-            raise DataLoggerConfigError("If `config.log_data` is a list. It must contain only Parameter, Register or Field objects!")
+            raise DataLoggerConfigError("Only Parameter, Register or Field objects can be transformed!")
         
     def _reduce(self):
         self._effectively_log_data = {}
-        for name, datatype in self._log_data.items():
-            if isinstance(datatype, DataLogger.DataTypeRegister) or isinstance(datatype, DataLogger.DataTypeAp) or isinstance(datatype, DataLogger.DataTypeGp):
+        for entry in self._log_data:
+            if isinstance(entry.datatype, DataLogger.DataTypeRegister) or isinstance(entry.datatype, DataLogger.DataTypeAp) or isinstance(entry.datatype, DataLogger.DataTypeGp):
                 for existing_datatype in self._effectively_log_data.values():
-                    if datatype == existing_datatype:
-                        datatype.reuse_obj = existing_datatype
+                    if entry.datatype == existing_datatype:
+                        entry.datatype.reuse_obj = existing_datatype
                         break
                 else:
-                    self._effectively_log_data[name] = datatype
-            elif isinstance(datatype, DataLogger.DataTypeField):
+                    self._effectively_log_data[entry.name] = entry.datatype
+            elif isinstance(entry.datatype, DataLogger.DataTypeField):
                 for existing_datatype in self._effectively_log_data.values():
                     if isinstance(existing_datatype, (DataLogger.DataTypeField, DataLogger.DataTypeRegister)):
                         if all([
-                            datatype.block == existing_datatype.block,
-                            datatype.channel == existing_datatype.channel,
-                            datatype.address == existing_datatype.address,
+                            entry.datatype.block == existing_datatype.block,
+                            entry.datatype.channel == existing_datatype.channel,
+                            entry.datatype.address == existing_datatype.address,
                         ]):
-                            datatype.reuse_obj = existing_datatype
+                            entry.datatype.reuse_obj = existing_datatype
                             break
                 else:
-                    self._effectively_log_data[name] = datatype
+                    self._effectively_log_data[entry.name] = entry.datatype
             else:
-                self._effectively_log_data[name] = datatype
+                self._effectively_log_data[entry.name] = entry.datatype
 
     @property
     def download_progress(self) -> float:

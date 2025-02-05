@@ -39,10 +39,9 @@ with ConnectionManager().connect() as my_interface:
        TMC9660.MCC.ADC_I3_I2_SCALED.I2,
     ]
 
-    dl.activate_trigger()
+    dl.start_logging()
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     dl.download_logs()
 

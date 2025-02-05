@@ -76,10 +76,9 @@ with cm.connect() as my_interface:
         TMC9660.ap.ADC_I2,
     ]
 
-    dl.activate_trigger()
+    dl.start_logging()
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     dl.download_logs()
 
@@ -91,5 +90,4 @@ with cm.connect() as my_interface:
         print(f"Log {name}:")
         print(f"  Rate: {log.rate_hz} Hz")
         print(f"  Samples: {log.samples}")
-
-
+        print(f"  Parameter: {type(log.request_object)}")

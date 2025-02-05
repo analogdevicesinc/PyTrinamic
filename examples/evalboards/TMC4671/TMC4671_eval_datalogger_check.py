@@ -21,7 +21,7 @@ with ConnectionManager().connect() as my_interface:
         "ADC_IV": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.ADC_IWY, signed=True),
     }
 
-    dl.activate_trigger()
+    dl.start_logging()
 
     while not dl.is_done():
         time.sleep(0.1)

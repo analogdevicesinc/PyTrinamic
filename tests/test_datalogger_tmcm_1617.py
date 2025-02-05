@@ -6,6 +6,7 @@
 from typing import Generator
 import statistics
 import dataclasses
+import time
 
 import pytest
 
@@ -55,7 +56,8 @@ def tmcm1617(kvaser_interface) -> Generator[TMCM1617Ex, None, None]:
     module = TMCM1617Ex(kvaser_interface)
     yield module
 
-    
+
+
 @pytest.fixture
 def rotate_motor_one_rps(tmcm1617: TMCM1617Ex):
     tmcm1617.adc_offset_correction()
@@ -63,10 +65,23 @@ def rotate_motor_one_rps(tmcm1617: TMCM1617Ex):
     motor.set_axis_parameter(motor.AP.EnableRamp, 0)
     motor.set_axis_parameter(motor.AP.ActualPosition, 0)
     motor.set_axis_parameter(motor.AP.CommutationMode, ENUM.COMM_MODE_OPENLOOP)
-    motor.set_axis_parameter(motor.AP.TargetVelocity, 60)
     yield None
     motor.set_axis_parameter(motor.AP.TargetVelocity, 0)
     motor.set_axis_parameter(motor.AP.CommutationMode, ENUM.COMM_MODE_OPENLOOP)
+
+
+@pytest.fixture
+def rotate_motor_one_rps_positive(tmcm1617: TMCM1617Ex, rotate_motor_one_rps):
+    motor = tmcm1617.motors[0]
+    motor.set_axis_parameter(motor.AP.TargetVelocity, 60)
+    yield None
+
+
+@pytest.fixture
+def rotate_motor_one_rps_negative(tmcm1617: TMCM1617Ex, rotate_motor_one_rps):
+    motor = tmcm1617.motors[0]
+    motor.set_axis_parameter(motor.AP.TargetVelocity, -60)
+    yield None
 
 
 def test_error_no_samples_per_channel_given(tmcm1617: TMCM1617Ex):
@@ -79,7 +94,7 @@ def test_error_no_samples_per_channel_given(tmcm1617: TMCM1617Ex):
     }
 
     with pytest.raises(DataLoggerConfigError) as excinfo:
-        dl.activate_trigger()
+        dl.start_logging()
     assert str(excinfo.value) == "No samples per channel specified!"
 
 
@@ -98,7 +113,7 @@ def test_error_exceed_channels(tmcm1617: TMCM1617Ex):
     }
 
     with pytest.raises(DataLoggerConfigError) as excinfo:
-        dl.activate_trigger()
+        dl.start_logging()
     assert str(excinfo.value) == "Exceeding number of channels!"
 
 
@@ -114,42 +129,44 @@ def test_error_exceed_buffer_limit(tmcm1617: TMCM1617Ex):
     }
 
     with pytest.raises(DataLoggerConfigError) as excinfo:
-        dl.activate_trigger()
+        dl.start_logging()
     assert str(excinfo.value) == "Samples per channel exceeds sample buffer length!"
 
 
 def test_error_missing_trigger_channel(tmcm1617: TMCM1617Ex):
     """Check if a proper error is raised when trigger is conditional but no trigger data is given."""
 
+    motor = tmcm1617.motors[0]
     dl = tmcm1617.datalogger
 
     dl.config.samples_per_channel = 10
     dl.config.log_data = {
         "a": dl.DataTypeAp(index=0),
     }
-    dl.config.trigger_type = dl.TriggerType.RISING_EDGE_SIGNED
-    dl.config.trigger_threshold = 0
 
-    with pytest.raises(DataLoggerConfigError) as excinfo:
-        dl.activate_trigger()
-    assert str(excinfo.value) == "Trigger type specified but no trigger data given in `config.trigger_on`!"
+    with pytest.raises(TypeError) as excinfo:
+        dl.activate_trigger(
+            threshold=motor.get_axis_parameter(motor.AP.PositionScaler),
+            edge=dl.TriggerEdge.RISING,
+        )
 
 
 def test_error_missing_trigger_threshold(tmcm1617: TMCM1617Ex):
     """Check if a proper error is raised when trigger is conditional but no trigger threshold is given."""
 
+    motor = tmcm1617.motors[0]
     dl = tmcm1617.datalogger
 
     dl.config.samples_per_channel = 10
     dl.config.log_data = {
         "a": dl.DataTypeAp(index=0),
     }
-    dl.config.trigger_type = dl.TriggerType.RISING_EDGE_SIGNED
-    dl.config.trigger_on = dl.DataTypeAp(index=0)
 
-    with pytest.raises(DataLoggerConfigError) as excinfo:
-        dl.activate_trigger()
-    assert str(excinfo.value) == "Trigger type specified is conditional but no threshold given in `config.trigger_threshold!"
+    with pytest.raises(TypeError) as excinfo:
+        dl.activate_trigger(
+            on_data=dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
+            edge=dl.TriggerEdge.RISING,
+        )
 
 
 def test_info(tmcm1617: TMCM1617Ex):
@@ -184,10 +201,9 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, 
             "ADC_I1": dl.DataTypeAp.from_parameter(Parameter(None, None, motor.AP.AdcPhaseB, Parameter.Access.R, Parameter.Datatype.UNSIGNED)),
         }
 
-    dl.activate_trigger()
+    dl.start_logging()
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     if download_stepwise:
         while dl.download_logs_step():
@@ -196,15 +212,19 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, 
     else:
         dl.download_logs()
 
-    for log in [dl.logs["ADC_I0"], dl.logs["ADC_I1"]]:
+    for name, log in dl.logs.items():
         assert len(log.samples) == 10
         assert log.rate_hz == 2000
         assert all(30_000 <= sample <= 40_000 for sample in log.samples)
         assert statistics.stdev(log.samples) != 0
+        if use_log_data_list:
+            assert log.request_object == next(param for param in dl.config.log_data if param.name == name)
+        else:
+            assert log.request_object == dl.config.log_data[name]
 
 
 @pytest.mark.parametrize("down_sampling_factor", [4, 8, 16, 128])
-def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps, down_sampling_factor):
+def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positive, down_sampling_factor):
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
@@ -215,10 +235,9 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps, down_
         "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
     }
 
-    dl.activate_trigger()
+    dl.start_logging()
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     dl.download_logs()
 
@@ -233,7 +252,7 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps, down_
 
 
 @pytest.mark.parametrize("use_parameter_class", [False, True])
-def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps, use_parameter_class):
+def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positive, use_parameter_class):
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
@@ -241,51 +260,88 @@ def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps,
     dl.config.samples_per_channel = 10
     dl.config.down_sampling_factor = 4
     dl.config.log_data = {
-        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
+        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
     }
-    dl.config.trigger_type = dl.TriggerType.RISING_EDGE_SIGNED
     if use_parameter_class:
         group = ParameterGroup("All", ParameterGroup.Category.AXIS, 0)
-        dl.config.trigger_on = Parameter(group, "", motor.AP.ActualPosition, Parameter.Access.R, Parameter.Datatype.SIGNED)
+        trigger_on = Parameter(group, "", motor.AP.ActualPosition, Parameter.Access.R, Parameter.Datatype.SIGNED)
     else:
-        dl.config.trigger_on = dl.DataTypeAp(index=motor.AP.ActualPosition)
-    dl.config.trigger_threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
+        trigger_on = dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True)
 
-    dl.activate_trigger()
+    threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
+    dl.activate_trigger(
+        on_data=trigger_on,
+        threshold=threshold,
+        edge=dl.TriggerEdge.RISING,
+    )
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     dl.download_logs()
 
-    assert dl.logs["ActualPosition"].samples[0] >= dl.config.trigger_threshold
+    assert dl.logs["ActualPosition"].samples[0] >= threshold
 
 
-def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps):
+def test_success_falling_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_negative):
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
 
-    dl.config.samples_per_channel = 1000
+    dl.config.samples_per_channel = 10
     dl.config.down_sampling_factor = 4
     dl.config.log_data = {
-        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
+        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
     }
-    dl.config.trigger_type = dl.TriggerType.RISING_EDGE_SIGNED
-    dl.config.trigger_on = dl.DataTypeAp(index=motor.AP.ActualPosition)
-    dl.config.trigger_threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
-    dl.config.pretrigger_samples = 100
 
-    dl.activate_trigger()
+    threshold = -motor.get_axis_parameter(motor.AP.PositionScaler)
 
-    while not dl.is_done():
-        pass
+    dl.activate_trigger(
+        on_data=dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
+        threshold=threshold,
+        edge=dl.TriggerEdge.FALLING,
+    )
+    start_time = time.perf_counter()
+
+    dl.wait_till_done()
+
+    delay_seconds = time.perf_counter() - start_time
+
+    dl.download_logs()
+
+    assert dl.logs["ActualPosition"].samples[0] <= threshold
+    
+    expected_delay_seconds = threshold * 60 / motor.get_axis_parameter(motor.AP.PositionScaler) / motor.get_axis_parameter(motor.AP.TargetVelocity, signed=True)
+    assert abs(delay_seconds - expected_delay_seconds) < 0.1
+
+
+def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positive):
+    motor = tmcm1617.motors[0]
+
+    dl = tmcm1617.datalogger
+
+    dl.config.samples_per_channel = 200
+    dl.config.down_sampling_factor = 4
+    dl.config.log_data = {
+        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
+    }
+
+    threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
+    pretrigger_samples = 100
+
+    dl.activate_trigger(
+        on_data=dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
+        threshold=threshold,
+        edge=dl.TriggerEdge.RISING,
+        pretrigger_samples=pretrigger_samples,
+    )
+
+    dl.wait_till_done()
 
     dl.download_logs()
 
     expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.logs["ActualPosition"].rate_hz / 60
 
-    expected_first_sample_position = dl.config.trigger_threshold - expected_position_increase_per_sample * dl.config.pretrigger_samples
+    expected_first_sample_position = threshold - expected_position_increase_per_sample * pretrigger_samples
     assert abs(dl.logs["ActualPosition"].samples[0] - expected_first_sample_position) < expected_position_increase_per_sample
 
 
@@ -305,10 +361,9 @@ def test_success_copies(tmcm1617: TMCM1617Ex):
         "ADC_I1_C": dl.DataTypeAp(index=motor.AP.AdcPhaseB),
     }
 
-    dl.activate_trigger()
+    dl.start_logging()
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     assert len(dl._effectively_log_data) == 2
     

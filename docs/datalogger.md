@@ -16,7 +16,7 @@ The following diagram gives an overview on the Datalogger concept.
 ### Basic example
 
 This example keeps all optional settings at default.
-It uses unconditional triggering, thus data will be logged immediately after `activate_trigger()` got called.
+It uses unconditional triggering, thus data will be logged immediately after `start_logging()` got called.
 
 ```py
     dl = tmc9660_eval.datalogger
@@ -26,10 +26,9 @@ It uses unconditional triggering, thus data will be logged immediately after `ac
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
     ]
 
-    dl.activate_trigger()
+    dl.start_logging()
 
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     dl.download_logs()
 
@@ -54,12 +53,11 @@ Step by step details:
   ```
 * With the minimal configuration done we can start the logging.
   ```py
-    dl.activate_trigger()
+    dl.start_logging()
   ```
 * The firmware now does the logging and we need to wait till it finished.
   ```py
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
   ```
 * With the logging done, we can download the logs.
   ```py

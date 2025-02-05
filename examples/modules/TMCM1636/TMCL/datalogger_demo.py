@@ -32,14 +32,12 @@ with connection_manager.connect() as my_interface:
     }
     dl.config.down_sampling_factor = 2
     dl.config.samples_per_channel = 1024
-    dl.config.trigger_type = dl.TriggerType.UNCONDITIONAL
 
     # Do the logging
-    dl.activate_trigger()
+    dl.start_logging()
 
     # Wait for the logging to finish
-    while not dl.is_done():
-        pass
+    dl.wait_till_done()
 
     # Pull the data from the module
     while dl.download_logs_step():

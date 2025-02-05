@@ -30,6 +30,15 @@ class Rd:
         RISING_EDGE_UNSIGNED  = 4
         FALLING_EDGE_UNSIGNED = 5
         DUAL_EDGE_UNSIGNED    = 6
+        
+    class TriggerType(IntEnum):
+        UNCONDITIONAL         = 0
+        RISING_EDGE_SIGNED    = 1
+        FALLING_EDGE_SIGNED   = 2
+        DUAL_EDGE_SIGNED      = 3
+        RISING_EDGE_UNSIGNED  = 4
+        FALLING_EDGE_UNSIGNED = 5
+        DUAL_EDGE_UNSIGNED    = 6
     
     class _Command(IntEnum):
         INIT                        =  0
