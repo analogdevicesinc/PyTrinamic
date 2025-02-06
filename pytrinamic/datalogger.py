@@ -4,6 +4,7 @@ Improvements/Todo:
 * Add an optional explode mode that will unpack all fields of a register in the logs.
 * Add a way to call download_logs() without waiting for the logging to be done.
 * Add parameters to download_logs() that allow to download only a part of the logs.
+* Add timeouts to wait_till_done() and wait_for_trigger().
 """
 
 from __future__ import annotations
@@ -223,7 +224,9 @@ class DataLogger:
 
     def _activation(self) -> None:
         if self.config.samples_per_channel == 0:
-            raise DataLoggerConfigError("No samples per channel specified!")
+            raise DataLoggerConfigError("No samples per channel specified via `config.samples_per_channel`!")
+        if self.config.down_sampling_factor < 1:
+            raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
         
         if isinstance(self.config.log_data, list):
             self._log_data = []
@@ -249,12 +252,14 @@ class DataLogger:
             raise DataLoggerConfigError("Samples per channel exceeds sample buffer length!")
         self.rd.init()
         self.rd.set_sample_count(self.config.samples_per_channel*self._channels_used_count)
-        self.rd.set_prescaler(self.config.down_sampling_factor)
+        self.rd.set_prescaler(self.config.down_sampling_factor-1)
         if self._trigger_type != Rd.TriggerType.UNCONDITIONAL:
             if self._trigger_on is None:
                 raise DataLoggerConfigError("Trigger type specified but no trigger data given in `_trigger_on`!")
             channel_type, select = self._get_channel_type_and_select(datatype=self._trigger_on)
             self.rd.set_trigger_channel(channel_type=channel_type, select=select)
+            if isinstance(self._trigger_on, DataLogger.DataTypeField):
+                self.rd.set_shift_mask(shift=self._trigger_on.shift, mask=self._trigger_on.mask)
         
         # Set channels
         for datatype in self._effectively_log_data.values():

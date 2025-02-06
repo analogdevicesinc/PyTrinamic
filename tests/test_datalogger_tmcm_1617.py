@@ -95,7 +95,7 @@ def test_error_no_samples_per_channel_given(tmcm1617: TMCM1617Ex):
 
     with pytest.raises(DataLoggerConfigError) as excinfo:
         dl.start_logging()
-    assert str(excinfo.value) == "No samples per channel specified!"
+    assert str(excinfo.value) == "No samples per channel specified via `config.samples_per_channel`!"
 
 
 def test_error_exceed_channels(tmcm1617: TMCM1617Ex):
@@ -228,6 +228,7 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positi
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
+    base_sample_frequency_hz = dl.get_info().base_frequency_hz
 
     dl.config.samples_per_channel = 10
     dl.config.down_sampling_factor = down_sampling_factor
@@ -240,6 +241,8 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positi
     dl.wait_till_done()
 
     dl.download_logs()
+
+    assert dl.logs["ActualPosition"].rate_hz == base_sample_frequency_hz / down_sampling_factor
 
     # speed = distance / time
     expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.logs["ActualPosition"].rate_hz / 60
