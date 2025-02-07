@@ -1,4 +1,4 @@
-"""User interface for the RAMDebug feature of some ADI Trinamic produces
+"""User interface for the RAMDebug feature of some ADI Trinamic products
 
 Improvements/Todo:
 * Add an optional explode mode that will unpack all fields of a register in the logs.
@@ -8,9 +8,11 @@ Improvements/Todo:
 """
 
 from __future__ import annotations
-from typing import Union, List
+from typing import Union, List, Dict
 from dataclasses import dataclass
 from enum import Enum, auto
+import decimal
+import math
 
 from pytrinamic.rd import Rd
 from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
@@ -144,6 +146,12 @@ class DataLogger:
     @dataclass
     class Log:
         rate_hz: float
+        period_s: float
+        time_vector: list
+        data: Dict[str, DataLogger.LogData]
+
+    @dataclass
+    class LogData:
         samples: list
         request_object: None
 
@@ -152,6 +160,28 @@ class DataLogger:
         down_sampling_factor: int
         samples_per_channel: int
         log_data: dict
+        _get_base_frequency_hz: None
+
+        def set_sample_rate(self, rate_hz: float) -> None:
+            if self.down_sampling_factor is not None:
+                raise DataLoggerConfigError("The `config.down_sampling_factor` is already set!")
+            base_frequency_hz = self._get_base_frequency_hz()
+            expected_down_down_sampling_factor = base_frequency_hz/rate_hz
+            if expected_down_down_sampling_factor.is_integer():
+                self.down_sampling_factor = int(expected_down_down_sampling_factor)
+            else:
+                possibilities = []
+                for i in range(1, 1000):
+                    freq = base_frequency_hz/i
+                    if decimal.Decimal(freq).as_tuple().exponent < -4:
+                        continue
+                    possibilities.append((i, freq))
+                    if len(possibilities) > 10:
+                        break
+                msg = f"The `rate_hz` must be a divisor of the base frequency {base_frequency_hz} Hz! Good values would be:\n" \
+                    f"  Frequency Hz | down_sampling_factor\n" \
+                    f"{f'{chr(10)}'.join([f'  {frequency:12} | {factor:3}' for factor, frequency in possibilities])}"
+                raise DataLoggerConfigError(msg)
 
     @dataclass
     class _RequestEntry:
@@ -162,14 +192,16 @@ class DataLogger:
     def __init__(self, connection, module_id=1):
         self.rd = Rd(connection, module_id)
         self.config = DataLogger.Config(
-            down_sampling_factor=1,
+            down_sampling_factor=None,
             samples_per_channel=0,
             log_data=None,
+            _get_base_frequency_hz=self._get_base_frequency_hz,
         )
-        self.logs = {}
+        self.log = DataLogger.Log(rate_hz=0, period_s=0, time_vector=[], data={})
         self._log_data = None
         self._effectively_log_data = None
         self._info = None
+        self._down_sampling_factor = 1
         self._channels_used_count = 0
         self._total_number_of_samples = 0
         self._download_is_done = True
@@ -223,10 +255,14 @@ class DataLogger:
         self._activation()
 
     def _activation(self) -> None:
+        if self.config.down_sampling_factor is None:
+            self._down_sampling_factor = 1
+        else:
+            if self.config.down_sampling_factor < 1:
+                raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
+            self._down_sampling_factor = self.config.down_sampling_factor
         if self.config.samples_per_channel == 0:
             raise DataLoggerConfigError("No samples per channel specified via `config.samples_per_channel`!")
-        if self.config.down_sampling_factor < 1:
-            raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
         
         if isinstance(self.config.log_data, list):
             self._log_data = []
@@ -249,10 +285,10 @@ class DataLogger:
         if self._channels_used_count > self._info.number_of_channels:
             raise DataLoggerConfigError("Exceeding number of channels!")
         if self._total_number_of_samples > self._info.sample_buffer_length:
-            raise DataLoggerConfigError("Samples per channel exceeds sample buffer length!")
+            raise DataLoggerConfigError(f"`config.samples_per_channel` exceeds sample buffer length! You can use {math.floor(self._info.sample_buffer_length/self._channels_used_count)} at max.")
         self.rd.init()
         self.rd.set_sample_count(self.config.samples_per_channel*self._channels_used_count)
-        self.rd.set_prescaler(self.config.down_sampling_factor-1)
+        self.rd.set_prescaler(self._down_sampling_factor-1)
         if self._trigger_type != Rd.TriggerType.UNCONDITIONAL:
             if self._trigger_on is None:
                 raise DataLoggerConfigError("Trigger type specified but no trigger data given in `_trigger_on`!")
@@ -291,7 +327,7 @@ class DataLogger:
         while not self.is_done():
             pass
 
-    def download_logs_step(self) -> bool:
+    def download_log_step(self) -> bool:
         @dataclass
         class EffectiveDataSet:
             name: str
@@ -305,12 +341,18 @@ class DataLogger:
 
         # Download is done - extract the data
         log_samples: List[EffectiveDataSet] = []
-        self.logs = {}
         for i in range(len(self._effectively_log_data)):
             name, datatype = list(self._effectively_log_data.items())[i]
             samples = self._downloaded_raw_data[i::self._channels_used_count]
             log_samples.append(EffectiveDataSet(name=name, datatype=datatype, samples=samples))
 
+        period_s = self._down_sampling_factor/self._info.base_frequency_hz
+        time_offset = self._pretrigger_samples*period_s
+        time_vector = [i*period_s-time_offset for i in range(self.config.samples_per_channel)]
+        self.log.rate_hz = self._info.base_frequency_hz/self._down_sampling_factor
+        self.log.period_s = period_s
+        self.log.time_vector = time_vector
+        self.log.data = {}
         for entry in self._log_data:
             if entry.datatype.reuse_obj is None:
                 use_datatype_obj = next((x for x in log_samples if x.datatype == entry.datatype))
@@ -325,8 +367,7 @@ class DataLogger:
                 else:
                     samples = use_datatype_obj.samples
 
-            self.logs[entry.name] = DataLogger.Log(
-                rate_hz=self._info.base_frequency_hz/self.config.down_sampling_factor,
+            self.log.data[entry.name] = DataLogger.LogData(
                 samples=samples,
                 request_object=entry.request_object,
             )
@@ -336,8 +377,8 @@ class DataLogger:
         self._download_is_done = True
         return False
     
-    def download_logs(self) -> None:
-        while self.download_logs_step():
+    def download_log(self) -> None:
+        while self.download_log_step():
             pass
 
     def _get_channel_type_and_select(self, datatype):
@@ -392,6 +433,9 @@ class DataLogger:
                     self._effectively_log_data[entry.name] = entry.datatype
             else:
                 self._effectively_log_data[entry.name] = entry.datatype
+
+    def _get_base_frequency_hz(self) -> int:
+        return self.get_info().base_frequency_hz
 
     @property
     def download_progress(self) -> float:

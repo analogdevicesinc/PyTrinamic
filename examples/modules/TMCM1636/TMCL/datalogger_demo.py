@@ -40,13 +40,10 @@ with connection_manager.connect() as my_interface:
     dl.wait_till_done()
 
     # Pull the data from the module
-    while dl.download_logs_step():
+    while dl.download_log_step():
         print(f"Download progress: {dl.download_progress:.2f}%")
     print(f"Download progress: {dl.download_progress:.2f}%")
 
     # Access the logged data
-    actual_velocity = dl.logs["actual_velocity"]
-    actual_position = dl.logs["actual_position"]
-
-
-
+    actual_velocity = dl.log.data["actual_velocity"]
+    actual_position = dl.log.data["actual_position"]

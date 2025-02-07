@@ -130,7 +130,7 @@ def test_error_exceed_buffer_limit(tmcm1617: TMCM1617Ex):
 
     with pytest.raises(DataLoggerConfigError) as excinfo:
         dl.start_logging()
-    assert str(excinfo.value) == "Samples per channel exceeds sample buffer length!"
+    assert str(excinfo.value) == "`config.samples_per_channel` exceeds sample buffer length! You can use 8192 at max."
 
 
 def test_error_missing_trigger_channel(tmcm1617: TMCM1617Ex):
@@ -206,15 +206,15 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, 
     dl.wait_till_done()
 
     if download_stepwise:
-        while dl.download_logs_step():
+        while dl.download_log_step():
             assert 0.0 < dl.download_progress < 100.0
         assert dl.download_progress == 100.0
     else:
-        dl.download_logs()
+        dl.download_log()
 
-    for name, log in dl.logs.items():
+    assert dl.log.rate_hz == 2000
+    for name, log in dl.log.data.items():
         assert len(log.samples) == 10
-        assert log.rate_hz == 2000
         assert all(30_000 <= sample <= 40_000 for sample in log.samples)
         assert statistics.stdev(log.samples) != 0
         if use_log_data_list:
@@ -240,13 +240,13 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positi
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
-    assert dl.logs["ActualPosition"].rate_hz == base_sample_frequency_hz / down_sampling_factor
+    assert dl.log.rate_hz == base_sample_frequency_hz / down_sampling_factor
 
     # speed = distance / time
-    expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.logs["ActualPosition"].rate_hz / 60
-    diff = [dl.logs["ActualPosition"].samples[i] - dl.logs["ActualPosition"].samples[i-1] for i in range(1, len(dl.logs["ActualPosition"].samples))]
+    expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.log.data["ActualPosition"].rate_hz / 60
+    diff = [dl.log.data["ActualPosition"].samples[i] - dl.log.data["ActualPosition"].samples[i-1] for i in range(1, len(dl.log.data["ActualPosition"].samples))]
 
     # Check if the motor is rotating in the right direction
     assert all(d >= 0 for d in diff)
@@ -280,9 +280,9 @@ def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
-    assert dl.logs["ActualPosition"].samples[0] >= threshold
+    assert dl.log.data["ActualPosition"].samples[0] >= threshold
 
 
 def test_success_falling_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_negative):
@@ -309,9 +309,9 @@ def test_success_falling_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps
 
     delay_seconds = time.perf_counter() - start_time
 
-    dl.download_logs()
+    dl.download_log()
 
-    assert dl.logs["ActualPosition"].samples[0] <= threshold
+    assert dl.log.data["ActualPosition"].samples[0] <= threshold
     
     expected_delay_seconds = threshold * 60 / motor.get_axis_parameter(motor.AP.PositionScaler) / motor.get_axis_parameter(motor.AP.TargetVelocity, signed=True)
     assert abs(delay_seconds - expected_delay_seconds) < 0.1
@@ -340,12 +340,12 @@ def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_mot
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
-    expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.logs["ActualPosition"].rate_hz / 60
+    expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.log.rate_hz / 60
 
     expected_first_sample_position = threshold - expected_position_increase_per_sample * pretrigger_samples
-    assert abs(dl.logs["ActualPosition"].samples[0] - expected_first_sample_position) < expected_position_increase_per_sample
+    assert abs(dl.log.data["ActualPosition"].samples[0] - expected_first_sample_position) < expected_position_increase_per_sample
 
 
 def test_success_copies(tmcm1617: TMCM1617Ex):
@@ -370,6 +370,15 @@ def test_success_copies(tmcm1617: TMCM1617Ex):
 
     assert len(dl._effectively_log_data) == 2
     
-    dl.download_logs()
+    dl.download_log()
 
-    assert all(sample_i0_a == sample_i0_b for sample_i0_a, sample_i0_b in zip(dl.logs["ADC_I0_A"].samples, dl.logs["ADC_I0_B"].samples))
+    assert all(sample_i0_a == sample_i0_b for sample_i0_a, sample_i0_b in zip(dl.log.data["ADC_I0_A"].samples, dl.log.data["ADC_I0_B"].samples))
+
+
+@pytest.mark.parametrize("sample_frequency_hz,expected_down_sampling_factor", [(500.0, 4), (125.0, 16), (100.0, 20)])
+def test_success_sample_sanity(tmcm1617: TMCM1617Ex, sample_frequency_hz, expected_down_sampling_factor):
+
+    dl = tmcm1617.datalogger
+
+    dl.config.set_sample_rate(sample_frequency_hz)
+    assert dl.config.down_sampling_factor == expected_down_sampling_factor

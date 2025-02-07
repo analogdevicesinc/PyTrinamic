@@ -32,7 +32,7 @@ It uses no triggering, thus data will be logged immediately after `start_logging
 
     dl.download_logs()
 
-    print(dl.logs["ADC_I1_I0_SCALED.I0"])
+    print(dl.log.data["ADC_I1_I0_SCALED.I0"])
 ```
 
 Step by step details:
@@ -65,11 +65,11 @@ Step by step details:
   ```
 * Finally we can access the logged data via the `logs` dictionary.
   ```py
-    print(dl.logs["ADC_I1_I0_SCALED.I0"])
+    print(dl.log.data["ADC_I1_I0_SCALED.I0"])
   ```
-  The `dl.logs["ADC_I1_I0_SCALED.I0"]` returns a `DataLogger.Log` object and the print will look similar to this output:
+  The `dl.log.data["ADC_I1_I0_SCALED.I0"]` returns a `DataLogger.LogData` object and the print will look similar to this output:
   ```
-    DataLogger.Log(rate_hz=25000.0, samples=[-9, -49, -65, -57, -81, -105, -25, -73, -105, -9], request_object=<pytrinamic.ic.TMC9660.MCCmap._ALL_REGISTERS._ADC_I1_I0_SCALED._I0 object at 0x00000274C1FBC2E0>)
+    DataLogger.LogData(samples=[-9, -49, -65, -57, -81, -105, -25, -73, -105, -9], request_object=<pytrinamic.ic.TMC9660.MCCmap._ALL_REGISTERS._ADC_I1_I0_SCALED._I0 object at 0x00000274C1FBC2E0>)
   ```
 
 ## Reading out Information on a device's Logging Implementation
@@ -90,6 +90,23 @@ DataLogger.Info(base_frequency_hz=25000, sample_buffer_length=4096, number_of_ch
 
 ## Change of the Sample/Logging Rate
 
+
+### Using the `set_sample_rate()` Function
+
+The sample rate can be specified using the `config.set_sample_rate()` function:
+
+```py
+    dl.config.samples_per_channel = 10
+    dl.config.set_sample_rate(12500.0)
+    dl.config.log_data = [
+       TMC9660.MCC.ADC_I1_I0_SCALED.I0,
+       ...
+```
+
+
+
+### Using the `down_sampling_factor`
+
 The sample rate can be decrease using the `config.down_sampling_factor`:
 
 ```py
@@ -100,13 +117,9 @@ The sample rate can be decrease using the `config.down_sampling_factor`:
        ...
 ```
 
-This will be reflected in the printed log, the `rate_hz`, changed compared to the above example:
+This will be reflected in `dl.log.rate_hz` and `dl.log.period_s`.
 
-```
-DataLogger.Log(rate_hz=12500.0, samples=[-5, -21, -5, -5, -53, -13, 19, -21, 11, -45], request_object=<pytrinamic.ic.TMC9660.MCCmap._ALL_REGISTERS._ADC_I1_I0_SCALED._I0 object at 0x00000274C1FBC2E0>)
-```
-
-A `down_sampling_factor` of 1 means now down sampling.
+A `down_sampling_factor` of 1 means no down sampling.
 A value of 2 divides the base frequency by 2.
 Note, ideally the `down_sampling_factor` is set to a power of two value.
 
@@ -126,7 +139,7 @@ Note, ideally the `down_sampling_factor` is set to a power of two value.
 
     dl.download_logs()
 
-    print(dl.logs["ADC_I1_I0_SCALED.I0"])
+    print(dl.log.data["ADC_I1_I0_SCALED.I0"])
 ```
 
 This is almost identical to the above unconditional logging example, but we use `activate_trigger()` instead of `start_logging()`.

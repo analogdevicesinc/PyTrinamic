@@ -33,13 +33,10 @@ with connection_manager.connect() as my_interface:
     dl.wait_till_done()
 
     # Pull the data from the module
-    dl.download_logs()
+    dl.download_log()
 
     # Access the logged data
-    adc_i0 = dl.logs["ADC_I0"]
+    adc_i0 = dl.log.data["ADC_I0"]
 
     print(adc_i0.samples)
-    print(adc_i0.rate_hz)
-
-
-
+    print(dl.log.rate_hz)

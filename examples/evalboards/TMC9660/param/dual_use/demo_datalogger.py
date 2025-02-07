@@ -80,11 +80,11 @@ with cm.connect() as my_interface:
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
-    print(dl.logs["ADC_I0"])
-    print(dl.logs["ADC_I1"])
-    print(dl.logs["ADC_I2"])
+    print(dl.log.data["ADC_I0"])
+    print(dl.log.data["ADC_I1"])
+    print(dl.log.data["ADC_I2"])
 
     for name, log in dl.logs.items():
         print(f"Log {name}:")

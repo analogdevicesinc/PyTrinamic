@@ -26,7 +26,7 @@ with ConnectionManager().connect() as my_interface:
     while not dl.is_done():
         time.sleep(0.1)
 
-    dl.download_logs()
+    dl.download_log()
 
-    print([f"0x{sample:x}" for sample in dl.logs["CHIPINFO_DATA"].samples])
-    print(dl.logs["ADC_IV"].samples)
+    print([f"0x{sample:x}" for sample in dl.log.data["CHIPINFO_DATA"].samples])
+    print(dl.log.data["ADC_IV"].samples)

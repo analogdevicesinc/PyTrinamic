@@ -3,7 +3,6 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import time
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval
 from pytrinamic.ic import TMC4671
@@ -32,10 +31,10 @@ with ConnectionManager().connect() as my_interface:
     dl.wait_till_done()
     print("Logging done.")
     # Pull the data from the eval
-    dl.download_logs()
+    dl.download_log()
     # Access the logged data
-    actual_velocity_samples = dl.logs["actual_velocity"].samples
-    actual_position_samples = dl.logs["actual_position"].samples
+    actual_velocity_samples = dl.log.data["actual_velocity"].samples
+    actual_position_samples = dl.log.data["actual_position"].samples
     print(f"Actual velocity data: {actual_velocity_samples}")
     print(f"Actual position data: {actual_position_samples}")
 

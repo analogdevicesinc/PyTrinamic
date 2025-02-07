@@ -32,19 +32,21 @@ with ConnectionManager().connect() as my_interface:
 
     dl = tmc9660_eval.datalogger
 
-    dl.config.samples_per_channel = 10
+    dl.config.samples_per_channel = 2
+    dl.config.set_sample_rate(1250.0)
     dl.config.log_data = [
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
        TMC9660.MCC.ADC_I1_I0_SCALED.I1,
        TMC9660.MCC.ADC_I3_I2_SCALED.I2,
     ]
+    
 
     dl.start_logging()
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
-    print(dl.logs["ADC_I1_I0_SCALED.I0"])
-    print(dl.logs["ADC_I1_I0_SCALED.I1"])
-    print(dl.logs["ADC_I3_I2_SCALED.I2"])
+    print(dl.log.data["ADC_I1_I0_SCALED.I0"])
+    print(dl.log.data["ADC_I1_I0_SCALED.I1"])
+    print(dl.log.data["ADC_I3_I2_SCALED.I2"])

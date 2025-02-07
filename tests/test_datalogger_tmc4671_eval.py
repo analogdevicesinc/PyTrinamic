@@ -54,18 +54,18 @@ def test_datalogger_eval_4671(tmc4671_eval: TMC4671_eval, use_log_data_list):
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
-    assert all(sample == 0x34363731 for sample in dl.logs["CHIPINFO_DATA"].samples)
+    assert all(sample == 0x34363731 for sample in dl.log.data["CHIPINFO_DATA"].samples)
     if use_log_data_list:
         adc_channels = ["ADC_IWY_IUX.ADC_IUX", "ADC_IWY_IUX.ADC_IWY", "ADC_IV.ADC_IV"]
     else:
         adc_channels = ["ADC_IUX", "ADC_IWY", "ADC_IV"]
 
     for adc_channel in adc_channels:
-        assert len(dl.logs[adc_channel].samples) == 10
-        assert all(-1000 <= sample <= 1000 for sample in dl.logs[adc_channel].samples)
-        assert statistics.stdev(dl.logs[adc_channel].samples) != 0
+        assert len(dl.log.data[adc_channel].samples) == 10
+        assert all(-1000 <= sample <= 1000 for sample in dl.log.data[adc_channel].samples)
+        assert statistics.stdev(dl.log.data[adc_channel].samples) != 0
 
 
 def test_datalogger_eval_4671_register_copy(tmc4671_eval: TMC4671_eval):
@@ -86,10 +86,10 @@ def test_datalogger_eval_4671_register_copy(tmc4671_eval: TMC4671_eval):
 
     dl.wait_till_done()
 
-    dl.download_logs()
+    dl.download_log()
 
     for i in range(len(dl.config.log_data)):
-        assert all(sample == 0x34363731 for sample in dl.logs[f"CHIPINFO_DATA_{i}"].samples)
+        assert all(sample == 0x34363731 for sample in dl.log.data[f"CHIPINFO_DATA_{i}"].samples)
 
 
 def test_datalogger_eval_4671_field_reduction(tmc4671_eval: TMC4671_eval):
@@ -120,12 +120,12 @@ def test_datalogger_eval_4671_field_reduction(tmc4671_eval: TMC4671_eval):
     dl.wait_till_done()
 
     assert len(dl._effectively_log_data) == 2
-    dl.download_logs()
+    dl.download_log()
 
-    assert all(sample == 0x00035A5A for sample in dl.logs[f"MOTOR_TYPE_N_POLE_PAIRS"].samples)
-    assert all(sample == 0x5A5A for sample in dl.logs[f"N_POLE_PAIRS"].samples)
-    assert all(sample == 0x3 for sample in dl.logs[f"MOTOR_TYPE"].samples)
-    assert all(sample == 1 for sample in dl.logs[f"HALL_POLARITY"].samples)
-    assert all(sample == 0 for sample in dl.logs[f"HALL_INTERPOLATION"].samples)
-    assert all(sample == 0 for sample in dl.logs[f"HALL_DIRECTION"].samples)
-    assert all(sample == 1 for sample in dl.logs[f"HALL_HALL_BLANK"].samples)
+    assert all(sample == 0x00035A5A for sample in dl.log.data[f"MOTOR_TYPE_N_POLE_PAIRS"].samples)
+    assert all(sample == 0x5A5A for sample in dl.log.data[f"N_POLE_PAIRS"].samples)
+    assert all(sample == 0x3 for sample in dl.log.data[f"MOTOR_TYPE"].samples)
+    assert all(sample == 1 for sample in dl.log.data[f"HALL_POLARITY"].samples)
+    assert all(sample == 0 for sample in dl.log.data[f"HALL_INTERPOLATION"].samples)
+    assert all(sample == 0 for sample in dl.log.data[f"HALL_DIRECTION"].samples)
+    assert all(sample == 1 for sample in dl.log.data[f"HALL_HALL_BLANK"].samples)
