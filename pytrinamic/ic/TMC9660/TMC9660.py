@@ -80,18 +80,17 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
         super().__init__("TMC9660", self.__doc__)
 
         self._connection = connection
-        self._connection._default_register_address_bit_width = 11
         self._ap_index_bit_width = 12
         self._module_id = module_id
         self.datalogger = DataLogger(connection, module_id=module_id)
 
     def write_register(self, register_address, block, value):
         """Implementation of the RegisterApiDevice::write_register() function."""
-        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self._module_id)
+        return self._connection.write_register(register_address, TMCLCommand.WRITE_MC, block, value, self._module_id, address_bit_width=11)
 
     def read_register(self, register_address, block, signed=False):
         """Implementation of the RegisterApiDevice::read_register() function."""
-        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed)
+        return self._connection.read_register(register_address, TMCLCommand.READ_MC, block, self._module_id, signed, address_bit_width=11)
     
     def _get_axis_parameter(self, index: int, signed: bool):
         """Implementation of the ParameterApiDevice::_get_axis_parameter() function."""
