@@ -25,51 +25,9 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        class _PREFIX(Field):
-
-            def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("PREFIX", parent, access, mask, shift, signed=signed)
-
-                self.choice = None
-
         def __init__(self, parent, access, address, signed):
             super().__init__("INFO_CHIP", parent, access, address, signed)
-            self.ID      =  self._ID(    self,  Access.R,  0x0000FFFF,  0,   signed=False)
-            self.PREFIX  =  self._PREFIX(self,  Access.R,  0xFFFF0000,  16,  signed=False)
-
-    class _INFO_VARIANT(Register):
-
-        class _PMU_VAR(Field):
-
-            def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("PMU_VAR", parent, access, mask, shift, signed=signed)
-
-                self.choice = None
-
-        class _GDRV_VAR(Field):
-
-            def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("GDRV_VAR", parent, access, mask, shift, signed=signed)
-
-                self.choice = None
-
-        def __init__(self, parent, access, address, signed):
-            super().__init__("INFO_VARIANT", parent, access, address, signed)
-            self.PMU_VAR   =  self._PMU_VAR( self,  Access.R,  0x00000003,  0,  signed=False)
-            self.GDRV_VAR  =  self._GDRV_VAR(self,  Access.R,  0x0000000C,  2,  signed=False)
-
-    class _INFO_REVISION(Register):
-
-        class _REVISION(Field):
-
-            def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("REVISION", parent, access, mask, shift, signed=signed)
-
-                self.choice = None
-
-        def __init__(self, parent, access, address, signed):
-            super().__init__("INFO_REVISION", parent, access, address, signed)
-            self.REVISION  =  self._REVISION(self,  Access.R,  0x7FFFFFFF,  0,  signed=False)
+            self.ID  =  self._ID(self,  Access.R,  0xFFFFFFFF,  0,  signed=False)
 
     class _ADC_I1_I0_RAW(Register):
 
@@ -298,10 +256,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _TRIGGER_SELECT(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.INLINE        =  Option(False,  parent,  "INLINE")
+                    self.SYNC_TRIGGER  =  Option(True,   parent,  "SYNC_TRIGGER")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("TRIGGER_SELECT", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _TRIGGER_POS(Field):
 
@@ -770,10 +734,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _RAMP_MODE(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.POSITION  =  Option(False,  parent,  "POSITION")
+                    self.VELOCITY  =  Option(True,   parent,  "VELOCITY")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("RAMP_MODE", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _FEEDFORWARD(Field):
 
@@ -1012,59 +982,107 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _A_POL(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.HIGH_ACT  =  Option(False,  parent,  "HIGH_ACT")
+                    self.LOW_ACT   =  Option(True,   parent,  "LOW_ACT")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("A_POL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _B_POL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.HIGH_ACT  =  Option(False,  parent,  "HIGH_ACT")
+                    self.LOW_ACT   =  Option(True,   parent,  "LOW_ACT")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("B_POL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _N_POL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.HIGH_ACT  =  Option(False,  parent,  "HIGH_ACT")
+                    self.LOW_ACT   =  Option(True,   parent,  "LOW_ACT")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("N_POL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _COMBINED_N(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ONLY_N  =  Option(False,  parent,  "ONLY_N")
+                    self.ALL     =  Option(True,   parent,  "ALL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("COMBINED_N", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CLEAR_COUNT_ON_N(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
+                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CLEAR_COUNT_ON_N", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _DISABLE_FILTER(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.FILTERED    =  Option(False,  parent,  "FILTERED")
+                    self.UNFILTERED  =  Option(True,   parent,  "UNFILTERED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("DISABLE_FILTER", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CLN(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.OFF  =  Option(False,  parent,  "OFF")
+                    self.ON   =  Option(True,   parent,  "ON")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CLN", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _DIRECTION(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.POS  =  Option(False,  parent,  "POS")
+                    self.NEG  =  Option(True,   parent,  "NEG")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("DIRECTION", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, signed):
             super().__init__("ABN_MODE", parent, access, address, signed)
@@ -1146,17 +1164,29 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _POLARITY(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NORMAL    =  Option(False,  parent,  "NORMAL")
+                    self.INVERSED  =  Option(True,   parent,  "INVERSED")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("POLARITY", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _EXTRAPOLATION(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
+                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("EXTRAPOLATION", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ORDER(Field):
 
@@ -1496,10 +1526,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _METER_SYNC_PULSE(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.PWM_Z  =  Option(False,  parent,  "PWM_Z")
+                    self.PWM_C  =  Option(True,   parent,  "PWM_C")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("METER_SYNC_PULSE", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _METER_TYPE(Field):
 
@@ -1959,24 +1995,42 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _STOP_L_POL(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NORMAL    =  Option(False,  parent,  "NORMAL")
+                    self.INVERTED  =  Option(True,   parent,  "INVERTED")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("STOP_L_POL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _STOP_R_POL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NORMAL    =  Option(False,  parent,  "NORMAL")
+                    self.INVERTED  =  Option(True,   parent,  "INVERTED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("STOP_R_POL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _STOP_H_POL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NORMAL    =  Option(False,  parent,  "NORMAL")
+                    self.INVERTED  =  Option(True,   parent,  "INVERTED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("STOP_H_POL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _SWAP_LR(Field):
 
@@ -2278,24 +2332,42 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _KEEP_POS_TARGET(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.OVERWRITE  =  Option(False,  parent,  "OVERWRITE")
+                    self.KEEP       =  Option(True,   parent,  "KEEP")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("KEEP_POS_TARGET", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CURRENT_NORM_P(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.SHIFT_8   =  Option(False,  parent,  "SHIFT_8")
+                    self.SHIFT_16  =  Option(True,   parent,  "SHIFT_16")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CURRENT_NORM_P", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CURRENT_NORM_I(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.SHIFT_8   =  Option(False,  parent,  "SHIFT_8")
+                    self.SHIFT_16  =  Option(True,   parent,  "SHIFT_16")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CURRENT_NORM_I", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _VELOCITY_NORM_P(Field):
 
@@ -3466,13 +3538,6 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        class _WATCHDOG(Field):
-
-            def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("WATCHDOG", parent, access, mask, shift, signed=signed)
-
-                self.choice = None
-
         class _SHORT(Field):
 
             def __init__(self, parent, access, mask, shift, signed):
@@ -3545,7 +3610,6 @@ class _ALL_REGISTERS(RegisterGroup):
             self.POSITION_TRACKING_ERROR  =  self._POSITION_TRACKING_ERROR(self,  Access.RWC,  0x00001000,  12,  signed=False)
             self.VELOCITY_TRACKING_ERROR  =  self._VELOCITY_TRACKING_ERROR(self,  Access.RWC,  0x00002000,  13,  signed=False)
             self.PID_FW_OUTPUT_LIMIT      =  self._PID_FW_OUTPUT_LIMIT(    self,  Access.RWC,  0x00004000,  14,  signed=False)
-            self.WATCHDOG                 =  self._WATCHDOG(               self,  Access.RWC,  0x00010000,  16,  signed=False)
             self.SHORT                    =  self._SHORT(                  self,  Access.RWC,  0x00020000,  17,  signed=False)
             self.REF_SW_L                 =  self._REF_SW_L(               self,  Access.RWC,  0x00100000,  20,  signed=False)
             self.REF_SW_R                 =  self._REF_SW_R(               self,  Access.RWC,  0x00200000,  21,  signed=False)
@@ -3559,31 +3623,55 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _BRIDGE_ENABLE_U(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
+                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("BRIDGE_ENABLE_U", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _BRIDGE_ENABLE_V(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
+                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("BRIDGE_ENABLE_V", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _BRIDGE_ENABLE_W(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
+                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("BRIDGE_ENABLE_W", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _BRIDGE_ENABLE_Y2(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
+                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("BRIDGE_ENABLE_Y2", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _LS_OCP_CMP_EN(Field):
 
@@ -3615,17 +3703,35 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _BST_ILIM_MAX(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.LIM_45MA   =  Option(0,  parent,  "LIM_45MA")
+                    self.LIM_91MA   =  Option(1,  parent,  "LIM_91MA")
+                    self.LIM_141MA  =  Option(2,  parent,  "LIM_141MA")
+                    self.LIM_191MA  =  Option(3,  parent,  "LIM_191MA")
+                    self.LIM_267MA  =  Option(4,  parent,  "LIM_267MA")
+                    self.LIM_292MA  =  Option(5,  parent,  "LIM_292MA")
+                    self.LIM_341MA  =  Option(6,  parent,  "LIM_341MA")
+                    self.LIM_391MA  =  Option(7,  parent,  "LIM_391MA")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("BST_ILIM_MAX", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _BST_SW_CP_EN(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.OFF  =  Option(False,  parent,  "OFF")
+                    self.ON   =  Option(True,   parent,  "ON")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("BST_SW_CP_EN", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CHARGEPUMP_EN(Field):
 
@@ -4031,10 +4137,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _TERM_PWM_ON_SHORT(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.OFF  =  Option(False,  parent,  "OFF")
+                    self.ON   =  Option(True,   parent,  "ON")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("TERM_PWM_ON_SHORT", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, signed):
             super().__init__("GDRV_PROT", parent, access, address, signed)
@@ -5329,8 +5441,6 @@ class _ALL_REGISTERS(RegisterGroup):
     def __init__(self, channel, block, width):
         super().__init__("ALL_REGISTERS", channel, block, width)
         self.INFO_CHIP                         =  self._INFO_CHIP(                       self,  Access.R,    0x0000,  False)
-        self.INFO_VARIANT                      =  self._INFO_VARIANT(                    self,  Access.R,    0x0001,  False)
-        self.INFO_REVISION                     =  self._INFO_REVISION(                   self,  Access.R,    0x0002,  False)
         self.ADC_I1_I0_RAW                     =  self._ADC_I1_I0_RAW(                   self,  Access.R,    0x0020,  False)
         self.ADC_I3_I2_RAW                     =  self._ADC_I3_I2_RAW(                   self,  Access.R,    0x0021,  False)
         self.ADC_U1_U0_RAW                     =  self._ADC_U1_U0_RAW(                   self,  Access.R,    0x0022,  False)

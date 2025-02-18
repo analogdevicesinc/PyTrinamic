@@ -72,10 +72,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC0_MUX2_DETOUR(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NO_CHANGE         =  Option(False,  parent,  "NO_CHANGE")
+                    self.ADC0_MUX2_DETOUR  =  Option(True,   parent,  "ADC0_MUX2_DETOUR")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC0_MUX2_DETOUR", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC1_MUX0_CFG(Field):
 
@@ -124,10 +130,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC1_MUX2_DETOUR(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NO_CHANGE         =  Option(False,  parent,  "NO_CHANGE")
+                    self.ADC1_MUX2_DETOUR  =  Option(True,   parent,  "ADC1_MUX2_DETOUR")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC1_MUX2_DETOUR", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC2_MUX0_CFG(Field):
 
@@ -183,10 +195,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC2_MUX2_DETOUR(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NO_CHANGE         =  Option(False,  parent,  "NO_CHANGE")
+                    self.ADC2_MUX2_DETOUR  =  Option(True,   parent,  "ADC2_MUX2_DETOUR")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC2_MUX2_DETOUR", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC3_MUX0_CFG(Field):
 
@@ -235,10 +253,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _ADC3_MUX2_DETOUR(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.NO_CHANGE         =  Option(False,  parent,  "NO_CHANGE")
+                    self.ADC3_MUX2_DETOUR  =  Option(True,   parent,  "ADC3_MUX2_DETOUR")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC3_MUX2_DETOUR", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, signed):
             super().__init__("SRC_CONFIG", parent, access, address, signed)
@@ -298,87 +322,159 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _RDY_ADC_0(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC0_NRDY  =  Option(False,  parent,  "ADC0_NRDY")
+                    self.ADC0_RDY   =  Option(True,   parent,  "ADC0_RDY")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("RDY_ADC_0", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _RDY_ADC_1(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC1_NRDY  =  Option(False,  parent,  "ADC1_NRDY")
+                    self.ADC1_RDY   =  Option(True,   parent,  "ADC1_RDY")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("RDY_ADC_1", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _RDY_ADC_2(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC2_NRDY  =  Option(False,  parent,  "ADC2_NRDY")
+                    self.ADC2_RDY   =  Option(True,   parent,  "ADC2_RDY")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("RDY_ADC_2", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _RDY_ADC_3(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC3_NRDY  =  Option(False,  parent,  "ADC3_NRDY")
+                    self.ADC3_RDY   =  Option(True,   parent,  "ADC3_RDY")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("RDY_ADC_3", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC0_WTCHDG_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC0_OK    =  Option(False,  parent,  "ADC0_OK")
+                    self.ADC0_FAIL  =  Option(True,   parent,  "ADC0_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC0_WTCHDG_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC1_WTCHDG_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC1_OK    =  Option(False,  parent,  "ADC1_OK")
+                    self.ADC1_FAIL  =  Option(True,   parent,  "ADC1_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC1_WTCHDG_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC2_WTCHDG_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC2_OK    =  Option(False,  parent,  "ADC2_OK")
+                    self.ADC2_FAIL  =  Option(True,   parent,  "ADC2_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC2_WTCHDG_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC3_WTCHDG_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC3_OK    =  Option(False,  parent,  "ADC3_OK")
+                    self.ADC3_FAIL  =  Option(True,   parent,  "ADC3_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC3_WTCHDG_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC0_MUXSEQ_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC0_SEQ_OK    =  Option(False,  parent,  "ADC0_SEQ_OK")
+                    self.ADC0_SEQ_FAIL  =  Option(True,   parent,  "ADC0_SEQ_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC0_MUXSEQ_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC1_MUXSEQ_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC1_SEQ_OK    =  Option(False,  parent,  "ADC1_SEQ_OK")
+                    self.ADC1_SEQ_FAIL  =  Option(True,   parent,  "ADC1_SEQ_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC1_MUXSEQ_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC2_MUXSEQ_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC2_SEQ_OK    =  Option(False,  parent,  "ADC2_SEQ_OK")
+                    self.ADC2_SEQ_FAIL  =  Option(True,   parent,  "ADC2_SEQ_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC2_MUXSEQ_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _ADC3_MUXSEQ_FAIL(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.ADC3_SEQ_OK    =  Option(False,  parent,  "ADC3_SEQ_OK")
+                    self.ADC3_SEQ_FAIL  =  Option(True,   parent,  "ADC3_SEQ_FAIL")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("ADC3_MUXSEQ_FAIL", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         def __init__(self, parent, access, address, signed):
             super().__init__("STATUS", parent, access, address, signed)
@@ -399,31 +495,55 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CSA0_EN(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.CSA0_OFF  =  Option(False,  parent,  "CSA0_OFF")
+                    self.CSA0_EN   =  Option(True,   parent,  "CSA0_EN")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA0_EN", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CSA1_EN(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.CSA1_OFF  =  Option(False,  parent,  "CSA1_OFF")
+                    self.CSA1_EN   =  Option(True,   parent,  "CSA1_EN")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA1_EN", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CSA2_EN(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.CSA2_OFF  =  Option(False,  parent,  "CSA2_OFF")
+                    self.CSA2_EN   =  Option(True,   parent,  "CSA2_EN")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA2_EN", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CSA3_EN(Field):
+
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.CSA3_OFF  =  Option(False,  parent,  "CSA3_OFF")
+                    self.CSA3_EN   =  Option(True,   parent,  "CSA3_EN")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA3_EN", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CSA012_GAIN(Field):
 
@@ -442,10 +562,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CSA012_BYPASS(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.CSA012_BYPASS_OFF  =  Option(False,  parent,  "CSA012_BYPASS_OFF")
+                    self.CSA012_BYPASS_EN   =  Option(True,   parent,  "CSA012_BYPASS_EN")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA012_BYPASS", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CSA3_GAIN(Field):
 
@@ -464,10 +590,16 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _CSA3_BYPASS(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.CSA3_BYPASS_OFF  =  Option(False,  parent,  "CSA3_BYPASS_OFF")
+                    self.CSA3_BYPASS_EN   =  Option(True,   parent,  "CSA3_BYPASS_EN")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("CSA3_BYPASS", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _CSA012_FILT(Field):
 
