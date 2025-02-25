@@ -1,7 +1,8 @@
 ################################################################################
-# Copyright © 2024 Analog Devices Inc. All Rights Reserved. This software is
-# proprietary & confidential to Analog Devices, Inc. and its licensors.
+# Copyright © 2024 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+
 """Example script that shows how to use a TMCM-1690 with an absolute encoder in velocity mode.
 
 The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
