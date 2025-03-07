@@ -47,7 +47,7 @@ with ConnectionManager().connect() as my_interface:
     print("Suppl:y " + str(VM) +" V")
     
     # check if voltage is in expected range of 8.7 +-0.1VDC
-    if ((VM>=8.6)&(VM<=8.8)):  
+    if (VM >= 8.6) and (VM <= 8.8):  
         print(my_interface.send(172, 0, 1, 0) )    # TMCLOTP.init
         print(my_interface.send(172, 1, 1, 0x40))  # TMCLOTP.address
         print(my_interface.send(172, 2, 1, 0xFF))  # TMCLOTP.value
@@ -61,8 +61,7 @@ with ConnectionManager().connect() as my_interface:
             print("OTP performed successfully")
         else:
             print("OTP not performed due to timeout or device is locked")
-            
-    else :
+    else:
         print("please set VM to 8.7VDC +- 0.1")  
     
     # DISABLE device by setting ENABLE low
