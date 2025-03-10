@@ -318,6 +318,13 @@ class DataLogger:
                 raise DataLoggerConfigError("Trigger type specified is conditional but no threshold given in `_trigger_threshold!")
             self.rd.enable_trigger(self._trigger_type, self._trigger_threshold)
 
+    def is_pretriggering(self) -> bool:
+        return self.rd.get_state() == Rd.State.PRETRIGGER
+
+    def wait_for_pretrigger_completion(self) -> None:
+        while self.is_pretriggering():
+            pass
+
     def is_triggered(self) -> bool:
         return self.rd.get_state() >= Rd.State.CAPTURE
     
