@@ -399,14 +399,7 @@ class DataLogger:
         self.rd.init()
         self.rd.set_sample_count(self._total_number_of_samples)
         self.rd.set_prescaler(self._down_sampling_factor-1)
-        if self._trigger_type != Rd.TriggerType.UNCONDITIONAL:
-            if self._trigger_on is None:
-                raise DataLoggerConfigError("Trigger type specified but no trigger data given in `_trigger_on`!")
-            channel_type, select = self._get_channel_type_and_select(datatype=self._trigger_on)
-            self.rd.set_trigger_channel(channel_type=channel_type, select=select)
-            if isinstance(self._trigger_on, DataLogger.DataTypeField):
-                self.rd.set_shift_mask(shift=self._trigger_on.shift, mask=self._trigger_on.mask)
-        
+
         # Set channels
         for datatype in self._effectively_log_data.values():
             channel_type, select = self._get_channel_type_and_select(datatype=datatype)
@@ -415,7 +408,18 @@ class DataLogger:
                 select=select
             )
 
-        self.rd.set_pretrigger_sample_count(self._pretrigger_samples_per_channel*self._channels_used_count)
+        # Set trigger
+        if self._trigger_type != Rd.TriggerType.UNCONDITIONAL:
+            if self._trigger_on is None:
+                raise DataLoggerConfigError("Trigger type specified but no trigger data given in `_trigger_on`!")
+            channel_type, select = self._get_channel_type_and_select(datatype=self._trigger_on)
+            self.rd.set_trigger_channel(channel_type=channel_type, select=select)
+            if isinstance(self._trigger_on, DataLogger.DataTypeField):
+                self.rd.set_shift_mask(shift=self._trigger_on.shift, mask=self._trigger_on.mask)
+
+            self.rd.set_pretrigger_sample_count(self._pretrigger_samples_per_channel*self._channels_used_count)
+
+        # Start the capture
         if self._trigger_type == Rd.TriggerType.UNCONDITIONAL:
             self.rd.enable_trigger(self._trigger_type, 0)
         else:
