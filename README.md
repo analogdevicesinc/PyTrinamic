@@ -24,7 +24,13 @@ All previous versions of PyTrinamic will still be available on PyPI and can be i
 
 ## Contributing
 
-Pull requests are welcome. For any major changes or questions regarding implementation, please open an issue to ask or discuss first.
+We welcome pull requests! If you have major changes or questions about implementation, please open an issue first to discuss your ideas.
+
+Please ensure contributed Python code adheres to the [PEP 8](https://peps.python.org/pep-0008/) Python code style guide and the [PEP 257](https://peps.python.org/pep-0257/) style guide for docstrings.
+If you want to express details in docstrings using a markup language, please use [reStructuredText](reStructuredText) like proposed in [PEP 287](https://peps.python.org/pep-0287/) and when documenting parameters, variables, attributes, exceptions use the [Sphinx style](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists).
+
+Additionally, please use double quotes (") for string constants.
+
 
 ## License
 
