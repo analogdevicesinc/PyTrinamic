@@ -8,7 +8,7 @@ Adapting it to follow the structure of serial_tmcl_interface.py and socketcan_tm
 """
 
 import logging
-
+import time
 import numpy as np
 from .tmcl_interface import TmclInterface
 from ..tmcl import TMCLReplyChecksumError
@@ -59,6 +59,7 @@ class SocketTmclInterface(TmclInterface):
         )
         self._check_socket()  # connect to the socket
         self.set_timeout(timeout_s)
+        self._timeout_s = timeout_s
 
     def _check_socket(self):
         """
@@ -110,13 +111,15 @@ class SocketTmclInterface(TmclInterface):
         """
         del host_id, module_id
         self._check_socket()
-        try:
-            data = self._socket.recvmsg(9)[0]
-        except socket.timeout:
-            if ('data' in locals()):
-                print(f'Data received: {type(data)=}' )            
-                print(" ".join("{:02x}".format(x) for x in data))
-            raise RuntimeError("TMCL datagram timed out")
+
+        data = bytearray()
+        start_time = time.time()
+        while len(data) < 9:
+            packet = self._socket.recv(9 - len(data))
+            if not packet:
+                if time.time() - start_time > self._timeout_s:
+                    raise TimeoutError("No reply received within timeout")
+            data.extend(packet)
 
         return data
 
