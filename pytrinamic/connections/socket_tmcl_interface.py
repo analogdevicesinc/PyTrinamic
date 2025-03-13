@@ -9,10 +9,11 @@
 
 import logging
 import time
-from .tmcl_interface import TmclInterface
-from ..tmcl import TMCLReplyChecksumError
 import re
 import socket
+
+from .tmcl_interface import TmclInterface
+from ..tmcl import TMCLReplyChecksumError
 
 
 class SocketTmclInterface(TmclInterface):
@@ -132,7 +133,7 @@ class SocketTmclInterface(TmclInterface):
     @staticmethod
     def supports_tmcl():
         return True
-    
+
     @staticmethod
     def list():
         return []

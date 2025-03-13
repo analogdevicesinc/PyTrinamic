@@ -7,28 +7,29 @@
 Requirements:
 
 * A Landungsbruecke board connected to the PC.
-* A (cloned) copy of the pyserial repository.
+* A (cloned) copy of the pyserial repository. 
 
 Principal setup:
 
 ::                                           
-    +---------------------+                +---------+                         
-    | PC                  |                |         |                         
-    |        +----------+ |                |         |                         
-    |        |  Serial  | |     USB/Serial |         |                         
-    |        |  Socket  --------------------         |                         
-    |        |  Server  | |                |         |                         
-    |        +-----|----+ |                |         |                         
-    |              |      |                |         |                         
-    |        +-----|----+ |                +---------+                         
-    |        | Serial   | |              Landungsbruecke                                                     
+    +---------------------+              +---------+                         
+    | PC                  |              |         |                         
+    |        +----------+ |              |         |                         
+    |        |  Serial  | |   USB/Serial |         |                         
+    |        |  Socket  ------------------         |                         
+    |        |  Server  | |              |         |                         
+    |        +-----|----+ |              |         |                         
+    |              |      |              |         |                         
+    |        +-----|----+ |              +---------+                         
+    |        | Serial   | |            Landungsbruecke                                                     
     |        | Socket   | |                                                    
     |        | Client   | |                                                    
     |        +----------+ |                                                    
     +---------------------+       
 
 Note, you probably need to modify the ``landungsbruecke_com_port`` variable to match the COM port of your Landungsbruecke board.
-If the pyserial repository is not located in th same directory as the pytrinamic repository, the path to the tcp_serial_redirect.py script must be adjusted accordingly.
+If the pyserial repository is not located in th same directory as the pytrinamic repository, the path to the ``tcp_serial_redirect.py`` script must be adjusted accordingly.
+We make use of the `tcp_serial_redirect.py <https://pyserial.readthedocs.io/en/latest/examples.html#tcp-ip-serial-bridge>`_ script from the pyserial repository to create a socket server that redirects the serial communication to the Landungsbruecke board.
 """
 import sys
 import struct
