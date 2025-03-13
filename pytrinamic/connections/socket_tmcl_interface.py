@@ -1,15 +1,14 @@
-"""
-Created on 05.08.2020
-
-@author: SW
-BRP mod: Found this code on https://github.com/trinamic/PyTrinamic/blob/11c36a3d8d8333c1f21c7daee4e62eb4ff43892e/PyTrinamic/connections/socket_tmcl_interface.py
-Seems to be a dead branch left by someone else, but implementing what I need. 
-Adapting it to follow the structure of serial_tmcl_interface.py and socketcan_tmcl_interface.py
-"""
+################################################################################
+# Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
+# (now owned by Analog Devices Inc.),
+#
+# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
+# This software is proprietary to Analog Devices, Inc. and its licensors.
+################################################################################
+"""Serial socket interface"""
 
 import logging
 import time
-import numpy as np
 from .tmcl_interface import TmclInterface
 from ..tmcl import TMCLReplyChecksumError
 import re
@@ -18,21 +17,23 @@ import socket
 
 class SocketTmclInterface(TmclInterface):
     """
-    This class implements a TMCL connection over a Socket, for use with e.g. an ethernet-to-serial converter further down the line.
+    This class implements a TMCL connection over a Socket, for use with e.g. an Ethernet-to-Serial converter further down the line.
+
+    Note, with the current implementation only one Ethernet-to-Serial converter can be used at a time.
     """
 
-    _CHANNELS = []
     _socket = None
 
-    # mod from socketcan_tmcl_interface.py and serial_tmcl_interface.py
     def __init__(
         self,
         ip_and_port: str,
-        datarate: int = 1000000,
+        baudrate: None = None,
         host_id: int = 2,
         module_id: int = 1,
         timeout_s: int = 5,
-    ):
+    ) -> None:
+        del baudrate
+
         if not isinstance(ip_and_port, str):
             raise TypeError
 
@@ -44,7 +45,6 @@ class SocketTmclInterface(TmclInterface):
 
         self._socket_ip = match.group(1)
         self._socket_port = int(match.group(2))
-        self._CHANNELS += [ip_and_port]
         TmclInterface.__init__(self, host_id, module_id)
 
         if timeout_s == 0:
@@ -54,11 +54,8 @@ class SocketTmclInterface(TmclInterface):
             "{}.{}".format(self.__class__.__name__, ip_and_port)
         )
 
-        self.logger.debug(
-            f"Opening {self._socket_ip=} {self._socket_port=} for TMCL control"
-        )
-        self._check_socket()  # connect to the socket
-        self.set_timeout(timeout_s)
+        self.logger.debug("Opening %s:%s.", self._socket_ip, self._socket_port)
+        self._check_socket() # connect to the socket
         self._timeout_s = timeout_s
 
     def _check_socket(self):
@@ -86,7 +83,7 @@ class SocketTmclInterface(TmclInterface):
         self.close()
 
     def close(self):
-        # self.logger.info("Closing Socket Connection")
+        self.logger.info("Closing Socket connection.")
         self._socket.close()
 
     def _send(self, host_id, module_id, data):
@@ -97,9 +94,8 @@ class SocketTmclInterface(TmclInterface):
         class.
         """
         del host_id, module_id
+
         self._check_socket()
-        # print('Sending data:')
-        # print(" ".join("{:02x}".format(x) for x in data))
         self._socket.sendall(data)
 
     def _recv(self, host_id, module_id):
@@ -128,29 +124,18 @@ class SocketTmclInterface(TmclInterface):
             raise TMCLReplyChecksumError(reply)
 
     def set_timeout(self, timeout):
-        self._socket.settimeout(timeout) if timeout != 0 else None
+        self._timeout_s = timeout
 
     def get_timeout(self):
-        return self._socket.gettimeout()
+        return self._timeout_s
 
     @staticmethod
     def supports_tmcl():
         return True
-
-    @classmethod
-    def list(cls):
-        """
-        Return a list of available connection ports as a list of strings.
-
-        This function is required for using this interface with the
-        connection manager.
-        """
-        return cls._CHANNELS
+    
+    @staticmethod
+    def list():
+        return []
 
     def __str__(self):
-        print(
-            "Connection: type=socket_tmcl_interface ip="
-            + self._socket_ip
-            + " port="
-            + str(self._socket_port)
-        )
+        return "Connection: type={} ip={} port={}".format(type(self).__name__, self._socket_ip, self._socket_port)
