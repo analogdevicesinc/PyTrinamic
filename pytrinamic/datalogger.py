@@ -175,8 +175,6 @@ class DataLogger:
             frequency. Otherwise, it will a DataLoggerConfigError for any
             frequency that cannot be exactly represented.
             """
-            if self.down_sampling_factor is not None:
-                raise DataLoggerConfigError("The `config.down_sampling_factor` is already set!")
             base_frequency_hz = self._get_base_frequency_hz()
             expected_down_sampling_factor = base_frequency_hz/rate_hz
             if expected_down_sampling_factor.is_integer() or round_down:
@@ -205,7 +203,7 @@ class DataLogger:
     def __init__(self, connection, module_id=1):
         self.rd = Rd(connection, module_id)
         self.config = DataLogger.Config(
-            down_sampling_factor=None,
+            down_sampling_factor=1,
             samples_per_channel=0,
             log_data=None,
             _get_base_frequency_hz=self._get_base_frequency_hz,
@@ -268,12 +266,9 @@ class DataLogger:
         self._activation()
 
     def _activation(self) -> None:
-        if self.config.down_sampling_factor is None:
-            self._down_sampling_factor = 1
-        else:
-            if self.config.down_sampling_factor < 1:
-                raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
-            self._down_sampling_factor = self.config.down_sampling_factor
+        if self.config.down_sampling_factor < 1:
+            raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
+        self._down_sampling_factor = self.config.down_sampling_factor
         if self.config.samples_per_channel == 0:
             raise DataLoggerConfigError("No samples per channel specified via `config.samples_per_channel`!")
         
