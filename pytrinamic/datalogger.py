@@ -167,13 +167,21 @@ class DataLogger:
         log_data: dict
         _get_base_frequency_hz: None
 
-        def set_sample_rate(self, rate_hz: float) -> None:
+        def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
+            """
+            Sets the sampling rate of the data logger.
+
+            If round_down is set, this will round down to the nearest valid
+            frequency. Otherwise, it will a DataLoggerConfigError for any
+            frequency that cannot be exactly represented.
+            """
             if self.down_sampling_factor is not None:
                 raise DataLoggerConfigError("The `config.down_sampling_factor` is already set!")
             base_frequency_hz = self._get_base_frequency_hz()
-            expected_down_down_sampling_factor = base_frequency_hz/rate_hz
-            if expected_down_down_sampling_factor.is_integer():
-                self.down_sampling_factor = int(expected_down_down_sampling_factor)
+            expected_down_sampling_factor = base_frequency_hz/rate_hz
+            if expected_down_sampling_factor.is_integer() or round_down:
+                # Note: Rounding down the frequency means rounding up the downsampling
+                self.down_sampling_factor = math.ceil(expected_down_sampling_factor)
             else:
                 possibilities = []
                 for i in range(1, 1000):
