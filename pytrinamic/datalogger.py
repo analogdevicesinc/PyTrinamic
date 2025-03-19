@@ -194,6 +194,13 @@ class DataLogger:
                     f"{f'{chr(10)}'.join([f'  {frequency:12} | {factor:3}' for factor, frequency in possibilities])}"
                 raise DataLoggerConfigError(msg)
 
+        def get_sample_rate(self) -> float:
+            """Get the currently configured sample rate"""
+            base_frequency_hz = self._get_base_frequency_hz()
+            down_sampling_factor = self.down_sampling_factor
+
+            return base_frequency_hz / down_sampling_factor
+
     @dataclass
     class _RequestEntry:
         name: str
