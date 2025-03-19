@@ -174,12 +174,16 @@ class DataLogger:
             If round_down is set, this will round down to the nearest valid
             frequency. Otherwise, it will a DataLoggerConfigError for any
             frequency that cannot be exactly represented.
+
+            This function returns the sample rate set.
             """
             base_frequency_hz = self._get_base_frequency_hz()
             expected_down_sampling_factor = base_frequency_hz/rate_hz
             if expected_down_sampling_factor.is_integer() or round_down:
                 # Note: Rounding down the frequency means rounding up the downsampling
                 self.down_sampling_factor = math.ceil(expected_down_sampling_factor)
+
+                return self.get_sample_rate()
             else:
                 possibilities = []
                 for i in range(1, 1000):
