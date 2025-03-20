@@ -162,10 +162,10 @@ class DataLogger:
 
     @dataclass
     class Config:
-        down_sampling_factor: int
         samples_per_channel: int
         log_data: dict
-        _get_base_frequency_hz: None
+        down_sampling_factor: int = 1
+        _get_base_frequency_hz: None = None
 
         def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
             """
@@ -214,7 +214,6 @@ class DataLogger:
     def __init__(self, connection, module_id=1):
         self.rd = Rd(connection, module_id)
         self.config = DataLogger.Config(
-            down_sampling_factor=1,
             samples_per_channel=0,
             log_data=None,
             _get_base_frequency_hz=self._get_base_frequency_hz,
