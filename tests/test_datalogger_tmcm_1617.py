@@ -326,6 +326,7 @@ def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_mot
     dl.config.down_sampling_factor = 4
     dl.config.log_data = {
         "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
+        "ActualVelocity": dl.DataTypeAp(index=motor.AP.ActualVelocity, axis=0, signed=True),
     }
 
     threshold = motor.get_axis_parameter(motor.AP.PositionScaler)
@@ -335,7 +336,7 @@ def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_mot
         on_data=dl.DataTypeAp(index=motor.AP.ActualPosition, axis=0, signed=True),
         threshold=threshold,
         edge=dl.TriggerEdge.RISING,
-        pretrigger_samples=pretrigger_samples,
+        pretrigger_samples_per_channel=pretrigger_samples,
     )
 
     dl.wait_till_done()

@@ -232,7 +232,7 @@ class DataLogger:
         self._trigger_type = Rd.TriggerType.UNCONDITIONAL
         self._trigger_on = None
         self._trigger_threshold = None
-        self._pretrigger_samples = 0
+        self._pretrigger_samples_per_channel = 0
 
     def get_info(self) -> DataLogger.Info:
         return DataLogger.Info(
@@ -251,7 +251,7 @@ class DataLogger:
             on_data: Union[Parameter, Register, Field, DataTypeAp, DataTypeGp, DataTypeRegister, DataTypeField],
             threshold: int,
             edge: TriggerEdge,
-            pretrigger_samples: int = 0,
+            pretrigger_samples_per_channel: int = 0,
         ) -> None:
         
         if isinstance(on_data, (Parameter, Register, Field)):
@@ -273,7 +273,7 @@ class DataLogger:
             elif edge == DataLogger.TriggerEdge.BOTH:
                 self._trigger_type = Rd.TriggerType.DUAL_EDGE_UNSIGNED
         self._trigger_threshold = threshold
-        self._pretrigger_samples = pretrigger_samples
+        self._pretrigger_samples_per_channel = pretrigger_samples_per_channel
         self._activation()
 
     def _activation(self) -> None:
@@ -324,7 +324,7 @@ class DataLogger:
                 select=select
             )
 
-        self.rd.set_pretrigger_sample_count(self._pretrigger_samples)
+        self.rd.set_pretrigger_sample_count(self._pretrigger_samples_per_channel*self._channels_used_count)
         if self._trigger_type == Rd.TriggerType.UNCONDITIONAL:
             self.rd.enable_trigger(self._trigger_type, 0)
         else:
@@ -373,7 +373,7 @@ class DataLogger:
             log_samples.append(EffectiveDataSet(name=name, datatype=datatype, samples=samples))
 
         period_s = self._down_sampling_factor/self._info.base_frequency_hz
-        time_offset = self._pretrigger_samples*period_s
+        time_offset = self._pretrigger_samples_per_channel*period_s
         time_vector = [i*period_s-time_offset for i in range(self.config.samples_per_channel)]
         self.log.rate_hz = self._info.base_frequency_hz/self._down_sampling_factor
         self.log.period_s = period_s
