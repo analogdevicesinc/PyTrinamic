@@ -6,14 +6,16 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import pytrinamic
+import time
+import statistics
+from dataclasses import dataclass
+
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1617
-import time
 
-pytrinamic.show_info()
+
 # connection_manager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-connection_manager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
+connection_manager = ConnectionManager("--interface kvaser_tmcl")
 
 with connection_manager.connect() as my_interface:
     module = TMCM1617(my_interface)
@@ -23,6 +25,16 @@ with connection_manager.connect() as my_interface:
     #
     # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
+
+    # Current measurement ADC offset compensation
+    @dataclass
+    class AdcChannel:
+        value_ap: int
+        offset_ap: int
+    for ch in [AdcChannel(motor.AP.AdcPhaseA, motor.AP.AdcOffsetPhaseA), AdcChannel(motor.AP.AdcPhaseB, motor.AP.AdcOffsetPhaseB)]:
+        adc_samples = [motor.get_axis_parameter(ch.value_ap) for _ in range(20)]
+        adc_samples_mean = round(statistics.mean(adc_samples))
+        motor.set_axis_parameter(ch.offset_ap, adc_samples_mean)
     
     # motor configuration 
     motor.drive_settings.motor_type = motor.ENUM.MOTOR_TYPE_THREE_PHASE_BLDC
@@ -34,9 +46,9 @@ with connection_manager.connect() as my_interface:
     print(motor.drive_settings)
 
     # hall sensor configuration 
-    motor.digital_hall.direction = 0
-    motor.digital_hall.polarity = 1
-    motor.digital_hall.offset = 0
+    motor.digital_hall.direction = 1
+    motor.digital_hall.polarity = 0
+    motor.digital_hall.offset = 10000
     motor.digital_hall.interpolation = 1
     print(motor.digital_hall)
 
@@ -51,9 +63,9 @@ with connection_manager.connect() as my_interface:
     # PI configuration 
     motor.pid.torque_p = 300 
     motor.pid.torque_i = 600
-    motor.pid.velocity_p = 100
-    motor.pid.velocity_i = 100
-    motor.pid.position_p = 300
+    motor.pid.velocity_p = 10
+    motor.pid.velocity_i = 10
+    motor.pid.position_p = 30
     print(motor.pid)
 
     # set position counter to zero
