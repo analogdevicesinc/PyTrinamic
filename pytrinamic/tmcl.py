@@ -229,9 +229,21 @@ class TMCLReply:
 
     @staticmethod
     def from_buffer(data):
-        reply_struct = struct.unpack(_PACKAGE_STRUCTURE, data)
+        if len(data) == 9:
+            package_structure = _PACKAGE_STRUCTURE
+            no_checksum = False
+        elif len(data) == 8:
+            package_structure = _PACKAGE_STRUCTURE[:-1]  # Remove checksum from package structure
+            no_checksum = True
+        else:
+            raise ValueError("Invalid data length!")
+        reply_struct = struct.unpack(package_structure, data)
+        if no_checksum:
+            checksum = None
+        else:
+            checksum = reply_struct[5]
         return TMCLReply(reply_struct[0], reply_struct[1], reply_struct[2], reply_struct[3],
-                         reply_struct[4], reply_struct[5])
+                         reply_struct[4], checksum)
 
     def calculate_checksum(self):
         self.checksum = TMCL.calculate_checksum(self.to_buffer()[:-1])
