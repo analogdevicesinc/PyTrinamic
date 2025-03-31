@@ -133,7 +133,7 @@ USB ---|               |======|               |======|              --------|   
 
 ### Motor
 
-| Cable Color | TMC6100 |
+| Cable Color | TMC6200 |
 |-------------|---------|
 | Black       | U       |
 | Red         | V       |
