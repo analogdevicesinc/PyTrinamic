@@ -48,15 +48,17 @@ with ConnectionManager().connect() as my_interface:
     # ADC offset compensation
     adc_i0_samples = []
     adc_i1_samples = []
-    mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF000000)
-    mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF000000)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I0_SCALE, -256)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I1_SCALE, -256)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I0_OFFSET, 0)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I1_OFFSET, 0)
     for _ in range(50):
         adc_i0_samples.append(mc_eval.read_register_field(TMC4671.FIELD.ADC_I0_RAW))
         adc_i1_samples.append(mc_eval.read_register_field(TMC4671.FIELD.ADC_I0_RAW))
     adc_i0_offset = statistics.mean(adc_i0_samples)
     adc_i1_offset = statistics.mean(adc_i1_samples)
-    mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF000000 + int(adc_i0_offset))
-    mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF000000 + int(adc_i1_offset))
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I0_OFFSET, int(adc_i0_offset))
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I1_OFFSET, int(adc_i1_offset))
 
     # ABN encoder settings
     mc_eval.write_register(TMC4671.REG.ABN_DECODER_MODE, 0x00000000)

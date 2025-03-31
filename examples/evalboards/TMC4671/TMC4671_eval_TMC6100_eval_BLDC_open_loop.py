@@ -5,9 +5,10 @@
 # Copyright © 2023 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""Note: No feedback ADC configuration is done because the motor is driven in voltage mode."""
 
 import time
-import statistics
+
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval, TMC6100_eval
@@ -35,25 +36,6 @@ with ConnectionManager().connect() as my_interface:
     mc_eval.write_register(TMC4671.REG.PWM_BBM_H_BBM_L, 0x00001414)
     mc_eval.write_register_field(TMC4671.FIELD.PWM_CHOP, TMC4671.ENUM.PWM_CENTERED_FOR_FOC)
     mc_eval.write_register_field(TMC4671.FIELD.PWM_SV, 1)
-
-    # ADC configuration
-    mc_eval.write_register(TMC4671.REG.ADC_I_SELECT, 0x24000100)
-    mc_eval.write_register(TMC4671.REG.dsADC_MCFG_B_MCFG_A, 0x00100010)
-    mc_eval.write_register(TMC4671.REG.dsADC_MCLK_A, 0x20000000)
-    mc_eval.write_register(TMC4671.REG.dsADC_MCLK_B, 0x00000000)
-    mc_eval.write_register(TMC4671.REG.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-    # ADC offset compensation
-    adc_i0_samples = []
-    adc_i1_samples = []
-    mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF000000)
-    mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF000000)
-    for _ in range(50):
-        adc_i0_samples.append(mc_eval.read_register_field(TMC4671.FIELD.ADC_I0_RAW))
-        adc_i1_samples.append(mc_eval.read_register_field(TMC4671.FIELD.ADC_I0_RAW))
-    adc_i0_offset = statistics.mean(adc_i0_samples)
-    adc_i1_offset = statistics.mean(adc_i1_samples)
-    mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF000000 + int(adc_i0_offset))
-    mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF000000 + int(adc_i1_offset))
 
     # Open loop settings
     mc_eval.write_register(TMC4671.REG.OPENLOOP_MODE, 0x00000000)
