@@ -13,7 +13,7 @@ Improvements/Todo:
 """
 
 from __future__ import annotations
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Tuple
 from dataclasses import dataclass
 from enum import Enum, auto
 import decimal
@@ -164,8 +164,9 @@ class DataLogger:
     class Config:
         samples_per_channel: int
         log_data: dict
-        down_sampling_factor: int = 1
-        _get_base_frequency_hz: None = None
+        down_sampling_factor: int = None
+        sample_rate_hz: float = None
+        allow_sample_rate_round_down: bool = False
 
         def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
             """
@@ -177,33 +178,8 @@ class DataLogger:
 
             This function returns the sample rate set.
             """
-            base_frequency_hz = self._get_base_frequency_hz()
-            expected_down_sampling_factor = base_frequency_hz/rate_hz
-            if expected_down_sampling_factor.is_integer() or round_down:
-                # Note: Rounding down the frequency means rounding up the downsampling
-                self.down_sampling_factor = math.ceil(expected_down_sampling_factor)
-
-                return self.get_sample_rate()
-            else:
-                possibilities = []
-                for i in range(1, 1000):
-                    freq = base_frequency_hz/i
-                    if decimal.Decimal(freq).as_tuple().exponent < -4:
-                        continue
-                    possibilities.append((i, freq))
-                    if len(possibilities) > 10:
-                        break
-                msg = f"The `rate_hz` must be a divisor of the base frequency {base_frequency_hz} Hz! Good values would be:\n" \
-                    f"  Frequency Hz | down_sampling_factor\n" \
-                    f"{f'{chr(10)}'.join([f'  {frequency:12} | {factor:3}' for factor, frequency in possibilities])}"
-                raise DataLoggerConfigError(msg)
-
-        def get_sample_rate(self) -> float:
-            """Get the currently configured sample rate"""
-            base_frequency_hz = self._get_base_frequency_hz()
-            down_sampling_factor = self.down_sampling_factor
-
-            return base_frequency_hz / down_sampling_factor
+            self.sample_rate_hz = rate_hz
+            self.allow_sample_rate_round_down = round_down
 
     @dataclass
     class _RequestEntry:
@@ -216,7 +192,6 @@ class DataLogger:
         self.config = DataLogger.Config(
             samples_per_channel=0,
             log_data=None,
-            _get_base_frequency_hz=self._get_base_frequency_hz,
         )
         self.log = DataLogger.Log(rate_hz=0, period_s=0, time_vector=[], data={})
         self._log_data = None
@@ -239,6 +214,23 @@ class DataLogger:
             sample_buffer_length=self.rd.get_info(Rd.Info.BUFFER_ELEMENTS),
             number_of_channels=self.rd.get_info(Rd.Info.MAX_CHANNELS),
         )
+    
+    def get_possible_sample_rates(self) -> List[float]:
+        base_frequency_hz = self._get_base_frequency_hz()
+        return [frequency for _, frequency in self._get_possible_sample_rates(base_frequency_hz)]
+
+    def _get_possible_sample_rates(self, base_frequency_hz) -> List[Tuple[int, float]]:
+        possibilities = []
+        for down_sampling_factor in range(1, 1000):
+            freq = base_frequency_hz/down_sampling_factor
+            if str(freq)[::-1].find('.') > 1:
+                # If the resulting frequency has more than 3 decimal places, we skip it.
+                # This is a bit arbitrary, but we want to avoid frequencies like 0.000123456789 Hz.
+                continue
+            possibilities.append((down_sampling_factor, freq))
+            if len(possibilities) == 10:
+                break
+        return possibilities
     
     def start_logging(self):
         self._trigger_type = Rd.TriggerType.UNCONDITIONAL
@@ -275,10 +267,35 @@ class DataLogger:
         self._pretrigger_samples_per_channel = pretrigger_samples_per_channel
         self._activation()
 
+    def _determine_down_sampling_factor(self) -> int:
+        if self.config.down_sampling_factor is not None and self.config.sample_rate_hz is not None:
+            raise DataLoggerConfigError("Both sampling rate and down sampling factor specified!")
+        
+        if self.config.sample_rate_hz is not None:
+            base_frequency_hz = self._get_base_frequency_hz()
+            expected_down_sampling_factor = base_frequency_hz/self.config.sample_rate_hz
+            if expected_down_sampling_factor.is_integer():
+                return int(expected_down_sampling_factor)
+            else:
+                if self.config.allow_sample_rate_round_down:
+                    # Note: Rounding down the frequency means rounding up the downsampling
+                    return math.ceil(expected_down_sampling_factor)
+                else:
+                    possibilities = self._get_possible_sample_rates(base_frequency_hz)
+                    msg = f"The `rate_hz` must be a divisor of the base frequency {base_frequency_hz} Hz! Good values would be:\n" \
+                          f"  Frequency Hz | down_sampling_factor\n" \
+                          f"{f'{chr(10)}'.join([f'  {frequency:12} | {factor:3}' for factor, frequency in possibilities])}"
+                    raise DataLoggerConfigError(msg)
+        elif self.config.down_sampling_factor is not None:
+            if self.config.down_sampling_factor < 1:
+                raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
+            return self.config.down_sampling_factor
+        else:
+            # If no down sampling factor is given, we assume the base frequency is the desired frequency.
+            return 1
+    
     def _activation(self) -> None:
-        if self.config.down_sampling_factor < 1:
-            raise DataLoggerConfigError("The `config.down_sampling_factor` must be greater than 0!")
-        self._down_sampling_factor = self.config.down_sampling_factor
+        self._down_sampling_factor = self._determine_down_sampling_factor()
         if self.config.samples_per_channel == 0:
             raise DataLoggerConfigError("No samples per channel specified via `config.samples_per_channel`!")
         

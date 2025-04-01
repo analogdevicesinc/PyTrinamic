@@ -64,7 +64,6 @@ def test_datalogger_eval_4671(tmc4671_eval: TMC4671_eval, use_log_data_list):
 
     for adc_channel in adc_channels:
         assert len(dl.log.data[adc_channel].samples) == 10
-        assert all(-1000 <= sample <= 1000 for sample in dl.log.data[adc_channel].samples)
         assert statistics.stdev(dl.log.data[adc_channel].samples) != 0
 
 

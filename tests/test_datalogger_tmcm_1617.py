@@ -16,6 +16,8 @@ from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
 from pytrinamic.datalogger import DataLogger, DataLoggerConfigError
 
 
+EXPECTED_BASE_FREQUENCY_HZ = 2000
+
 ENUM = TMCM1617._MotorTypeA.ENUM
 
 class TMCM1617Ex(TMCM1617):
@@ -117,6 +119,78 @@ def test_error_exceed_channels(tmcm1617: TMCM1617Ex):
     assert str(excinfo.value) == "Exceeding number of channels!"
 
 
+@pytest.mark.parametrize("use_set_function", [False, True])
+def test_error_exceed_sample_rate(tmcm1617: TMCM1617Ex, use_set_function: bool):
+
+    dl = tmcm1617.datalogger
+
+    exceeded_sample_rate = EXPECTED_BASE_FREQUENCY_HZ + 1
+
+    if use_set_function:
+        dl.config.samples_per_channel = 10
+        dl.config.log_data = {
+            "a": dl.DataTypeAp(index=0),
+        }
+        dl.config.set_sample_rate(exceeded_sample_rate)
+    else:
+        dl.config.samples_per_channel = 10
+        dl.config.sample_rate_hz = exceeded_sample_rate
+        dl.config.log_data = {
+            "a": dl.DataTypeAp(index=0),
+        }
+
+    with pytest.raises(DataLoggerConfigError) as excinfo:
+        dl.start_logging()
+
+
+@pytest.mark.parametrize("use_set_function", [False, True])
+def test_error_down_scaling_factor_and_sample_rate_given(tmcm1617: TMCM1617Ex, use_set_function: bool):
+
+    dl = tmcm1617.datalogger
+
+    if use_set_function:
+        dl.config.samples_per_channel = 10
+        dl.config.down_sampling_factor = 1
+        dl.config.log_data = {
+            "a": dl.DataTypeAp(index=0),
+        }
+        dl.config.set_sample_rate(EXPECTED_BASE_FREQUENCY_HZ)
+    else:
+        dl.config.samples_per_channel = 10
+        dl.config.sample_rate_hz = EXPECTED_BASE_FREQUENCY_HZ
+        dl.config.down_sampling_factor = 1
+        dl.config.log_data = {
+            "a": dl.DataTypeAp(index=0),
+        }
+
+    with pytest.raises(DataLoggerConfigError) as excinfo:
+        dl.start_logging()
+
+
+@pytest.mark.parametrize("use_set_function", [False, True])
+def test_error_impossible_sample_rate(tmcm1617: TMCM1617Ex, use_set_function: bool):
+
+    dl = tmcm1617.datalogger
+
+    impossible_sample_rate = EXPECTED_BASE_FREQUENCY_HZ*1.1
+
+    if use_set_function:
+        dl.config.samples_per_channel = 10
+        dl.config.log_data = {
+            "a": dl.DataTypeAp(index=0),
+        }
+        dl.config.set_sample_rate(impossible_sample_rate)
+    else:
+        dl.config.samples_per_channel = 10
+        dl.config.sample_rate_hz = impossible_sample_rate
+        dl.config.log_data = {
+            "a": dl.DataTypeAp(index=0),
+        }
+
+    with pytest.raises(DataLoggerConfigError) as excinfo:
+        dl.start_logging()
+
+
 def test_error_exceed_buffer_limit(tmcm1617: TMCM1617Ex):
     """Check if a proper error is raised when a module's RAMDebug buffer limit is exceeded."""
 
@@ -175,7 +249,7 @@ def test_info(tmcm1617: TMCM1617Ex):
     dl = tmcm1617.datalogger
     info = dl.get_info()
 
-    assert info.base_frequency_hz == 2000
+    assert info.base_frequency_hz == EXPECTED_BASE_FREQUENCY_HZ
     assert info.sample_buffer_length == 8192
     assert info.number_of_channels == 4
 
@@ -228,7 +302,6 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positi
     motor = tmcm1617.motors[0]
 
     dl = tmcm1617.datalogger
-    base_sample_frequency_hz = dl.get_info().base_frequency_hz
 
     dl.config.samples_per_channel = 10
     dl.config.down_sampling_factor = down_sampling_factor
@@ -242,7 +315,42 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positi
 
     dl.download_log()
 
-    assert dl.log.rate_hz == base_sample_frequency_hz / down_sampling_factor
+    assert dl.log.rate_hz == EXPECTED_BASE_FREQUENCY_HZ / down_sampling_factor
+
+    # speed = distance / time
+    expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.log.rate_hz / 60
+    diff = [dl.log.data["ActualPosition"].samples[i] - dl.log.data["ActualPosition"].samples[i-1] for i in range(1, len(dl.log.data["ActualPosition"].samples))]
+
+    # Check if the motor is rotating in the right direction
+    assert all(d >= 0 for d in diff)
+    # Check if the position increase per sample is correct
+    assert all(abs(d-expected_position_increase_per_sample) < 3 for d in diff)
+
+
+@pytest.mark.parametrize("set_sample_rate,expected_sample_rate", [
+    (EXPECTED_BASE_FREQUENCY_HZ/4, EXPECTED_BASE_FREQUENCY_HZ/4),
+    (EXPECTED_BASE_FREQUENCY_HZ/4 + 1, EXPECTED_BASE_FREQUENCY_HZ/4),
+    (EXPECTED_BASE_FREQUENCY_HZ/4 + 3.333, EXPECTED_BASE_FREQUENCY_HZ/4),
+])
+def test_success_sample_sanity_ex(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positive, set_sample_rate, expected_sample_rate):
+    motor = tmcm1617.motors[0]
+
+    dl = tmcm1617.datalogger
+
+    dl.config.samples_per_channel = 10
+    dl.config.sample_rate_hz = set_sample_rate
+    dl.config.allow_sample_rate_round_down = True
+    dl.config.log_data = {
+        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
+    }
+
+    dl.start_logging()
+
+    dl.wait_till_done()
+
+    dl.download_log()
+
+    assert dl.log.rate_hz == expected_sample_rate
 
     # speed = distance / time
     expected_position_increase_per_sample = motor.get_axis_parameter(motor.AP.PositionScaler) * motor.get_axis_parameter(motor.AP.TargetVelocity) / dl.log.rate_hz / 60
@@ -263,9 +371,10 @@ def test_config(tmcm1617: TMCM1617Ex):
 
     config = DataLogger.Config(
         samples_per_channel = 10,
+        sample_rate_hz = EXPECTED_BASE_FREQUENCY_HZ,
         log_data = {
             "ActualPosition": DataLogger.DataTypeAp(index=motor.AP.ActualPosition),
-        }
+        },
     )
 
     dl = tmcm1617.datalogger
@@ -402,9 +511,33 @@ def test_success_copies(tmcm1617: TMCM1617Ex):
 
 
 @pytest.mark.parametrize("sample_frequency_hz,expected_down_sampling_factor", [(500.0, 4), (125.0, 16), (100.0, 20)])
-def test_set_sample_rate(tmcm1617: TMCM1617Ex, sample_frequency_hz, expected_down_sampling_factor):
+@pytest.mark.parametrize("use_set_function", [False, True])
+def test_set_sample_rate(tmcm1617: TMCM1617Ex, sample_frequency_hz: float, expected_down_sampling_factor: int, use_set_function: bool):
 
     dl = tmcm1617.datalogger
 
-    dl.config.set_sample_rate(sample_frequency_hz)
-    assert dl.config.down_sampling_factor == expected_down_sampling_factor
+    if use_set_function:
+        dl.config.set_sample_rate(sample_frequency_hz)
+    else:
+        dl.config.sample_rate_hz = sample_frequency_hz
+
+    assert dl._determine_down_sampling_factor() == expected_down_sampling_factor
+
+
+def test_possible_sample_rates(tmcm1617: TMCM1617Ex):
+
+    dl = tmcm1617.datalogger
+
+    possible_sample_rates = dl.get_possible_sample_rates()
+    assert possible_sample_rates == [
+        2000.0,
+        1000.0,
+        500.0,
+        400.0,
+        250.0,
+        200.0,
+        125.0,
+        100.0,
+        80.0,
+        62.5,
+    ]
