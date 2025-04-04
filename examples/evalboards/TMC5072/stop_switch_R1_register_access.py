@@ -19,7 +19,7 @@ pytrinamic.show_info()
 with ConnectionManager().connect() as my_interface:
     print(my_interface)
 
-    # Create TMC5062-EVAL class which communicates over the Landungsbrücke via TMCL
+    # Create TMC5072-EVAL class which communicates over the Landungsbrücke via TMCL
     eval_board = TMC5072_eval(my_interface)
     mc = eval_board.ics[0]
     ic = eval_board.ics[0]

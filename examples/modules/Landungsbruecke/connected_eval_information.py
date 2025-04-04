@@ -13,8 +13,8 @@ with cm.connect() as interface:
     lb = Landungsbruecke(interface)
 
     print("ID EEPROM content:")
-    print("Mc: ", lb.eeprom_drv.read_id_info())
-    print("Drv:", lb.eeprom_mc.read_id_info())
+    print("Mc: ", lb.id_eeprom_mc.read_id_info())
+    print("Drv:", lb.id_eeprom_drv.read_id_info())
 
     print("Board IDs:")
     print(lb.get_board_ids())

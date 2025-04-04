@@ -47,6 +47,7 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC9660
 from pytrinamic.evalboards import TMC9660_3PH_eval
 
+
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
 com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
@@ -64,26 +65,29 @@ with cm.connect() as my_interface:
     elif connection_mode == "headless":
         tmc9660_device = TMC9660(my_interface)
 
-    #############################################################################################################
-    # Write
-    #############################################################################################################
+    dl = tmc9660_device.datalogger
+    print(dl.get_info())
 
-    write_value = 0  # Keep the value for all other flags at 0 to not change their state.
-    write_value = TMC9660.ap.GENERAL_ERROR_FLAGS.ITT_1_EXCEEDED.set(write_value, 1)
-    write_value = TMC9660.ap.GENERAL_ERROR_FLAGS.ITT_2_EXCEEDED.set(write_value, 1)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.GENERAL_ERROR_FLAGS, write_value)
+    dl.config.samples_per_channel = 16
+    dl.config.down_sampling_factor = 2
+    dl.config.log_data = [
+        TMC9660.ap.ADC_I0,
+        TMC9660.ap.ADC_I1,
+        TMC9660.ap.ADC_I2,
+    ]
 
-    #############################################################################################################
-    # Read
-    #############################################################################################################
-    
-    # Read all flags into an integer
-    general_status_flags = tmc9660_device.get_axis_parameter(TMC9660.ap.GENERAL_STATUS_FLAGS)
+    dl.start_logging()
 
-    # Extract a singled flag's state
-    regulation_stopped = TMC9660.ap.GENERAL_STATUS_FLAGS.REGULATION_STOPPED.get(general_status_flags)
+    dl.wait_till_done()
 
-    # Extract all flag states
-    for flag in TMC9660.ap.GENERAL_STATUS_FLAGS.fields:
-        print(f"{flag.name}: {flag.get(general_status_flags)}")
+    dl.download_log()
 
+    print(dl.log.data["ADC_I0"])
+    print(dl.log.data["ADC_I1"])
+    print(dl.log.data["ADC_I2"])
+
+    for name, log in dl.logs.items():
+        print(f"Log {name}:")
+        print(f"  Rate: {log.rate_hz} Hz")
+        print(f"  Samples: {log.samples}")
+        print(f"  Parameter: {type(log.request_object)}")

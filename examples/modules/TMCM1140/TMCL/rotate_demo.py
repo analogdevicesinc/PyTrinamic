@@ -6,62 +6,59 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1140
 import time
 
-pytrinamic.show_info()
 
 # for serial interface
 #with ConnectionManager("--interface serial_tmcl --port COM6 --data-rate 115200").connect() as my_interface:
 # for usb interface
 with ConnectionManager().connect() as my_interface:
-    print(my_interface)
     module = TMCM1140(my_interface)
     motor = module.motors[0]
 
     # The configuration is based on our PD42-1-1140-TMCL
-    # If you use a different motor be sure you have the right configuration setup otherwise the script may not working.
+    # If you use a different motor be sure you have the right configuration setup otherwise the script may not work.
 
     print("Preparing parameters...")
 
-    # preparing drive settings
-    motor.drive_settings.max_current = 1000
-    motor.drive_settings.standby_current = 0
+    # Preparing drive settings
+    motor.drive_settings.max_current = 16
+    motor.drive_settings.standby_current = 8
     motor.drive_settings.boost_current = 0
     motor.drive_settings.microstep_resolution = motor.ENUM.MicrostepResolution256Microsteps
     print(motor.drive_settings)
 
-    # preparing linear ramp settings
+    # Preparing linear ramp settings
     motor.linear_ramp.max_acceleration = 1000
     motor.linear_ramp.max_velocity = 1000
     print(motor.linear_ramp)
 
     time.sleep(1.0)
 
-    # clear position counter
+    # Clear position counter
     motor.actual_position = 0
 
-    # start rotating motor for 5 sek
+    # Start rotating motor for 5 sek
     print("Rotating...")
     motor.rotate(1000)
     time.sleep(5)
 
-    # stop rotating motor
+    # Stop the motor
     print("Stopping...")
     motor.stop()
 
-    # read actual position
+    # Read actual position
     print("ActualPosition = {}".format(motor.actual_position))
     time.sleep(2)
 
     print("Doubling moved distance.")
     motor.move_by(motor.actual_position)
 
-    # wait till position_reached
+    # Wait till position_reached
     while not motor.get_position_reached():
-        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        print("target position: {}; actual position: {}".format(motor.target_position, motor.actual_position))
         time.sleep(0.2)
 
     print("Furthest point reached.")
@@ -74,9 +71,10 @@ with ConnectionManager().connect() as my_interface:
 
     # wait until position 0 is reached
     while not motor.get_position_reached():
-        print("target position: " + str(motor.target_position) + " actual position: " + str(motor.actual_position))
+        print("target position: {}; actual position: {}".format(motor.target_position, motor.actual_position))
         time.sleep(0.2)
 
     print("Reached position 0.")
 
-print("\nReady.")
+print()
+print("Ready.")

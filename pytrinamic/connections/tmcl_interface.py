@@ -31,7 +31,7 @@ class TmclInterface(ABC):
 
     """
 
-    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8):
+    def __init__(self, host_id=2, default_module_id=1, default_ap_index_bit_width=8, default_register_address_bit_width=12):
         """
         :param int host_id: The ID of the TMCL host. This ID is the same for each module
             when communicating with multiple modules.
@@ -40,6 +40,7 @@ class TmclInterface(ABC):
             module a script can omit the moduleID for all TMCL interface
             calls by declaring this default value once at the start.
         :param int default_ap_index_bit_width: Axis parameter index bit-width.
+        :param int default_register_address_bit_width: Register address bit-width.
         """
         self.logger = logging.getLogger("TmclInterfaceAbstractBaseClassObject")  # Will be overwritten in derived classes
 
@@ -52,7 +53,11 @@ class TmclInterface(ABC):
         if not (8 <= default_ap_index_bit_width <= 15):
             raise ValueError(f"Value {default_ap_index_bit_width} for parameter default_ap_index_bit_width is outside the allowed range (8..15)!")
 
+        if not (8 <= default_register_address_bit_width <= 15):
+            raise ValueError(f"Value {default_register_address_bit_width} for parameter default_register_address_bit_width is outside the allowed range (8..15)!")
+
         self._default_ap_index_bit_width = default_ap_index_bit_width
+        self._default_register_address_bit_width = default_register_address_bit_width
 
     def _send(self, host_id, module_id, data):
         """
@@ -90,7 +95,7 @@ class TmclInterface(ABC):
         When no_reply is set, do not read back a reply. This must only be used for
         special commands that do not send back a reply!
         """
-        self.logger.debug("Tx: %s", request)
+        self.logger.debug("Tx: %s", request.oneline_str_repr())
 
         self._send(self._host_id, request.moduleAddress, request.to_buffer())
         if no_reply:
@@ -99,7 +104,7 @@ class TmclInterface(ABC):
 
         reply = TMCLReply.from_buffer(self._recv(self._host_id, request.moduleAddress))
 
-        self.logger.debug("Rx: %s", reply)
+        self.logger.debug("Rx: %s", reply.oneline_str_repr())
 
         self._reply_check(reply)
 
@@ -253,16 +258,32 @@ class TmclInterface(ABC):
     def read_drv(self, register_address, module_id=None, signed=False):
         return self.read_register(register_address, TMCLCommand.READ_DRV, 1, module_id, signed)
 
-    def read_register(self, register_address, command, channel, module_id=None, signed=False):
-        tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
-        tmcl_type = register_address & 0xFF
-        value = self.send(command, tmcl_type, tmcl_motor, 0, module_id).value
+    def read_register(self, register_address, command, channel, module_id=None, signed=False, address_bit_width=None):
+        value = self._send_register_cmd(command, register_address, channel, 0, module_id, address_bit_width).value
         return to_signed_32(value) if signed else value
 
-    def write_register(self, register_address, command, channel, value, module_id=None):
-        tmcl_motor = (channel & 0x0F) | ((register_address & 0x0F00) >> 4)
+    def write_register(self, register_address, command, channel, value, module_id=None, address_bit_width=None):
+        return self._send_register_cmd(command, register_address, channel, value, module_id, address_bit_width).value
+    
+    def _send_register_cmd(self, cmd, register_address, channel, value, module_id, address_bit_width):
+        if not address_bit_width:
+            address_bit_width = self._default_register_address_bit_width
+
+        if not (8 <= address_bit_width <= 15):
+            raise ValueError(f"Value {address_bit_width} for parameter address_bit_width is outside the allowed range (8..15)!")
+
+        channel_bit_width = 16 - address_bit_width
+
+        if register_address >= 2**address_bit_width:
+            raise ValueError(f"Value {register_address} for parameter register_address is outside the allowed range (0..{2**address_bit_width - 1})!")
+        if channel >= 2**channel_bit_width:
+            raise ValueError(f"Value {channel} for parameter channel is outside the allowed range (0..{2**channel_bit_width - 1})!")
+
+        address_shift = 8 - channel_bit_width
+        address_mask = ((2**address_bit_width) - 1) << 8
+        tmcl_motor = channel | ((register_address & address_mask) >> address_shift)
         tmcl_type = register_address & 0xFF
-        return self.send(command, tmcl_type, tmcl_motor, value, module_id)
+        return self.send(cmd, tmcl_type, tmcl_motor, value, module_id)
 
     # Motion control functions
     def rotate(self, motor, velocity, module_id=None):

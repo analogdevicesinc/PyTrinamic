@@ -27,7 +27,7 @@ with ConnectionManager().connect() as my_interface:
     print("Preparing parameters...")
 
     # preparing drive settings
-    motor.drive_settings.max_current = 1000
+    motor.drive_settings.max_current = 16
     motor.drive_settings.standby_current = 0
     motor.drive_settings.boost_current = 0
     motor.drive_settings.microstep_resolution = motor.ENUM.MicrostepResolution256Microsteps

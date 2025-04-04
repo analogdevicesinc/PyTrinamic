@@ -9,6 +9,7 @@ from __future__ import annotations      #start at python 3.7
 from typing import Optional, Union
 from enum import IntFlag
 from abc import ABC, abstractmethod
+import inspect
 
 
 class TMCIc(object):
@@ -36,7 +37,7 @@ class RegisterApiDevice(ABC):
         if isinstance(read_target, Field):
             # Our target variable is a Field, we do field read in that case
             register_address = read_target.parent.address
-            register_block = read_target.parent.block
+            register_block = read_target.parent.parent.block
             register_content = self.read_register(register_address, register_block)
             return read_target.get(register_content)  # Mask and shift is done in the Field.get function
 
@@ -44,7 +45,7 @@ class RegisterApiDevice(ABC):
             # Our target has the attributes of a register, we do register read in that case
             signed = bool(read_target.signed)
             register_address = read_target.address
-            register_block = read_target.block
+            register_block = read_target.parent.block
             return self.read_register(register_address, register_block, signed=signed)
 
         else:
@@ -53,16 +54,16 @@ class RegisterApiDevice(ABC):
                 f"Argument read_target {read_target} does not appear to be either a Register, or a Field."
             )
 
-    def write(self, write_target: Union[Register, Field, Choice], value: Optional[Union[int, bool]] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
+    def write(self, write_target: Union[Register, Field, Option], value: Optional[Union[int, bool]] = None, *, omit_bounds_check=False, omit_permission_checks=False) -> int:
         """Generic write function, to write a register or a field within a register
 
         :param write_target: This is the main differentiating argument:
-            - If write_target is a Choice object, we do a field write.
+            - If write_target is a Option object, we do a field write.
             - If write_target is a Field object, we do a field write.
             - If write_target is a Register object, we do a register write.
         """
-        if isinstance(write_target, Choice) and (value == None):
-            # Our target variable is a Choice, we do a choice write in that case
+        if isinstance(write_target, Option) and (value == None):
+            # Our target variable is a Option, we do a field write in that case
             return self.write(write_target.parent, write_target.value)
         if isinstance(write_target, Field) and isinstance(value, int):
             # Our target variable is a Field, we do field read in that case
@@ -81,7 +82,7 @@ class RegisterApiDevice(ABC):
                 return register_content_new
 
             register_address = write_target.parent.address
-            register_block = write_target.parent.block
+            register_block = write_target.parent.parent.block
             register_content_old = self.read_register(register_address, register_block)
             register_content_new = write_target.set(register_content_old, value)  # Mask and shift is done in the Field.set function
             self.write_register(register_address, register_block, register_content_new)
@@ -99,13 +100,13 @@ class RegisterApiDevice(ABC):
                     raise ValueError(f"Input value {value} is not in the allowed value range!")
 
             register_address = write_target.address
-            register_block = write_target.block
+            register_block = write_target.parent.block
             return self.write_register(register_address, register_block, value)
 
         else:
-            # Our target is neither a Register nor a Field, nor Choice.
+            # Our target is neither a Register nor a Field, nor Option.
             raise ValueError(
-                f"Argument write_target {write_target} does not appear to be either a Register, Field or Choice, or the value is invalid."
+                f"Argument write_target {write_target} does not appear to be either a Register, Field or Option, or the value is invalid."
             )
 
     @abstractmethod
@@ -134,10 +135,22 @@ class RegisterGroup:
     This base class represents an RegisterGroup, containing a list of registers.
     The registers are added in a derived class as object attributes.
     It also contains convenience functions.
+    
+    :param channel: Is used for the Eval-System board channel information (mc: 0; drv:1)
+    :param block: Is used for the register group's block information as used in the Read/Write register command.
+    :param width: Denotes the width of the registers in bits.
     """
-    def __init__(self, name, block) -> None:
+    def __init__(self, name, channel, block, width) -> None:
         self.name = name
-        self.block = block
+        self.channel = channel
+        if block is None:
+            self.block = 0
+        else:
+            self.block = block
+        if width is None:
+            self.width = 32
+        else:
+            self.width = width
 
     def find(self, name: str):
         for register in self.registers():
@@ -214,20 +227,18 @@ class Register:
 
     The main purpose is to give these classes an easy way to set the value of a field for use with the bulk write functionality of the reg module.
     """
-    def __init__(self, name, parent, access, address, block, signed=False, width=32) -> None:
+    def __init__(self, name, parent, access, address, signed=False) -> None:
         self.name = name
         self.parent = parent
         self.access = access
         self.address = address
-        self.block = block
         self.signed = signed
-        self.width = width
 
     def is_in_bounds(self, value: int) -> bool:
         if self.signed:
-            return -2**(self.width - 1) <= value <= 2**(self.width - 1) - 1
+            return -2**(self.parent.width - 1) <= value <= 2**(self.parent.width - 1) - 1
         else:
-            return 0 <= value <= 2**self.width - 1
+            return 0 <= value <= 2**self.parent.width - 1
 
     def fields(self) -> list:
         """
@@ -243,7 +254,23 @@ class Register:
         return fields
 
 
-class Choice:
-    def __init__(self, value, parent) -> None:
+class Option:
+    def __init__(self, value, parent, name=None) -> None:
         self.value = value
         self.parent = parent
+        self.name = name
+
+
+class Choice:
+    def __init__(self, parent) -> None:
+        self.parent = parent
+
+    def options(self):
+        return sorted([member for name, member in inspect.getmembers(self) if isinstance(member, Option)], key=lambda x: x.value)
+
+    def get(self, value):
+        """Extracts the option name from a value."""
+        try:
+            return next(option for option in self.options() if option.value == value)
+        except StopIteration:
+            raise IndexError(f"Unknown value {value} for choice {self.parent.name}!")

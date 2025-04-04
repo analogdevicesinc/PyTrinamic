@@ -9,6 +9,7 @@
 from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import TMC4671
 from pytrinamic.features import MotorControlModule, LinearRampModule
+from pytrinamic.datalogger import DataLogger
 
 
 class TMC4671_eval(TMCLEval):
@@ -18,7 +19,8 @@ class TMC4671_eval(TMCLEval):
     def __init__(self, connection, module_id=1):
         TMCLEval.__init__(self, connection, module_id)
         self.motors = [self._MotorTypeA(self, 0)]
-        self.ics = [TMC4671(connection)]
+        self.ics = [TMC4671()]
+        self.datalogger = DataLogger(connection, module_id)
 
     # Use the motion controller channel for register access
     def move_to(self, axis, position, velocity=None):

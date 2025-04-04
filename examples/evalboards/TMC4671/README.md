@@ -1,5 +1,5 @@
 
-# Setup TMC4671_eval_.. Examples (Without TMC6100)
+# Setup TMC4671_eval_.. Examples (Without TMC6100 or TMC6200)
 
 ## Hardware
 
@@ -43,7 +43,7 @@ USB ---|               |======|               |
         Landungsbruecke          TMC4761-EVAL 
 ```
 
-# Setup TMC4671_eval_TMC6100_.. Examples
+# Setup TMC4671_eval_TMC6100_eval.. Examples
 
 ## Hardware
 
@@ -76,6 +76,64 @@ USB ---|               |======|               |======|              --------|   
 ### Motor
 
 | Cable Color | TMC6100 |
+|-------------|---------|
+| Black       | U       |
+| Red         | V       |
+| Yellow      | W       |
+
+### ABN Encoder
+
+| Cable Color | TMC4671 |
+|-------------|---------|
+| Red         | +5V     |
+| Black       | GND     |
+| Withe       | ENC1_A  |
+| Green       | ENC1_B  |
+| Yellow      | ENC1_N  |
+
+### Digital Hall
+
+| Cable Color | TMC4671 |
+|-------------|---------|
+| Red         | +5V     |
+| Black       | GND     |
+| Blue        | HALL_UX |
+| Green       | HALL_V  |
+| Withe       | HALL_WY |
+
+# Setup TMC4671_eval_TMC6200_eval.. Examples
+
+## Hardware
+
+```
+                                                                                                                     
+                                         |-----------------------------------------------------|                     
+                                         |                                                     |                     
+                                         | |---------------------------------------------|     |                     
+                                         | |                                             |     |                     
+                                         | |                                             |     |                     
+       +---------------+      +----------|-|--+      +---------------+                   |     |                     
+       |               |      |          | |  |      |               |      |----------------| |                     
+       |               |======|            |  |======|               |      |            |   | |                     
+       |               |======|               |======|               |      |            |   +-|-----------------+   
+       |               |======|               |======|               |      |          +-|--+|                   |   
+       |               |======|               |======|               |      |          |    ||                   |   
+USB ---|               |======|               |======|              --------|          |    ||                   |---
+       |               |======|               |======|               |                 |    ||                   |   
+       |               |======|               |======|               |                 +----+|                   |   
+       |               |======|               |======|               |   TMCS-28-5-1024-AT01 +-------------------+   
+       |               |======|               |======|               |                        QBL4208-61-04-013-DS   
+       |               |======|               |======|               |                                               
+       |               |      |               |      |               |                                               
+       +---------------+      +---------------+      +---------------+                                               
+        Landungsbruecke          TMC4761-EVAL          TMC6200-EVAL                                                 
+```
+
+## Wiring
+
+### Motor
+
+| Cable Color | TMC6200 |
 |-------------|---------|
 | Black       | U       |
 | Red         | V       |

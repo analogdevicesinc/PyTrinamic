@@ -113,43 +113,43 @@ with cm.connect() as my_interface:
         tmc9660_device = TMC9660(my_interface)
 
     # Set the commutation mode to system off - in case it was on before
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
     # Increase the output voltage limit
-    tmc9660_device.set_axis_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
+    tmc9660_device.set_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
 
     # Set the motor parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
 
     # Set the ABN encoder parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.ABN_1_STEPS, 4096)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.ABN_1_INIT_METHOD.choice.USE_HALL)
+    tmc9660_device.set_parameter(TMC9660.ap.ABN_1_STEPS, 4096)
+    tmc9660_device.set_parameter(TMC9660.ap.ABN_1_INIT_METHOD.choice.USE_HALL)
 
     # Set the hall sensor parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.HALL_INVERT_DIRECTION, 1)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.HALL_SECTOR_OFFSET.choice.DEG_240)
+    tmc9660_device.set_parameter(TMC9660.ap.HALL_INVERT_DIRECTION, 1)
+    tmc9660_device.set_parameter(TMC9660.ap.HALL_SECTOR_OFFSET.choice.DEG_240)
 
     # Set current related parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.CSA_GAIN_ADC_I0_TO_ADC_I2.choice.GAIN_10X)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.CURRENT_SCALING_FACTOR, current_scaling_factor)
+    tmc9660_device.set_parameter(TMC9660.ap.CSA_GAIN_ADC_I0_TO_ADC_I2.choice.GAIN_10X)
+    tmc9660_device.set_parameter(TMC9660.ap.CURRENT_SCALING_FACTOR, current_scaling_factor)
 
     if commutation_feedback_select == "ABN encoder":
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
     elif commutation_feedback_select == "Digital hall":
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
     
     torque_ma = 1200
     # Rotate the motor and record the torque.
     # And then stop the motor but record the torque as well.
     samples: List[Sample] = []
     for target_torque, timeout in [(torque_ma, 4), (0, 3)]:
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_TORQUE, target_torque)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_TORQUE, target_torque)
         timer = TimeoutTimer(timeout)
         while not timer.has_expired():
-            samples.append(Sample(time.perf_counter(), tmc9660_device.get_axis_parameter(TMC9660.ap.ACTUAL_TORQUE)))
+            samples.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ACTUAL_TORQUE)))
 
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
 # Plot the torque curve
 fig, ax = plt.subplots()

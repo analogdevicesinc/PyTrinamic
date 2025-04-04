@@ -2,7 +2,7 @@
 # Copyright © 2024 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""Demo on how to read a choice and get the string representation.
+"""Demo on how to read and write flags.
 
 Use the `connection_mode` to change the hardware connection.
 
@@ -64,12 +64,26 @@ with cm.connect() as my_interface:
     elif connection_mode == "headless":
         tmc9660_device = TMC9660(my_interface)
 
-    # Read the current value of the commutation mode as an integer
-    commutation_mode = tmc9660_device.get_axis_parameter(TMC9660.ap.COMMUTATION_MODE)
+    #############################################################################################################
+    # Write
+    #############################################################################################################
 
-    # Get the name of the commutation mode
-    commutation_mode_name = TMC9660.ap.COMMUTATION_MODE.choice.get(commutation_mode).name
+    write_value = 0  # Keep the value for all other flags at 0 to not change their state.
+    write_value = TMC9660.ap.GENERAL_ERROR_FLAGS.ITT_1_EXCEEDED.set(write_value, 1)
+    write_value = TMC9660.ap.GENERAL_ERROR_FLAGS.ITT_2_EXCEEDED.set(write_value, 1)
+    tmc9660_device.set_parameter(TMC9660.ap.GENERAL_ERROR_FLAGS, write_value)
 
-    # Print all available commutation mode options
-    for option in TMC9660.ap.COMMUTATION_MODE.choice.options():
-        print(f"{option.name}: {option.value}")
+    #############################################################################################################
+    # Read
+    #############################################################################################################
+    
+    # Read all flags into an integer
+    general_status_flags = tmc9660_device.get_parameter(TMC9660.ap.GENERAL_STATUS_FLAGS)
+
+    # Extract a singled flag's state
+    regulation_stopped = TMC9660.ap.GENERAL_STATUS_FLAGS.REGULATION_STOPPED.get(general_status_flags)
+
+    # Extract all flag states
+    for flag in TMC9660.ap.GENERAL_STATUS_FLAGS.fields:
+        print(f"{flag.name}: {flag.get(general_status_flags)}")
+

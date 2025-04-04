@@ -11,7 +11,6 @@ import inspect
 import warnings
 
 from typing import Optional, Union
-from abc import ABC, abstractmethod
 
 
 class TMCLModule(object):
@@ -161,7 +160,19 @@ class TMCLModule(object):
         return self.connection.clear_digital_output(x, self.module_id)
 
 
+class ParameterGroup:
+    class Category(enum.IntEnum):
+        AXIS = enum.auto()
+        GLOBAL = enum.auto()
+
+    def __init__(self, name, category, block) -> None:
+        self.name = name
+        self.category = category
+        self.block = block
+
+
 class Parameter:
+
     class Access(enum.IntEnum):
         R   = 0x01
         W   = 0x02
@@ -210,7 +221,8 @@ class Parameter:
             """Sets the field value in a parameter value."""
             return (parameter_value & ~self.mask) | ((new_field_value << self.shift) & self.mask)
 
-    def __init__(self, name: str, index: int, access: "Parameter.Access", datatype: "Parameter.Datatype"):
+    def __init__(self, parent: ParameterGroup, name: str, index: int, access: "Parameter.Access", datatype: "Parameter.Datatype"):
+        self.parent = parent
         self.name = name
         self.index = index
         self.access = access
@@ -219,183 +231,98 @@ class Parameter:
     def __int__(self):
         return self.index
     
-
-class ParameterApiDevice(ABC):
-    class ParameterType(enum.IntEnum):
-        AXIS = enum.auto()
-        GLOBAL = enum.auto()
-        
-    def get_axis_parameter(self, get_target: Union[Parameter]):
-        return self._get_parameter(ParameterApiDevice.ParameterType.AXIS, get_target)
-        
-    def set_axis_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
-        return self._set_parameter(ParameterApiDevice.ParameterType.AXIS, set_target, value)
+    @property
+    def block(self):
+        return self.parent.block
     
-    def get_global_parameter(self, get_target: Union[Parameter], bank: int):
-        return self._get_parameter(ParameterApiDevice.ParameterType.GLOBAL, get_target, bank)
+    @property
+    def category(self):
+        return self.parent.category
     
-    def set_global_parameter(self, set_target: Union[Parameter, Parameter.Option], bank: int, value: Optional[Union[int, bool]] = None):
-        return self._set_parameter(ParameterApiDevice.ParameterType.GLOBAL, set_target, value, bank)
 
-    def _get_parameter(self, parameter_type: ParameterType, get_target: Union[Parameter], bank=None):
+class ParameterApiDevice:
+
+    def get_parameter(self, get_target: Union[Parameter]):
+        """Get the value of a parameter using the GAP or GGP command."""
         if isinstance(get_target, Parameter):
-            ap = get_target
+            parameter = get_target
         else:
             raise ValueError("get_target must be a Parameter!")
-        signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
-        if parameter_type == ParameterApiDevice.ParameterType.AXIS:
+        signed = True if parameter.datatype == Parameter.Datatype.SIGNED else False
+        if parameter.category == ParameterGroup.Category.AXIS:
             value = self._get_axis_parameter(
-                ap.index,
+                parameter.index,
                 signed=signed,
             )
-        elif parameter_type == ParameterApiDevice.ParameterType.GLOBAL:
+        elif parameter.category == ParameterGroup.Category.GLOBAL:
             value = self._get_global_parameter(
-                ap.index,
-                bank=bank,
+                parameter.index,
+                parameter.block,
                 signed=signed,
             )
         else:
-            raise ValueError("Unsupported parameter type.")
+            raise ValueError("Unsupported ParameterGroup.Category!")
         return value
 
-    def _set_parameter(self, parameter_type: ParameterType, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None, bank=None):
+    def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
+        """Set the value of a parameter using the SAP or SGP command."""
         if isinstance(set_target, Parameter):
-            ap = set_target
+            parameter = set_target
             if value is None:
                 raise ValueError("Value must be provided when setting a parameter.")
         elif isinstance(set_target, Parameter.Option):
-            ap =  set_target.parent
+            parameter =  set_target.parent
             if value is not None:
                 warnings.warn("Value is ignored when setting a choice parameter.")
             value = set_target.value
         else:
             raise ValueError("set_target must be a Parameter or Parameter.Option object.")
-        if parameter_type == ParameterApiDevice.ParameterType.AXIS:
+        if parameter.category == ParameterGroup.Category.AXIS:
             return self._set_axis_parameter(
-                ap.index,
+                parameter.index,
                 value,
             )
-        elif parameter_type == ParameterApiDevice.ParameterType.GLOBAL:
+        elif parameter.category == ParameterGroup.Category.GLOBAL:
             return self._set_global_parameter(
-                ap.index,
-                bank=bank,
+                parameter.index,
+                bank=parameter.block,
                 value=value,
             )
         else:
-            raise ValueError("Unsupported parameter type.")
+            raise ValueError("Unsupported ParameterGroup.Category!")
+        
+    def store_parameter(self, store_target: Parameter):
+        """Store the value of a parameter using the STAP or STGP command."""
+        if isinstance(store_target, Parameter):
+            parameter = store_target
+        else:
+            raise ValueError("store_target must be a Parameter!")
+        if parameter.category == ParameterGroup.Category.AXIS:
+            return self._store_axis_parameter(
+                parameter.index,
+            )
+        elif parameter.category == ParameterGroup.Category.GLOBAL:
+            return self._store_global_parameter(
+                parameter.index,
+                bank=parameter.block,
+            )
+        else:
+            raise ValueError("Unsupported ParameterGroup.Category!")
     
-    @abstractmethod
     def _get_axis_parameter(self, index: int, signed: bool):
         raise NotImplementedError
 
-    @abstractmethod
     def _set_axis_parameter(self, index: int, value: int):
         raise NotImplementedError
     
-    @abstractmethod
     def _get_global_parameter(self, index: int, bank: int, signed: bool):
         raise NotImplementedError
 
-    @abstractmethod
     def _set_global_parameter(self, index: int, bank: int, value: int):
         raise NotImplementedError
     
-
-class AxisParameterApiDevice(ABC):
-        
-    def get_parameter(self, get_target: Union[Parameter]):
-        return self._get_parameter(get_target)
-        
-    def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
-        return self._set_parameter(set_target, value)
-    
-    def _get_parameter(self, get_target: Union[Parameter]):
-        if isinstance(get_target, Parameter):
-            ap = get_target
-        else:
-            raise ValueError("get_target must be a Parameter or Parameter.Choice object.")
-        signed = True if ap.datatype == Parameter.Datatype.SIGNED else False
-        value = self._get_axis_parameter(
-            ap.index,
-            signed=signed,
-        )
-        return value
-
-    def _set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
-        if isinstance(set_target, Parameter):
-            ap = set_target
-            if value is None:
-                raise ValueError("Value must be provided when setting a parameter.")
-        elif isinstance(set_target, Parameter.Option):
-            ap =  set_target.parent
-            if value is not None:
-                warnings.warn("Value is ignored when setting a choice parameter.")
-            value = set_target.value
-        else:
-            raise ValueError("set_target must be a Parameter or Parameter.Option object.")
-        return self._set_axis_parameter(
-            ap.index,
-            value,
-        )
-    
-    @abstractmethod
-    def _get_axis_parameter(self, index: int, signed: bool):
+    def _store_axis_parameter(self, index: int):
         raise NotImplementedError
 
-    @abstractmethod
-    def _set_axis_parameter(self, index: int, value: int):
-        raise NotImplementedError
-
-
-class GlobalParameterApiDevice(ABC):
-    
-    def get_parameter(self, get_target: Union[Parameter, Parameter.Choice]):
-        return self._get_parameter(get_target)
-    
-    def set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
-        return self._set_parameter(set_target, value)
-
-    def _get_parameter(self, get_target: Union[Parameter, Parameter.Choice]):
-        if isinstance(get_target, Parameter):
-            gp = get_target
-        elif isinstance(get_target, Parameter.Choice):
-            gp = get_target.parent
-        else:
-            raise ValueError("get_target must be a Parameter or Parameter.Choice object.")
-        signed = True if gp.datatype == Parameter.Datatype.SIGNED else False
-        value = self._get_global_parameter(
-            gp.index,
-            signed=signed,
-        )
-        if isinstance(get_target, Parameter.Choice):
-            try: 
-                return next(member for name, member in inspect.getmembers(gp.choice) if isinstance(member, Parameter.Option) and member.value == value)
-            except StopIteration:
-                raise IndexError(f"Unknown value {value} for choice parameter {gp.name}.")
-        else:
-            return value
-
-    def _set_parameter(self, set_target: Union[Parameter, Parameter.Option], value: Optional[Union[int, bool]] = None):
-        if isinstance(set_target, Parameter):
-            gp = set_target
-            if value is None:
-                raise ValueError("Value must be provided when setting a parameter.")
-        elif isinstance(set_target, Parameter.Option):
-            gp =  set_target.parent
-            if value is not None:
-                warnings.warn("Value is ignored when setting a choice parameter.")
-            value = set_target.value
-        else:
-            raise ValueError("set_target must be a Parameter or Parameter.Option object.")
-        return self._set_global_parameter(
-            gp.index,
-            value=value,
-        )
-    
-    @abstractmethod
-    def _get_global_parameter(self, index: int, signed: bool):
-        raise NotImplementedError
-
-    @abstractmethod
-    def _set_global_parameter(self, index: int, value: int):
+    def _store_global_parameter(self, index: int, bank: int):
         raise NotImplementedError

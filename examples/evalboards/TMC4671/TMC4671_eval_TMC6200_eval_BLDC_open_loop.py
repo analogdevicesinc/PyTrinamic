@@ -5,8 +5,10 @@
 # Copyright © 2023 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""Note: No feedback ADC configuration is done because the motor is driven in voltage mode."""
 
 import time
+
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval, TMC6200_eval
@@ -34,15 +36,6 @@ with ConnectionManager().connect() as my_interface:
     mc_eval.write_register(TMC4671.REG.PWM_BBM_H_BBM_L, 0x00001414)
     mc_eval.write_register_field(TMC4671.FIELD.PWM_CHOP, TMC4671.ENUM.PWM_CENTERED_FOR_FOC)
     mc_eval.write_register_field(TMC4671.FIELD.PWM_SV, 1)
-
-    # ADC configuration
-    mc_eval.write_register(TMC4671.REG.ADC_I_SELECT, 0x24000100)
-    mc_eval.write_register(TMC4671.REG.dsADC_MCFG_B_MCFG_A, 0x00100010)
-    mc_eval.write_register(TMC4671.REG.dsADC_MCLK_A, 0x20000000)
-    mc_eval.write_register(TMC4671.REG.dsADC_MCLK_B, 0x00000000)
-    mc_eval.write_register(TMC4671.REG.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-    mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF00826D)
-    mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF0081F8)
 
     # Open loop settings
     mc_eval.write_register(TMC4671.REG.OPENLOOP_MODE, 0x00000000)

@@ -128,41 +128,41 @@ with cm.connect() as my_interface:
         tmc9660_device = TMC9660(my_interface)
 
     # Set the commutation mode to system off - in case it was on before
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
     # Increase the output voltage limit
-    tmc9660_device.set_axis_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
+    tmc9660_device.set_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
 
     # Set the motor parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
 
     # Set the velocity controller parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_P, 500)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_I, 5000)
+    tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
+    tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_P, 500)
+    tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_I, 5000)
 
     # Set the ABN encoder parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.ABN_1_STEPS, 4096)
+    tmc9660_device.set_parameter(TMC9660.ap.ABN_1_STEPS, 4096)
 
     # Set the hall sensor parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.HALL_INVERT_DIRECTION, 1)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.HALL_SECTOR_OFFSET.choice.DEG_240)
+    tmc9660_device.set_parameter(TMC9660.ap.HALL_INVERT_DIRECTION, 1)
+    tmc9660_device.set_parameter(TMC9660.ap.HALL_SECTOR_OFFSET.choice.DEG_240)
 
     if commutation_feedback_select == "ABN encoder":
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
     elif commutation_feedback_select == "Digital hall":
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
     
     if velocity_feedback_select == "Same as commutation":
         kv = kv_same
-        tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.SAME_AS_COMMUTATION)
+        tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.SAME_AS_COMMUTATION)
     elif velocity_feedback_select == "ABN encoder":
         kv = kv_abn
-        tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.ABN1_ENCODER)
+        tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.ABN1_ENCODER)
     elif velocity_feedback_select == "Digital hall":
         kv = kv_hall
-        tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.DIGITAL_HALL)
+        tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.DIGITAL_HALL)
 
     # Calculate the acceleration scaling factor
     ka = kv*2**17/40e6
@@ -174,14 +174,14 @@ with cm.connect() as my_interface:
     acceleration_rpm_s = 2000  # [rpm/s]
     acceleration_internal =  int(acceleration_rpm_s*ka)
     
-    tmc9660_device.set_axis_parameter(TMC9660.ap.RAMP_ENABLE, 1)
+    tmc9660_device.set_parameter(TMC9660.ap.RAMP_ENABLE, 1)
     # Enable 4 point ramp mode by disabling 6/8 point ramp mode.
-    tmc9660_device.set_axis_parameter(TMC9660.ap.RAMP_V1, 0)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.RAMP_V2, 0)
+    tmc9660_device.set_parameter(TMC9660.ap.RAMP_V1, 0)
+    tmc9660_device.set_parameter(TMC9660.ap.RAMP_V2, 0)
     # Set the 4 point ramp parameters
-    tmc9660_device.set_axis_parameter(TMC9660.ap.RAMP_AMAX, acceleration_internal)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.RAMP_DMAX, acceleration_internal)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.RAMP_VMAX, target_velocity_internal)
+    tmc9660_device.set_parameter(TMC9660.ap.RAMP_AMAX, acceleration_internal)
+    tmc9660_device.set_parameter(TMC9660.ap.RAMP_DMAX, acceleration_internal)
+    tmc9660_device.set_parameter(TMC9660.ap.RAMP_VMAX, target_velocity_internal)
     print(f"RAMP_AMAX/RAMP_DMAX: {acceleration_internal}")
     print(f"RAMP_VMAX: {target_velocity_internal}")
     
@@ -189,12 +189,12 @@ with cm.connect() as my_interface:
     # And then stop the motor but record the velocity as well.
     samples: List[Sample] = []
     for target_velocity, timeout in [(target_velocity_internal, 4), (0, 3)]:
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, target_velocity)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, target_velocity)
         timer = TimeoutTimer(timeout)
         while not timer.has_expired():
-            samples.append(Sample(time.perf_counter(), tmc9660_device.get_axis_parameter(TMC9660.ap.ACTUAL_VELOCITY)))
+            samples.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ACTUAL_VELOCITY)))
 
-    tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+    tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
 # Plot the velocity curve
 fig, ax = plt.subplots()

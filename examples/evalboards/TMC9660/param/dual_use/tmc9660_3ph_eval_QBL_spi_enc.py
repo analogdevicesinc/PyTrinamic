@@ -92,16 +92,16 @@ with cm.connect() as my_interface:
         tmc9660_device = TMC9660(my_interface)
 
     # Motor settings
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
 
     # SPI encoder settings
-    tmc9660_device.set_axis_parameter(TMC9660.ap.SPI_ENCODER_TRANSFER_DATA_3_0, 0x0000_FFFF)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE, 2)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.SPI_ENCODER_POSITION_COUNTER_MASK, 2**14 - 1)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.SPI_ENCODER_POSITION_COUNTER_SHIFT, 0)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.SPI_ENCODER_TRANSFER.choice.CONTINUOUS_POSITION_COUNTER_READ)
-    tmc9660_device.set_axis_parameter(TMC9660.ap.SPI_ENCODER_DIRECTION, 1)
+    tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_TRANSFER_DATA_3_0, 0x0000_FFFF)
+    tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_MAIN_TRANSFER_CMD_SIZE, 2)
+    tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_POSITION_COUNTER_MASK, 2**14 - 1)
+    tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_POSITION_COUNTER_SHIFT, 0)
+    tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_TRANSFER.choice.CONTINUOUS_POSITION_COUNTER_READ)
+    tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_DIRECTION, 1)
 
     if example_mode == "check angle":
         @dataclass
@@ -110,23 +110,23 @@ with cm.connect() as my_interface:
             spi_enc_position: int
 
         # Configure the open loop mode
-        tmc9660_device.set_axis_parameter(TMC9660.ap.OPENLOOP_VOLTAGE, 1000)
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
+        tmc9660_device.set_parameter(TMC9660.ap.OPENLOOP_VOLTAGE, 1000)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
         # Rotate the motor for 4 seconds
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 10_000)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, 10_000)
         time.sleep(0.1)
         start_time_s = time.time()
         samples: List[Sample] = []
         samples_per_s: int = 10
         # .. and record the open loop angle and the SPI encoder angle
         while time.time() - start_time_s < 4:
-            samples.append(Sample(tmc9660_device.get_axis_parameter(TMC9660.ap.OPENLOOP_ANGLE),
-                                  tmc9660_device.get_axis_parameter(TMC9660.ap.SPI_ENCODER_COMMUTATION_ANGLE)))
+            samples.append(Sample(tmc9660_device.get_parameter(TMC9660.ap.OPENLOOP_ANGLE),
+                                  tmc9660_device.get_parameter(TMC9660.ap.SPI_ENCODER_COMMUTATION_ANGLE)))
             time.sleep(1/samples_per_s)
         # Stop the motor
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 0)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, 0)
         time.sleep(0.1)
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
         # Do some checks
         slope_open_loop_angle = statistics.mean([c_int16(samples[i+1].open_loop_position - samples[i].open_loop_position).value for i in range(len(samples) - 1)]) * samples_per_s
         slope_spi_enc_angle = statistics.mean([c_int16(samples[i+1].spi_enc_position - samples[i].spi_enc_position).value for i in range(len(samples) - 1)]) * samples_per_s
@@ -150,15 +150,15 @@ with cm.connect() as my_interface:
             print("matplotlib is not installed. Install it with 'pip install matplotlib' to see the plot.")
     elif example_mode == "move motor closed loop":
         # Apply some PI controller settings, known to be good for the QBL4208.
-        tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
-        tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_P, 500)
-        tmc9660_device.set_axis_parameter(TMC9660.ap.VELOCITY_I, 5000)
+        tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
+        tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_P, 500)
+        tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_I, 5000)
         # Configure SPI encoder based feedback
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_SPI_ENC)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_SPI_ENC)
         # Rotate the motor for 5 seconds
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 400_000)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, 400_000)
         time.sleep(5)
         # Stop the motor
-        tmc9660_device.set_axis_parameter(TMC9660.ap.TARGET_VELOCITY, 0)
+        tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, 0)
         time.sleep(1)
-        tmc9660_device.set_axis_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
+        tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)

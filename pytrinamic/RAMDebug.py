@@ -276,9 +276,10 @@ class RAMDebug():
         for channel in self.channels:
             self._command(RAMDebug_Command.SET_CHANNEL.value, channel.type.value, channel.value)
 
-        self._command(RAMDebug_Command.SET_SHIFT_MASK.value, self._trigger_shift, self._trigger_mask)
         self._command(RAMDebug_Command.SET_PRETRIGGER_SAMPLE_COUNT.value, 0, self._pretrigger_samples * self.channel_count())
-        self._command(RAMDebug_Command.SET_TRIGGER_CHANNEL.value, self._trigger_channel.type.value, self._trigger_channel.value)
+        if self._trigger_type != RAMDebug_Trigger.TRIGGER_UNCONDITIONAL:
+            self._command(RAMDebug_Command.SET_SHIFT_MASK.value, self._trigger_shift, self._trigger_mask)
+            self._command(RAMDebug_Command.SET_TRIGGER_CHANNEL.value, self._trigger_channel.type.value, self._trigger_channel.value)
         self._command(RAMDebug_Command.ENABLE_TRIGGER.value, self._trigger_type.value, self._trigger_threshold)
 
     def is_pretriggering(self):

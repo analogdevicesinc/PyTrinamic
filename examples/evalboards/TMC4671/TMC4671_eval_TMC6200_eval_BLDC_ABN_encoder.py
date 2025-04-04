@@ -7,6 +7,8 @@
 ################################################################################
 
 import time
+import statistics
+
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC4671_eval, TMC6200_eval
@@ -21,10 +23,13 @@ with ConnectionManager().connect() as my_interface:
     mc_eval = TMC4671_eval(my_interface)
     drv_eval = TMC6200_eval(my_interface)
 
-    # Configure TMC6100 pwm for use with TMC4671 (disable singleline)
+    # Configure TMC6200 pwm for use with TMC4671 (disable singleline)
     drv_eval.write_register_field(TMC6200.FIELD.SINGLELINE, 0)
 
     # Configure TMC4671 for a BLDC motor with ABN-Encoder
+
+    # Switch to stopped mode
+    mc_eval.write_register(TMC4671.REG.MODE_RAMP_MODE_MOTION, TMC4671.ENUM.MOTION_MODE_STOPPED)
 
     # Motor type & PWM configuration
     mc_eval.write_register_field(TMC4671.FIELD.MOTOR_TYPE, TMC4671.ENUM.MOTOR_TYPE_BLDC)
@@ -41,11 +46,23 @@ with ConnectionManager().connect() as my_interface:
     mc_eval.write_register(TMC4671.REG.dsADC_MCLK_A, 0x20000000)
     mc_eval.write_register(TMC4671.REG.dsADC_MCLK_B, 0x00000000)
     mc_eval.write_register(TMC4671.REG.dsADC_MDEC_B_MDEC_A, int(0x014E014E))
-    mc_eval.write_register(TMC4671.REG.ADC_I0_SCALE_OFFSET, 0xFF00826D)
-    mc_eval.write_register(TMC4671.REG.ADC_I1_SCALE_OFFSET, 0xFF0081F8)
+    # ADC offset compensation
+    adc_i0_samples = []
+    adc_i1_samples = []
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I0_SCALE, -256)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I1_SCALE, -256)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I0_OFFSET, 0)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I1_OFFSET, 0)
+    for _ in range(50):
+        adc_i0_samples.append(mc_eval.read_register_field(TMC4671.FIELD.ADC_I0_RAW))
+        adc_i1_samples.append(mc_eval.read_register_field(TMC4671.FIELD.ADC_I0_RAW))
+    adc_i0_offset = statistics.mean(adc_i0_samples)
+    adc_i1_offset = statistics.mean(adc_i1_samples)
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I0_OFFSET, int(adc_i0_offset))
+    mc_eval.write_register_field(TMC4671.FIELD.ADC_I1_OFFSET, int(adc_i1_offset))
 
     # ABN encoder settings
-    mc_eval.write_register(TMC4671.REG.ABN_DECODER_MODE, 0x00001000)
+    mc_eval.write_register(TMC4671.REG.ABN_DECODER_MODE, 0x00000000)
     mc_eval.write_register(TMC4671.REG.ABN_DECODER_PPR, 4096)
     mc_eval.write_register(TMC4671.REG.ABN_DECODER_PHI_E_PHI_M_OFFSET, 0)
 
