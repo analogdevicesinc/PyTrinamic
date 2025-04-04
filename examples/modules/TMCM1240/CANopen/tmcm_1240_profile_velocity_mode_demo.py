@@ -8,7 +8,7 @@ import canopen
 from pytrinamic.modules.canopen_node import TmcmNode
 
 with canopen.Network() as network:
-    # PEAK CAN ADAPER SETTINGS FOR CAN CONECTION 
+    # PEAK CAN ADAPER SETTINGS FOR CAN CONNECTION 
     network.connect(bustype='pcan', channel='PCAN_USBBUS1', bitrate=1_000_000) 
     # TMCM-1240 EDS (ELECTRONIC DATASHEET IS CALLED,CANOPEN NODE .PY PYTRINAMIC IS CALLED  )
     tmcm_1240 = TmcmNode(1, 'TMCM-1240.eds') 
@@ -16,11 +16,11 @@ with canopen.Network() as network:
     network.add_node(tmcm_1240)
     # LOADING CONFIGURATION FROM CANOPEN NODE FILE 
     tmcm_1240.load_configuration()
-   
+    
     tmcm_1240.nmt.state = 'OPERATIONAL'
     tmcm_1240.go_to_operation_enabled()
     tmcm_1240.shutdown()
-   
+    
     tmcm_1240.sdo['Absolute Max Current 1'].raw = 80 #CURRENT SETTINGS 
     tmcm_1240.sdo['Switch Parameters 1'].raw = 3 #DISSABLE LIMIT SWITCHES 
     tmcm_1240.go_to_operation_enabled()
