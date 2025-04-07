@@ -150,10 +150,20 @@ class DataLogger:
 
     @dataclass
     class Log:
-        rate_hz: float
-        period_s: float
+        """This represents a full capture of multiple channels"""
+        config: DataLogger.Config
+        base_frequency_hz: int
+        down_sampling_factor: int
         time_vector: list
         data: Dict[str, DataLogger.LogData]
+
+        @property
+        def rate_hz(self):
+            return self.base_frequency_hz / self.down_sampling_factor
+
+        @property
+        def period_s(self):
+            return self.down_sampling_factor / self.base_frequency_hz
 
     @dataclass
     class LogData:
@@ -205,7 +215,7 @@ class DataLogger:
                 edge=None,
             )
         )
-        self.log = DataLogger.Log(rate_hz=0, period_s=0, time_vector=[], data={})
+        self.log = DataLogger.Log(config=self.config, base_frequency_hz=1, down_sampling_factor=1, time_vector=[], data={})
         self._log_data = None
         self._effectively_log_data = None
         self._info = None
@@ -445,11 +455,11 @@ class DataLogger:
             samples = self._downloaded_raw_data[i::self._channels_used_count]
             log_samples.append(EffectiveDataSet(name=name, datatype=datatype, samples=samples))
 
-        period_s = self._down_sampling_factor/self._info.base_frequency_hz
+        self.log.base_frequency_hz = self._info.base_frequency_hz
+        self.log.down_sampling_factor = self._down_sampling_factor
+        period_s = self.log.period_s
         time_offset = self._pretrigger_samples_per_channel*period_s
         time_vector = [i*period_s-time_offset for i in range(self.config.samples_per_channel)]
-        self.log.rate_hz = self._info.base_frequency_hz/self._down_sampling_factor
-        self.log.period_s = period_s
         self.log.time_vector = time_vector
         self.log.data = {}
         for entry in self._log_data:
