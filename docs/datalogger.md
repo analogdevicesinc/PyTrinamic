@@ -28,7 +28,7 @@ It uses no triggering, thus data will be logged immediately after `start_capture
 
     dl.start_capture()
 
-    dl.wait_for_completion()
+    dl.wait_for_capture_completion()
 
     dl.download_logs()
 
@@ -37,7 +37,7 @@ It uses no triggering, thus data will be logged immediately after `start_capture
 
 Step by step details:
 
-* We create reference to the Datalogger object as a short alias.
+* We create a reference to the Datalogger object as a shorter alias.
   ```py
     dl = tmc9660_eval.datalogger
   ```
@@ -57,7 +57,7 @@ Step by step details:
   ```
 * The firmware now does the logging and we need to wait till it is finished.
   ```py
-    dl.wait_for_completion()
+    dl.wait_for_capture_completion()
   ```
 * With the logging done, we can download the logs.
   ```py
@@ -90,6 +90,8 @@ DataLogger.Info(base_frequency_hz=25000, sample_buffer_length=4096, number_of_ch
 
 ## Change of the Sample/Logging Rate
 
+By default, the `base_frequency` is used for the logging, but this can be changed:
+
 ### Using the `sample_rate` Config Attribute
 
 ```py
@@ -99,6 +101,7 @@ DataLogger.Info(base_frequency_hz=25000, sample_buffer_length=4096, number_of_ch
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
        ...
 ```
+If the sample rate give is not supported one may add `dl.config.allow_sample_rate_round_down = True`. With this the sample rate is round down to the closest sample rate possible.
 
 ### Using the `set_sample_rate()` Function
 
@@ -110,6 +113,10 @@ The sample rate can be specified using the `config.set_sample_rate()` function:
     dl.config.log_data = [
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
        ...
+```
+If the sample rate give is not supported one may use the `round_down` argument to round down to the closest sample rate possible.
+```py
+    dl.config.set_sample_rate(12500.0, round_down=True)
 ```
 
 ### Using the `down_sampling_factor`
@@ -145,7 +152,7 @@ Note, ideally the `down_sampling_factor` is set to a power of two value.
 
     dl.start_capture()
 
-    dl.wait_for_completion()
+    dl.wait_for_capture_completion()
 
     dl.download_logs()
 
@@ -154,7 +161,3 @@ Note, ideally the `down_sampling_factor` is set to a power of two value.
 
 This is almost identical to the above unconditional logging example, but we set trigger condition.
 Note, for another unconditional logging to start, the `dl.config.trigger.on_data` must be set to `None`
-
-## TODO - Continue with more details!
-
-...

@@ -9,7 +9,7 @@ Improvements/Todo:
 * Add an optional explode mode that will unpack all fields of a register in the logs.
 * Add a way to call download_logs() without waiting for the logging to be done.
 * Add parameters to download_logs() that allow to download only a part of the logs.
-* Add timeouts to wait_for_completion() and wait_for_trigger().
+* Add timeouts to wait_for_capture_completion() and wait_for_trigger().
 """
 
 from __future__ import annotations
