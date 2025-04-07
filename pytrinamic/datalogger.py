@@ -9,7 +9,7 @@ Improvements/Todo:
 * Add an optional explode mode that will unpack all fields of a register in the logs.
 * Add a way to call download_logs() without waiting for the logging to be done.
 * Add parameters to download_logs() that allow to download only a part of the logs.
-* Add timeouts to wait_till_done() and wait_for_trigger().
+* Add timeouts to wait_for_completion() and wait_for_trigger().
 """
 
 from __future__ import annotations
@@ -422,19 +422,43 @@ class DataLogger:
         while self.is_pretriggering():
             pass
 
-    def is_triggered(self) -> bool:
+    def has_triggered(self) -> bool:
         return self.rd.get_state() >= Rd.State.CAPTURE
     
     def wait_for_trigger(self) -> None:
-        while not self.is_triggered():
+        while not self.has_triggered():
             pass
 
-    def is_done(self) -> bool:
+    def is_capture_complete(self) -> bool:
         return self.rd.get_state() == Rd.State.COMPLETE
     
-    def wait_till_done(self) -> None:
-        while not self.is_done():
+    def wait_for_capture_completion(self) -> None:
+        while not self.is_capture_complete():
             pass
+
+    def is_triggered(self) -> bool:
+        """
+        .. deprecated:: 0.2.16
+        """
+        warnings.warn("Function is_triggered() is going te be removed in future versions of pytrinamic, use has_triggered() instead!", FutureWarning)
+
+        return self.has_triggered()
+    
+    def is_done(self) -> bool:
+        """
+        .. deprecated:: 0.2.16
+        """
+        warnings.warn("Function is_done() is going te be removed in future versions of pytrinamic, use is_capture_complete() instead!", FutureWarning)
+
+        return self.is_capture_complete()
+    
+    def wait_till_done(self) -> None:
+        """
+        .. deprecated:: 0.2.16
+        """
+        warnings.warn("Function wait_till_done() is going te be removed in future versions of pytrinamic, use wait_for_capture_completion() instead!", FutureWarning)
+
+        self.wait_for_capture_completion()
 
     def download_log_step(self) -> bool:
         @dataclass

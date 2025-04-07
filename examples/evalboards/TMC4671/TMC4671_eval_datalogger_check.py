@@ -23,7 +23,7 @@ with ConnectionManager().connect() as my_interface:
 
     dl.start_logging()
 
-    while not dl.is_done():
+    while not dl.is_capture_complete():
         time.sleep(0.1)
 
     dl.download_log()

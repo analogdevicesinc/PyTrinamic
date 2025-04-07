@@ -52,7 +52,7 @@ def test_datalogger_eval_4671(tmc4671_eval: TMC4671_eval, use_log_data_list):
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -83,7 +83,7 @@ def test_datalogger_eval_4671_register_copy(tmc4671_eval: TMC4671_eval):
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -116,7 +116,7 @@ def test_datalogger_eval_4671_field_reduction(tmc4671_eval: TMC4671_eval):
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     assert len(dl._effectively_log_data) == 2
     dl.download_log()

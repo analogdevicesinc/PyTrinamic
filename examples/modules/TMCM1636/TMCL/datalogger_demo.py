@@ -37,7 +37,7 @@ with connection_manager.connect() as my_interface:
     dl.start_capture()
 
     # Wait for the logging to finish
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     # Pull the data from the module
     while dl.download_log_step():

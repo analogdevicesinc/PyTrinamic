@@ -286,7 +286,7 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, 
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     if download_stepwise:
         while dl.download_log_step():
@@ -320,7 +320,7 @@ def test_success_sample_sanity(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_positi
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -359,7 +359,7 @@ def test_success_sample_sanity_ex(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_pos
     else:
         dl.start_logging()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -400,7 +400,7 @@ def test_config(tmcm1617: TMCM1617Ex, use_start_capture):
     else:
         dl.start_logging()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -437,7 +437,7 @@ def test_success_rising_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps_
             edge=dl.TriggerEdge.RISING,
         )
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -471,7 +471,7 @@ def test_success_falling_edge_trigger(tmcm1617: TMCM1617Ex, rotate_motor_one_rps
         )
     start_time = time.perf_counter()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     delay_seconds = time.perf_counter() - start_time
 
@@ -513,7 +513,7 @@ def test_success_rising_edge_trigger_pretrigger(tmcm1617: TMCM1617Ex, rotate_mot
             pretrigger_samples_per_channel=pretrigger_samples,
         )
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 
@@ -541,7 +541,7 @@ def test_success_copies(tmcm1617: TMCM1617Ex):
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     assert len(dl._effectively_log_data) == 2
     

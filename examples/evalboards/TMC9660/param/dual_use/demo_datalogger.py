@@ -78,7 +78,7 @@ with cm.connect() as my_interface:
 
     dl.start_logging()
 
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
 
     dl.download_log()
 

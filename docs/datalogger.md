@@ -28,7 +28,7 @@ It uses no triggering, thus data will be logged immediately after `start_capture
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_completion()
 
     dl.download_logs()
 
@@ -57,7 +57,7 @@ Step by step details:
   ```
 * The firmware now does the logging and we need to wait till it is finished.
   ```py
-    dl.wait_till_done()
+    dl.wait_for_completion()
   ```
 * With the logging done, we can download the logs.
   ```py
@@ -145,7 +145,7 @@ Note, ideally the `down_sampling_factor` is set to a power of two value.
 
     dl.start_capture()
 
-    dl.wait_till_done()
+    dl.wait_for_completion()
 
     dl.download_logs()
 

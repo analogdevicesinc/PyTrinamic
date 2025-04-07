@@ -28,7 +28,7 @@ with ConnectionManager().connect() as my_interface:
     # Start the logging
     dl.start_capture()
     # Wait for the logging to finish
-    dl.wait_till_done()
+    dl.wait_for_capture_completion()
     print("Logging done.")
     # Pull the data from the eval
     dl.download_log()
