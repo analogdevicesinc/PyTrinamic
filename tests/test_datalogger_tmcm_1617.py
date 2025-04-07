@@ -296,6 +296,7 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, 
         dl.download_log()
 
     assert dl.log.rate_hz == 2000
+    assert dl.log.sample_count == 10
     for name, log in dl.log.data.items():
         assert len(log.samples) == 10
         assert all(30_000 <= sample <= 40_000 for sample in log.samples)

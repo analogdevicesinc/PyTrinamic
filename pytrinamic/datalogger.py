@@ -158,12 +158,18 @@ class DataLogger:
         data: Dict[str, DataLogger.LogData]
 
         @property
-        def rate_hz(self):
+        def rate_hz(self) -> float:
             return self.base_frequency_hz / self.down_sampling_factor
 
         @property
-        def period_s(self):
+        def period_s(self) -> float:
             return self.down_sampling_factor / self.base_frequency_hz
+        
+        @property
+        def sample_count(self) -> int:
+            for channel in self.data.values():
+                return len(channel.samples)
+            return 0
 
     @dataclass
     class LogData:
