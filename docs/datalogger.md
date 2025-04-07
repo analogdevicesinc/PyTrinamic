@@ -16,7 +16,7 @@ The following two diagrams give an overview on concept of the Datalogger.
 ### Basic example
 
 This example keeps all optional settings at default.
-It uses no triggering, thus data will be logged immediately after `start_logging()` got called.
+It uses no triggering, thus data will be logged immediately after `start_capture()` got called.
 
 ```py
     dl = tmc9660_eval.datalogger
@@ -26,7 +26,7 @@ It uses no triggering, thus data will be logged immediately after `start_logging
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
     ]
 
-    dl.start_logging()
+    dl.start_capture()
 
     dl.wait_till_done()
 
@@ -53,7 +53,7 @@ Step by step details:
   ```
 * With the minimal configuration done we can start the logging.
   ```py
-    dl.start_logging()
+    dl.start_capture()
   ```
 * The firmware now does the logging and we need to wait till it is finished.
   ```py
@@ -90,6 +90,15 @@ DataLogger.Info(base_frequency_hz=25000, sample_buffer_length=4096, number_of_ch
 
 ## Change of the Sample/Logging Rate
 
+### Using the `sample_rate` Config Attribute
+
+```py
+    dl.config.samples_per_channel = 10
+    dl.config.sample_rate = 12500.0
+    dl.config.log_data = [
+       TMC9660.MCC.ADC_I1_I0_SCALED.I0,
+       ...
+```
 
 ### Using the `set_sample_rate()` Function
 
@@ -102,8 +111,6 @@ The sample rate can be specified using the `config.set_sample_rate()` function:
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
        ...
 ```
-
-
 
 ### Using the `down_sampling_factor`
 
@@ -132,8 +139,11 @@ Note, ideally the `down_sampling_factor` is set to a power of two value.
     dl.config.log_data = [
        TMC9660.MCC.ADC_I1_I0_SCALED.I0,
     ]
+    dl.config.trigger.on_data = TMC9660.MCC.ADC_I1_I0_SCALED.I0
+    dl.config.trigger.threshold = 100
+    dl.config.trigger.edge = dl.TriggerEdge.RISING
 
-    dl.activate_trigger(on_data=TMC9660.MCC.ADC_I1_I0_SCALED.I0, threshold=100, edge=dl.TriggerEdge.RISING)
+    dl.start_capture()
 
     dl.wait_till_done()
 
@@ -142,7 +152,8 @@ Note, ideally the `down_sampling_factor` is set to a power of two value.
     print(dl.log.data["ADC_I1_I0_SCALED.I0"])
 ```
 
-This is almost identical to the above unconditional logging example, but we use `activate_trigger()` instead of `start_logging()`.
+This is almost identical to the above unconditional logging example, but we set trigger condition.
+Note, for another unconditional logging to start, the `dl.config.trigger.on_data` must be set to `None`
 
 ## TODO - Continue with more details!
 

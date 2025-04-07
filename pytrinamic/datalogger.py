@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Union, List, Dict, Tuple
 from dataclasses import dataclass
 from enum import Enum, auto
-import decimal
+import warnings
 import math
 
 from pytrinamic.rd import Rd
@@ -162,11 +162,18 @@ class DataLogger:
 
     @dataclass
     class Config:
+        @dataclass
+        class Trigger:
+            on_data: Union[Parameter, Register, Field, DataLogger.DataTypeAp, DataLogger.DataTypeGp, DataLogger.DataTypeRegister, DataLogger.DataTypeField]
+            threshold: int
+            edge: DataLogger.TriggerEdge
+            pretrigger_samples_per_channel: int = 0
         samples_per_channel: int
         log_data: dict
         down_sampling_factor: int = None
         sample_rate_hz: float = None
         allow_sample_rate_round_down: bool = False
+        trigger: Trigger = Trigger(on_data=None, threshold=None, edge=None)
 
         def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
             """
@@ -192,6 +199,11 @@ class DataLogger:
         self.config = DataLogger.Config(
             samples_per_channel=0,
             log_data=None,
+            trigger=DataLogger.Config.Trigger(
+                on_data=None,
+                threshold=None,
+                edge=None,
+            )
         )
         self.log = DataLogger.Log(rate_hz=0, period_s=0, time_vector=[], data={})
         self._log_data = None
@@ -219,6 +231,51 @@ class DataLogger:
         base_frequency_hz = self._get_base_frequency_hz()
         return [frequency for _, frequency in self._get_possible_sample_rates(base_frequency_hz)]
 
+    def start_logging(self):
+        """
+        Start unconditional logging.
+
+        .. deprecated:: 0.2.16
+        """
+        warnings.warn("Function start_logging() is going te be removed in future versions of pytrinamic, use start_capture() instead!", FutureWarning)
+        self._start_logging()
+    
+    def activate_trigger(
+            self,
+            *,
+            on_data: Union[Parameter, Register, Field, DataTypeAp, DataTypeGp, DataTypeRegister, DataTypeField],
+            threshold: int,
+            edge: TriggerEdge,
+            pretrigger_samples_per_channel: int = 0,
+        ) -> None:
+        """
+        Start conditional logging.
+
+        .. deprecated:: 0.2.16
+        """
+        warnings.warn("Function activate_trigger() is going te be removed in future versions of pytrinamic, use start_capture() instead!", FutureWarning)
+
+        self._activate_trigger(
+            on_data=on_data,
+            threshold=threshold,
+            edge=edge,
+            pretrigger_samples_per_channel=pretrigger_samples_per_channel,
+        )
+    
+    def start_capture(self):
+        if self.config.trigger.on_data is None:
+            if self.config.trigger.threshold is not None or self.config.trigger.edge is not None:
+                raise DataLoggerConfigError("Trigger edge/threshold specified but no trigger data given in `config.trigger.on_data`!")
+            self._start_logging()
+        else:
+            # TODO: Throw an error if config.trigger.threshold or config.trigger.edge is None
+            self.activate_trigger(
+                on_data=self.config.trigger.on_data,
+                threshold=self.config.trigger.threshold,
+                edge=self.config.trigger.edge,
+                pretrigger_samples_per_channel=self.config.trigger.pretrigger_samples_per_channel,
+            )
+
     def _get_possible_sample_rates(self, base_frequency_hz) -> List[Tuple[int, float]]:
         possibilities = []
         for down_sampling_factor in range(1, 1000):
@@ -232,11 +289,11 @@ class DataLogger:
                 break
         return possibilities
     
-    def start_logging(self):
+    def _start_logging(self):
         self._trigger_type = Rd.TriggerType.UNCONDITIONAL
         self._activation()
 
-    def activate_trigger(
+    def _activate_trigger(
             self,
             *,
             on_data: Union[Parameter, Register, Field, DataTypeAp, DataTypeGp, DataTypeRegister, DataTypeField],

@@ -27,7 +27,7 @@ with connection_manager.connect() as my_interface:
     }
 
     # Do the logging logging immediately, without setting up any trigger condition.
-    dl.start_logging()
+    dl.start_capture()
 
     # Wait for the logging to finish
     dl.wait_till_done()

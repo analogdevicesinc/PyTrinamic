@@ -26,7 +26,7 @@ with ConnectionManager().connect() as my_interface:
     dl.config.down_sampling_factor = 2
     dl.config.samples_per_channel = 128
     # Start the logging
-    dl.start_logging()
+    dl.start_capture()
     # Wait for the logging to finish
     dl.wait_till_done()
     print("Logging done.")

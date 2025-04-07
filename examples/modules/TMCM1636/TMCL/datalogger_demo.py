@@ -34,7 +34,7 @@ with connection_manager.connect() as my_interface:
     dl.config.samples_per_channel = 1024
 
     # Do the logging
-    dl.start_logging()
+    dl.start_capture()
 
     # Wait for the logging to finish
     dl.wait_till_done()

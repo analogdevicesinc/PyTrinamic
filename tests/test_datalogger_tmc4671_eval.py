@@ -50,7 +50,7 @@ def test_datalogger_eval_4671(tmc4671_eval: TMC4671_eval, use_log_data_list):
             "ADC_IV": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.ADC_IV, signed=True),
         }
 
-    dl.start_logging()
+    dl.start_capture()
 
     dl.wait_till_done()
 
@@ -81,7 +81,7 @@ def test_datalogger_eval_4671_register_copy(tmc4671_eval: TMC4671_eval):
         "CHIPINFO_DATA_4": dl.DataTypeRegister(block=0, channel=0, address=TMC4671.REG.CHIPINFO_DATA),
     }
 
-    dl.start_logging()
+    dl.start_capture()
 
     dl.wait_till_done()
 
@@ -114,7 +114,7 @@ def test_datalogger_eval_4671_field_reduction(tmc4671_eval: TMC4671_eval):
         "HALL_HALL_BLANK": dl.DataTypeField(block=0, channel=0, field=TMC4671.FIELD.HALL_HALL_BLANK),
     }
 
-    dl.start_logging()
+    dl.start_capture()
 
     dl.wait_till_done()
 
