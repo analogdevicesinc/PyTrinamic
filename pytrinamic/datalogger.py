@@ -189,7 +189,7 @@ class DataLogger:
         down_sampling_factor: int = None
         sample_rate_hz: float = None
         allow_sample_rate_round_down: bool = False
-        trigger: Trigger = Trigger(on_data=None, threshold=None, edge=None)
+        trigger: Trigger = None
 
         def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
             """
@@ -279,13 +279,16 @@ class DataLogger:
         )
     
     def start_capture(self):
-        if self.config.trigger.on_data is None:
+        if self.config.trigger is None:
+            self._start_logging()
+        elif self.config.trigger.on_data is None:
             if self.config.trigger.threshold is not None or self.config.trigger.edge is not None:
                 raise DataLoggerConfigError("Trigger edge/threshold specified but no trigger data given in `config.trigger.on_data`!")
             self._start_logging()
         else:
-            # TODO: Throw an error if config.trigger.threshold or config.trigger.edge is None
-            self.activate_trigger(
+            if self.config.trigger.threshold is None or self.config.trigger.edge is None:
+                raise DataLoggerConfigError("Trigger edge/threshold not specified but `config.trigger.on_data` given!")
+            self._activate_trigger(
                 on_data=self.config.trigger.on_data,
                 threshold=self.config.trigger.threshold,
                 edge=self.config.trigger.edge,

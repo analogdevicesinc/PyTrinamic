@@ -57,7 +57,7 @@ def kvaser_interface():
 def tmcm1617(kvaser_interface) -> Generator[TMCM1617Ex, None, None]:
     module = TMCM1617Ex(kvaser_interface)
     yield module
-    module.datalogger.config.trigger.on_data = None
+    module.datalogger.config.trigger = None
 
 
 
