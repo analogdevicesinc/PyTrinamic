@@ -35,5 +35,6 @@ from .TMC7300 import TMC7300
 from .TMC5272 import TMC5272
 from .TMC5271 import TMC5271
 from .TMC9660.TMC9660 import TMC9660
+from .MAX22215.MAX22215 import MAX22215
 
 
