@@ -9,6 +9,7 @@
 import sys
 import logging
 import argparse
+from dataclasses import dataclass
 
 from ..connections import DummyTmclInterface
 from ..connections import PcanTmclInterface
@@ -97,20 +98,25 @@ class ConnectionManager:
 
             Default value: 1
     """
+    @dataclass
+    class _Interface:
+        name: str
+        class_type: None
+        default_datarate: int
 
     # All available interfaces
     # The tuples consist of (string representation, class type, default datarate)
     INTERFACES = [
-        ("dummy_tmcl", DummyTmclInterface, 0),
-        ("kvaser_tmcl", KvaserTmclInterface, 1000000),
-        ("pcan_tmcl", PcanTmclInterface, 1000000),
-        ("slcan_tmcl", SlcanTmclInterface, 1000000),
-        ("socketcan_tmcl", SocketcanTmclInterface, 1000000),
-        ("serial_tmcl", SerialTmclInterface, 9600),
-        ("uart_ic", UartIcInterface, 9600),
-        ("usb_tmcl", UsbTmclInterface, 115200),
-        ("ixxat_tmcl", IxxatTmclInterface, 1000000),
-        ("socket_serial_tmcl", SocketTmclInterface, 1000000),
+        _Interface("dummy_tmcl", DummyTmclInterface, 0),
+        _Interface("kvaser_tmcl", KvaserTmclInterface, 1000000),
+        _Interface("pcan_tmcl", PcanTmclInterface, 1000000),
+        _Interface("slcan_tmcl", SlcanTmclInterface, 1000000),
+        _Interface("socketcan_tmcl", SocketcanTmclInterface, 1000000),
+        _Interface("serial_tmcl", SerialTmclInterface, 9600),
+        _Interface("uart_ic", UartIcInterface, 9600),
+        _Interface("usb_tmcl", UsbTmclInterface, 115200),
+        _Interface("ixxat_tmcl", IxxatTmclInterface, 1000000),
+        _Interface("socket_serial_tmcl", SocketTmclInterface, 1000000),
     ]
 
     def __init__(self, arg_list=None, connection_type="any"):
@@ -146,13 +152,13 @@ class ConnectionManager:
 
         # ## Interpret given arguments
         # Interface
-        for actual_interface in self.INTERFACES:
-            if connection_type == "tmcl" and not (actual_interface[1].supports_tmcl()):
+        for interface in self.INTERFACES:
+            if connection_type == "tmcl" and not interface.class_type.supports_tmcl():
                 continue
 
-            if args.interface[0] == actual_interface[0]:
-                self.__interface = actual_interface[1]
-                self.__data_rate = actual_interface[2]
+            if args.interface[0] == interface.name:
+                self.__interface = interface.class_type
+                self.__data_rate = interface.default_datarate
                 break
         else:
             # The for loop never hit the break statement -> invalid interface
@@ -329,8 +335,8 @@ class ConnectionManager:
                 except ValueError:
                     continue
 
-    @staticmethod
-    def argparse(arg_parser):
+    @classmethod
+    def argparse(cls, arg_parser):
         """
         Add ConnectionManager arguments to a argparse commandline parser
 
@@ -359,7 +365,7 @@ class ConnectionManager:
             nargs=1,
             type=str,
             choices=[
-                actual_interface[0] for actual_interface in ConnectionManager.INTERFACES
+                interface.name for interface in cls.INTERFACES
             ],
             default=["usb_tmcl"],
             help="Connection interface (default: %(default)s)",
@@ -423,6 +429,6 @@ class ConnectionManager:
 
         return arg_parser
 
-    @staticmethod
-    def list_supported_interfaces():
-        return [x[0] for x in ConnectionManager.INTERFACES]
+    @classmethod
+    def list_supported_interfaces(cls):
+        return [interface.name for interface in cls.INTERFACES]

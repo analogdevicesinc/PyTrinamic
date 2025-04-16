@@ -24,3 +24,11 @@ def test_version():
     m = re.match(version_pattern, version_line)
     version_str = m.group(1)
     assert pytrinamic.version.__version__ == version_str
+
+
+def test_connection_manager():
+    """Check if the connection manager can be imported."""
+
+    from pytrinamic.connections import ConnectionManager
+
+    _ = ConnectionManager()

@@ -87,10 +87,6 @@ class SerialTmclInterface(TmclInterface):
         return self._serial.timeout
 
     @staticmethod
-    def supports_tmcl():
-        return True
-
-    @staticmethod
     def list():
         """
             Return a list of available connection ports as a list of strings.

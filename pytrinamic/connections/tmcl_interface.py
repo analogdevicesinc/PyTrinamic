@@ -337,3 +337,7 @@ class TmclInterface(ABC):
 
     def clear_digital_output(self, x, module_id=None):
         self.send(TMCLCommand.SIO, x, 2, 0, module_id)
+
+    @staticmethod
+    def supports_tmcl():
+        return True

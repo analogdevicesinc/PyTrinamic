@@ -131,10 +131,6 @@ class SocketTmclInterface(TmclInterface):
         return self._timeout_s
 
     @staticmethod
-    def supports_tmcl():
-        return True
-
-    @staticmethod
     def list():
         return []
 

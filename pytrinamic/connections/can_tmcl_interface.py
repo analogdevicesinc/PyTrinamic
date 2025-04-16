@@ -86,9 +86,5 @@ class CanTmclInterface(TmclInterface):
 
         return bytearray([msg.arbitration_id]) + msg.data
 
-    @staticmethod
-    def supports_tmcl():
-        return True
-
     def __str__(self):
         return f"Connection: Type = {self.__class__.__name__}, Channel = {self._channel}, Bitrate = {self._bitrate}"

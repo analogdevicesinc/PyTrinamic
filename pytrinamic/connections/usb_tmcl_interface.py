@@ -71,13 +71,3 @@ class UsbTmclInterface(SerialTmclInterface):
                     connected.append(element.device)
 
         return connected
-
-    @staticmethod
-    def supports_tmcl():
-        return True
-
-
-if __name__ == "__main__":
-    interface = UsbTmclInterface("COM5")
-
-    interface.close()

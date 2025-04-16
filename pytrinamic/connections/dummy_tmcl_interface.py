@@ -64,10 +64,6 @@ class DummyTmclInterface(TmclInterface):
         return bytearray(9)
 
     @staticmethod
-    def supports_tmcl():
-        return True
-
-    @staticmethod
     def list():
         """
             Return a list of available connection ports as a list of strings.
@@ -79,10 +75,3 @@ class DummyTmclInterface(TmclInterface):
 
     def __str__(self):
         return "Connection: type={}".format(type(self).__name__)
-
-
-if __name__ == "__main__":
-    interface = DummyTmclInterface("dummy")
-
-    interface.send_boot()
-    interface.close()
