@@ -7,6 +7,7 @@
 ################################################################################
 
 import can
+
 from ...connections.can_tmcl_interface import CanTmclInterface
 
 

@@ -7,7 +7,7 @@
 ################################################################################
 
 import can
-from can import CanError
+
 from ...connections.can_tmcl_interface import CanTmclInterface
 
 
@@ -33,7 +33,7 @@ class SocketcanTmclInterface(CanTmclInterface):
         try:
             self._connection = can.Bus(interface="socketcan", channel=self._channel, bitrate=self._bitrate)
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
-        except CanError as e:
+        except can.CanError as e:
             self._connection = None
             raise ConnectionError("Failed to connect to SocketCAN bus") from e
 

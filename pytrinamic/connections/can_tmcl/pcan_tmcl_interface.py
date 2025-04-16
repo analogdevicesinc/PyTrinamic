@@ -7,7 +7,7 @@
 ################################################################################
 
 import can
-from can.interfaces.pcan.pcan import PcanError
+
 from ...connections.can_tmcl_interface import CanTmclInterface
 
 
@@ -54,7 +54,7 @@ class PcanTmclInterface(CanTmclInterface):
         try:
             self._connection = can.Bus(interface="pcan", channel=self._channel, bitrate=self._bitrate)
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0xFFFFFFFF}])
-        except PcanError as e:
+        except can.CanError as e:
             self._connection = None
             raise ConnectionError("Failed to connect to PCAN bus") from e
 

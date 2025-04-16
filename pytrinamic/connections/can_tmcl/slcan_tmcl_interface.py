@@ -7,8 +7,8 @@
 ################################################################################
 
 import can
-from can import CanError
 from serial.tools.list_ports import comports
+
 from ...connections.can_tmcl_interface import CanTmclInterface
 
 
@@ -34,7 +34,7 @@ class SlcanTmclInterface(CanTmclInterface):
                                        bitrate=self._bitrate,
                                        ttyBaudrate=self._serial_baudrate)
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
-        except CanError as e:
+        except can.CanError as e:
             self._connection = None
             raise ConnectionError("Failed to connect to CAN bus") from e
 
