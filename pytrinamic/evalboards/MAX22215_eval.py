@@ -23,7 +23,7 @@ class MAX22215_eval(RegisterApiDevice):
         """Implementation of the RegisterApiDevice::write_register() function."""
         return self._connection.write_register(
             register_address,
-            TMCLCommand.WRITE_MC,
+            TMCLCommand.WRITE_DRV,
             block,
             value,
             module_id=self._module_id
@@ -33,7 +33,7 @@ class MAX22215_eval(RegisterApiDevice):
         """Implementation of the RegisterApiDevice::read_register() function."""
         return self._connection.read_register(
             register_address,
-            TMCLCommand.READ_MC,
+            TMCLCommand.READ_DRV,
             block,
             module_id=self._module_id,
             signed=signed,
