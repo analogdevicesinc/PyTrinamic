@@ -91,6 +91,9 @@ with cm.connect() as my_interface:
     elif connection_mode == "headless":
         tmc9660_device = TMC9660(my_interface)
 
+    # Workaround for "Erratum 5: SPI subordinate not being disabled"
+    my_interface.send(146, 4, 9, 0, tmc9660_device._module_id)
+
     # Motor settings
     tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
     tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
