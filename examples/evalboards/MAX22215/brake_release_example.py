@@ -15,8 +15,10 @@ with ConnectionManager().connect() as my_interface:
 
     # Clear faults
     max22215_eval.write(MAX22215.REGMAP.CFG_2.RESET, 1)
-    # Write SW/HW bit to one for software control
+    # Set software control mode
     max22215_eval.write(MAX22215.REGMAP.CFG_1.SW_HW, 1)
+    # Set active mode
+    max22215_eval.write(MAX22215.REGMAP.CFG_2.NSLEEP, 1)
 
     # Control the brake
     max22215_eval.write(MAX22215.REGMAP.CFG_2.RLS_BRK, 1)
