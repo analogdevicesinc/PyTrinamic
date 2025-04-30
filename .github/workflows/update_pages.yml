@@ -1,28 +1,48 @@
+# This workflow is based on the "Static HTML" workflow provided by GitHub Actions.
 name: Update the Documentation Pages
 
 on: workflow_dispatch
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
+  # Single deploy job since we're just deploying
   deploy:
-
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r ./docs/pages/requirements.txt
-    - name: Build the docs
-      run: |
-        cd docs/pages
-        make html
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/pages/build/html
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./docs/pages/requirements.txt
+      - name: Build the docs
+        run: |
+          cd docs/pages
+          make html
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload the generated website files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs/pages/build/html'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
