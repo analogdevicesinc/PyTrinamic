@@ -531,7 +531,7 @@ class DataLogger:
             select = ((datatype.bank << 24) & 0xFF00_0000) | ((datatype.index << 0) & 0x00FF_FFFF)
             return self.rd.Channel.GLOBAL_PARAMETER, select
         elif isinstance(datatype, DataLogger.DataTypeRegister) or isinstance(datatype, DataLogger.DataTypeField):
-            select = ((datatype.block << 24) & 0xFF00_0000) | (datatype.address & 0x00FF_FFFF)
+            select = ((datatype.block << 24) & 0xFF00_0000) | ((datatype.channel << 16) & 0x0001_0000) | (datatype.address & 0x0000_FFFF)
             return self.rd.Channel.REGISTER, select
         else:
             raise ValueError("Unknown DataType")
