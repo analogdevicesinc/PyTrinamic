@@ -64,7 +64,7 @@ class TMCM3216(TMCLModule):
             self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_to(axis, position, self.module_id)
 
-    def move_by(self, axis, difference, velocity=None):
+    def move_by(self, axis, delta, velocity=None):
         """
         Moves the motor on the given axis by the given position difference.
 
@@ -79,7 +79,7 @@ class TMCM3216(TMCLModule):
         """
         if velocity:
             self.motors[axis].linear_ramp.max_velocity = velocity
-        self.connection.move_by(axis, difference, self.module_id)
+        self.connection.move_by(axis, delta, self.module_id)
 
     class _MotorTypeA(MotorControlModule):
         """

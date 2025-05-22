@@ -18,8 +18,8 @@ class MotorControlModule(MotorControl):
     def move_to(self, position, velocity=None):
         self._parent.move_to(self._axis, position, velocity)
 
-    def move_by(self, difference, velocity=None):
-        self._parent.move_by(self._axis, difference, velocity)
+    def move_by(self, delta, velocity=None):
+        self._parent.move_by(self._axis, delta, velocity)
 
     def rotate(self, velocity):
         self._parent.rotate(self._axis, velocity)
