@@ -27,20 +27,11 @@ class CanTmclInterface(TmclInterface):
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}.{self._channel}")
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exit_type, value, traceback):
-        """
-        Close the connection at the end of a with-statement block.
-        """
-        del exit_type, value, traceback
-        self.close()
-
     def close(self):
         self.logger.info("Shutdown.")
 
-        self._connection.shutdown()
+        if self._connection is not None:
+            self._connection.shutdown()
 
     def _send(self, host_id, module_id, data):
         """

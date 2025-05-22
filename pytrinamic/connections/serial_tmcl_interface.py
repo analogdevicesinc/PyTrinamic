@@ -35,16 +35,6 @@ class SerialTmclInterface(TmclInterface):
         except SerialException as e:
             raise ConnectionError from e
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exit_type, value, traceback):
-        """
-        Close the connection at the end of a with-statement block.
-        """
-        del exit_type, value, traceback
-        self.close()
-
     def close(self):
         self.logger.info("Closing port.")
         self._serial.close()
