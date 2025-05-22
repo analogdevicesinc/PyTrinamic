@@ -69,7 +69,7 @@ class TMCM1270(TMCLModule):
 
         Parameters:
         axis: Axis index.
-        difference: Position difference to move the motor by. Units are module specific.
+        delta: Position difference to move the motor by. Units are module specific.
         velocity: Maximum position velocity to position the motor. Units are module specific.
         If no velocity is given, the previously configured maximum positioning velocity (AP 4)
         will be used.

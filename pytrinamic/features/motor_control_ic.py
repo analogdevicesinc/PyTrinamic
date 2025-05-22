@@ -40,14 +40,14 @@ class MotorControlIc(MotorControl):
         Moves the motor by the given distance.
 
         Parameters:
-        difference: Position difference to move the motor by. Units are IC specific.
+        delta: Position difference to move the motor by. Units are IC specific.
         velocity: Maximum position velocity to position the motor. Units are IC specific.
         If no velocity is given, the previously configured maximum positioning velocity (VMAX register)
         will be used.
 
         Returns: None
         """
-        self.move_to(self.actual_position + difference, velocity)
+        self.move_to(self.actual_position + delta, velocity)
 
     def rotate(self, velocity):
         """
