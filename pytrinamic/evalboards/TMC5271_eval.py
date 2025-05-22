@@ -57,10 +57,10 @@ class TMC5271_eval(TMCLEval):
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
         self._connection.move_to(motor, position, self._module_id)
 
-    def move_by(self, motor, difference, velocity=None):
+    def move_by(self, motor, delta, velocity=None):
         if velocity and velocity != 0:
             self.motors[motor].set_axis_parameter(self.motors[motor].AP.MaxVelocity, velocity)
-        self._connection.move_by(motor, difference, self._module_id)
+        self._connection.move_by(motor, delta, self._module_id)
 
     class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):

@@ -35,7 +35,7 @@ class MotorControlIc(MotorControl):
 
         self.write_axis_field(self._ic.FIELD.XTARGET, position)
 
-    def move_by(self, difference, velocity=None):
+    def move_by(self, delta, velocity=None):
         """
         Moves the motor by the given distance.
 

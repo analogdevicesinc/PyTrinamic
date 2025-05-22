@@ -34,10 +34,10 @@ class TMCM3110(TMCLModule):
             self.motors[axis].linear_ramp.max_velocity = velocity
         self.connection.move_to(axis, position, self.module_id)
 
-    def move_by(self, axis, difference, velocity=None):
+    def move_by(self, axis, delta, velocity=None):
         if velocity:
             self.motors[axis].linear_ramp.max_velocity = velocity
-        self.connection.move_by(axis, difference, self.module_id)
+        self.connection.move_by(axis, delta, self.module_id)
 
     def start_reference_search(self, axis):
         self.connection.reference_search(0, axis)

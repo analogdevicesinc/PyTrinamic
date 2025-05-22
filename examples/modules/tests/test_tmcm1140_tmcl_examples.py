@@ -46,7 +46,7 @@ class MockTmclInterface:
     def move_to(self, axis, position, module_id):
         pass
 
-    def move_by(self, axis, difference, module_id):
+    def move_by(self, axis, delta, module_id):
         pass
 
     def rotate(self, axis, velocity, module_id):
