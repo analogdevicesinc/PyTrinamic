@@ -20,7 +20,7 @@ class MotorControl(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def move_by(self, distance, velocity=None):
+    def move_by(self, difference, velocity=None):
         raise NotImplementedError()
 
     @abstractmethod

@@ -304,14 +304,14 @@ class TmclInterface(ABC):
         """
         return self.move(0, motor, position, module_id).value
 
-    def move_by(self, motor, distance, module_id=None):
+    def move_by(self, motor, difference, module_id=None):
         """
         Use the TMCL MVP command to perform a relative movement.
 
         Returns the value of the reply. Refer to the documentation of your
         specific module for details on what is returned.
         """
-        return self.move(1, motor, distance, module_id).value
+        return self.move(1, motor, difference, module_id).value
 
     def reference_search(self, command_type, motor, module_id=None):
         """
