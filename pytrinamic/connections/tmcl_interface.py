@@ -59,6 +59,19 @@ class TmclInterface(ABC):
         self._default_ap_index_bit_width = default_ap_index_bit_width
         self._default_register_address_bit_width = default_register_address_bit_width
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exit_type, value, traceback):
+        """
+        Close the connection at the end of a with-statement block.
+        """
+        del exit_type, value, traceback
+        self.close()
+
+    def close(self):
+        pass
+
     def _send(self, host_id, module_id, data):
         """
         Send the bytearray [data] representing a TMCL command. The length of
