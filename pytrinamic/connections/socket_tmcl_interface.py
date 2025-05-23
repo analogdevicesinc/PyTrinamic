@@ -73,16 +73,6 @@ class SocketTmclInterface(TmclInterface):
                     "Failed to (re-)connect to Socket connection"
                 ) from e
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exitType, value, traceback):
-        """
-        Close the connection at the end of a with-statement block.
-        """
-        del exitType, value, traceback
-        self.close()
-
     def close(self):
         self.logger.info("Closing Socket connection.")
         self._socket.close()
