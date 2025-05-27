@@ -431,7 +431,7 @@ class DataLogger:
             pass
 
     def has_triggered(self) -> bool:
-        return self.rd.get_state() >= Rd.State.CAPTURE
+        return self.rd.get_state() in [Rd.State.CAPTURE, Rd.State.COMPLETE]
     
     def wait_for_trigger(self) -> None:
         while not self.has_triggered():
