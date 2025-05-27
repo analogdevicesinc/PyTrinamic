@@ -369,9 +369,7 @@ class DataLogger:
     
     def _activation(self) -> None:
         self._down_sampling_factor = self._determine_down_sampling_factor()
-        if self.config.samples_per_channel == 0:
-            raise DataLoggerConfigError("No samples per channel specified via `config.samples_per_channel`!")
-        
+
         if isinstance(self.config.log_data, list):
             self._log_data = []
             for x in self.config.log_data:
@@ -389,13 +387,17 @@ class DataLogger:
 
         self._info = self.get_info()
         self._channels_used_count = len(self._effectively_log_data)
-        self._total_number_of_samples = self.config.samples_per_channel*self._channels_used_count
+        if self.config.samples_per_channel == 0:
+            self._total_number_of_samples = self._info.sample_buffer_length
+        else:
+            self._total_number_of_samples = self.config.samples_per_channel*self._channels_used_count
+
         if self._channels_used_count > self._info.number_of_channels:
             raise DataLoggerConfigError("Exceeding number of channels!")
         if self._total_number_of_samples > self._info.sample_buffer_length:
             raise DataLoggerConfigError(f"`config.samples_per_channel` exceeds sample buffer length! You can use {math.floor(self._info.sample_buffer_length/self._channels_used_count)} at max.")
         self.rd.init()
-        self.rd.set_sample_count(self.config.samples_per_channel*self._channels_used_count)
+        self.rd.set_sample_count(self._total_number_of_samples)
         self.rd.set_prescaler(self._down_sampling_factor-1)
         if self._trigger_type != Rd.TriggerType.UNCONDITIONAL:
             if self._trigger_on is None:
