@@ -18,11 +18,11 @@ class SerialTmclInterface(TmclInterface):
     """
     Opens a serial TMCL connection
     """
-    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, timeout_s=5):
+    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, timeout_s=5, default_register_address_bit_width=12):
         if not isinstance(com_port, str):
             raise TypeError
 
-        TmclInterface.__init__(self, host_id, module_id)
+        TmclInterface.__init__(self, host_id, module_id, default_register_address_bit_width=default_register_address_bit_width)
         self._baudrate = datarate
         if timeout_s == 0:
             timeout_s = None
