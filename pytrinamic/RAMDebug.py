@@ -32,6 +32,7 @@ class RAMDebug_Command(IntEnum):
     SET_TRIGGER_TYPE            = 19
     SET_TRIGGER_EVAL_CHANNEL    = 20
     SET_TRIGGER_ADDRESS         = 21
+    BULK_DOWNLOAD               = 22
 
 
 class RAMDebug_Channel(IntEnum):

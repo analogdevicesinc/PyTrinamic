@@ -236,6 +236,7 @@ class DataLogger:
         self._download_is_done = True
         self._download_offset = 0
         self._downloaded_raw_data = []
+        self._bulk_download_supported = None
         self._trigger_type = Rd.TriggerType.UNCONDITIONAL
         self._trigger_on = None
         self._trigger_threshold = None
@@ -541,8 +542,27 @@ class DataLogger:
             datatype: DataLogger.DataType
             samples: list
         self._download_is_done = False
-        self._downloaded_raw_data.append(self.rd.get_sample(self._download_offset))
-        self._download_offset += 1
+
+        if self._bulk_download_supported is None or self._bulk_download_supported:
+            # Try bulk downloading first
+            new_data = self.rd.get_bulk_samples(self._download_offset)
+            if new_data is None:
+                # Bulk download not supported
+                self._bulk_download_supported = False
+
+                # Not yet done downloading
+                return True
+
+            self._downloaded_raw_data += new_data
+            self._download_offset = len(self._downloaded_raw_data)
+
+            # Bulk download works - mark it as supported
+            self._bulk_download_supported = True
+        else:
+            # Sample-at-a-time download
+            self._downloaded_raw_data.append(self.rd.get_sample(self._download_offset))
+            self._download_offset += 1
+
         if self._download_offset < self._total_number_of_samples:
             return True
 

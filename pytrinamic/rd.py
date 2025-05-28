@@ -3,8 +3,10 @@
 ################################################################################
 
 from enum import IntEnum
+from typing import Optional
+import struct
 
-from pytrinamic.tmcl import TMCLCommand
+from pytrinamic.tmcl import TMCLCommand, TMCLStatus, TMCLReplyStatusError, TMCLBulkReplyChecksumError
 
 
 class Rd:
@@ -67,6 +69,8 @@ class Rd:
         SET_TRIGGER_TYPE            = 19
         SET_TRIGGER_EVAL_CHANNEL    = 20
         SET_TRIGGER_ADDRESS         = 21
+        BULK_DOWNLOAD               = 22
+
 
     class State(IntEnum):
         IDLE           = 0
@@ -91,7 +95,37 @@ class Rd:
     
     def get_sample(self, offset: int) -> int:
         return self._command(self._Command.GET_SAMPLE, 0, offset)
-    
+
+    def get_bulk_samples(self, offset: int) -> Optional[list[int]]:
+        """
+        Attempt to download samples in bulk starting at a given offset.
+        Returns the samples downloaded on success,
+        an empty list on transient (CRC) errors,
+        or None if the command is not supported or available.
+        """
+        try:
+            incoming_samples = self._command(self._Command.BULK_DOWNLOAD, 0, offset)
+        except TMCLReplyStatusError as e:
+            if e.status_code == TMCLStatus.WRONG_TYPE:
+                # Command is not supported by this implementation
+                return None
+
+            if e.status_code == TMCLStatus.COMMAND_NOT_AVAILABLE:
+                # Bulk download is not available over the used communication interface
+                return None
+
+            # Unrelated exception - reraise it
+            raise e
+
+        try:
+            raw_data = self._connection.receive_bulk_data(incoming_samples*4)
+        except TMCLBulkReplyChecksumError:
+            # Data error - don't return any data
+            return []
+
+        # Unpack the samples and return them
+        return list(struct.unpack("<" + "I"*incoming_samples, raw_data))
+
     def init(self) -> int:
         return self._command(self._Command.INIT, 0, 0)
     

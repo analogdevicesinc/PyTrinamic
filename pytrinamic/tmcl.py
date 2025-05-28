@@ -154,6 +154,7 @@ class TMCLStatus:
         4: "Invalid Value",
         5: "EEPROM Locked",
         6: "Command not Available",
+        9: "Maximum exceeded",
         100: "Success",
         101: "Command Loaded"
     }

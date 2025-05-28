@@ -177,6 +177,12 @@ class TmclInterface(ABC):
         self.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0, module_id=module_id, no_reply=True)
 
     def receive_bulk_data(self, incoming_bytes, module_id=None):
+        """
+        Receive incoming bulk data.
+
+        Must only be called after sending a TMCL command meant for bulk transfer,
+        and getting a valid reply indicating how much bulk data will be sent.
+        """
         # If no module ID is given, use the default one
         if not module_id:
             module_id = self._default_module_id
