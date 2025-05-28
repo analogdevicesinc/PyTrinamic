@@ -77,6 +77,20 @@ class SerialTmclInterface(TmclInterface):
 
         return data
 
+    def _recv_bulk(self, incoming_bytes, host_id, module_id):
+        """
+        Receive the specified amount of bytes from the interface.
+        Not available for every possible interface.
+        """
+        del host_id, module_id
+
+        data = self._serial.read(incoming_bytes)
+
+        if len(data) != incoming_bytes:
+            raise RuntimeError("TMCL bulk request timed out")
+
+        return data
+
     def _reply_check(self, reply):
         if not reply.is_checksum_correct():
             raise TMCLReplyChecksumError(reply)

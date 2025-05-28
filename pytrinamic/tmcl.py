@@ -330,6 +330,16 @@ class TMCLReplyStatusError(TMCLReplyError):
     def __str__(self):
         return textwrap.indent("\n" + self.reply.detailed_str_repr(), "    ")
 
+class TMCLBulkReplyError(Exception):
+    def __init__(self, data):
+        self.data = data
+
+class TMCLBulkReplyChecksumError(TMCLBulkReplyError):
+    def __init__(self, data, expected_checksum, calculated_checksum):
+        super().__init__(data)
+
+        self.expected_checksum = expected_checksum
+        self.calculated_checksum = calculated_checksum
 
 class GetInfo:
     """Basically a namespace for the different GetInfo entries."""

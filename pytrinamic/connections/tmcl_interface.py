@@ -6,12 +6,13 @@
 ################################################################################
 
 import logging
+import struct
 import warnings
 import inspect
 from typing import Literal, overload
 from abc import ABC
-from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLStatus, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError, GetInfo, GetInfoNotAvailableError, GetInfoRequestError
-from ..helpers import to_signed_32
+from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLStatus, TMCLReply, TMCLReplyChecksumError, TMCLBulkReplyChecksumError, TMCLReplyStatusError, GetInfo, GetInfoNotAvailableError, GetInfoRequestError
+from ..helpers import to_signed_32, crc32
 
 
 class TmclInterface(ABC):
@@ -90,6 +91,13 @@ class TmclInterface(ABC):
         """
         raise NotImplementedError("The TMCL interface requires an implementation of the receive() function")
 
+    def _recv_bulk(self, incoming_bytes, host_id, module_id):
+        """
+        Receive the specified amount of bytes from the interface.
+        Not available for every possible interface.
+        """
+        raise NotImplementedError("This TMCL interface does not implement the _recv_bulk function")
+
     def _reply_check(self, reply):
         """
         Interface specific check of the reply.
@@ -167,6 +175,34 @@ class TmclInterface(ABC):
         not result in a reply.
         """
         self.send(TMCLCommand.BOOT_START_APPL, 0, 0, 0, module_id=module_id, no_reply=True)
+
+    def receive_bulk_data(self, incoming_bytes, module_id=None):
+        # If no module ID is given, use the default one
+        if not module_id:
+            module_id = self._default_module_id
+
+        if incoming_bytes <= 0:
+            raise ValueError
+
+        data = self._recv_bulk(incoming_bytes+4, self._host_id, module_id)
+
+        self.logger.debug(f"Bulk Rx : ({incoming_bytes} + 4 bytes):")
+        for i in range(0, incoming_bytes+4, 16):
+            self.logger.debug(f"    " + " ".join(f"{x:02X}" for x in data[i:i+16]))
+
+        # Strip the CRC checksum from the data and recalculate it
+        received_checksum = struct.unpack("<I", data[-4:])[0]
+        data = data[:-4]
+        calculated_checksum = crc32(data)
+
+        # Verify the checksum
+        if calculated_checksum != received_checksum:
+            # Checksum does not match - raise an error
+            self.logger.debug(f"    Checksum Error! Received 0x{received_checksum:08X}, expected 0x{calculated_checksum:08X}")
+            raise TMCLBulkReplyChecksumError(data, received_checksum, calculated_checksum)
+        self.logger.debug(f"    Checksum valid: 0x{received_checksum:08X}")
+
+        return data
 
     def get_version_string(self, module_id=None):
         """
