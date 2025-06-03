@@ -10,7 +10,7 @@
 # Such binary files can be generated using the TMCL Creator in the TMCL-IDE
 # (switch on the option "Generate binary file") or by the command line tool TMCLAsm.
 
-from functools import partial;
+from functools import partial
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.tmcl import TMCLCommand
 

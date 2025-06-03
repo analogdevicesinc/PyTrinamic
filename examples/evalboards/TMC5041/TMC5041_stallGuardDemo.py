@@ -71,7 +71,7 @@ TMC5041.writeRegisterField(TMC5041.fields.SGT[MOTOR_LEADING], SG_THRESHOLD)
 # Set stall guard minimum velocity
 TMC5041.writeRegisterField(TMC5041.fields.VCOOLTHRS[MOTOR_LEADING], SG_VELOCITY)
 # Enable Stall guard
-TMC5041.writeRegisterField(TMC5041.fields.SG_STOP[MOTOR_LEADING], 1);
+TMC5041.writeRegisterField(TMC5041.fields.SG_STOP[MOTOR_LEADING], 1)
 
 ## Configure following motor for position ramping
 TMC5041.writeRegister(TMC5041.registers.V1[MOTOR_FOLLOWING], 0)
@@ -109,7 +109,7 @@ try:
         # Let the other motor follow
         print("Motor " + str(MOTOR_FOLLOWING) + " following")
         target = TMC5041.readRegisterField(TMC5041.fields.XACTUAL[MOTOR_LEADING])
-        TMC5041.moveTo(MOTOR_FOLLOWING, target, VELOCITY);
+        TMC5041.moveTo(MOTOR_FOLLOWING, target, VELOCITY)
 
         # Wait until the other motor reached the target
         while TMC5041.readRegisterField(TMC5041.fields.POSITION_REACHED[MOTOR_FOLLOWING]) == 0:
