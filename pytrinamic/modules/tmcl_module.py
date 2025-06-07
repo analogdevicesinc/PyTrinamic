@@ -9,13 +9,15 @@
 import enum
 import inspect
 import warnings
+from typing import Optional
+from typing import Union
 
-from typing import Optional, Union
+from ..connections.tmcl_interface import TmclInterface
 
 
 class TMCLModule(object):
 
-    def __init__(self, connection, module_id=1, ap_index_bit_width=8):
+    def __init__(self, connection: TmclInterface, module_id=1, ap_index_bit_width=8):
         """
         Constructor for the module instance.
 
@@ -242,7 +244,7 @@ class Parameter:
 
 class ParameterApiDevice:
 
-    def get_parameter(self, get_target: Union[Parameter]):
+    def get_parameter(self, get_target: Parameter):
         """Get the value of a parameter using the GAP or GGP command."""
         if isinstance(get_target, Parameter):
             parameter = get_target

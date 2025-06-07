@@ -6,21 +6,23 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
-import sys
-import logging
 import argparse
+import logging
+import sys
 from dataclasses import dataclass
+from typing import Type
 
 from ..connections import DummyTmclInterface
-from ..connections import PcanTmclInterface
-from ..connections import SocketcanTmclInterface
+from ..connections import IxxatTmclInterface
 from ..connections import KvaserTmclInterface
+from ..connections import PcanTmclInterface
 from ..connections import SerialTmclInterface
+from ..connections import SlcanTmclInterface
+from ..connections import SocketcanTmclInterface
+from ..connections import SocketTmclInterface
 from ..connections import UartIcInterface
 from ..connections import UsbTmclInterface
-from ..connections import SlcanTmclInterface
-from ..connections import IxxatTmclInterface
-from ..connections import SocketTmclInterface
+from .tmcl_interface import TmclInterface
 
 logger = logging.getLogger(__name__)
 
@@ -101,7 +103,7 @@ class ConnectionManager:
     @dataclass
     class _Interface:
         name: str
-        class_type: None
+        class_type: Type[TmclInterface]
         default_datarate: int
 
     # All available interfaces
@@ -113,6 +115,7 @@ class ConnectionManager:
         _Interface("slcan_tmcl", SlcanTmclInterface, 1000000),
         _Interface("socketcan_tmcl", SocketcanTmclInterface, 1000000),
         _Interface("serial_tmcl", SerialTmclInterface, 9600),
+        # FIXME: UartIcInterface is not a subclass of TmclInterface
         _Interface("uart_ic", UartIcInterface, 9600),
         _Interface("usb_tmcl", UsbTmclInterface, 115200),
         _Interface("ixxat_tmcl", IxxatTmclInterface, 1000000),
@@ -217,7 +220,7 @@ class ConnectionManager:
             self.__module_id,
         )
 
-    def connect(self):
+    def connect(self) -> TmclInterface:
         """
         Attempt to connect to a module with the stored connection parameters.
 

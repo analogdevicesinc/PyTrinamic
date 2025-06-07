@@ -6,18 +6,20 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
+from ..connections.tmcl_interface import TmclInterface
+from ..features import CoolStepModule
+from ..features import DriveSettingModule
+from ..features import LinearRampModule
+from ..features import MotorControlModule
+from ..features import StallGuard2Module
 from ..modules import TMCLModule
-
-# features
-from ..features import MotorControlModule, DriveSettingModule, LinearRampModule
-from ..features import StallGuard2Module, CoolStepModule
 
 
 class TMCM3110(TMCLModule):
     """
     The TMCM-3110 is a three axis stepper motor controller/driver module for sensorless load dependent current control.
     """
-    def __init__(self, connection, module_id=1):
+    def __init__(self, connection: TmclInterface, module_id=1):
         super().__init__(connection, module_id)
         self.name = "TMCM-3110"
         self.desc = self.__doc__

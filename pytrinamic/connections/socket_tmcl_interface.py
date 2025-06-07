@@ -75,7 +75,8 @@ class SocketTmclInterface(TmclInterface):
 
     def close(self):
         self.logger.info("Closing Socket connection.")
-        self._socket.close()
+        if self._socket is not None:
+            self._socket.close()
 
     def _send(self, host_id, module_id, data):
         """
