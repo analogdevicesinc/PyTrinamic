@@ -39,7 +39,7 @@ class SocketTmclInterface(TmclInterface):
             raise TypeError
 
         match = re.match(
-            '^"?((?:[0-9]{1,3}\.){3}[0-9]{1,3}):([0-9]{1,5})"?$', ip_and_port
+            r'^"?((?:[0-9]{1,3}\.){3}[0-9]{1,3}):([0-9]{1,5})"?$', ip_and_port
         )
         if match is None:
             raise ValueError("Invalid ip:port combination")
