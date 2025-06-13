@@ -30,7 +30,8 @@ class CanTmclInterface(TmclInterface):
     def close(self):
         self.logger.info("Shutdown.")
 
-        self._connection.shutdown()
+        if self._connection is not None:
+            self._connection.shutdown()
 
     def _send(self, host_id, module_id, data):
         """

@@ -13,16 +13,24 @@ Improvements/Todo:
 """
 
 from __future__ import annotations
-from typing import Union, List, Dict, Tuple
-from dataclasses import dataclass
-from enum import Enum, auto
-import warnings
-import math
 
-from pytrinamic.rd import Rd
-from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
-from pytrinamic.ic.tmc_ic import Register, Field
+import math
+import warnings
+from dataclasses import dataclass
+from enum import Enum
+from enum import auto
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Union
+
 from pytrinamic.helpers import to_signed_32
+from pytrinamic.ic.tmc_ic import Field
+from pytrinamic.ic.tmc_ic import Register
+from pytrinamic.modules.tmcl_module import Parameter
+from pytrinamic.modules.tmcl_module import ParameterGroup
+from pytrinamic.rd import Rd
 
 
 class DataLoggerConfigError(Exception):
@@ -186,10 +194,10 @@ class DataLogger:
             pretrigger_samples_per_channel: int = 0
         samples_per_channel: int
         log_data: dict
-        down_sampling_factor: int = None
-        sample_rate_hz: float = None
+        down_sampling_factor: Optional[int] = None
+        sample_rate_hz: Optional[float] = None
         allow_sample_rate_round_down: bool = False
-        trigger: Trigger = None
+        trigger: Optional[Trigger] = None
 
         def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
             """

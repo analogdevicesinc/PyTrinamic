@@ -41,12 +41,12 @@ with connection_manager.connect() as my_interface:
     print(motor_2.drive_settings)
 
     # preparing linear ramp settings
-    motor_0.max_acceleration = 1000
-    motor_0.max_velocity = 1000
-    motor_1.max_acceleration = 1000
-    motor_1.max_velocity = 1000
-    motor_2.max_acceleration = 1000
-    motor_2.max_velocity = 1000
+    motor_0.linear_ramp.max_acceleration = 1000
+    motor_0.linear_ramp.max_velocity = 1000
+    motor_1.linear_ramp.max_acceleration = 1000
+    motor_1.linear_ramp.max_velocity = 1000
+    motor_2.linear_ramp.max_acceleration = 1000
+    motor_2.linear_ramp.max_velocity = 1000
 
     # reset actual position
     motor_0.actual_position = 0
