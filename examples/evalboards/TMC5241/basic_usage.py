@@ -21,7 +21,7 @@ with ConnectionManager().connect() as my_interface:
     tmc5241_eval.write(TMC5241.REGMAP.DMAX, 100)
 
     # Set the ramp mode to velocity mode
-    tmc5241_eval.write(TMC5241.REGMAP.RAMPMODE.RAMPMODE.choice["Velocity mode (target +VMAX)"])
+    tmc5241_eval.write(TMC5241.REGMAP.RAMPMODE.RAMPMODE.choice.VEL_POS)
 
     # Start the motor - setting the target velocity to 51200 steps/s
     tmc5241_eval.write(TMC5241.REGMAP.VMAX, 51200)
