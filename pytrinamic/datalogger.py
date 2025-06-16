@@ -13,7 +13,7 @@ Improvements/Todo:
 """
 
 from __future__ import annotations
-from typing import Union, List, Dict, Tuple
+from typing import Union, List, Dict, Tuple, Optional
 from dataclasses import dataclass
 from enum import Enum, auto
 import warnings
@@ -38,15 +38,15 @@ class DataLogger:
         number_of_channels: int
 
     class DataType:
-        def __init__(self):
+        def __init__(self, signed=False):
             self.reuse_obj = None
+            self.signed = signed
 
     class DataTypeAp(DataType):
         def __init__(self, index, axis=0, signed=False):
-            super().__init__()
+            super().__init__(signed=signed)
             self.index = index
             self.axis = axis
-            self.signed = signed
 
         @classmethod
         def from_parameter(cls, parameter: Parameter, axis: int = 0) -> DataLogger.DataTypeAp:
@@ -66,10 +66,9 @@ class DataLogger:
 
     class DataTypeGp(DataType):
         def __init__(self, index, bank=0, signed=False):
-            super().__init__()
+            super().__init__(signed=signed)
             self.index = index
             self.bank = bank
-            self.signed = signed
 
         @classmethod
         def from_parameter(cls, parameter: Parameter) -> DataLogger.DataTypeGp:
@@ -89,11 +88,10 @@ class DataLogger:
     
     class DataTypeRegister(DataType):
         def __init__(self, block, channel, address, signed=False):
-            super().__init__()
+            super().__init__(signed=signed)
             self.block = block
             self.channel = channel
             self.address = address
-            self.signed = signed
 
         @classmethod
         def from_register(cls, register: Register) -> DataLogger.DataTypeRegister:
@@ -118,13 +116,12 @@ class DataLogger:
         
     class DataTypeField(DataType):
         def __init__(self, block, field, channel, signed=False):
-            super().__init__()
+            super().__init__(signed=signed)
             self.block = block
             self.channel = channel
             self.address = field[0]
             self.mask = field[1]
             self.shift = field[2]
-            self.signed = signed
 
         @classmethod
         def from_field(cls, field: Field) -> DataLogger.DataTypeField:
@@ -186,12 +183,12 @@ class DataLogger:
             pretrigger_samples_per_channel: int = 0
         samples_per_channel: int
         log_data: dict
-        down_sampling_factor: int = None
-        sample_rate_hz: float = None
+        down_sampling_factor: Optional[int] = None
+        sample_rate_hz: Optional[float] = None
         allow_sample_rate_round_down: bool = False
-        trigger: Trigger = None
+        trigger: Optional[Trigger] = None
 
-        def set_sample_rate(self, rate_hz: float, *, round_down=False) -> float:
+        def set_sample_rate(self, rate_hz: float, *, round_down=False) -> None:
             """
             Sets the sampling rate of the data logger.
 
@@ -208,7 +205,7 @@ class DataLogger:
     class _RequestEntry:
         name: str
         datatype: DataLogger.DataType
-        request_object: None
+        request_object: Union[Parameter, Register, Field, DataLogger.DataTypeAp, DataLogger.DataTypeGp, DataLogger.DataTypeRegister, DataLogger.DataTypeField]
 
     def __init__(self, connection, module_id=1):
         self.rd = Rd(connection, module_id)
