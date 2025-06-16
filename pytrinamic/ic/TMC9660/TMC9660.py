@@ -12,9 +12,9 @@ from .TMC9660_ap import Ap
 from .TMC9660_gpbank0 import GpBank0
 from .TMC9660_gpbank2 import GpBank2
 from .TMC9660_gpbank3 import GpBank3
-from .MCCmap import MCCMap
-from .ADCmap import ADCMap
-from .SYS_CTRLmap import SYS_CTRLMap
+from .MCCmap import _ALL_REGISTERS as MccRegisterGroup
+from .ADCmap import _ALL_REGISTERS as AdcRegisterGroup
+from .SYS_CTRLmap import _ALL_REGISTERS as SysCtrlRegisterGroup
 
 
 class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
@@ -68,9 +68,9 @@ class TMC9660(TMCIc, RegisterApiDevice, ParameterApiDevice):
     gp_bank2 = GpBank2()
     gp_bank3 = GpBank3()
 
-    MCC = MCCMap(channel=0, block=0).ALL_REGISTERS
-    ADC = ADCMap(channel=0, block=1).ALL_REGISTERS
-    SYS_CTRL = SYS_CTRLMap(channel=0, block=2).ALL_REGISTERS
+    MCC = MccRegisterGroup(channel=0, block=0, width=None)
+    ADC = AdcRegisterGroup(channel=0, block=1, width=None)
+    SYS_CTRL = SysCtrlRegisterGroup(channel=0, block=2, width=None)
 
     IO = _Io()
     
