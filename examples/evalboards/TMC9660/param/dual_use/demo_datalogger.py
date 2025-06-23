@@ -41,6 +41,7 @@ Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
         |TMC9660-3PH-EVAL   |
         +-------------------+
 """
+
 from typing import Literal
 
 from pytrinamic.connections import ConnectionManager
@@ -76,7 +77,7 @@ with cm.connect() as my_interface:
         TMC9660.ap.ADC_I2,
     ]
 
-    dl.start_logging()
+    dl.start_capture()
 
     dl.wait_for_capture_completion()
 
@@ -86,8 +87,9 @@ with cm.connect() as my_interface:
     print(dl.log.data["ADC_I1"])
     print(dl.log.data["ADC_I2"])
 
-    for name, log in dl.logs.items():
+    print(f"Logged data sample rate: {dl.log.rate_hz} Hz")
+
+    for name, log in dl.log.data.items():
         print(f"Log {name}:")
-        print(f"  Rate: {log.rate_hz} Hz")
         print(f"  Samples: {log.samples}")
         print(f"  Parameter: {type(log.request_object)}")
