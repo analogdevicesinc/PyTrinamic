@@ -182,7 +182,7 @@ class DataLogger:
             edge: DataLogger.TriggerEdge
             pretrigger_samples_per_channel: int = 0
         samples_per_channel: int
-        log_data: dict
+        log_data: Union[dict, List]
         down_sampling_factor: Optional[int] = None
         sample_rate_hz: Optional[float] = None
         allow_sample_rate_round_down: bool = False
