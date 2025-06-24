@@ -197,10 +197,10 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        class _OCP0(Field):
+        class _OCP2(Field):
 
             def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("OCP0", parent, access, mask, shift, signed=signed)
+                super().__init__("OCP2", parent, access, mask, shift, signed=signed)
 
                 self.choice = None
 
@@ -241,14 +241,14 @@ class _ALL_REGISTERS(RegisterGroup):
 
         def __init__(self, parent, access, address, signed):
             super().__init__("FAULT1", parent, access, address, signed)
-            self.OCP0      =  self._OCP0(    self,  Access.R,  0x00000001,  0,  signed=False)
-            self.OCP1      =  self._OCP1(    self,  Access.R,  0x00000002,  1,  signed=False)
-            self.OCP0      =  self._OCP0(    self,  Access.R,  0x00000004,  2,  signed=False)
-            self.TWARN_UL  =  self._TWARN_UL(self,  Access.R,  0x00000008,  3,  signed=False)
-            self.TSD       =  self._TSD(     self,  Access.R,  0x00000010,  4,  signed=False)
-            self.UVLO      =  self._UVLO(    self,  Access.R,  0x00000020,  5,  signed=False)
-            self.UVLO5V    =  self._UVLO5V(  self,  Access.R,  0x00000040,  6,  signed=False)
-            self.UVLOCP    =  self._UVLOCP(  self,  Access.R,  0x00000080,  7,  signed=False)
+            self.OCP0      =  self._OCP0(    self,  Access.RWC,  0x00000001,  0,  signed=False)
+            self.OCP1      =  self._OCP1(    self,  Access.RWC,  0x00000002,  1,  signed=False)
+            self.OCP2      =  self._OCP2(    self,  Access.RWC,  0x00000004,  2,  signed=False)
+            self.TWARN_UL  =  self._TWARN_UL(self,  Access.RWC,  0x00000008,  3,  signed=False)
+            self.TSD       =  self._TSD(     self,  Access.RWC,  0x00000010,  4,  signed=False)
+            self.UVLO      =  self._UVLO(    self,  Access.RWC,  0x00000020,  5,  signed=False)
+            self.UVLO5V    =  self._UVLO5V(  self,  Access.RWC,  0x00000040,  6,  signed=False)
+            self.UVLOCP    =  self._UVLOCP(  self,  Access.RWC,  0x00000080,  7,  signed=False)
 
     class _FAULT2(Register):
 
@@ -310,14 +310,14 @@ class _ALL_REGISTERS(RegisterGroup):
 
         def __init__(self, parent, access, address, signed):
             super().__init__("FAULT2", parent, access, address, signed)
-            self.LFD1     =  self._LFD1(   self,  Access.R,  0x00000001,  0,  signed=False)
-            self.LFD2     =  self._LFD2(   self,  Access.R,  0x00000002,  1,  signed=False)
-            self.SAFEDEM  =  self._SAFEDEM(self,  Access.R,  0x00000004,  2,  signed=False)
-            self.ISM      =  self._ISM(    self,  Access.R,  0x00000008,  3,  signed=False)
-            self.ODVM     =  self._ODVM(   self,  Access.R,  0x00000010,  4,  signed=False)
-            self.DVD      =  self._DVD(    self,  Access.R,  0x00000020,  5,  signed=False)
-            self.TWARN    =  self._TWARN(  self,  Access.R,  0x00000040,  6,  signed=False)
-            self.LFD3     =  self._LFD3(   self,  Access.R,  0x00000080,  7,  signed=False)
+            self.LFD1     =  self._LFD1(   self,  Access.RWC,  0x00000001,  0,  signed=False)
+            self.LFD2     =  self._LFD2(   self,  Access.RWC,  0x00000002,  1,  signed=False)
+            self.SAFEDEM  =  self._SAFEDEM(self,  Access.RWC,  0x00000004,  2,  signed=False)
+            self.ISM      =  self._ISM(    self,  Access.RWC,  0x00000008,  3,  signed=False)
+            self.ODVM     =  self._ODVM(   self,  Access.RWC,  0x00000010,  4,  signed=False)
+            self.DVD      =  self._DVD(    self,  Access.RWC,  0x00000020,  5,  signed=False)
+            self.TWARN    =  self._TWARN(  self,  Access.RWC,  0x00000040,  6,  signed=False)
+            self.LFD3     =  self._LFD3(   self,  Access.RWC,  0x00000080,  7,  signed=False)
 
     class _FAULT_MASK1(Register):
 
@@ -432,10 +432,10 @@ class _ALL_REGISTERS(RegisterGroup):
 
                 self.choice = None
 
-        class _LFD1_MASK(Field):
+        class _LFD3_MASK(Field):
 
             def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("LFD1_MASK", parent, access, mask, shift, signed=signed)
+                super().__init__("LFD3_MASK", parent, access, mask, shift, signed=signed)
 
                 self.choice = None
 
@@ -447,7 +447,7 @@ class _ALL_REGISTERS(RegisterGroup):
             self.ISM_MASK      =  self._ISM_MASK(    self,  Access.RW,  0x00000008,  3,  signed=False)
             self.ODVM_MASK     =  self._ODVM_MASK(   self,  Access.RW,  0x00000010,  4,  signed=False)
             self.DVD_MASK      =  self._DVD_MASK(    self,  Access.RW,  0x00000020,  5,  signed=False)
-            self.LFD1_MASK     =  self._LFD1_MASK(   self,  Access.RW,  0x00000080,  7,  signed=False)
+            self.LFD3_MASK     =  self._LFD3_MASK(   self,  Access.RW,  0x00000080,  7,  signed=False)
 
     class _ACTION_ENABLE(Register):
 
@@ -554,12 +554,12 @@ class _ALL_REGISTERS(RegisterGroup):
 
     def __init__(self, channel, block, width):
         super().__init__("ALL_REGISTERS", channel, block, width)
-        self.CHIP_REV       =  self._CHIP_REV(     self,  Access.R,   0x0000,  False)
-        self.CFG_1          =  self._CFG_1(        self,  Access.RW,  0x0001,  False)
-        self.CFG_2          =  self._CFG_2(        self,  Access.RW,  0x0002,  False)
-        self.FAULT1         =  self._FAULT1(       self,  Access.R,   0x0003,  False)
-        self.FAULT2         =  self._FAULT2(       self,  Access.R,   0x0004,  False)
-        self.FAULT_MASK1    =  self._FAULT_MASK1(  self,  Access.RW,  0x0005,  False)
-        self.FAULT_MASK2    =  self._FAULT_MASK2(  self,  Access.RW,  0x0006,  False)
-        self.ACTION_ENABLE  =  self._ACTION_ENABLE(self,  Access.RW,  0x0007,  False)
-        self.CONTROL_STS    =  self._CONTROL_STS(  self,  Access.R,   0x0008,  False)
+        self.CHIP_REV       =  self._CHIP_REV(     self,  Access.R,    0x0000,  False)
+        self.CFG_1          =  self._CFG_1(        self,  Access.RW,   0x0001,  False)
+        self.CFG_2          =  self._CFG_2(        self,  Access.RW,   0x0002,  False)
+        self.FAULT1         =  self._FAULT1(       self,  Access.RWC,  0x0003,  False)
+        self.FAULT2         =  self._FAULT2(       self,  Access.RWC,  0x0004,  False)
+        self.FAULT_MASK1    =  self._FAULT_MASK1(  self,  Access.RW,   0x0005,  False)
+        self.FAULT_MASK2    =  self._FAULT_MASK2(  self,  Access.RW,   0x0006,  False)
+        self.ACTION_ENABLE  =  self._ACTION_ENABLE(self,  Access.RW,   0x0007,  False)
+        self.CONTROL_STS    =  self._CONTROL_STS(  self,  Access.R,    0x0008,  False)
