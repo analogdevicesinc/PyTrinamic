@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright © 2024 Analog Devices Inc. All Rights Reserved.
+# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 """Example on how to OTP a value of 0xFF for register 0x40
@@ -26,35 +26,27 @@ USB --------|                        |                 |                   |
 
 import time
 from pytrinamic.connections import ConnectionManager
-
+from pytrinamic.ic import MAX22216
+from pytrinamic.evalboards import MAX22216_eval
 
 with ConnectionManager().connect() as my_interface:
-    # enable Landungsbrücke to use MAX22216         
-    my_interface.send(143, 3, 0, 0x021E0000)
-    my_interface.send(143, 4, 0, 0x021E0000)
-    
-    # switch OFF DIO4 - CRC_EN
-    my_interface.send(9, 6, 7, 1)  
-    # switch ON DIO0 - ENABLE signal 
-    my_interface.send(9, 6, 3, 1) 
-      
-    # read voltage from EVAL board
-    # Pin 1 on connector J301 (44 pin connector)used for VM input
-    #  voltage devider with 100k to 4k7 (~70VDC possible)
-    tmp = str(my_interface.send(15, 5, 0, 0))
-    tmp = tmp.split(',')
-    VM = int(tmp[4], 16)/10
-    print("Suppl:y " + str(VM) +" V")
+    max22216_eval = MAX22216_eval(my_interface)
+
+    max22216_eval.write_register(MAX22216.REG.GLOBAL_CFG, 0x8000)    # Activate the chip
+
+    # Read voltage directly from register VM_MONITOR[0:15] (0x05)
+    VM = round(max22216_eval.read_register(MAX22216.REG.ADC_VM_MEASUREMENT) * 9.73 * 10**-3, 2)
+    print(VM)
     
     # check if voltage is in expected range of 8.7 +-0.1VDC
-    if (VM >= 8.6) and (VM <= 8.8):  
-        print(my_interface.send(172, 0, 1, 0) )    # TMCLOTP.init
+    if (VM >= 8.6) and (VM <= 8.8):
+        print(my_interface.send(172, 0, 1, 0))    # TMCLOTP.init
         print(my_interface.send(172, 1, 1, 0x40))  # TMCLOTP.address
         print(my_interface.send(172, 2, 1, 0xFF))  # TMCLOTP.value
-        print(my_interface.send(172, 3, 1, 0))     # TMCLOTP.program     
-        #print(my_interface.send(172, 4, 1, 0))     # TMCLOTP.lock, use only when OTP shall be locked
-        time.sleep(0.5) #wait until writing is completed
-        tmp = str(my_interface.send(172, 5, 1, 0))     # TMCLOTP.status, writing completed when 0x02 is returned 
+        print(my_interface.send(172, 3, 1, 0))     # TMCLOTP.program
+        # print(my_interface.send(172, 4, 1, 0))     # TMCLOTP.lock, use only when OTP shall be locked
+        time.sleep(0.5)  # wait until writing is completed
+        tmp = str(my_interface.send(172, 5, 1, 0))     # TMCLOTP.status, writing completed when 0x02 is returned
         print(tmp)
         tmp = tmp.split(',')
         if int(tmp[4]) == 2:
