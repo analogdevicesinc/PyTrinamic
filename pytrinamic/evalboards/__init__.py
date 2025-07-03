@@ -33,3 +33,4 @@ from .TMC9660_eval import TMC9660_STEPPER_eval
 from .MAX22215_eval import MAX22215_eval
 from .TMC5241_eval import TMC5241_eval
 from .TMC2241_eval import TMC2241_eval
+from .TMC5262_eval import TMC5262_eval
