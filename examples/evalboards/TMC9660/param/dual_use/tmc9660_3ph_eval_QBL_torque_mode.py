@@ -73,16 +73,10 @@ com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the US
 # Select the FOC feedback
 commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encoder"
 
-# Motor specification
-motor_pole_pairs = 4
-
-# Encoder specification
-encoder_resolution = 4096
-
 # Current scaling factor
-R_SHUNT = 0.003
+R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = int(1024*2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT)
+current_scaling_factor = int(1024*2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM)
 
 
 class TimeoutTimer:
@@ -96,7 +90,7 @@ class TimeoutTimer:
 
 @dataclass
 class Sample:
-    time: int
+    time: float
     actual_torque: int
 
 

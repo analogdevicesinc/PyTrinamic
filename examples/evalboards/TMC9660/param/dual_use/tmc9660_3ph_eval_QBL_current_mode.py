@@ -64,12 +64,6 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
 com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
 
-# Motor specification
-motor_pole_pairs = 4
-
-# Encoder specification
-encoder_resolution = 4096
-
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
@@ -89,7 +83,7 @@ class TimeoutTimer:
 
 @dataclass
 class Sample:
-    time: int
+    time: float
     x: int
 
 
@@ -149,7 +143,7 @@ for i, samples in enumerate([samples_i0, samples_i1, samples_i2]):
     phase_current_ma = [sample.x*current_scaling_factor/1024 for sample in samples]
     ax.plot(t, phase_current_ma, label=f"I{i}")
     ax.legend()
-t = [sample.time-samples[0].time for sample in samples_current]
+t = [sample.time-samples_current[0].time for sample in samples_current]
 ax.plot(t, [sample.x for sample in samples_current], label=f"Current")
 ax.legend()
 plt.show()

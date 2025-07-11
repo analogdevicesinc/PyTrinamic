@@ -111,7 +111,7 @@ class TimeoutTimer:
 
 @dataclass
 class Sample:
-    time: int
+    time: float
     actual_velocity_internal: int
 
 
@@ -135,7 +135,7 @@ with cm.connect() as my_interface:
 
     # Set the motor parameters
     tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
-    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
+    tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, motor_pole_pairs)
 
     # Set the velocity controller parameters
     tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_NORM_P.choice.SHIFT_8_BIT)
@@ -143,7 +143,7 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_I, 5000)
 
     # Set the ABN encoder parameters
-    tmc9660_device.set_parameter(TMC9660.ap.ABN_1_STEPS, 4096)
+    tmc9660_device.set_parameter(TMC9660.ap.ABN_1_STEPS, encoder_resolution)
 
     # Set the hall sensor parameters
     tmc9660_device.set_parameter(TMC9660.ap.HALL_INVERT_DIRECTION, 1)
