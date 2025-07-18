@@ -17,6 +17,13 @@ with ConnectionManager().connect() as my_interface:
     tmc5241_eval = TMC2241_eval(my_interface)
     motor = tmc5241_eval.motors[0]
 
+    # Modify register fields
+    tmc5241_eval.write(TMC2241.REGMAP.IHOLD_IRUN.IHOLD, 10)
+    tmc5241_eval.write(TMC2241.REGMAP.IHOLD_IRUN.IRUN, 20)
+    
+    # Read a register
+    print(f"ADC_TEMP: {tmc5241_eval.read(TMC2241.REGMAP.ADC_TEMP)}")
+
     # Let the Landungsbruecke generate some STEP pulses
     # Set the STEP pulses acceleration and deceleration to 20,000 steps/s^2
     motor.set_axis_parameter(motor.AP.MaxAcceleration, 20_000)
