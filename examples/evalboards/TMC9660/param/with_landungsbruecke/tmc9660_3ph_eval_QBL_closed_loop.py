@@ -22,7 +22,24 @@ running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++---------
                                                    | |             |   | Digital hall feedback                   
                                                    | +-----------------+                    
                                                    |               | ABN encoder feedback                       
-                                                   +---------------+                      
+                                                   +---------------+     
+#############################################################################################################
+# Notes
+#############################################################################################################
+
+The example uses an TMCS-28-5-1K ABN encoder.
+
+Wiring:
+
+  Motor                         ABN encoder                      Digital hall
+
+| Cable Color | MOTOR |       | Cable Color | ENCODER1 |       | Cable Color | HALL SENSOR |
+|-------------|-------|       |-------------|----------|       |-------------|-------------|
+| Black       | U     |       | Red         | +5V      |       | Red         | +5V         |
+| Red         | V     |       | Black       | GND      |       | Black       | GND         |
+| Yellow      | W     |       | Withe       | A        |       | Blue        | U           |
+                              | Green       | B        |       | Green       | V           |
+                              | Yellow      | N        |       | Withe       | W           |                 
 """
 
 import time
