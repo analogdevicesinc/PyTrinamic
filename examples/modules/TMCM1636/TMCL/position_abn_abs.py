@@ -6,6 +6,7 @@
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 
+import statistics
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.modules import TMCM1636
@@ -13,15 +14,21 @@ import time
 
 pytrinamic.show_info()
 # connection_manager = ConnectionManager("--interface serial_tmcl --port COM4 --data-rate 115200")
-connection_manager = ConnectionManager("--interface kvaser_tmcl --module-id 1")
+connection_manager = ConnectionManager("--interface kvaser_tmcl")
 
 with connection_manager.connect() as my_interface:
     module = TMCM1636(my_interface)
     motor = module.motors[0]
 
+    # Offset compensation for both current measurement ADCs (I0 and I1)
+    for ap_adc_ix_raw, ap_adc_ix_offset in [(motor.AP.AdcPhaseA, motor.AP.AdcOffsetPhaseA), (motor.AP.AdcPhaseB, motor.AP.AdcOffsetPhaseB)]:
+        adc_samples = [motor.get_axis_parameter(ap_adc_ix_raw) for _ in range(40)]
+        adc_samples_mean = round(statistics.mean(adc_samples))
+        motor.set_axis_parameter(ap_adc_ix_offset, adc_samples_mean)
+    
     # Define motor configuration for the TMCM-1636.
     #
-    # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT).
+    # The configuration is based on our standard BLDC motor (QBL4208-61-04-013-1024-AT) and an AMT20 series absolute encoder.
     # If you use a different motor be sure you have the right configuration setup otherwise the script may not working. 
 
     # config abn encoder 
@@ -31,7 +38,7 @@ with connection_manager.connect() as my_interface:
     print(motor.abn_encoder)
     
     # config absolute encoder 
-    motor.absolute_encoder.type = 1
+    motor.absolute_encoder.type = 1 # AMT20
     motor.absolute_encoder.init_mode = 0
     motor.absolute_encoder.direction = 1
     motor.absolute_encoder.offset = 0
