@@ -4,7 +4,7 @@
 ################################################################################
 """Demo on how to read all parameters that could be stored non-volatile.
 
-The script outputs a comma separated list for each axis paramet like this:
+The script outputs a comma separated list for each axis parameter like this:
 
     MOTOR_TYPE                                    ;   0; 0
     MOTOR_POLE_PAIRS                              ;   1; 1
