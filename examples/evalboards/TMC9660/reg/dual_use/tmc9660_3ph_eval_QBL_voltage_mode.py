@@ -9,6 +9,8 @@ The ramp generator is used to ramp up and down the velocity.
 
 The required TMC-EvalSystem firmware is 3.10.7 or later.
 
+TMC9660-3PH-EVAL is powerd with +24V.
+
 Note: To run this script the TMC9660-3PH-EVAL first needs an uploaded/burned configuration
 and the register app must have been started.
 
@@ -24,12 +26,12 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+     
-                     USB    |     |==|                   |     
-                     -------|     |==|                   |        
-Connected to the machine    |     |==|                   |     
-running this script.        |LB   |==|TMC9660-3PH-EVAL   |     
-                            +-----+  +-------------------+
+                            +-----+  +-------------------+       +--------------+             
+                     USB    |     |==|                   |-------|              |             
+                     -------|     |==|                   |-------|              |===             
+Connected to the machine    |     |==|                   |-------|BLDC QBL4208  |             
+running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+             
+                            +-----+  +-------------------+  
                    
 
 #############################################################################################################
@@ -40,14 +42,14 @@ On Windows the config upload and app start can be done with:
         ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
-   --------+                       
-           |  USB-UART Cable - Connected to the machine running this script.                                       
-        +--|----------------+
-        |  |                |
-        |                   |
-        |                   |
-        |TMC9660-3PH-EVAL   |
-        +-------------------+
+   --------+
+           | USB-UART Cable - Connected to the machine running this script.  
+        +--|----------------+       +--------------+             
+        |  |                |-------|              |             
+        |                   |-------|              |===             
+        |                   |-------|BLDC QBL4208  |             
+        |TMC9660-3PH-EVAL   |       +--------------+             
+        +-------------------+  
 """
 
 import time

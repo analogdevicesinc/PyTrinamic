@@ -2,11 +2,10 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""Example on how to turn a motor in open loop voltage mode and check the current.
+"""Example on how to turn a motor in open loop current mode and check the current.
 
-The example rotates the motor for 2 seconds.
+The example rotates the motor for 4 seconds.
 The ramp generator is used to ramp up and down the velocity.
-If current measurement is configured correctly, the current should be in phase with the voltage.
 
 The required TMC-EvalSystem firmware is 3.10.7 or later.
 
@@ -33,7 +32,7 @@ Important: first connect USB and then power the TMC9660-3PH-EVAL.
 Connected to the machine    |     |==|                   |-------|BLDC QBL4208  |             
 running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+             
                             +-----+  +-------------------+
-                   
+              
 
 #############################################################################################################
 # connection_mode == headless
@@ -54,10 +53,10 @@ Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 """
 
 import time
+from typing import Literal, List
 from dataclasses import dataclass
-from typing import Literal
 
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC9660
@@ -68,17 +67,54 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
 com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
 
+# Current scaling factor
+R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
+CSA_GAIN = 10
+current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
 
-@dataclass
-class Phase:
-    voltage: int
-    current: int
+velocity_scaling_factor = 2**40/40e6/60
+acceleration_scaling_factor = velocity_scaling_factor*2**17/40e6
+
+target_current_ma = 2000  # 2000mA Open loop current
+
+
+def current_internal_to_ma(internal_value):
+    return internal_value * current_scaling_factor
+
+
+def current_ma_to_internal(ma_value):
+    return int(ma_value / current_scaling_factor)
+
+
+def velocity_internal_to_rpm(interal_value):
+    return interal_value / velocity_scaling_factor
+
+
+def velocity_rpm_to_internal(rpm_value):
+    return int(rpm_value*velocity_scaling_factor)
+
+
+def acceleration_internal_to_rpms(internal_value):
+    return internal_value / acceleration_scaling_factor
+
+
+def acceleration_rpms_to_internal(rpms_value):
+    return int(rpms_value*acceleration_scaling_factor)
+
 
 @dataclass
 class Sample:
-    phase_u: Phase
-    phase_v: Phase
-    phase_w: Phase
+    time: float
+    actual_velocity_internal: int
+
+
+class TimeoutTimer:
+    def __init__(self, timeout_in_seconds):
+        self._start = time.time()
+        self._timeout_in_seconds = timeout_in_seconds
+
+    def has_expired(self):
+        return time.time() - self._start > self._timeout_in_seconds
 
 
 if connection_mode == "with_landungsbruecke":
@@ -92,6 +128,9 @@ with cm.connect() as my_interface:
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
         tmc9660_device = TMC9660(my_interface)
+
+    # Update the current shut amplifier gain for phase U, V, W.
+    tmc9660_device.write(TMC9660.ADC.CSA_SETUP.CSA012_GAIN.choice.CSA012_GAIN_x10)
 
     # PWM off
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP, 0)
@@ -134,47 +173,47 @@ with cm.connect() as my_interface:
 
     # Set limits
     tmc9660_device.write(TMC9660.MCC.PID_UQ_UD_LIMITS, 6000)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_FLUX_LIMIT, current_ma_to_internal(target_current_ma*1.2))
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(target_current_ma*1.2))
+
+    # Set PID coefficients
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_I.choice.SHIFT_16)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 50)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 100)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 50)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 100)
 
     # Configure the ramp generator
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_ENABLE, 1)
-    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_MODE, 1)  # Velocity Mode
-    tmc9660_device.write(TMC9660.MCC.RAMPER_A_MAX, 100)  # Acceleration
-    tmc9660_device.write(TMC9660.MCC.RAMPER_D_MAX, 100)  # Deceleration
+    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_MODE.choice.VELOCITY)
+    tmc9660_device.write(TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(60))  # Acceleration 60 RPM per second
+    tmc9660_device.write(TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(60))  # Deceleration 60 RPM per second
 
     # Configure phi_e source and motion mode
     tmc9660_device.write(TMC9660.MCC.PHI_E_SELECTION.PHI_E_SELECTION.choice.PHI_E_RAMP)
-    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.VOLTAGE_EXT)
+    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.TORQUE)
 
-    # Apply voltage
-    tmc9660_device.write(TMC9660.MCC.VOLTAGE_EXT.UD, 1000)
+    # Apply flux
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, current_ma_to_internal(target_current_ma))
 
-    # Do the velocity move
-    tmc9660_device.write(TMC9660.MCC.RAMPER_V_TARGET, 10000)
-
-    samples = []
-    start_time = time.time()
-    while time.time() - start_time < 2:
-        samples.append(Sample(
-            phase_u=Phase(voltage=tmc9660_device.read(TMC9660.MCC.FOC_UWY_UUX.UUX),
-                          current=tmc9660_device.read(TMC9660.MCC.ADC_IWY_IUX.IUX),
-            ),
-            phase_v=Phase(voltage=tmc9660_device.read(TMC9660.MCC.FOC_UWY_UUX.UWY),
-                          current=tmc9660_device.read(TMC9660.MCC.ADC_IWY_IUX.IWY),
-            ),
-            phase_w=Phase(voltage=tmc9660_device.read(TMC9660.MCC.FOC_UV.UV),
-                          current=tmc9660_device.read(TMC9660.MCC.ADC_IV.IV),
-            ),
-        ))
+    # Rotate the motor, record the velocity and then stop the motor but record the velocity as well.
+    samples: List[Sample] = []
+    for target_velocity_rpm, timeout in [(60, 4), (0, 3)]:
+        tmc9660_device.write(TMC9660.MCC.RAMPER_V_TARGET, velocity_rpm_to_internal(target_velocity_rpm))
+        timer = TimeoutTimer(timeout)
+        while not timer.has_expired():
+            samples.append(Sample(time.perf_counter(), tmc9660_device.read(TMC9660.MCC.RAMPER_V_ACTUAL)))
 
     # Teardown/Stop
     tmc9660_device.write(TMC9660.MCC.RAMPER_V_TARGET, 0)
     time.sleep(1)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, 0)
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.STOPPED)
 
-fig, axs = plt.subplots(3, 1, layout='constrained')
-for ax, name in zip(axs, ["u", "v", "w"]):
-    ax.plot([getattr(sample, f"phase_{name}").voltage for sample in samples], label="Voltage")
-    ax.plot([getattr(sample, f"phase_{name}").current for sample in samples], label="Current")
-    ax.set_title(f"Phase {name.upper()}")
-    ax.legend(loc="upper right")
+# Plot the velocity curve
+fig, ax = plt.subplots()
+t = [sample.time-samples[0].time for sample in samples]
+v = [velocity_internal_to_rpm(sample.actual_velocity_internal) for sample in samples]
+ax.plot(t, v, label="velocity")
+ax.legend()
 plt.show()
