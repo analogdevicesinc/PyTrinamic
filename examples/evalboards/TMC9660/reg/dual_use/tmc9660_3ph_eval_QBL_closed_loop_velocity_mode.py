@@ -165,7 +165,7 @@ with cm.connect() as my_interface:
     elif connection_mode == "headless":
         tmc9660_device = TMC9660(my_interface)
 
-    # Update the current shut amplifier gain for phase U, V, W.
+    # Update the current shunt amplifier gain for phase U, V, W.
     tmc9660_device.write(TMC9660.ADC.CSA_SETUP.CSA012_GAIN.choice.CSA012_GAIN_x10)
 
     # PWM off

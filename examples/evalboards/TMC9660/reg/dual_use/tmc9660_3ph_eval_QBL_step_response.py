@@ -2,10 +2,7 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""Example on how to turn a motor in open loop current mode and check the current.
-
-The example rotates the motor for 4 seconds.
-The ramp generator is used to ramp up and down the velocity.
+"""Example on how to use the RAMDebug mechanism to create a current step response plot.
 
 The required TMC-EvalSystem firmware is 3.10.7 or later.
 
@@ -54,7 +51,7 @@ Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 """
 
 import time
-from typing import Literal, List
+from typing import Literal
 from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
@@ -73,9 +70,6 @@ R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
 current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
 
-velocity_scaling_factor = 2**40/40e6/60
-acceleration_scaling_factor = velocity_scaling_factor*2**17/40e6
-
 target_current_ma = 2000  # 2000mA Open loop current
 
 
@@ -85,22 +79,6 @@ def current_internal_to_ma(internal_value):
 
 def current_ma_to_internal(ma_value):
     return int(ma_value / current_scaling_factor)
-
-
-def velocity_internal_to_rpm(interal_value):
-    return interal_value / velocity_scaling_factor
-
-
-def velocity_rpm_to_internal(rpm_value):
-    return int(rpm_value*velocity_scaling_factor)
-
-
-def acceleration_internal_to_rpms(internal_value):
-    return internal_value / acceleration_scaling_factor
-
-
-def acceleration_rpms_to_internal(rpms_value):
-    return int(rpms_value*acceleration_scaling_factor)
 
 
 @dataclass
@@ -180,42 +158,57 @@ with cm.connect() as my_interface:
     # Set PID coefficients
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_I.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 600)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
-
-    # Configure the ramp generator
-    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_ENABLE, 1)
-    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_MODE.choice.VELOCITY)
-    tmc9660_device.write(TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(60))  # Acceleration 60 RPM per second
-    tmc9660_device.write(TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(60))  # Deceleration 60 RPM per second
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 0)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 0)
 
     # Configure phi_e source and motion mode
-    tmc9660_device.write(TMC9660.MCC.PHI_E_SELECTION.PHI_E_SELECTION.choice.PHI_E_RAMP)
+    tmc9660_device.write(TMC9660.MCC.PHI_E_SELECTION.PHI_E_SELECTION.choice.PHI_E_EXT)
+    tmc9660_device.write(TMC9660.MCC.PHI_EXT.PHI_E_EXT, 0)
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.TORQUE)
 
-    # Apply flux
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, current_ma_to_internal(target_current_ma))
+    settings_a = {
+        TMC9660.MCC.PID_FLUX_COEFF.P: 600,
+        TMC9660.MCC.PID_FLUX_COEFF.I: 600,
+    }
+    settings_b = {
+        TMC9660.MCC.PID_FLUX_COEFF.P: 50,
+        TMC9660.MCC.PID_FLUX_COEFF.I: 100,
+    }
 
-    # Rotate the motor, record the velocity and then stop the motor but record the velocity as well.
-    samples: List[Sample] = []
-    for target_velocity_rpm, timeout in [(60, 4), (0, 3)]:
-        tmc9660_device.write(TMC9660.MCC.RAMPER_V_TARGET, velocity_rpm_to_internal(target_velocity_rpm))
-        timer = TimeoutTimer(timeout)
-        while not timer.has_expired():
-            samples.append(Sample(time.perf_counter(), tmc9660_device.read(TMC9660.MCC.RAMPER_V_ACTUAL)))
+    fig, (ax_a, ax_b) = plt.subplots(2, 1, layout="constrained")
 
-    # Teardown/Stop
-    tmc9660_device.write(TMC9660.MCC.RAMPER_V_TARGET, 0)
-    time.sleep(1)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, 0)
+    dl = tmc9660_device.datalogger
+
+    for settings, ax in [(settings_b, ax_b), (settings_a, ax_a)]:
+        for field, value in settings.items():
+            tmc9660_device.write(field, value)
+
+        dl.config.samples_per_channel = 256
+        dl.config.log_data = [
+            TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET,
+            TMC9660.MCC.PID_TORQUE_FLUX_ACTUAL.PID_FLUX_ACTUAL,
+        ]
+        dl.config.trigger.edge = dl.TriggerEdge.RISING
+        dl.config.trigger.on_data = TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET
+        dl.config.trigger.threshold = current_ma_to_internal(target_current_ma//4)
+        dl.config.trigger.pretrigger_samples_per_channel = 32
+
+        dl.start_capture()
+
+        # Apply flux
+        tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, current_ma_to_internal(target_current_ma))
+
+        dl.wait_for_capture_completion()
+
+        dl.download_log()
+
+        tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, 0)
+
+        # Plot the current curve
+        ax.plot(dl.log.time_vector, [current_internal_to_ma(x) for x in dl.log.data["PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET"].samples] , label="Target Current")
+        ax.plot(dl.log.time_vector, [current_internal_to_ma(x) for x in dl.log.data["PID_TORQUE_FLUX_ACTUAL.PID_FLUX_ACTUAL"].samples] , label="Actual Current")
+        ax.set_title(f"FLUX.P = {settings[TMC9660.MCC.PID_FLUX_COEFF.P]}; FLUX.I = {settings[TMC9660.MCC.PID_FLUX_COEFF.I]}")
+        ax.legend()
+        
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.STOPPED)
-
-# Plot the velocity curve
-fig, ax = plt.subplots()
-t = [sample.time-samples[0].time for sample in samples]
-v = [velocity_internal_to_rpm(sample.actual_velocity_internal) for sample in samples]
-ax.plot(t, v, label="velocity")
-ax.legend()
-plt.show()
+    plt.show()
