@@ -20,6 +20,7 @@ Use the `connection_mode` to change the hardware connection.
 # connection_mode == with_landungsbruecke
 #############################################################################################################
 On Windows the config upload and app start can be done with:
+    open the ioconfig_tmc9660-3ph-eval.toml and change the `app_type` from "param" to "reg"
     python ubltools_1.0.1/ubl_evalsystem_wrapper.py <COM-PORT> write config ubltools_1.0.1/ioconfig_tmc9660-3ph-eval.toml
     python ubltools_1.0.1/ubl_evalsystem_wrapper.py <COM-PORT> start
 Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
@@ -33,13 +34,13 @@ Connected to the machine    |     |==|                   |-------|BLDC QBL4208  
 running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+             
                             +-----+  +-------------------+
                    
-
 #############################################################################################################
 # connection_mode == headless
 #############################################################################################################
 On Windows the config upload and app start can be done with:
-        ubltools_1.0.1/ublcli.exe --port <COM-PORT> write config ubltools_1.0.1/ioconfig_tmc9660-3ph-eval.toml
-        ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
+    open the ioconfig_tmc9660-3ph-eval.toml and change the `app_type` from "param" to "reg"
+    ubltools_1.0.1/ublcli.exe --port <COM-PORT> write config ubltools_1.0.1/ioconfig_tmc9660-3ph-eval.toml
+    ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
