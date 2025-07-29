@@ -200,11 +200,12 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(abs(target_current_ma)*1.2))
 
     # Set PID coefficients
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_I.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 100)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
 
     # Configure hall settings
     tmc9660_device.write(TMC9660.MCC.HALL_MODE.POLARITY.choice.NORMAL)

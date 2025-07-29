@@ -138,7 +138,7 @@ commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encod
 
 # Select the velocity feedback
 # Idealy the "count" selection is used.
-velocity_feedback_select: Literal["Same as commutation", "ABN encoder count", "Digital hall count"] = "Same as commutation"
+velocity_feedback_select: Literal["Same as commutation", "ABN encoder count", "Digital hall count"] = "ABN encoder count"
 
 number_of_ramp_points: Literal[4, 6, 8] = 6
 
@@ -261,16 +261,16 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_LIMIT, velocity_rpm_to_internal(target_velocity_rpm*1.2))
 
     # Set PID coefficients
-    # TODO: Find better values! Note, the velocity coefficients are depending on the velocity_feedback_select.
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_I.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_8)
-    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, 500)
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.I, 5000)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_0)
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_I.choice.SHIFT_8)
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, 100)
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.I, 2)
 
     # Configure hall settings
     tmc9660_device.write(TMC9660.MCC.HALL_MODE.POLARITY.choice.NORMAL)

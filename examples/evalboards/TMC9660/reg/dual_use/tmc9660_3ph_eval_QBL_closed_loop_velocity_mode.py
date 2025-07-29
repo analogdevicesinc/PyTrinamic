@@ -119,7 +119,7 @@ elif velocity_feedback_select == "Digital hall count":
 
 
 target_velocity_rpm = 2000
-current_limit_ma = 2000  # Closed loop current in [mA]
+current_limit_ma = 2000  # Closed loop maximum current in [mA]
 
 
 def current_internal_to_ma(internal_value):
@@ -215,16 +215,16 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_LIMIT, velocity_rpm_to_internal(target_velocity_rpm*1.2))
 
     # Set PID coefficients
-    # TODO: Find better values! Note, the velocity coefficients are depending on the velocity_feedback_select.
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_I.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_8)
-    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, 500)
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.I, 5000)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_0)
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_I.choice.SHIFT_8)
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, 100)
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.I, 2)
 
     # Configure hall settings
     tmc9660_device.write(TMC9660.MCC.HALL_MODE.POLARITY.choice.NORMAL)
@@ -252,14 +252,14 @@ with cm.connect() as my_interface:
         tmc9660_device.write(TMC9660.MCC.VELOCITY_CONFIG.SELECTION.choice.HALL_COUNT)
     
     # Do not use the ramp generator.
-    tmc9660_device.set_parameter(TMC9660.ap.RAMP_ENABLE, 0)
+    tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_ENABLE, 0)
 
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.VELOCITY)
     
     # Rotate the motor and record the velocity.
     # And then stop the motor but record the velocity as well.
     samples: List[Sample] = []
-    for target_velocity, timeout in [(target_velocity_rpm, 10), (0, 3)]:
+    for target_velocity, timeout in [(target_velocity_rpm, 8), (0, 3)]:
         tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_TARGET, velocity_rpm_to_internal(target_velocity))
         timer = TimeoutTimer(timeout)
         while not timer.has_expired():

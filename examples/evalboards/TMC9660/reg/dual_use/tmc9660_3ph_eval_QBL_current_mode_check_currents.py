@@ -177,11 +177,12 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_LIMIT, 2000000)
 
     # Set PID coefficients
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_I.choice.SHIFT_16)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 50)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 100)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
 
     # Configure the ramp generator
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_ENABLE, 1)
