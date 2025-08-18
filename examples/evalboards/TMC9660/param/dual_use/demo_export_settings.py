@@ -57,7 +57,7 @@ Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
         +-------------------+
 """
 import inspect
-from typing import Literal
+from typing import Literal, Union
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC9660
@@ -77,6 +77,8 @@ elif connection_mode == "headless":
 
 with cm.connect() as my_interface:
 
+    tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
+    
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":

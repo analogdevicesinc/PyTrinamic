@@ -62,13 +62,13 @@ USB-UART Cable - Connected to the machine running this script.
 import time
 import statistics
 from dataclasses import dataclass
-from typing import Literal, List
+from typing import Literal, List, Union
 from ctypes import c_int16
 
 try:
     import matplotlib.pyplot as plt
 except ImportError:
-    plt = None
+    plt = None  # type: ignore[assignment]
 
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC9660
@@ -86,6 +86,8 @@ elif connection_mode == "headless":
 
 with cm.connect() as my_interface:
 
+    tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
+    
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":

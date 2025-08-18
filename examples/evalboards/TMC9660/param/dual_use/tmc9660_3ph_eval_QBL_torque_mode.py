@@ -74,7 +74,7 @@ Wiring:
                               | Yellow      | N        |       | Withe       | W           | 
 """
 import time
-from typing import Literal, List
+from typing import Literal, List, Union
 from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
@@ -118,6 +118,8 @@ elif connection_mode == "headless":
 
 with cm.connect() as my_interface:
 
+    tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
+    
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
