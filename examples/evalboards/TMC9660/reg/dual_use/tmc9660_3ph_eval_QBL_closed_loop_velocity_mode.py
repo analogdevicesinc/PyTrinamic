@@ -101,6 +101,9 @@ commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encod
 # Idealy the "count" selection is used.
 velocity_feedback_select: Literal["Same as commutation", "ABN encoder count", "Digital hall count"] = "ABN encoder count"
 
+if (commutation_feedback_select == "Digital hall" and velocity_feedback_select == "Same as commutation"):
+    print("This feedback combination is not recomended!") 
+
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
@@ -109,7 +112,6 @@ current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
 MOTOR_POLE_PAIRS = 4
 ABN_COUNTS_PER_REVOLUTION = 4096
 
-
 if velocity_feedback_select == "Same as commutation":
     velocity_scaling_factor = 2**40*MOTOR_POLE_PAIRS/40e6/60
 elif velocity_feedback_select == "ABN encoder count":
@@ -117,6 +119,8 @@ elif velocity_feedback_select == "ABN encoder count":
 elif velocity_feedback_select == "Digital hall count":
     velocity_scaling_factor = 2**24*6*MOTOR_POLE_PAIRS/40e6/60
 
+# Note the first term is the `velocity_scaling_factor` in case `velocity_feedback_select == "ABN encoder count"`.
+velocity_pid_rescaling_factor = (2**24*ABN_COUNTS_PER_REVOLUTION/40e6/60) / velocity_scaling_factor
 
 target_velocity_rpm = 2000
 current_limit_ma = 2000  # Closed loop maximum current in [mA]
@@ -136,6 +140,14 @@ def velocity_internal_to_rpm(interal_value):
 
 def velocity_rpm_to_internal(rpm_value):
     return int(rpm_value*velocity_scaling_factor)
+
+
+def get_proper_norm_and_coeff(pid_value):
+    shift_8x = 0
+    for shift_8x in range(4):
+        if pid_value*2**(8*(shift_8x + 1)) > 2**15:
+            break        
+    return shift_8x, int(pid_value*2**(8*(shift_8x)))
 
 
 @dataclass
@@ -222,11 +234,20 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.P, 600)
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
     tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
-    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
-    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_0)
-    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_I.choice.SHIFT_8)
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, 100)
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.I, 2)
+    tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)    
+    good_velocity_p_value = 100  # Reference: velocity_feedback_select == "ABN encoder count" 
+    good_velocity_i_value = 0.0078125  # Reference: velocity_feedback_select == "ABN encoder count"
+    if velocity_feedback_select == "Digital hall count" or (commutation_feedback_select == "Digital hall" and velocity_feedback_select == "Same as commutation"):
+        # Reduce the PI values in case digital hall is used for velocity feedback,
+        # because the digital hall resolution is too low for good velocity aquisition and contorl loop behaviour.
+        good_velocity_p_value /= 8
+        good_velocity_i_value /= 8
+    velocity_p_norm, velocity_p_coeff = get_proper_norm_and_coeff(good_velocity_p_value*velocity_pid_rescaling_factor)
+    velocity_i_norm, velocity_i_coeff = get_proper_norm_and_coeff(good_velocity_i_value*velocity_pid_rescaling_factor)
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P, velocity_p_norm)
+    tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_I, velocity_i_norm)
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, velocity_p_coeff)
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.I, velocity_i_coeff)
 
     # Configure hall settings
     tmc9660_device.write(TMC9660.MCC.HALL_MODE.POLARITY.choice.NORMAL)
@@ -261,7 +282,7 @@ with cm.connect() as my_interface:
     # Rotate the motor and record the velocity.
     # And then stop the motor but record the velocity as well.
     samples: List[Sample] = []
-    for target_velocity, timeout in [(target_velocity_rpm, 8), (0, 3)]:
+    for target_velocity, timeout in [(target_velocity_rpm, 1), (0, 1)]:
         tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_TARGET, velocity_rpm_to_internal(target_velocity))
         timer = TimeoutTimer(timeout)
         while not timer.has_expired():

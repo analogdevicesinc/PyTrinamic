@@ -137,11 +137,8 @@ connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbru
 com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
 
 # Select the FOC feedback
+# Note, velocity and position meter feedback will always be ABN encoder
 commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encoder"
-
-# Select the velocity feedback
-# Idealy the "count" selection is used.
-velocity_feedback_select: Literal["Same as commutation", "ABN encoder count", "Digital hall count"] = "ABN encoder count"
 
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
@@ -151,14 +148,7 @@ current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
 MOTOR_POLE_PAIRS = 4
 ABN_COUNTS_PER_REVOLUTION = 4096
 
-
-if velocity_feedback_select == "Same as commutation":
-    velocity_scaling_factor = 2**40*MOTOR_POLE_PAIRS/40e6/60
-elif velocity_feedback_select == "ABN encoder count":
-    velocity_scaling_factor = 2**24*ABN_COUNTS_PER_REVOLUTION/40e6/60
-elif velocity_feedback_select == "Digital hall count":
-    velocity_scaling_factor = 2**24*6*MOTOR_POLE_PAIRS/40e6/60
-
+velocity_scaling_factor = 2**24*ABN_COUNTS_PER_REVOLUTION/40e6/60
 acceleration_scaling_factor = velocity_scaling_factor*2**17/40e6
 
 moving_velocity_rpm = 2000

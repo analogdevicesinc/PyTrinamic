@@ -269,6 +269,7 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
     tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
     tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)
+    # Check out the tmc9660_3ph_eval_QBL_closed_loop_velocity_mode.py example for better velocity PI values depending on feeback selection.
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_P.choice.SHIFT_0)
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.VELOCITY_NORM_I.choice.SHIFT_8)
     tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_COEFF.P, 100)
