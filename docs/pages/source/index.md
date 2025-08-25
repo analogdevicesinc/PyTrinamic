@@ -8,5 +8,7 @@ The package is intended to automate tasks that are typically done manually with 
 
 ```{toctree}
 
+getting_started.md
 user_guide.md
+tutorials.md
 ```
