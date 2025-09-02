@@ -342,7 +342,7 @@ with cm.connect() as my_interface:
 
     # Rotate the motor and record the velocity.
     # And then stop the motor but record the velocity as well.
-    samples: List[Sample] = []
+    samples: List[Record] = []
     actual_position = tmc9660_device.read(TMC9660.MCC.PID_POSITION_ACTUAL)
     target_position = c_int32(actual_position + motor_rotations*ABN_COUNTS_PER_REVOLUTION).value
     if use_ramper:

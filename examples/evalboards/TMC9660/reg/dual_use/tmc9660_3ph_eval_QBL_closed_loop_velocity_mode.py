@@ -235,11 +235,11 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_COEFF.I, 600)
     tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.P, 600)
     tmc9660_device.write(TMC9660.MCC.PID_FLUX_COEFF.I, 600)    
-    good_velocity_p_value = 100  # Reference: velocity_feedback_select == "ABN encoder count" 
-    good_velocity_i_value = 0.0078125  # Reference: velocity_feedback_select == "ABN encoder count"
+    good_velocity_p_value = 100.0  # Reference: velocity_feedback_select == "ABN encoder count"; P: 100; Shift: 0
+    good_velocity_i_value = 0.0078125  # Reference: velocity_feedback_select == "ABN encoder count"; I: 2; Shift 8
     if velocity_feedback_select == "Digital hall count" or (commutation_feedback_select == "Digital hall" and velocity_feedback_select == "Same as commutation"):
         # Reduce the PI values in case digital hall is used for velocity feedback,
-        # because the digital hall resolution is too low for good velocity aquisition and contorl loop behaviour.
+        # because the digital hall resolution is too low for good velocity acquisition and control loop behavior.
         good_velocity_p_value /= 8
         good_velocity_i_value /= 8
     velocity_p_norm, velocity_p_coeff = get_proper_norm_and_coeff(good_velocity_p_value*velocity_pid_rescaling_factor)
