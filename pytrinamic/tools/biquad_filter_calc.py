@@ -75,16 +75,16 @@ class ContinuousBiquadFilterCoefficients:
 
 @dataclass
 class LowPassFilterSpec:
-    f_p: float
-    d_p: Optional[float] = None
+    fc: float # Cutoff frequency
+    q: Optional[float] = None # Quality factor in case of an 2nd order low pass filter
 
 
 @dataclass
 class AntiResonanceFilterSpec:
-    f_p: float
-    f_z: float
-    d_p: float
-    d_z: float
+    fp: float # resonance frequency
+    fz: float # anti-resonance frequency
+    dp: float # damping factor of the resonance frequency
+    dz: float # damping factor of the anti-resonance frequency
 
 
 @dataclass
@@ -94,7 +94,7 @@ class _ChipSpec:
     min_value: int
 
 
-_chipspec_map = {
+_chip_spec_map = {
     "TMC4671": _ChipSpec(
         normalization_factor_short=2**29,
         max_value=2**31 - 1,
@@ -108,29 +108,33 @@ _chipspec_map = {
 }
 
 
-def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"], f_s, down_sampling_factor, filter_spec: Union[LowPassFilterSpec, AntiResonanceFilterSpec]):
+@dataclass
+class _Result:
+    real_coefficients: RealBiquadFilterCoefficients
+    normalized_coefficients: NormalizedBiquadFilterCoefficients
+    continuous_coefficients: ContinuousBiquadFilterCoefficients
+    tilde_coefficients: TildeBiquadFilterCoefficients
+
+
+def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"], filter_spec: Union[LowPassFilterSpec, AntiResonanceFilterSpec], *, sample_rate=None, down_sampling_factor=1) -> _Result:
     try:
-        chip_spec = _chipspec_map[chip_type]
+        chip_spec = _chip_spec_map[chip_type]
     except KeyError:
-        raise ValueError(f"Unknown chip type: {chip_type}")
+        raise ValueError(f"Unknown chip type: {chip_type}!")
     
     if down_sampling_factor < 1:
-        raise ValueError("Down-sampling factor must be at least 1.")
+        raise ValueError("Down-sampling factor must be at least 1!")
+    
+    if not sample_rate:
+        sample_rate = 25_000 # Default for TMC9660 and TMC4671
 
-    @dataclass
-    class Result:
-        real_coefficients: RealBiquadFilterCoefficients
-        normalized_coefficients: NormalizedBiquadFilterCoefficients
-        continuous_coefficients: ContinuousBiquadFilterCoefficients
-        tilde_coefficients: TildeBiquadFilterCoefficients
-
-    f_s = f_s / down_sampling_factor
-    T = 1 / f_s
+    sample_rate = sample_rate / down_sampling_factor
+    T = 1 / sample_rate
 
     if isinstance(filter_spec, LowPassFilterSpec):
         # Coefficients for continuous filter
-        f_p = filter_spec.f_p
-        d_p = filter_spec.d_p
+        f_p = filter_spec.fc
+        d_p = filter_spec.q
 
         omega_c = 2.0 * math.pi * f_p
         b_0_cont = 1.0
@@ -147,10 +151,10 @@ def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"
 
     elif isinstance(filter_spec, AntiResonanceFilterSpec):
         # Coefficients for continuous filter
-        f_p = filter_spec.f_p
-        f_z = filter_spec.f_z
-        d_p = filter_spec.d_p
-        d_z = filter_spec.d_z
+        f_p = filter_spec.fp
+        f_z = filter_spec.fz
+        d_p = filter_spec.dp
+        d_z = filter_spec.dz
 
         b_2_cont = 1.0 / ((2.0 * math.pi * f_z) ** 2.0)
         b_1_cont = 2.0 * d_z / (2.0 * math.pi * f_z)
@@ -235,4 +239,4 @@ def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"
     if root > 0.98:
         raise AttributeError("The given filter configuration would result in an unstable filter!")
 
-    return Result(real_coeffs, norm_coeffs, cont_coeffs, time_disc_coeffs)
+    return _Result(real_coeffs, norm_coeffs, cont_coeffs, time_disc_coeffs)
