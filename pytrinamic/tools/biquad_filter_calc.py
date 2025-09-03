@@ -116,7 +116,27 @@ class _Result:
     tilde_coefficients: TildeBiquadFilterCoefficients
 
 
-def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"], filter_spec: Union[LowPassFilterSpec, AntiResonanceFilterSpec], *, sample_rate=None, down_sampling_factor=1) -> _Result:
+def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"], filter_spec: Union[LowPassFilterSpec, AntiResonanceFilterSpec], *, sample_rate_hz=None, down_sampling_factor=1) -> _Result:
+    """
+    Function to calculate biquad filter coefficients for Trinamic chip products from a given filter specification.
+
+    :param chip_type: The chip type for which coefficients are calculated. Must be "TMC4671" or "TMC9660".
+    :type chip_type: Literal["TMC4671", "TMC9660"]
+    :param filter_spec: The filter specification, either a LowPassFilterSpec or AntiResonanceFilterSpec instance.
+    :type filter_spec: Union[LowPassFilterSpec, AntiResonanceFilterSpec]
+    :param sample_rate_hz: The sample rate in Hz. If None, defaults to the respective chip's default sample rate.
+    :type sample_rate_hz: Optional[float]
+    :param down_sampling_factor: Down-sampling factor to apply to the sample rate. Must be >= 1.
+    :type down_sampling_factor: Optional[int]
+
+    :return: A _Result object containing real, normalized, continuous, and tilde coefficients.
+    :rtype: _Result
+
+    :raises ValueError: If chip_type is unknown or down_sampling_factor < 1.
+    :raises TypeError: If filter_spec is not a supported type.
+    :raises AttributeError: If coefficients are out of range or filter is unstable.
+    """
+    
     try:
         chip_spec = _chip_spec_map[chip_type]
     except KeyError:
@@ -125,11 +145,13 @@ def calculate_biquad_filter_coefficients(chip_type: Literal["TMC4671", "TMC9660"
     if down_sampling_factor < 1:
         raise ValueError("Down-sampling factor must be at least 1!")
     
-    if not sample_rate:
-        sample_rate = 25_000 # Default for TMC9660 and TMC4671
+    if not sample_rate_hz:
+        # 25000 it the default for TMC9660 and TMC4671.
+        # This might not be the default for future chips, so this is why sample_rate_hz==None is chosen as "use default".
+        sample_rate_hz = 25_000
 
-    sample_rate = sample_rate / down_sampling_factor
-    T = 1 / sample_rate
+    sample_rate_hz = sample_rate_hz / down_sampling_factor
+    T = 1 / sample_rate_hz
 
     if isinstance(filter_spec, LowPassFilterSpec):
         # Coefficients for continuous filter
