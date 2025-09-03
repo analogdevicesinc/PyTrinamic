@@ -2,14 +2,14 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""Example on how to turn a motor in closed loop mode and where the velocity is controled.
+"""Example on how to turn a motor in closed loop mode and where the velocity is controlled.
 
 The showcases the influence of the biquad filter.
 Note, that the biquad filter is already enabled by default with some decent default values.
 
 The required TMC-EvalSystem firmware is 3.10.7 or later.
 
-TMC9660-3PH-EVAL is powerd with +24V.
+TMC9660-3PH-EVAL is powered with +24V.
 
 Note: To run this script the TMC9660-3PH-EVAL first needs an uploaded/burned configuration
 and the register app must have been started.
@@ -20,9 +20,8 @@ Use the `connection_mode` to change the hardware connection.
 # connection_mode == with_landungsbruecke
 #############################################################################################################
 On Windows the config upload and app start can be done with:
-    open the ioconfig_tmc9660-3ph-eval.toml and change the `app_type` from "param" to "reg"
     python ubltools_1.0.1/ubl_evalsystem_wrapper.py <COM-PORT> write config ubltools_1.0.1/ioconfig_tmc9660-3ph-eval.toml
-    python ubltools_1.0.1/ubl_evalsystem_wrapper.py <COM-PORT> start
+    python ubltools_1.0.1/ubl_evalsystem_wrapper.py <COM-PORT> start --mode reg
 Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
@@ -42,9 +41,8 @@ running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++---------
 # connection_mode == headless
 #############################################################################################################
 On Windows the config upload and app start can be done with:
-    open the ioconfig_tmc9660-3ph-eval.toml and change the `app_type` from "param" to "reg"
     ubltools_1.0.1/ublcli.exe --port <COM-PORT> write config ubltools_1.0.1/ioconfig_tmc9660-3ph-eval.toml
-    ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
+    ubltools_1.0.1/ublcli.exe --port <COM-PORT> start --mode reg
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
