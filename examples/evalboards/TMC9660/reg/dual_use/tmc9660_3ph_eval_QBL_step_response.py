@@ -52,7 +52,6 @@ Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
 import time
 from typing import Literal, Union
-from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 
@@ -79,21 +78,6 @@ def current_internal_to_ma(internal_value):
 
 def current_ma_to_internal(ma_value):
     return int(ma_value / current_scaling_factor)
-
-
-@dataclass
-class Sample:
-    time: float
-    actual_velocity_internal: int
-
-
-class TimeoutTimer:
-    def __init__(self, timeout_in_seconds):
-        self._start = time.time()
-        self._timeout_in_seconds = timeout_in_seconds
-
-    def has_expired(self):
-        return time.time() - self._start > self._timeout_in_seconds
 
 
 if connection_mode == "with_landungsbruecke":
