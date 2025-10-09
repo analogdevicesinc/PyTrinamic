@@ -1972,7 +1972,7 @@ class _ALL_REGISTERS(RegisterGroup):
 
         def __init__(self, parent, access, address, signed):
             super().__init__("ENC_LATCH", parent, access, address, signed)
-            self.ENC_LATCH  =  self._ENC_LATCH(self,  Access.R,  0xFFFFFFFF,  0,  signed=False)
+            self.ENC_LATCH  =  self._ENC_LATCH(self,  Access.R,  0xFFFFFFFF,  0,  signed=True)
 
     class _ENC_DEVIATION(Register):
 
@@ -2300,7 +2300,7 @@ class _ALL_REGISTERS(RegisterGroup):
             super().__init__("MSLUTSTART", parent, access, address, signed)
             self.START_SIN     =  self._START_SIN(   self,  Access.RW,  0x000000FF,  0,   signed=False)
             self.START_SIN90   =  self._START_SIN90( self,  Access.RW,  0x00FF0000,  16,  signed=False)
-            self.OFFSET_SIN90  =  self._OFFSET_SIN90(self,  Access.RW,  0xFF000000,  24,  signed=False)
+            self.OFFSET_SIN90  =  self._OFFSET_SIN90(self,  Access.RW,  0xFF000000,  24,  signed=True)
 
     class _MSCNT(Register):
 
@@ -2397,8 +2397,8 @@ class _ALL_REGISTERS(RegisterGroup):
             class _Choice(Choice):
                 def __init__(self, parent) -> None:
                     super().__init__(parent)
-                    self.DISABLED  =  Option(False,  parent,  "DISABLED")
-                    self.ENABLED   =  Option(True,   parent,  "ENABLED")
+                    self.FD_COMP_EN   =  Option(False,  parent,  "FD_COMP_EN")
+                    self.FD_COMP_DIS  =  Option(True,   parent,  "FD_COMP_DIS")
 
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("DISFDCC", parent, access, mask, shift, signed=signed)
@@ -2913,10 +2913,30 @@ class _ALL_REGISTERS(RegisterGroup):
 
         class _PWM_REG(Field):
 
+            class _Choice(Choice):
+                def __init__(self, parent) -> None:
+                    super().__init__(parent)
+                    self.RESERVED  =  Option(0,   parent,  "RESERVED")
+                    self.INC_05    =  Option(1,   parent,  "INC_05")
+                    self.INC_10    =  Option(2,   parent,  "INC_10")
+                    self.INC_15    =  Option(3,   parent,  "INC_15")
+                    self.INC_20    =  Option(4,   parent,  "INC_20")
+                    self.INC_25    =  Option(5,   parent,  "INC_25")
+                    self.INC_30    =  Option(6,   parent,  "INC_30")
+                    self.INC_35    =  Option(7,   parent,  "INC_35")
+                    self.INC_40    =  Option(8,   parent,  "INC_40")
+                    self.INC_45    =  Option(9,   parent,  "INC_45")
+                    self.INC_50    =  Option(10,  parent,  "INC_50")
+                    self.INC_55    =  Option(11,  parent,  "INC_55")
+                    self.INC_60    =  Option(12,  parent,  "INC_60")
+                    self.INC_65    =  Option(13,  parent,  "INC_65")
+                    self.INC_70    =  Option(14,  parent,  "INC_70")
+                    self.INC_75    =  Option(15,  parent,  "INC_75")
+
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("PWM_REG", parent, access, mask, shift, signed=signed)
 
-                self.choice = None
+                self.choice = self._Choice(self)
 
         class _PWM_LIM(Field):
 
@@ -3115,7 +3135,7 @@ class _ALL_REGISTERS(RegisterGroup):
         self.X_ENC             =  self._X_ENC(           self,  Access.RW,   0x0039,  True)
         self.ENC_CONST         =  self._ENC_CONST(       self,  Access.RW,   0x003A,  True)
         self.ENC_STATUS        =  self._ENC_STATUS(      self,  Access.RWC,  0x003B,  False)
-        self.ENC_LATCH         =  self._ENC_LATCH(       self,  Access.R,    0x003C,  False)
+        self.ENC_LATCH         =  self._ENC_LATCH(       self,  Access.R,    0x003C,  True)
         self.ENC_DEVIATION     =  self._ENC_DEVIATION(   self,  Access.RW,   0x003D,  False)
         self.VIRTUAL_STOP_L    =  self._VIRTUAL_STOP_L(  self,  Access.RW,   0x003E,  True)
         self.VIRTUAL_STOP_R    =  self._VIRTUAL_STOP_R(  self,  Access.RW,   0x003F,  True)
