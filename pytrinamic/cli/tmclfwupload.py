@@ -140,7 +140,6 @@ def firmware_update(iface, hex_file):
     # Scan for the module string
     found = None
     for segment in file.segments():
-        print(segment)
         segment_start = segment[0]
         segment_length = segment[1] - segment[0]
         firmware_bytes = file.gets(segment_start, segment_length)
