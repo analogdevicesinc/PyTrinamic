@@ -193,6 +193,9 @@ class Field:
         self.shift = shift
         self.signed = signed
 
+        # Regmaps will set this for any field containing choices
+        self.choice = None
+
     def get(self, register_value: int) -> int:
         """Get the field value of a register value.
         
