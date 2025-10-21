@@ -55,27 +55,34 @@ class SocketTmclInterface(TmclInterface):
             "{}.{}".format(self.__class__.__name__, ip_and_port)
         )
 
-        self.logger.debug("Opening %s:%s.", self._socket_ip, self._socket_port)
-        self._check_socket() # connect to the socket
+        self._connect_socket()
         self._timeout_s = timeout_s
 
-    def _check_socket(self):
+    def _connect_socket(self):
+        """Reconnect to the socket.
+
+        This function is used to reconnect after the connection was closed.
+
+        Check if the socket is still open. If not, try to reconnect.
         """
-        Check if the socket is still open. If not, try to reconnect. Not sure it is necessary here, but it helped in the past.
-        """
-        if self._socket is None:
-            try:
-                self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self._socket.connect((self._socket_ip, self._socket_port))
-            except socket.error as e:
-                self._connection = None
-                raise ConnectionError(
-                    "Failed to (re-)connect to Socket connection"
-                ) from e
+        try:
+            self.logger.debug("Opening %s:%s.", self._socket_ip, self._socket_port)
+            self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self._socket.connect((self._socket_ip, self._socket_port))
+        except socket.error as e:
+            self._connection = None
+            raise ConnectionError(
+                "Failed to (re-)connect to Socket connection"
+            ) from e
 
     def close(self):
         self.logger.info("Closing Socket connection.")
         self._socket.close()
+        self._socket = None
+
+    def reconnect(self):
+        if self._socket is None:
+            self._connect_socket()
 
     def _send(self, host_id, module_id, data):
         """
@@ -86,7 +93,7 @@ class SocketTmclInterface(TmclInterface):
         """
         del host_id, module_id
 
-        self._check_socket()
+        self.reconnect()
         self._socket.sendall(data)
 
     def _recv(self, host_id, module_id):
@@ -97,7 +104,7 @@ class SocketTmclInterface(TmclInterface):
         class.
         """
         del host_id, module_id
-        self._check_socket()
+        self.reconnect()
 
         data = bytearray()
         start_time = time.time()
