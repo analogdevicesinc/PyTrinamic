@@ -271,9 +271,24 @@ class Choice:
     def options(self):
         return sorted([member for name, member in inspect.getmembers(self) if isinstance(member, Option)], key=lambda x: x.value)
 
-    def get(self, value):
+    def get(self, value, default=None):
         """Extracts the option name from a value."""
         try:
-            return next(option for option in self.options() if option.value == value)
-        except StopIteration:
-            raise IndexError(f"Unknown value {value} for choice {self.parent.name}!")
+            return self[value]
+        # Note: Do not catch the value error in case of wrong value type
+        except KeyError:
+            return default
+
+    def __getitem__(self, index):
+        if isinstance(index, int):
+            try:
+                return next(option for option in self.options() if option.value == index)
+            except StopIteration:
+                raise KeyError(f"Unknown value {index} for choice {self.parent.name}!")
+        elif isinstance(index, str):
+            option = getattr(self, index, None)
+            if not isinstance(option, Option):
+                raise KeyError(f"Invalid index: No option named {index} for choice {self.parent.name}!")
+            return option
+        else:
+            raise ValueError("Invalid index: Index is neither a string nor an integer")
