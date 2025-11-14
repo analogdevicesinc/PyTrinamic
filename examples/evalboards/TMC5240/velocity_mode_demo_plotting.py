@@ -2,6 +2,12 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""Demonstrates the velocity mode of the TMC5240
+
+It includes plotting of the actual velocity over time.
+
+Note that the example requires matplotlib to be installed (using `pip install matplotlib`).
+"""
 
 import time
 from dataclasses import dataclass

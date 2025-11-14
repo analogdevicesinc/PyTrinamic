@@ -2,8 +2,10 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""Demonstrates the velocity mode of the TMC5240"""
 
 import time
+
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5240_eval
 

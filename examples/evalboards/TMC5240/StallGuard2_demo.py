@@ -2,10 +2,11 @@
 # Copyright © 2023 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""
+"""Demonstrates the StallGuard2 feature of the TMC5240.
+
 Sets the StallGuard2 threshold such that the stall guard value (i.e SG value) is zero
 when the motor comes close to stall and also sets the stop on stall velocity to a value
-one less than the actual velocity of the motor
+one less than the actual velocity of the motor.
 """
 
 import time
@@ -15,37 +16,43 @@ from pytrinamic.evalboards.TMC5240_eval import TMC5240_eval
 
 
 def stallguard2_init(mc, eval_board, init_velocity):
+    """Auto configure the StallGuard2 parameters such that the motor stops when it stalls.
+
+    :param mc: The TMC5240 IC instance
+    :param eval_board: The TMC5240 evaluation board instance
+    :param init_velocity: The initial velocity to start the motor with given in µsteps per second
+
+    The real world init_velocity is a bit off due to the internal velocity scaling of the TMC5240.
+    """
     # Resetting SG2 threshold and stop on stall velocity to zero
     eval_board.write_register_field(mc.FIELD.SGT, 0)
     eval_board.write_register_field(mc.FIELD.SG_STOP, 0)
     eval_board.write_register(mc.REG.TCOOLTHRS, 0)
 
     print("Initial StallGuard2 values:")
-    print("Filter:", eval_board.read_register_field(mc.FIELD.SFILT))
-    print("Threshold:", eval_board.read_register_field(mc.FIELD.SGT))
-    print("stop_velocity:", eval_board.read_register_field(mc.FIELD.TCOOLTHRS))
+    print("  Filter:", eval_board.read_register_field(mc.FIELD.SFILT))
+    print("  Threshold:", eval_board.read_register_field(mc.FIELD.SGT))
+    print("  Stop Velocity:", eval_board.read_register_field(mc.FIELD.TCOOLTHRS))
 
     print("Rotating...")
     eval_board.write_register_field(mc.FIELD.RAMPMODE, 0x1)
-    # Start the velocity mode by specifying a target velocity of ~51200 steps per second.
     eval_board.write_register(mc.REG.VMAX, init_velocity)
     sgthresh = 0
     sgt = 0
-    load_samples = []
     while (sgt == 0) and (sgthresh < 64):
         load_samples = []
         eval_board.write_register_field(mc.FIELD.SGT, sgthresh)
         time.sleep(0.2)
         sgthresh += 1
-        for i in range(50):
+        for _ in range(50):
             load_samples.append(eval_board.read_register_field(mc.FIELD.SG_RESULT))
         if not any(load_samples):
             sgt = 0
         else:
             sgt = max(load_samples)
-    while 1:
+    while True:
         load_samples = []
-        for i in range(50):
+        for _ in range(50):
             load_samples.append(eval_board.read_register_field(mc.FIELD.SG_RESULT))
         if 0 in load_samples:
             eval_board.write_register_field(
@@ -60,9 +67,9 @@ def stallguard2_init(mc, eval_board, init_velocity):
     )
 
     print("Configured StallGuard2 parameters:")
-    print("Filter:", eval_board.read_register_field(mc.FIELD.SFILT))
-    print("Threshold:", eval_board.read_register_field(mc.FIELD.SGT))
-    print("stop_velocity:", eval_board.read_register_field(mc.FIELD.TCOOLTHRS))
+    print("  Filter:", eval_board.read_register_field(mc.FIELD.SFILT))
+    print("  Threshold:", eval_board.read_register_field(mc.FIELD.SGT))
+    print("  Stop Velocity:", eval_board.read_register_field(mc.FIELD.TCOOLTHRS))
 
 
 def main():
