@@ -58,34 +58,34 @@ class Sample:
 
 with ConnectionManager().connect() as my_interface:
     eval_board = TMC5240_eval(my_interface)
-    motor = eval_board.motors[0]
-    mc = eval_board.ics[0]
-
-    # Set current reference resistor to 12k via IREF_R2 and IREF_R3 on the eval board.
-    motor.set_axis_parameter(motor.AP.CurrentScalingSelector, 0)
+    tmc5240 = eval_board.ics[0]
 
     # Set the acceleration to 51200 µsteps per second squared
     # This will result in a ramp time of 1 second to reach 51200 µsteps per second.
     eval_board.write_register(
-        mc.REG.AMAX, acceleration_usteps_per_second_squared_to_internal(51200)
+        tmc5240.REG.AMAX, acceleration_usteps_per_second_squared_to_internal(51200)
     )
     # Set RAMPMODE to "Velocity mode to positive VMAX".
-    eval_board.write_register_field(mc.FIELD.RAMPMODE, 0x1)
+    eval_board.write_register_field(tmc5240.FIELD.RAMPMODE, 0x1)
 
     # Start the velocity mode by specifying a target velocity of 51200 µsteps per second.
     eval_board.write_register(
-        mc.REG.VMAX, velocity_usteps_per_second_to_internal(51200)
+        tmc5240.REG.VMAX, velocity_usteps_per_second_to_internal(51200)
     )
     timeout_timer = TimeoutTimer(2)
     samples = []
     while not timeout_timer.has_expired():
-        samples.append(Sample(time.time(), eval_board.read_register(mc.REG.VACTUAL)))
+        samples.append(
+            Sample(time.time(), eval_board.read_register(tmc5240.REG.VACTUAL))
+        )
 
     # Stop the motor by setting VMAX to 0
-    eval_board.write_register(mc.REG.VMAX, 0)
+    eval_board.write_register(tmc5240.REG.VMAX, 0)
     timeout_timer = TimeoutTimer(1)
     while not timeout_timer.has_expired():
-        samples.append(Sample(time.time(), eval_board.read_register(mc.REG.VACTUAL)))
+        samples.append(
+            Sample(time.time(), eval_board.read_register(tmc5240.REG.VACTUAL))
+        )
 
     fig, ax = plt.subplots()
     ax.plot(

@@ -77,11 +77,7 @@ class Record:
 
 with ConnectionManager().connect() as my_interface:
     eval_board = TMC5240_eval(my_interface)
-    motor = eval_board.motors[0]
-    mc = eval_board.ics[0]
-
-    # Set current reference resistor to 12k via IREF_R2 and IREF_R3 on the eval board.
-    motor.set_axis_parameter(motor.AP.CurrentScalingSelector, 0)
+    tmc5240 = eval_board.ics[0]
 
     if number_of_ramp_points == 4:
         ramp_config = RampConfig(a1=51200, a2=0, amax=0, v1=51200, v2=51200, vmax=51200)
@@ -97,54 +93,62 @@ with ConnectionManager().connect() as my_interface:
         raise ValueError("Invalid number of ramp points")
 
     eval_board.write_register(
-        mc.REG.A1, acceleration_usteps_per_second_squared_to_internal(ramp_config.a1)
+        tmc5240.REG.A1,
+        acceleration_usteps_per_second_squared_to_internal(ramp_config.a1),
     )
     eval_board.write_register(
-        mc.REG.A2, acceleration_usteps_per_second_squared_to_internal(ramp_config.a2)
+        tmc5240.REG.A2,
+        acceleration_usteps_per_second_squared_to_internal(ramp_config.a2),
     )
     eval_board.write_register(
-        mc.REG.AMAX,
+        tmc5240.REG.AMAX,
         acceleration_usteps_per_second_squared_to_internal(ramp_config.amax),
     )
     eval_board.write_register(
-        mc.REG.D1, acceleration_usteps_per_second_squared_to_internal(ramp_config.a1)
+        tmc5240.REG.D1,
+        acceleration_usteps_per_second_squared_to_internal(ramp_config.a1),
     )
     eval_board.write_register(
-        mc.REG.D2, acceleration_usteps_per_second_squared_to_internal(ramp_config.a2)
+        tmc5240.REG.D2,
+        acceleration_usteps_per_second_squared_to_internal(ramp_config.a2),
     )
     eval_board.write_register(
-        mc.REG.DMAX,
+        tmc5240.REG.DMAX,
         acceleration_usteps_per_second_squared_to_internal(ramp_config.amax),
     )
     eval_board.write_register(
-        mc.REG.V1, velocity_usteps_per_second_to_internal(ramp_config.v1)
+        tmc5240.REG.V1, velocity_usteps_per_second_to_internal(ramp_config.v1)
     )
     eval_board.write_register(
-        mc.REG.V2, velocity_usteps_per_second_to_internal(ramp_config.v2)
+        tmc5240.REG.V2, velocity_usteps_per_second_to_internal(ramp_config.v2)
     )
     eval_board.write_register(
-        mc.REG.VMAX, velocity_usteps_per_second_to_internal(ramp_config.vmax)
+        tmc5240.REG.VMAX, velocity_usteps_per_second_to_internal(ramp_config.vmax)
     )
 
     # Set RAMPMODE to "Positioning mode".
-    eval_board.write_register_field(mc.FIELD.RAMPMODE, 0x0)
+    eval_board.write_register_field(tmc5240.FIELD.RAMPMODE, 0x0)
 
     # Clear the actual position to have a known starting point.
-    eval_board.write_register(mc.REG.XACTUAL, 0)
+    eval_board.write_register(tmc5240.REG.XACTUAL, 0)
 
     # Start the position mode by specifying a target position of 2 * 51200 µsteps.
     # With a 200 steps/rev motor and 256 microsteps this is 2 revolutions.
-    eval_board.write_register(mc.REG.XTARGET, 2 * 51200)
+    eval_board.write_register(tmc5240.REG.XTARGET, 2 * 51200)
     timeout_timer = TimeoutTimer(10)
     samples: List[Record] = []
     while (
-        not eval_board.read_register_field(mc.FIELD.POSITION_REACHED)
+        not eval_board.read_register_field(tmc5240.FIELD.POSITION_REACHED)
         and not timeout_timer.has_expired()
     ):
         samples.append(
             Record(
-                vactual=Sample(time.time(), eval_board.read_register(mc.REG.VACTUAL)),
-                xactual=Sample(time.time(), eval_board.read_register(mc.REG.XACTUAL)),
+                vactual=Sample(
+                    time.time(), eval_board.read_register(tmc5240.REG.VACTUAL)
+                ),
+                xactual=Sample(
+                    time.time(), eval_board.read_register(tmc5240.REG.XACTUAL)
+                ),
             )
         )
 
