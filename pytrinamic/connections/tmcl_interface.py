@@ -225,6 +225,9 @@ class TmclInterface(ABC):
     def store_axis_parameter(self, index, axis, module_id=None, index_bit_width=None):
         return self._send_ap_cmd(TMCLCommand.STAP, index, axis, 0, module_id, index_bit_width).value
 
+    def restore_axis_parameter(self, index, axis, module_id=None, index_bit_width=None):
+        return self._send_ap_cmd(TMCLCommand.RSAP, index, axis, 0, module_id, index_bit_width).value
+
     def set_and_store_axis_parameter(self, index, axis, value, module_id=None, index_bit_width=None):
         self._send_ap_cmd(TMCLCommand.SAP, index, axis, value, module_id, index_bit_width)
         self._send_ap_cmd(TMCLCommand.STAP, index, axis, 0, module_id, index_bit_width)
