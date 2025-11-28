@@ -82,6 +82,12 @@ class TMCLModule(object):
         """
         return self.connection.get_axis_parameter(ap_type, axis, self.module_id, signed, self.ap_index_bit_width)
 
+    def store_axis_parameter(self, ap_type, axis):
+        self.connection.store_axis_parameter(ap_type, axis, self.module_id, self.ap_index_bit_width)
+
+    def restore_axis_parameter(self, ap_type, axis):
+        return self.connection.restore_axis_parameter(ap_type, axis, self.module_id, self.ap_index_bit_width)
+
     def set_global_parameter(self, gp_type, bank, value):
         """
         Sets the global parameter on this module identified by type to the given value.
