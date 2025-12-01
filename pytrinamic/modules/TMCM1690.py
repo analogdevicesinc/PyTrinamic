@@ -68,7 +68,7 @@ class TMCM1690(TMCLModule):
         def set_target_current(self, value):
             return self.set_axis_parameter(self.AP.TargetTorque, value)
 
-        def set_target_current(self):
+        def get_actual_current(self):
             return self.get_axis_parameter(self.AP.ActualTorque, signed=True)
 
         class AP:
@@ -76,18 +76,11 @@ class TMCM1690(TMCLModule):
             MotorFamily                     = 1
             MotorPolePairs                  = 2
             MotorPolePairDistance           = 3
-            MotorNominalCurrent             = 4
-            MotorPeakCurrent                = 5
-            MotorLineToLineResistance       = 6
-            MotorLineToLineInductance       = 7
-            MotorTorqueConstant             = 8
-            MotorInertia                    = 9
             
             RampType                        = 11
             MotorDirection                  = 12
             CommutationMode                 = 13
             Peripherals                     = 14
-            CurrentSensorSelection          = 15
             MaxTorque                       = 16
             PWMScheme                       = 17
             PWMFrequency                    = 18
@@ -307,16 +300,6 @@ class TMCM1690(TMCLModule):
             PWMLoopsPerSecond               = 241
             TorqueLoopsPerSecond            = 242
             VelocityLoopsPerSecond          = 243
-            DebugValue0                     = 244
-            DebugValue1                     = 245
-            DebugValue2                     = 246
-            DebugValue3                     = 247
-            DebugValue4                     = 248
-            DebugValue5                     = 249
-            DebugValue6                     = 250
-            DebugValue7                     = 251
-            DebugValue8                     = 252
-            DebugValue9                     = 253
             
             ReinitBLDCRegulation            = 254
             EnableDriver                    = 255
@@ -335,6 +318,13 @@ class TMCM1690(TMCLModule):
             LinearVelocityOffset            = 271
             LinearSwitchOverVelocity        = 272
             LinearCatchUpVelocity           = 273
+
+            LinearHomingFastVelocity        = 280
+            LinearHomingSlowVelocity        = 281
+            LinearHomingPositionOffsetCW    = 282
+            LinearHomingPositionOffsetCCW   = 283
+            LinearHomingMinPositionLim      = 284
+            LinearHomingMaxPositionLim      = 285
 
         class ENUM:
             COMM_MODE_DISABLED              = 0
