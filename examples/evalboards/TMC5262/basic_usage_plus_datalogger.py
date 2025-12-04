@@ -21,7 +21,6 @@ except ImportError:
 
 
 with ConnectionManager().connect() as my_interface:
-
     tmc5262_eval = TMC5262_eval(my_interface)
     dl = DataLogger(my_interface)
 
@@ -34,7 +33,7 @@ with ConnectionManager().connect() as my_interface:
     tmc5262_eval.write(TMC5262.REGMAP.DMAX, 100)
 
     # Set the ramp mode to velocity mode
-    tmc5262_eval.write(TMC5262.REGMAP.RAMPMODE.RAMPMODE.choice['VEL_POS'])
+    tmc5262_eval.write(TMC5262.REGMAP.RAMPMODE.RAMPMODE.choice.VEL_POS)
 
     dl.config.samples_per_channel = 512
     dl.config.sample_rate_hz = 1000

@@ -2,7 +2,11 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""Example on how to use TMC2262-EVAL."""
+"""Example on how to use TMC2262-EVAL.
+
+Please note that the Landungsbruecke firmware presets some registers on startup!
+To actually operate a motor with the TMC2262, some more configuration might be necessary.
+"""
 
 import time
 
@@ -13,13 +17,15 @@ from pytrinamic.evalboards import TMC2262_eval
 
 
 with ConnectionManager().connect() as my_interface:
-
     tmc2262_eval = TMC2262_eval(my_interface)
     motor = tmc2262_eval.motors[0]
 
     # Reduce the current
     tmc2262_eval.write(TMC2262.REGMAP.IHOLD_IRUN.IHOLD, 10)
     tmc2262_eval.write(TMC2262.REGMAP.IHOLD_IRUN.IRUN, 64)
+
+    # Set microstepping to 256 microsteps per full step -> this means 51200 steps per revolution for a 200 steps/rev motor
+    tmc2262_eval.write(TMC2262.REGMAP.CHOPCONF.MRES.choice.RES_256)
 
     # Let the Landungsbruecke generate some STEP pulses
     # Set the STEP pulses acceleration and deceleration to 20,000 steps/s^2

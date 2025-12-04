@@ -2,7 +2,11 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
-"""Example on how to use TMC5262-EVAL."""
+"""Example on how to use TMC5262-EVAL.
+
+Please note that the Landungsbruecke firmware presets some registers on startup!
+To actually operate a motor with the TMC5262, some more configuration might be necessary.
+"""
 
 import time
 
@@ -13,7 +17,6 @@ from pytrinamic.evalboards import TMC5262_eval
 
 
 with ConnectionManager().connect() as my_interface:
-
     tmc5262_eval = TMC5262_eval(my_interface)
 
     # Reduce the current
@@ -25,7 +28,7 @@ with ConnectionManager().connect() as my_interface:
     tmc5262_eval.write(TMC5262.REGMAP.DMAX, 100)
 
     # Set the ramp mode to velocity mode
-    tmc5262_eval.write(TMC5262.REGMAP.RAMPMODE.RAMPMODE.choice['VEL_POS'])
+    tmc5262_eval.write(TMC5262.REGMAP.RAMPMODE.RAMPMODE.choice.VEL_POS)
 
     # Start the motor - setting the target velocity to 51200 steps/s
     tmc5262_eval.write(TMC5262.REGMAP.VMAX, 51200)
