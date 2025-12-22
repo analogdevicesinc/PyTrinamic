@@ -1,10 +1,8 @@
-
 ################################################################################
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
 """Implementation of TMC2262-EVAL"""
-
 
 from pytrinamic.evalboards import TMCLEval
 from pytrinamic.ic import TMC2262
@@ -30,9 +28,9 @@ class TMC2262_eval(TMCLEval, RegisterApiDevice):
             TMCLCommand.WRITE_DRV,
             block,
             value,
-            module_id=self._module_id
+            module_id=self._module_id,
         )
- 
+
     def read_register(self, register_address, block, signed=False):
         """Implementation of the RegisterApiDevice::read_register() function."""
         return self._connection.read_register(
@@ -42,7 +40,7 @@ class TMC2262_eval(TMCLEval, RegisterApiDevice):
             module_id=self._module_id,
             signed=signed,
         )
-    
+
     class _MotorTypeA(MotorControlModule):
         def __init__(self, eval_board, axis):
             MotorControlModule.__init__(self, eval_board, axis, self.AP)
