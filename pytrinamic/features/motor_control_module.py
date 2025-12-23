@@ -124,7 +124,7 @@ class MotorControlModule(MotorControl):
 
         Returns: Status flags.
         """
-        return self._parent.get_axis_parameter(self._aps.StatusFlags)
+        return self.get_axis_parameter(self._aps.StatusFlags)
 
     def get_error_flags(self):
         """
@@ -132,7 +132,7 @@ class MotorControlModule(MotorControl):
 
         Returns: Error flags.
         """
-        return self._parent.get_axis_parameter(self._aps.ErrorFlags)
+        return self.get_axis_parameter(self._aps.ErrorFlags)
 
     # Properties
     target_position = property(get_target_position, set_target_position)
