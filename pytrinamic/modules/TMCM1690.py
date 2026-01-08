@@ -192,6 +192,7 @@ class TMCM1690(TMCLModule):
             IITLimit2                       = 122
             IITSum2                         = 123
             IITClearIITExceedFlags          = 124
+            IITActualTotalMotorCurrent      = 125
             
             VelocityWindow                  = 126
             ClearVelocityWindowFlag         = 127
@@ -215,50 +216,47 @@ class TMCM1690(TMCLModule):
             HomingMaxPositionLim            = 145
             HomingTeachLim                  = 146
             
-            FilterTargetTorType             = 148
-            FilterTargetTorAverageFilterSize= 149
-            FilterTargetTorBiquadA1         = 150
-            FilterTargetTorBiquadA2         = 151
-            FilterTargetTorBiquadB0         = 152
-            FilterTargetTorBiquadB1         = 153
-            FilterTargetTorBiquadB2         = 154
-            FilterTargetTorReservedPlace    = 155
-            
-            FilterActualTorType             = 156
-            FilterActualTorAverageFilterSize= 157
+            FilterTargetTorType             = 147
+            FilterActualTorType             = 148
+            FilterTargetVelType             = 149
+            FilterActualVelType             = 150
+            FilterTargetPosType             = 151
+
+            FilterTargetTorAverageFilterSize= 152
+            FilterActualTorAverageFilterSize= 153
+            FilterTargetVelAverageFilterSize= 154
+            FilterActualVelAverageFilterSize= 155
+            FilterTargetPosAverageFilterSize= 156
+
+            FilterTargetTorBiquadA1         = 157
             FilterActualTorBiquadA1         = 158
-            FilterActualTorBiquadA2         = 159
-            FilterActualTorBiquadB0         = 160
-            FilterActualTorBiquadB1         = 161
-            FilterActualTorBiquadB2         = 162
-            FilterActualTorReservedPlace    = 163
-            
-            FilterTargetVelType             = 164
-            FilterTargetVelAverageFilterSize= 165
-            FilterTargetVelBiquadA1         = 166
-            FilterTargetVelBiquadA2         = 167
-            FilterTargetVelBiquadB0         = 168
-            FilterTargetVelBiquadB1         = 169
-            FilterTargetVelBiquadB2         = 170
-            FilterTargetVelReservedPlace    = 171
-            
-            FilterActualVelType             = 172
-            FilterActualVelAverageFilterSize= 173
-            FilterActualVelBiquadA1         = 174
-            FilterActualVelBiquadA2         = 175
-            FilterActualVelBiquadB0         = 176
-            FilterActualVelBiquadB1         = 177
-            FilterActualVelBiquadB2         = 178
-            FilterActualVelReservedPlace    = 179
-            
-            FilterTargetPosType             = 180
-            FilterTargetPosAverageFilterSize= 181
-            FilterTargetPosBiquadA1         = 182
-            FilterTargetPosBiquadA2         = 183
-            FilterTargetPosBiquadB0         = 184
-            FilterTargetPosBiquadB1         = 185
-            FilterTargetPosBiquadB2         = 186
-            FilterTargetPosReservedPlace    = 187
+            FilterTargetVelBiquadA1         = 159
+            FilterActualVelBiquadA1         = 160
+            FilterTargetPosBiquadA1         = 161
+
+            FilterTargetTorBiquadA2         = 162
+            FilterActualTorBiquadA2         = 163
+            FilterTargetVelBiquadA2         = 164
+            FilterActualVelBiquadA2         = 165
+            FilterTargetPosBiquadA2         = 166
+
+            FilterTargetTorBiquadB0         = 167
+            FilterActualTorBiquadB0         = 168
+            FilterTargetVelBiquadB0         = 169
+            FilterActualVelBiquadB0         = 170
+            FilterTargetPosBiquadB0         = 171
+
+            FilterTargetTorBiquadB1         = 172
+            FilterActualTorBiquadB1         = 173
+            FilterTargetVelBiquadB1         = 174
+            FilterActualVelBiquadB1         = 175
+            FilterTargetPosBiquadB1         = 176
+
+            FilterTargetTorBiquadB2         = 177
+            FilterActualTorBiquadB2         = 178
+            FilterTargetVelBiquadB2         = 179
+            FilterActualVelBiquadB2         = 180
+            FilterTargetPosBiquadB2         = 181
             
             ReleaseBrake                    = 188
             BrakeReleasingDutyCycle         = 189
