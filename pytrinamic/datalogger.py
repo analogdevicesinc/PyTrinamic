@@ -23,6 +23,7 @@ from pytrinamic.rd import Rd
 from pytrinamic.modules.tmcl_module import ParameterGroup, Parameter
 from pytrinamic.ic.tmc_ic import Register, Field
 from pytrinamic.helpers import to_signed_32
+import time
 
 
 class DataLoggerConfigError(Exception):
@@ -36,6 +37,7 @@ class DataLogger:
         base_frequency_hz: int
         sample_buffer_length: int
         number_of_channels: int
+        max_samples_per_second: int = None
 
     class DataType:
         def __init__(self, signed=False):
@@ -186,20 +188,26 @@ class DataLogger:
         down_sampling_factor: Optional[int] = None
         sample_rate_hz: Optional[float] = None
         allow_sample_rate_round_down: bool = False
+        allow_communication_rate_adaptation: bool = False
         trigger: Optional[Trigger] = None
 
-        def set_sample_rate(self, rate_hz: float, *, round_down=False) -> None:
+        def set_sample_rate(self, rate_hz: float, *, round_down=False, allow_communication_adaptation=False) -> None:
             """
             Sets the sampling rate of the data logger.
 
             If round_down is set, this will round down to the nearest valid
             frequency. Otherwise, it will a DataLoggerConfigError for any
             frequency that cannot be exactly represented.
+            
+            If allow_communication_adaptation is set, the downsampling factor will be
+            automatically increased if the requested rate exceeds the communication
+            speed limit.
 
             This function returns the sample rate set.
             """
             self.sample_rate_hz = rate_hz
             self.allow_sample_rate_round_down = round_down
+            self.allow_communication_rate_adaptation = allow_communication_adaptation
 
     @dataclass
     class _RequestEntry:
@@ -212,6 +220,7 @@ class DataLogger:
         self.config = DataLogger.Config(
             samples_per_channel=0,
             log_data=None,
+            allow_communication_rate_adaptation=False,
             trigger=DataLogger.Config.Trigger(
                 on_data=None,
                 threshold=None,
@@ -234,12 +243,24 @@ class DataLogger:
         self._pretrigger_samples_per_channel = 0
 
     def get_info(self) -> DataLogger.Info:
+        # Try to get max samples per second (case 4), but handle backwards compatibility
+        max_samples_per_second = None
+        try:
+            max_samples_per_second = self.rd.get_info(Rd.Info.MAX_SAMPLES_PER_SECOND)
+            if max_samples_per_second == -1:
+                max_samples_per_second = None
+        except Exception:
+            # Case 4 not supported in this firmware version, leave as None.
+            # ToDo add warning as soon as most FWs support it
+            pass
+
         return DataLogger.Info(
             base_frequency_hz=self.rd.get_info(Rd.Info.SAMPLING_FREQUENCY),
             sample_buffer_length=self.rd.get_info(Rd.Info.BUFFER_ELEMENTS),
             number_of_channels=self.rd.get_info(Rd.Info.MAX_CHANNELS),
+            max_samples_per_second=max_samples_per_second,
         )
-    
+
     def get_possible_sample_rates(self) -> List[float]:
         base_frequency_hz = self._get_base_frequency_hz()
         return [frequency for _, frequency in self._get_possible_sample_rates(base_frequency_hz)]
@@ -396,6 +417,32 @@ class DataLogger:
             raise DataLoggerConfigError("Exceeding number of channels!")
         if self._total_number_of_samples > self._info.sample_buffer_length:
             raise DataLoggerConfigError(f"`config.samples_per_channel` exceeds sample buffer length! You can use {math.floor(self._info.sample_buffer_length/self._channels_used_count)} at max.")
+        
+        # Check if the requested sampling rate exceeds the communication speed limit
+        if self._info.max_samples_per_second is not None:
+            effective_sample_rate = (self._info.base_frequency_hz / self._down_sampling_factor) * self._channels_used_count
+            if effective_sample_rate > self._info.max_samples_per_second:
+                max_allowed_frequency_per_channel = self._info.max_samples_per_second / self._channels_used_count
+                min_required_downsampling = math.ceil(self._info.base_frequency_hz / max_allowed_frequency_per_channel)
+                
+                if self.config.allow_communication_rate_adaptation:
+                    # Automatically adapt the downsampling factor to meet communication limits
+                    old_downsampling = self._down_sampling_factor
+                    self._down_sampling_factor = min_required_downsampling
+                    new_effective_rate = (self._info.base_frequency_hz / self._down_sampling_factor) * self._channels_used_count
+                    warnings.warn(
+                        f"Automatically adapted downsampling factor from {old_downsampling} to {self._down_sampling_factor} "
+                        f"to meet communication speed limit. Effective sample rate reduced from {effective_sample_rate:.1f} "
+                        f"to {new_effective_rate:.1f} samples/s."
+                    )
+                else:
+                    raise DataLoggerConfigError(
+                        f"Requested sampling rate ({effective_sample_rate:.1f} samples/s) exceeds communication speed limit "
+                        f"({self._info.max_samples_per_second} samples/s). "
+                        f"With {self._channels_used_count} channels, use down_sampling_factor >= {min_required_downsampling} "
+                        f"or sample_rate_hz <= {max_allowed_frequency_per_channel:.1f} Hz per channel. "
+                        f"Alternatively, set allow_communication_rate_adaptation=True for automatic adjustment."
+                    )
         self.rd.init()
         self.rd.set_sample_count(self._total_number_of_samples)
         self.rd.set_prescaler(self._down_sampling_factor-1)
@@ -444,9 +491,18 @@ class DataLogger:
     def is_capture_complete(self) -> bool:
         return self.rd.get_state() == Rd.State.COMPLETE
     
-    def wait_for_capture_completion(self) -> None:
-        while not self.is_capture_complete():
-            pass
+    def wait_for_capture_completion(self, timeout: Optional[float] = None) -> None:
+        start_time = time.time() if timeout is not None else None
+        
+        while True:
+            state = self.rd.get_state()
+            if state == Rd.State.COMPLETE:
+                break
+            elif state == Rd.State.ERROR:
+                raise RuntimeError("DataLogger capture error occurred!")
+            
+            if timeout is not None and time.time() - start_time > timeout:
+                raise TimeoutError(f"Capture completion timeout after {timeout} seconds")
 
     def is_triggered(self) -> bool:
         """

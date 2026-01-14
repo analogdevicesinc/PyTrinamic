@@ -21,10 +21,11 @@ class Rd:
         GLOBAL_PARAMETER   = 8
 
     class Info(IntEnum):
-        MAX_CHANNELS       = 0
-        BUFFER_ELEMENTS    = 1
-        SAMPLING_FREQUENCY = 2
-        CAPTURED_SAMPLES   = 3    
+        MAX_CHANNELS           = 0
+        BUFFER_ELEMENTS        = 1
+        SAMPLING_FREQUENCY     = 2
+        CAPTURED_SAMPLES       = 3
+        MAX_SAMPLES_PER_SECOND = 4
 
     class Trigger(IntEnum):
         UNCONDITIONAL         = 0
@@ -74,6 +75,7 @@ class Rd:
         CAPTURE        = 2
         COMPLETE       = 3
         PRETRIGGER     = 4
+        ERROR          = 5
     
     def __init__(self, connection, module_id):
         self._connection = connection
