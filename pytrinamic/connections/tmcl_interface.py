@@ -100,7 +100,7 @@ class TmclInterface(ABC):
         """
         pass
 
-    def send_request(self, request, *, no_reply=False):
+    def send_request(self, request, *, no_reply=False) -> TMCLReply | None:
         """
         Send a TMCL_Request and read back a TMCL_Reply. This function blocks until
         the reply has been received.
@@ -128,7 +128,7 @@ class TmclInterface(ABC):
 
         return reply
 
-    def send(self, opcode, op_type, motor, value, module_id=None, *, no_reply=False):
+    def send(self, opcode, op_type, motor, value, module_id=None, *, no_reply=False) -> TMCLReply | None:
         """
         Send a TMCL datagram and read back a reply. This function blocks until
         the reply has been received.

@@ -265,9 +265,6 @@ class TMCLReply:
             self.checksum,
         )
 
-    def value(self):
-        return self.value
-
     def is_valid(self):
         return self.status == TMCLStatus.SUCCESS
 
