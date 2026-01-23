@@ -8,8 +8,10 @@
 
 import logging
 import warnings
+import inspect
+from typing import Literal, overload
 from abc import ABC
-from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError
+from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError, GetInfo
 from ..helpers import to_signed_32
 
 
@@ -173,6 +175,62 @@ class TmclInterface(ABC):
             return exc.reply.version_string()
         else:
             return reply.version_string()
+
+    @overload
+    def get_info(self, entry: Literal["APIndexBitWidth"], motor=0, module_id=None) -> GetInfo.APIndexBitWidth: ...
+
+    @overload
+    def get_info(self, entry: Literal["BLModuleIDCompatible"], motor=0, module_id=None) -> GetInfo.BLModuleIDCompatible: ...
+    
+    @overload
+    def get_info(self, entry: Literal["BLVersionInstalled"], motor=0, module_id=None) -> GetInfo.BLVersionInstalled: ...
+    
+    @overload
+    def get_info(self, entry: Literal["FWCapability"], motor=0, module_id=None) -> GetInfo.FWCapability: ...
+    
+    @overload
+    def get_info(self, entry: Literal["FWModuleID"], motor=0, module_id=None) -> GetInfo.FWModuleID: ...
+    
+    @overload
+    def get_info(self, entry: Literal["FWReleaseType"], motor=0, module_id=None) -> GetInfo.FWReleaseType: ...
+    
+    @overload
+    def get_info(self, entry: Literal["FWVersion"], motor=0, module_id=None) -> GetInfo.FWVersion: ...
+    
+    @overload
+    def get_info(self, entry: Literal["GitHash"], motor=0, module_id=None) -> GetInfo.GitHash: ...
+    
+    @overload
+    def get_info(self, entry: Literal["RegAddrBitWidth"], motor=0, module_id=None) -> GetInfo.RegAddrBitWidth: ...
+
+    def get_info(self, entry, motor=0, module_id=None):
+        """
+        Read out a TMCL products info entries via the GetInfo command.
+
+        The overloaded function signatures define help for the type checker and autocomplete.
+        
+        :param entry: The entry ID of the info entry to read.
+        :param motor: Optional motor number for the RegAddrBitWidth entry.
+        :param module_id: Optional module ID to specify the target module address.
+        """
+    
+        entry_class = None
+        # Find the corresponding entry class from GetInfo.
+        for name, member in inspect.getmembers(GetInfo):
+            if name.startswith("__"):
+                continue
+            if name == entry:
+                entry_class = member
+                break
+        else:
+            raise ValueError(f"Unknown info entry '{entry}' requested!")
+
+        reply = self.send(TMCLCommand.GET_INFO, entry_class._op_type, motor, 0, module_id=module_id)
+
+        if reply is None:
+            raise RuntimeError("Catch this to make the type checker happy.")
+        
+        return entry_class(reply.value)
 
     # General parameter access functions
     def get_parameter(self, p_command, p_type, p_axis, p_value, module_id=None, signed=False):
