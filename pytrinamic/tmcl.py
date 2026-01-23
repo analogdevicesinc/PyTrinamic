@@ -330,3 +330,64 @@ class TMCLReplyStatusError(TMCLReplyError):
 
     def __str__(self):
         return textwrap.indent("\n" + self.reply.detailed_str_repr(), "    ")
+
+
+class GetInfo:
+    """Basically a namespace for the different GetInfo entries."""
+
+    class FWModuleID:
+        _op_type = 0
+        def __init__(self, value):
+            self.value = value
+    
+    class FWVersion:
+        _op_type = 1
+        def __init__(self, value):
+            self.major = (value >> 16) & 0xFFFF
+            self.minor = (value >> 0) & 0xFFFF
+
+    class FWCapability:
+        _op_type = 2
+        def __init__(self, value):
+            self.bitfield = {
+                "Bootloader": bool(value & 0x01),
+                "TMCL": bool(value & 0x02),
+                "CANopen": bool(value & 0x04),
+                "EtherCAT": bool(value & 0x08),
+                "IO-Link": bool(value & 0x10),
+            }
+
+    class FWReleaseType:
+        _op_type = 3
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return {0: "Public", 1: "Internal", 2: "Custom", 3: "Local"}[self.value]
+
+    class BLModuleIDCompatible:
+        _op_type = 10
+        def __init__(self, value):
+            self.value = value
+
+    class BLVersionInstalled:
+        _op_type = 11
+        def __init__(self, value):
+            self.major = (value >> 16) & 0xFFFF
+            self.minor = (value >> 0) & 0xFFFF
+
+    class APIndexBitWidth:
+        _op_type = 20
+        def __init__(self, value):
+            self.value = value
+
+    class RegAddrBitWidth:
+        _op_type = 21
+        def __init__(self, value):
+            self.value = value
+
+    class GitHash:
+        _op_type = 30
+        def __init__(self, value):
+            self.hash = (value >> 0) & 0xFFFFFFF
+            self.dirty_flag = (value >> 28) & 0x1
