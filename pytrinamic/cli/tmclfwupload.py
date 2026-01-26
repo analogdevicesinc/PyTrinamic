@@ -18,6 +18,7 @@ import serial
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.connections import UsbTmclInterface, CanTmclInterface
+from pytrinamic.connections.tmcl_interface import TmclInterface
 from pytrinamic.tmcl import TMCLCommand
 
 # Timeout in seconds for reconnecting to the module after sending the TMCL_BOOT
@@ -63,7 +64,18 @@ def main(cmd_line_args=None):
     return firmware_update(connection_manager.connect(), args.hex_file)
 
 
-def firmware_update(iface, hex_file):
+def _is_device_in_bootloader_mode(iface: TmclInterface):
+    try:
+        version_string = iface.get_version_string().upper()
+        # If the version string is something like "1234B567" we are in bootloader mode.
+        return "B" in version_string
+    except UnicodeDecodeError:
+        # The firmware returned invalid data we assume the firmware does not support the string version of the GetInfo command.
+        # In this case we check the FWCapability entry.
+        return iface.get_info("FWCapability").bitfield["Bootloader"]
+
+
+def firmware_update(iface: TmclInterface, hex_file):
 
     ############################### Hex file parsing ###############################
     print("Opening hex file (" + hex_file + ")")
@@ -97,7 +109,7 @@ def firmware_update(iface, hex_file):
     # Connect to the evaluation board
 
     # If not already in bootloader, enter it
-    if not "B" in iface.get_version_string().upper():
+    if not _is_device_in_bootloader_mode(iface):
         # Send the boot command
         print("Switching to bootloader mode")
         iface.send_boot(1)
