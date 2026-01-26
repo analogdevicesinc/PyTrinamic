@@ -337,17 +337,23 @@ class GetInfo:
 
     class FWModuleID:
         _op_type = 0
+        _is_mandatory = True
+
         def __init__(self, value):
             self.value = value
-    
+
     class FWVersion:
         _op_type = 1
+        _is_mandatory = True
+
         def __init__(self, value):
             self.major = (value >> 16) & 0xFFFF
             self.minor = (value >> 0) & 0xFFFF
 
     class FWCapability:
         _op_type = 2
+        _is_mandatory = True
+
         def __init__(self, value):
             self.bitfield = {
                 "Bootloader": bool(value & 0x01),
@@ -359,6 +365,8 @@ class GetInfo:
 
     class FWReleaseType:
         _op_type = 3
+        _is_mandatory = True
+
         def __init__(self, value):
             self.value = value
 
@@ -367,27 +375,58 @@ class GetInfo:
 
     class BLModuleIDCompatible:
         _op_type = 10
+        _is_mandatory = False
+
         def __init__(self, value):
             self.value = value
 
     class BLVersionInstalled:
         _op_type = 11
+        _is_mandatory = False
+
         def __init__(self, value):
             self.major = (value >> 16) & 0xFFFF
             self.minor = (value >> 0) & 0xFFFF
 
     class APIndexBitWidth:
         _op_type = 20
+        _is_mandatory = False
+
         def __init__(self, value):
             self.value = value
 
     class RegAddrBitWidth:
         _op_type = 21
+        _is_mandatory = False
+
         def __init__(self, value):
             self.value = value
 
     class GitHash:
         _op_type = 30
+        _is_mandatory = True
+
         def __init__(self, value):
             self.hash = (value >> 0) & 0xFFFFFFF
             self.dirty_flag = (value >> 28) & 0x1
+
+
+class GetInfoNotAvailableError(Exception):
+    def __str__(self):
+        return "The GetInfo command is not supported in this firmware revision!"
+    
+class GetInfoRequestError(Exception):
+    def __init__(self, tmcl_error: TMCLReplyStatusError):
+        self.tmcl_error = tmcl_error
+
+    def __str__(self):
+        error_msg = f"""\
+            GetInfo request failed:
+                Status Code: {self.tmcl_error.status_code}
+                Description: {self.tmcl_error.error_description}
+                
+            The device was unable to provide the requested information.
+            Probably the current firmware revision misses the requested entry.
+
+        """
+        return textwrap.dedent(error_msg)

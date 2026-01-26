@@ -11,7 +11,7 @@ import warnings
 import inspect
 from typing import Literal, overload
 from abc import ABC
-from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError, GetInfo
+from ..tmcl import TMCL, TMCLRequest, TMCLCommand, TMCLStatus, TMCLReply, TMCLReplyChecksumError, TMCLReplyStatusError, GetInfo, GetInfoNotAvailableError, GetInfoRequestError
 from ..helpers import to_signed_32
 
 
@@ -212,6 +212,8 @@ class TmclInterface(ABC):
         :param entry: The entry ID of the info entry to read.
         :param motor: Optional motor number for the RegAddrBitWidth entry.
         :param module_id: Optional module ID to specify the target module address.
+
+        .. version-added:: 0.2.21
         """
     
         entry_class = None
@@ -225,7 +227,13 @@ class TmclInterface(ABC):
         else:
             raise ValueError(f"Unknown info entry '{entry}' requested!")
 
-        reply = self.send(TMCLCommand.GET_INFO, entry_class._op_type, motor, 0, module_id=module_id)
+        try:
+            reply = self.send(TMCLCommand.GET_INFO, entry_class._op_type, motor, 0, module_id=module_id)
+        except TMCLReplyStatusError as exc:
+            if exc.status_code == TMCLStatus.COMMAND_NOT_AVAILABLE:
+                raise GetInfoNotAvailableError() from exc
+            else:
+                raise GetInfoRequestError(exc) from exc
 
         if reply is None:
             raise RuntimeError("Catch this to make the type checker happy.")
