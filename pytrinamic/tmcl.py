@@ -30,11 +30,7 @@ class TMCL:
 
     @staticmethod
     def calculate_checksum(data):
-        checksum = 0
-        for d in data:
-            checksum += d
-        checksum &= 0xFF
-        return checksum
+        return sum(data) & 0xFF
 
 
 class TMCLCommand:
@@ -128,13 +124,24 @@ class TMCLCommand:
     BOOT_WRITE_LENGTH          = 208
     BOOT                       = 242
 
+    # Optimized lookup table - built once at class load
+    _NAME_LOOKUP = None
+
+    @classmethod
+    def _build_lookup_table(cls):
+        """Build reverse lookup table once for first access"""
+        if cls._NAME_LOOKUP is None:
+            cls._NAME_LOOKUP = {}
+            for name, value in cls.__dict__.items():
+                if (not name.startswith('_') and
+                    isinstance(value, int)):
+                    cls._NAME_LOOKUP[value] = name
+
     @classmethod
     def get_name(cls, value):
-        for name, member in inspect.getmembers(cls):
-            if not name.startswith("__") and member == value:
-                return name
-        else:
-            return "UNKNOWN"
+        if cls._NAME_LOOKUP is None:
+            cls._build_lookup_table()
+        return cls._NAME_LOOKUP.get(value, "UNKNOWN")
 
 
 class TMCLStatus:
