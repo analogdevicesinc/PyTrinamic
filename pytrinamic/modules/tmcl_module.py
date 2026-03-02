@@ -113,6 +113,12 @@ class TMCLModule(object):
         """
         return self.connection.get_global_parameter(gp_type, bank, self.module_id, signed)
 
+    def store_global_parameter(self, gp_type, bank):
+        self.connection.store_global_parameter(gp_type, bank, self.module_id)
+
+    def restore_global_parameter(self, gp_type, bank):
+        self.connection.restore_global_parameter(gp_type, bank, self.module_id)
+
     def get_analog_input(self, x):
         """
         Gets the analog input value identified by index x.
