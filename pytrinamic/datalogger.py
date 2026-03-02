@@ -535,12 +535,13 @@ class DataLogger:
 
         self.wait_for_capture_completion()
 
+    @dataclass
+    class _EffectiveDataSet:
+        name: str
+        datatype: DataLogger.DataType
+        samples: list
+
     def download_log_step(self) -> bool:
-        @dataclass
-        class EffectiveDataSet:
-            name: str
-            datatype: DataLogger.DataType
-            samples: list
         self._download_is_done = False
 
         if self._bulk_download_supported is None or self._bulk_download_supported:
@@ -567,11 +568,11 @@ class DataLogger:
             return True
 
         # Download is done - extract the data
-        log_samples: List[EffectiveDataSet] = []
+        log_samples: List[DataLogger._EffectiveDataSet] = []
         for i in range(len(self._effectively_log_data)):
             name, datatype = list(self._effectively_log_data.items())[i]
             samples = self._downloaded_raw_data[i::self._channels_used_count]
-            log_samples.append(EffectiveDataSet(name=name, datatype=datatype, samples=samples))
+            log_samples.append(DataLogger._EffectiveDataSet(name=name, datatype=datatype, samples=samples))
 
         self.log.base_frequency_hz = self._info.base_frequency_hz
         self.log.down_sampling_factor = self._down_sampling_factor
