@@ -309,6 +309,9 @@ class TmclInterface(ABC):
     def store_global_parameter(self, command_type, bank, module_id=None):
         return self.send(TMCLCommand.STGP, command_type, bank, 0, module_id)
 
+    def restore_global_parameter(self, command_type, bank, module_id=None):
+        return self.send(TMCLCommand.RSGP, command_type, bank, 0, module_id)
+
     def set_and_store_global_parameter(self, command_type, bank, value, module_id=None):
         self.send(TMCLCommand.SGP, command_type, bank, value, module_id)
         self.send(TMCLCommand.STGP, command_type, bank, 0, module_id)
