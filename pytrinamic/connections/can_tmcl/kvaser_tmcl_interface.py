@@ -32,7 +32,7 @@ class KvaserTmclInterface(CanTmclInterface):
             self._connection = can.Bus(interface="kvaser",
                                        channel=self._channel,
                                        bitrate=self._bitrate,
-                                       can_filters=[{"can_id": host_id, "can_mask": 0x7F}])
+                                       can_filters=[{"can_id": host_id, "can_mask": 0x7FF, "extended": False}])
         except can.CanError as e:
             self._connection = None
             raise ConnectionError("Failed to connect to Kvaser CAN bus") from e
