@@ -1,5 +1,6 @@
 from .tmc_ic import TMCIc
 from .tmc_ic import RegisterApiDevice
+from .tmc_ic import RegisterSet
 from .tmc_ic import RegisterGroup
 from .tmc_ic import Register
 from .tmc_ic import Field

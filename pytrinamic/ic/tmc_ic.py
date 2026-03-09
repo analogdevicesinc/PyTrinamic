@@ -130,6 +130,25 @@ class Access(IntFlag):
         return Access.W in self
 
 
+class RegisterSet:
+    """
+    This base class represents a RegisterSet, containing a list of Register groups.
+    The groups are added in a derived class as object attributes.
+    The base class supplies helper functions.
+    """
+
+    def groups(self) -> list[RegisterGroup]:
+        """Returns a list of all the RegisterGroup attributes"""
+        groups = []
+        for key in self.__dir__():
+            obj = getattr(self, key)
+            if isinstance(obj, RegisterGroup):
+                groups.append(obj)
+
+        groups.sort(key=lambda x: x.registers()[0].address)
+
+        return groups
+
 class RegisterGroup:
     """
     This base class represents an RegisterGroup, containing a list of registers.
