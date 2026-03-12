@@ -247,7 +247,8 @@ class DataLogger:
         max_samples_per_second = None
         try:
             max_samples_per_second = self.rd.get_info(Rd.Info.MAX_SAMPLES_PER_SECOND)
-            if max_samples_per_second == -1:
+            # If -1 or request value is returned, this means the FW does not support this info
+            if max_samples_per_second == -1 or max_samples_per_second == Rd.Info.MAX_SAMPLES_PER_SECOND:
                 max_samples_per_second = None
         except Exception:
             # Case 4 not supported in this firmware version, leave as None.
@@ -420,29 +421,35 @@ class DataLogger:
         
         # Check if the requested sampling rate exceeds the communication speed limit
         if self._info.max_samples_per_second is not None:
-            effective_sample_rate = (self._info.base_frequency_hz / self._down_sampling_factor) * self._channels_used_count
-            if effective_sample_rate > self._info.max_samples_per_second:
-                max_allowed_frequency_per_channel = self._info.max_samples_per_second / self._channels_used_count
-                min_required_downsampling = math.ceil(self._info.base_frequency_hz / max_allowed_frequency_per_channel)
+            if self._info.max_samples_per_second <= 0 or self._channels_used_count <= 0:
+                warnings.warn(
+                    "DataLogger max_samples_per_second is zero or channels_used_count is zero; "
+                    "skipping communication rate check to avoid division by zero."
+                )
+            else:
+                effective_sample_rate = (self._info.base_frequency_hz / self._down_sampling_factor) * self._channels_used_count
+                if effective_sample_rate > self._info.max_samples_per_second:
+                    max_allowed_frequency_per_channel = self._info.max_samples_per_second / self._channels_used_count
+                    min_required_downsampling = math.ceil(self._info.base_frequency_hz / max_allowed_frequency_per_channel)
                 
-                if self.config.allow_communication_rate_adaptation:
-                    # Automatically adapt the downsampling factor to meet communication limits
-                    old_downsampling = self._down_sampling_factor
-                    self._down_sampling_factor = min_required_downsampling
-                    new_effective_rate = (self._info.base_frequency_hz / self._down_sampling_factor) * self._channels_used_count
-                    warnings.warn(
-                        f"Automatically adapted downsampling factor from {old_downsampling} to {self._down_sampling_factor} "
-                        f"to meet communication speed limit. Effective sample rate reduced from {effective_sample_rate:.1f} "
-                        f"to {new_effective_rate:.1f} samples/s."
-                    )
-                else:
-                    raise DataLoggerConfigError(
-                        f"Requested sampling rate ({effective_sample_rate:.1f} samples/s) exceeds communication speed limit "
-                        f"({self._info.max_samples_per_second} samples/s). "
-                        f"With {self._channels_used_count} channels, use down_sampling_factor >= {min_required_downsampling} "
-                        f"or sample_rate_hz <= {max_allowed_frequency_per_channel:.1f} Hz per channel. "
-                        f"Alternatively, set allow_communication_rate_adaptation=True for automatic adjustment."
-                    )
+                    if self.config.allow_communication_rate_adaptation:
+                        # Automatically adapt the downsampling factor to meet communication limits
+                        old_downsampling = self._down_sampling_factor
+                        self._down_sampling_factor = min_required_downsampling
+                        new_effective_rate = (self._info.base_frequency_hz / self._down_sampling_factor) * self._channels_used_count
+                        warnings.warn(
+                            f"Automatically adapted downsampling factor from {old_downsampling} to {self._down_sampling_factor} "
+                            f"to meet communication speed limit. Effective sample rate reduced from {effective_sample_rate:.1f} "
+                            f"to {new_effective_rate:.1f} samples/s."
+                        )
+                    else:
+                        raise DataLoggerConfigError(
+                            f"Requested sampling rate ({effective_sample_rate:.1f} samples/s) exceeds communication speed limit "
+                            f"({self._info.max_samples_per_second} samples/s). "
+                            f"With {self._channels_used_count} channels, use down_sampling_factor >= {min_required_downsampling} "
+                            f"or sample_rate_hz <= {max_allowed_frequency_per_channel:.1f} Hz per channel. "
+                            f"Alternatively, set allow_communication_rate_adaptation=True for automatic adjustment."
+                        )
         self.rd.init()
         self.rd.set_sample_count(self._total_number_of_samples)
         self.rd.set_prescaler(self._down_sampling_factor-1)
