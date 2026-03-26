@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2024 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2024 Analog Devices, Inc.
 ################################################################################
 """Read all settings of both axis that can be stores non-volatile.
 

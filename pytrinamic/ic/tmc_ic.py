@@ -1,9 +1,8 @@
 ################################################################################
 # Copyright © 2019 TRINAMIC Motion Control GmbH & Co. KG
-# (now owned by Analog Devices Inc.),
+# (now owned by Analog Devices, Inc.),
 #
-# Copyright © 2023 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2023 Analog Devices, Inc.
 ################################################################################
 from __future__ import annotations      #start at python 3.7
 from typing import Optional, Union

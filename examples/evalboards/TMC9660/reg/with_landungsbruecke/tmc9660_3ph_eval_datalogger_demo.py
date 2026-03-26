@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2025 Analog Devices, Inc.
 ################################################################################
 """Demo on how to use the data-logging with TMC9660-3PH-EVKIT.
 

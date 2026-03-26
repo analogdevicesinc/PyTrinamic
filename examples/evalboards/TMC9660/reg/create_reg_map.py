@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2025 Analog Devices, Inc.
 ################################################################################
 """Example script that showcases how to create a register map for the TMC9660."""
 

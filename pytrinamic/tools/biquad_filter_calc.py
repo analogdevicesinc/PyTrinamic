@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2025 Analog Devices, Inc.
 ################################################################################
 """This is a Python module to calculate biquad coefficients for TMC4671 and TMC9660.
 

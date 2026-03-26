@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2024 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2024 Analog Devices, Inc.
 ################################################################################
 """Minimal example on how to use PyTrinamic with TMC9660-3PH-EVAL/TMC9660-STEPPER-EVAL.
 

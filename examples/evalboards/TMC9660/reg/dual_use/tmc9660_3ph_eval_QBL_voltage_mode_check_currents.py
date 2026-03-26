@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2025 Analog Devices, Inc.
 ################################################################################
 """Example on how to turn a motor in open loop voltage mode and check the current.
 
