@@ -14,10 +14,11 @@ import re
 import logging
 import intelhex
 import serial
+import can
 
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
-from pytrinamic.connections import UsbTmclInterface, CanTmclInterface
+from pytrinamic.connections import UsbTmclInterface, CanTmclInterface, IxxatTmclInterface, KvaserTmclInterface
 from pytrinamic.connections.tmcl_interface import TmclInterface
 from pytrinamic.tmcl import TMCLCommand
 
@@ -101,9 +102,21 @@ def firmware_update(iface: TmclInterface, hex_file):
 
     # Some TMCL-CAN based bootloaders use 0x7FF as CAN-identifier in the response frame, so we need to let it through. 
     if isinstance(iface, CanTmclInterface):
-        filters = iface._connection.filters
-        filters.append({"can_id": 0x7FF, "can_mask": 0x7FF})
-        iface._connection.set_filters(filters)
+        if isinstance(iface, IxxatTmclInterface):
+            # Special treatment for Ixxat interface, as it doesn't allow to dynamically change filters.
+            # We need to add the 0x7FF filter to the initial filter list and reconnect.
+            iface._connection.shutdown()
+            iface._connection = can.Bus(interface="ixxat",
+                                        channel=iface._channel,
+                                        bitrate=iface._bitrate,
+                                        can_filters=[
+                                            {"can_id": iface._host_id, "can_mask": 0x7FF},
+                                            {"can_id": 0x7FF, "can_mask": 0x7FF},
+                                        ])
+        else:
+            filters = iface._connection.filters
+            filters.append({"can_id": 0x7FF, "can_mask": 0x7FF})
+            iface._connection.set_filters(filters)
 
     # ############################# Bootloader entry ################################
     # Connect to the evaluation board
