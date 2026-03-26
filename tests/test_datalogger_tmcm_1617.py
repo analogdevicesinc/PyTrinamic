@@ -2,6 +2,10 @@
 # Copyright © 2025 Analog Devices Inc. All Rights Reserved.
 # This software is proprietary to Analog Devices, Inc. and its licensors.
 ################################################################################
+"""This test uses TMCM-1617 with a recent build of tmcl-weasel.
+
+Some tests sometimes fail, just re-run them.
+"""
 
 from typing import Generator
 import statistics
@@ -85,20 +89,6 @@ def rotate_motor_one_rps_negative(tmcm1617: TMCM1617Ex, rotate_motor_one_rps):
     motor = tmcm1617.motors[0]
     motor.set_axis_parameter(motor.AP.TargetVelocity, -60)
     yield None
-
-
-def test_error_no_samples_per_channel_given(tmcm1617: TMCM1617Ex):
-    """Check if a proper error is raised when `samples_per_channel` is not given."""
-
-    dl = tmcm1617.datalogger
-
-    dl.config.log_data = {
-        "test": dl.DataTypeAp(index=0),
-    }
-
-    with pytest.raises(DataLoggerConfigError) as excinfo:
-        dl.start_capture()
-    assert str(excinfo.value) == "No samples per channel specified via `config.samples_per_channel`!"
 
 
 def test_error_exceed_channels(tmcm1617: TMCM1617Ex):
@@ -305,6 +295,25 @@ def test_success_unconditional_trigger(tmcm1617: TMCM1617Ex, download_stepwise, 
             assert log.request_object == next(param for param in dl.config.log_data if param.name == name)
         else:
             assert log.request_object == dl.config.log_data[name]
+
+
+def test_success_no_samples_per_channel_given(tmcm1617: TMCM1617Ex):
+    """If no `samples_per_channel` is given, the datalogger should use the full buffer length."""
+    motor = tmcm1617.motors[0]
+
+    dl = tmcm1617.datalogger
+
+    dl.config.log_data = {
+        "ActualPosition": dl.DataTypeAp(index=motor.AP.ActualPosition),
+    }
+
+    dl.start_capture()
+
+    dl.wait_for_capture_completion()
+
+    dl.download_log()
+
+    assert len(dl.log.data["ActualPosition"].samples) == dl.get_info().sample_buffer_length
 
 
 @pytest.mark.parametrize("down_sampling_factor", [4, 8, 16, 128])
