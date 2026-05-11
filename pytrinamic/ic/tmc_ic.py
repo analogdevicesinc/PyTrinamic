@@ -76,6 +76,9 @@ class RegisterApiDevice(ABC):
                     raise ValueError(f"Input value {value} is not in the allowed value range!")
 
             if write_target.access == Access.RWC:
+                if any([x.access == Access.RW for x in write_target.parent.fields()]):
+                    raise NotImplementedError("Registers mixing RWC and RW are not supported yet")
+
                 register_content_new = (value << write_target.shift) & write_target.mask
                 self.write_register(write_target.parent.address, write_target.parent.parent.block, register_content_new)
                 return register_content_new
