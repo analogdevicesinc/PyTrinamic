@@ -349,6 +349,9 @@ class GetInfo:
             self.major = (value >> 16) & 0xFFFF
             self.minor = (value >> 0) & 0xFFFF
 
+        def __str__(self):
+            return f"v{self.major:01d}.{self.minor}"
+
     class FWCapability:
         _op_type = 2
         _is_mandatory = True
@@ -387,6 +390,9 @@ class GetInfo:
             self.major = (value >> 16) & 0xFFFF
             self.minor = (value >> 0) & 0xFFFF
 
+        def __str__(self):
+            return f"v{self.major:01d}.{self.minor}"
+
     class APIndexBitWidth:
         _op_type = 20
         _is_mandatory = False
@@ -408,6 +414,9 @@ class GetInfo:
         def __init__(self, value):
             self.hash = (value >> 0) & 0xFFFFFFF
             self.dirty_flag = (value >> 28) & 0x1
+
+        def __str__(self):
+            return f"{self.hash:07x}" + ("-dirty" if self.dirty_flag else "")
 
 
 class GetInfoNotAvailableError(Exception):
