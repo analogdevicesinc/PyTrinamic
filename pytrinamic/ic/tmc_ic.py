@@ -153,7 +153,7 @@ class RegisterGroup:
     This base class represents an RegisterGroup, containing a list of registers.
     The registers are added in a derived class as object attributes.
     It also contains convenience functions.
-    
+
     :param channel: Is used for the Eval-System board channel information (mc: 0; drv:1)
     :param block: Is used for the register group's block information as used in the Read/Write register command.
     :param width: Denotes the width of the registers in bits.
@@ -216,7 +216,7 @@ class Field:
 
     def get(self, register_value: int) -> int:
         """Get the field value of a register value.
-        
+
         This comes in handy if you want to read a register just once, and then extract multiple field values.
         """
         value = (register_value & self.mask) >> self.shift
@@ -225,7 +225,7 @@ class Field:
             sign_mask = base_mask & (~base_mask >> 1)
             value = (value ^ sign_mask) - sign_mask
         return value
-    
+
     def set(self, register_value: int, new_field_value) -> int:
         """Change the field value of a register value.
 
