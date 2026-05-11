@@ -200,7 +200,7 @@ class TMCLRequest:
             self.value,
             self.checksum,
         )
-    
+
     def oneline_str_repr(self):
         return "TMCL_Request: {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X} -> {6}(type={2}, idx={3}, value=0x{4:08X})".format(
             self.moduleAddress,
@@ -270,7 +270,7 @@ class TMCLReply:
     def version_string(self):
         byte_string = struct.pack(">BBBIB", self.module_address, self.status, self.command, self.value, self.checksum)
         return str(byte_string, "ascii")
-    
+
     def oneline_str_repr(self):
         return "TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X} <- {6}(status=\"{7}\", value=0x{4:08X})".format(
             self.reply_address,
@@ -282,7 +282,7 @@ class TMCLReply:
             TMCLCommand.get_name(self.command),
             TMCLStatus.get_name(self.status),
         )
-    
+
     def detailed_str_repr(self):
         repr = """\
             TMCL_Reply:   {0:02X},{1:02X},{2:02X},{3:02X},{4:08X},{5:02X}
@@ -413,7 +413,7 @@ class GetInfo:
 class GetInfoNotAvailableError(Exception):
     def __str__(self):
         return "The GetInfo command is not supported in this firmware revision!"
-    
+
 class GetInfoRequestError(Exception):
     def __init__(self, tmcl_error: TMCLReplyStatusError):
         self.tmcl_error = tmcl_error
@@ -423,7 +423,7 @@ class GetInfoRequestError(Exception):
             GetInfo request failed:
                 Status Code: {self.tmcl_error.status_code}
                 Description: {self.tmcl_error.error_description}
-                
+
             The device was unable to provide the requested information.
             Probably the current firmware revision misses the requested entry.
 
