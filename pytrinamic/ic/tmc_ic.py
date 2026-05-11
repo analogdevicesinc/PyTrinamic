@@ -77,7 +77,7 @@ class RegisterApiDevice(ABC):
 
             if write_target.access == Access.RWC:
                 register_content_new = (value << write_target.shift) & write_target.mask
-                self.write_register(write_target.parent.address, write_target.parent.bloc, register_content_new)
+                self.write_register(write_target.parent.address, write_target.parent.parent.block, register_content_new)
                 return register_content_new
 
             register_address = write_target.parent.address
