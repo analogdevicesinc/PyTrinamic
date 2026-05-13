@@ -235,6 +235,9 @@ class TmclInterface(ABC):
             entry_class = int
             entry_idx   = entry
 
+            if not (0 <= entry_idx < 256):
+                raise ValueError(f"Invalid get_info entry {entry_idx} requested!")
+
         try:
             reply = self.send(TMCLCommand.GET_INFO, entry_idx, motor, 0, module_id=module_id)
         except TMCLReplyStatusError as exc:
