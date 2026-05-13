@@ -123,7 +123,7 @@ class TmclInterface(ABC):
         self._reply_check(reply)
 
         # Status codes below 100 indicate an error response.
-        # Ignore status when reading TMCL memory. 
+        # Ignore status when reading TMCL memory.
         if reply.status < 100 and request.command != TMCLCommand.READ_TMCL_MEMORY:
             raise TMCLReplyStatusError(reply)
 
@@ -180,25 +180,25 @@ class TmclInterface(ABC):
 
     @overload
     def get_info(self, entry: Literal["BLModuleIDCompatible"], motor=0, module_id=None) -> GetInfo.BLModuleIDCompatible: ...
-    
+
     @overload
     def get_info(self, entry: Literal["BLVersionInstalled"], motor=0, module_id=None) -> GetInfo.BLVersionInstalled: ...
-    
+
     @overload
     def get_info(self, entry: Literal["FWCapability"], motor=0, module_id=None) -> GetInfo.FWCapability: ...
-    
+
     @overload
     def get_info(self, entry: Literal["FWModuleID"], motor=0, module_id=None) -> GetInfo.FWModuleID: ...
-    
+
     @overload
     def get_info(self, entry: Literal["FWReleaseType"], motor=0, module_id=None) -> GetInfo.FWReleaseType: ...
-    
+
     @overload
     def get_info(self, entry: Literal["FWVersion"], motor=0, module_id=None) -> GetInfo.FWVersion: ...
-    
+
     @overload
     def get_info(self, entry: Literal["GitHash"], motor=0, module_id=None) -> GetInfo.GitHash: ...
-    
+
     @overload
     def get_info(self, entry: Literal["RegAddrBitWidth"], motor=0, module_id=None) -> GetInfo.RegAddrBitWidth: ...
 
@@ -207,14 +207,14 @@ class TmclInterface(ABC):
         Read out a TMCL products info entries via the GetInfo command.
 
         The overloaded function signatures define help for the type checker and autocomplete.
-        
+
         :param entry: The entry ID of the info entry to read.
         :param motor: Optional motor number for the RegAddrBitWidth entry.
         :param module_id: Optional module ID to specify the target module address.
 
         .. version-added:: 0.2.21
         """
-    
+
         entry_class = None
         # Find the corresponding entry class from GetInfo.
         for name, member in inspect.getmembers(GetInfo):
@@ -236,7 +236,7 @@ class TmclInterface(ABC):
 
         if reply is None:
             raise RuntimeError("Catch this to make the type checker happy.")
-        
+
         return entry_class(reply.value)
 
     # General parameter access functions
@@ -348,7 +348,7 @@ class TmclInterface(ABC):
 
     def write_register(self, register_address, command, channel, value, module_id=None, address_bit_width=None):
         return self._send_register_cmd(command, register_address, channel, value, module_id, address_bit_width).value
-    
+
     def _send_register_cmd(self, cmd, register_address, channel, value, module_id, address_bit_width):
         if not address_bit_width:
             address_bit_width = self._default_register_address_bit_width
