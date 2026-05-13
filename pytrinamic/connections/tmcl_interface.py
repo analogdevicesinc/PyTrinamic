@@ -202,7 +202,10 @@ class TmclInterface(ABC):
     @overload
     def get_info(self, entry: Literal["RegAddrBitWidth"], motor=0, module_id=None) -> GetInfo.RegAddrBitWidth: ...
 
-    def get_info(self, entry, motor=0, module_id=None):
+    @overload
+    def get_info(self, entry: int, motor=0, module_id=None) -> int: ...
+
+    def get_info(self, entry: int|str, motor=0, module_id=None):
         """
         Read out a TMCL products info entries via the GetInfo command.
 
@@ -215,19 +218,25 @@ class TmclInterface(ABC):
         .. version-added:: 0.2.21
         """
 
-        entry_class = None
-        # Find the corresponding entry class from GetInfo.
-        for name, member in inspect.getmembers(GetInfo):
-            if name.startswith("__"):
-                continue
-            if name == entry:
-                entry_class = member
-                break
+        if type(entry) == str:
+            entry_class = None
+            # Find the corresponding entry class from GetInfo.
+            for name, member in inspect.getmembers(GetInfo):
+                if name.startswith("__"):
+                    continue
+                if name == entry:
+                    entry_class = member
+                    break
+            else:
+                raise ValueError(f"Unknown info entry '{entry}' requested!")
+
+            entry_idx = entry_class._op_type
         else:
-            raise ValueError(f"Unknown info entry '{entry}' requested!")
+            entry_class = int
+            entry_idx   = entry
 
         try:
-            reply = self.send(TMCLCommand.GET_INFO, entry_class._op_type, motor, 0, module_id=module_id)
+            reply = self.send(TMCLCommand.GET_INFO, entry_idx, motor, 0, module_id=module_id)
         except TMCLReplyStatusError as exc:
             if exc.status_code == TMCLStatus.COMMAND_NOT_AVAILABLE:
                 raise GetInfoNotAvailableError() from exc
