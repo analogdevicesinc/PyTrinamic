@@ -57,7 +57,7 @@ class TMCM1111(TMCLModule):
             ActualVelocity                 = 3
             MaxPositioningSpeed            = 4
             MaxAcceleration                = 5
-            maximumCurrent                     = 6
+            MaxCurrent                     = 6
             StandbyCurrent                 = 7
             PositionReachedFlag            = 8
             HomeSwitch                     = 9
