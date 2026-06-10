@@ -17,8 +17,17 @@ class SerialTmclInterface(TmclInterface):
     """
     Opens a serial TMCL connection
     """
-    def __init__(self, com_port, datarate=115200, host_id=2, module_id=1, timeout_s=5, default_register_address_bit_width=12):
-        if not isinstance(com_port, str):
+    def __init__(self, com_port: str|Serial, datarate=115200, host_id=2, module_id=1, timeout_s=5, default_register_address_bit_width=12):
+        """
+        Creates a TMCL connection to a serial port.
+
+        The com_port argument can be the name of a serial port (type=str), or a
+        pyserial Serial class object for an already opened serial port.
+        If it is a serial port name, this function will open that serial port and apply the
+        datarate and timeout_s values to that serial port.
+        If it is a Serial object, the datarate and timeout_s arguments will be ignored.
+        """
+        if not isinstance(com_port, str) and not isinstance(com_port, Serial):
             raise TypeError
 
         TmclInterface.__init__(self, host_id, module_id, default_register_address_bit_width=default_register_address_bit_width)
@@ -26,13 +35,16 @@ class SerialTmclInterface(TmclInterface):
         if timeout_s == 0:
             timeout_s = None
 
-        self.logger = logging.getLogger("{}.{}".format(self.__class__.__name__, com_port))
+        self.logger = logging.getLogger("{}.{}".format(self.__class__.__name__, com_port.name if type(com_port) == Serial else com_port))
 
         self.logger.debug("Opening port (baudrate=%s).", datarate)
-        try:
-            self._serial = Serial(com_port, self._baudrate, timeout=timeout_s)
-        except SerialException as e:
-            raise ConnectionError from e
+        if isinstance(com_port, str):
+            try:
+                self._serial = Serial(com_port, self._baudrate, timeout=timeout_s)
+            except SerialException as e:
+                raise ConnectionError from e
+        else:
+            self._serial = com_port
 
     def close(self):
         self.logger.info("Closing port.")
