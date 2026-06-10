@@ -369,11 +369,22 @@ class GetInfo:
         _op_type = 3
         _is_mandatory = True
 
+        # Firmware release types
+        PUBLIC   = 0
+        INTERNAL = 1
+        CUSTOM   = 2
+        LOCAL    = 3
+
         def __init__(self, value):
             self.value = value
 
         def __str__(self):
-            return {0: "Public", 1: "Internal", 2: "Custom", 3: "Local"}[self.value]
+            return {
+                self.PUBLIC: "Public",
+                self.INTERNAL: "Internal",
+                self.CUSTOM: "Custom",
+                self.LOCAL: "Local"
+            }[self.value]
 
     class BLModuleIDCompatible:
         _op_type = 10
