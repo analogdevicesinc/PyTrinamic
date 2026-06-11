@@ -2036,16 +2036,16 @@ class _MCC_CONFIG(RegisterGroup):
     class _PWM_PERIOD(Register):
         def __init__(self, parent, access, address, signed):
             super().__init__("PWM_PERIOD", parent, access, address, signed)
-            self.MAX_COUNT          =  self._MAX_COUNT(        self,  Access.RW,  0x0000FFFF,  0,   signed=False)
-            self.AUTO_KIRCHOFF_LIM  =  self._AUTO_KIRCHOFF_LIM(self,  Access.RW,  0xFFFF0000,  16,  signed=False)
+            self.MAX_COUNT           =  self._MAX_COUNT(         self,  Access.RW,  0x0000FFFF,  0,   signed=False)
+            self.AUTO_KIRCHHOFF_LIM  =  self._AUTO_KIRCHHOFF_LIM(self,  Access.RW,  0xFFFF0000,  16,  signed=False)
 
         class _MAX_COUNT(Field):
             def __init__(self, parent, access, mask, shift, signed):
                 super().__init__("MAX_COUNT", parent, access, mask, shift, signed=signed)
 
-        class _AUTO_KIRCHOFF_LIM(Field):
+        class _AUTO_KIRCHHOFF_LIM(Field):
             def __init__(self, parent, access, mask, shift, signed):
-                super().__init__("AUTO_KIRCHOFF_LIM", parent, access, mask, shift, signed=signed)
+                super().__init__("AUTO_KIRCHHOFF_LIM", parent, access, mask, shift, signed=signed)
 
     class _BRAKE_CHOPPER_LIMITS(Register):
         def __init__(self, parent, access, address, signed):
