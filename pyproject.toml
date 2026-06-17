@@ -32,6 +32,7 @@ Issues = "https://github.com/analogdevicesinc/pytrinamic/issues"
 
 [project.scripts]
 tmclfwupload = "pytrinamic.cli.tmclfwupload:main"
+tmclinfo = "pytrinamic.cli.tmclinfo:main"
 
 [tool.setuptools.packages]
 find = {}
