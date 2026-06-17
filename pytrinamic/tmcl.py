@@ -352,6 +352,9 @@ class GetInfo:
         def __init__(self, value):
             self.value = value
 
+        def __str__(self):
+            return f"{self.value}"
+
     class FWVersion:
         _op_type = 1
         _is_mandatory = True
@@ -375,6 +378,14 @@ class GetInfo:
                 "EtherCAT": bool(value & 0x08),
                 "IO-Link": bool(value & 0x10),
             }
+
+        def __str__(self):
+            active_bitflags = []
+            for name, state in self.bitfield.items():
+                if state:
+                    active_bitflags.append(name)
+
+            return "|".join(active_bitflags)
 
     class FWReleaseType:
         _op_type = 3
