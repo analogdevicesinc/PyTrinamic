@@ -1,8 +1,6 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2026 Analog Devices, Inc.
 ################################################################################
-
 """
     Example of burning the OTP with TMC5222.
     It is highly recommended to prototype the desired OTP settings before actual burning.
