@@ -1,6 +1,5 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2026 Analog Devices, Inc.
 ################################################################################
 """Example on how to read all TMC5222 registers of TMC5222-EVAL."""
 

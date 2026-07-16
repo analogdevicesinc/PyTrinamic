@@ -1,8 +1,6 @@
 ################################################################################
-# Copyright © 2025 Analog Devices Inc. All Rights Reserved.
-# This software is proprietary to Analog Devices, Inc. and its licensors.
+# Copyright © 2026 Analog Devices, Inc.
 ################################################################################
-
 """
     This example demonstrates the prototyping of the OTP (One-Time Programmable) feature of the TMC5222. 
     Prototyping is reversible with a power cycle, allowing for experimentation with OTP settings without 
