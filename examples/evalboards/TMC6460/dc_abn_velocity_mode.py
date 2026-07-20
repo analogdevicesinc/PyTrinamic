@@ -23,11 +23,6 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import TMC6460
 from pytrinamic.evalboards import TMC6460_eval
 
-# # Uncomment these lines to enable logging of all communication
-# import logging
-# import sys
-# logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
-
 ### Parameters #################################################################
 # ABN sensor pulses-per-rotation (PPR).
 # Note that the TMC6460 uses counts-per-rotation (CPR = PPR*4) internally.
