@@ -52,8 +52,8 @@ with ConnectionManager().connect() as my_interface:
 
     eval.write_register_field(MAX22216.FIELD.CTRL_MODE_0, 1) # CDR mode
 
-    eval.write_register_field(MAX22216.FIELD.DC_L2H_0, calc_idc_reg(500)) # Sets the DC_L2H level to 500
-    eval.write_register_field(MAX22216.FIELD.DC_H_0, calc_idc_reg(250)) # Sets the DC_H level to 250
+    eval.write_register_field(MAX22216.FIELD.DC_L2H_0, calc_idc_reg(500)) # Sets the DC_L2H level to 500 mA
+    eval.write_register_field(MAX22216.FIELD.DC_H_0, calc_idc_reg(250)) # Sets the DC_H level to 250 mA
     eval.write_register_field(MAX22216.FIELD.TIME_L2H_0, calc_time_l2h_reg(100)) # Sets the TIME_L2H to 100 ms
 
     eval.write_register_field(MAX22216.FIELD.CFG_P_0, 800) # P value
