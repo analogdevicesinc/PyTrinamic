@@ -39,6 +39,7 @@ def main():
     module_id         = tmcl.get_info("FWModuleID")
     firmware_version  = tmcl.get_info("FWVersion")
     fw_capability     = tmcl.get_info("FWCapability")
+    fw_feature_flags  = tmcl.get_info("FirmwareFeatureFlags")
     fw_release_type   = tmcl.get_info("FWReleaseType")
     git_info          = tmcl.get_info("GitHash")
 
@@ -52,6 +53,7 @@ def main():
     print(f"Module ID:        {module_id}")
     print(f"Firmware version: {firmware_version}")
     print(f"Firmware type:    {fw_capability}")
+    print(f"Firmware flags:   {fw_feature_flags}")
     print(f"Firmware release: {fw_release_type}")
     print(f"Git info:         {git_info}")
 
