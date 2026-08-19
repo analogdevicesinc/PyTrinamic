@@ -251,6 +251,9 @@ class TmclInterface(ABC):
     def get_info(self, entry: Literal["RegAddrBitWidth"], motor=0, module_id=None) -> GetInfo.RegAddrBitWidth: ...
 
     @overload
+    def get_info(self, entry: Literal["FirmwareFeatureFlags"], motor=0, module_id=None) -> GetInfo.FirmwareFeatureFlags: ...
+
+    @overload
     def get_info(self, entry: int, motor=0, module_id=None) -> int: ...
 
     def get_info(self, entry: int|str, motor=0, module_id=None):
@@ -291,6 +294,8 @@ class TmclInterface(ABC):
         except TMCLReplyStatusError as exc:
             if exc.status_code == TMCLStatus.COMMAND_NOT_AVAILABLE:
                 raise GetInfoNotAvailableError() from exc
+            elif exc.status_code == TMCLStatus.WRONG_TYPE and getattr(entry_class, "_has_default", False):
+                return entry_class.default() # type: ignore
             else:
                 raise GetInfoRequestError(exc) from exc
 

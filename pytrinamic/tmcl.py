@@ -5,6 +5,7 @@
 # Copyright © 2023 Analog Devices, Inc.
 ################################################################################
 
+import enum
 import inspect
 import struct
 import ctypes
@@ -446,6 +447,35 @@ class GetInfo:
 
         def __init__(self, value):
             self.value = value
+
+    class FirmwareFeatureFlags:
+        _op_type = 22
+        _is_mandatory = False
+        _has_default = True
+
+        class FirmwareFeatureFlag(enum.IntFlag):
+            # Change the printed representation to be enum names instead of numbers
+            __str__ = enum.Enum.__str__
+
+            TMCLSCRIPT_USE_NEW_READMEM = 1 << 0
+            """
+            Feature flag: TMCL_ReadMem version
+            - 0: TMCL_ReadMem ignores the type. Replies are nonstandard containing the 7 byte TMCL Script payload.
+            - 1: TMCL_ReadMem uses type 1/2 to download commands using standard TMCL replies.
+            """
+
+        def __init__(self, value):
+            self.FLAGS = self.FirmwareFeatureFlag(value)
+
+        @classmethod
+        def default(cls):
+            return cls(0)
+
+        def is_flag_set(self, flag: FirmwareFeatureFlag) -> bool:
+            return flag in self.FLAGS
+
+        def __str__(self):
+            return str(self.FLAGS)
 
     class GitHash:
         _op_type = 30
