@@ -6,6 +6,9 @@
 Example: MAX22216 controlling a 6V solenoid. Demonstrates the
 inductance measurement feautre of MAX22216.
 
+For more information refer to "Solenoid Inductance Tool" in the datasheet:
+[MAX22216 evaluation kit datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max22216evkit.pdf)
+
 Used load: 12V small door lock pull solenoid (non-polarized)
 Connection: OUT0 to COM (VM+)
 Power supply: 24V

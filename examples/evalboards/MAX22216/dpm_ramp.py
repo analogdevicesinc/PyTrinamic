@@ -8,6 +8,9 @@ The MAX22216 is capable of limiting the transition between different DC_levels.
 This functionality is mostly used to lower the acoustic noise of the solenoid, 
 and it is intended in applications where the solenoid is near humans.
 
+For more information refer to the "RAMP Control" example in the datasheet:
+[MAX22216 evaluation kit datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max22216evkit.pdf)
+
 Used load: 12V small door lock pull solenoid (non-polarized)
 Connection: OUT0 to COM (VM+)
 Power supply: 24V

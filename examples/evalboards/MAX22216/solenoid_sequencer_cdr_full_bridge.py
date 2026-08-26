@@ -7,6 +7,9 @@ Example: MAX22216 controlling a 6V solenoid. CH0CH1 Full-Bridge/CDR/One-Level Co
 In this example, a solenoid is connected between Channel 0 and Channel 1, and it is 
 controlled using a constant current. 
 
+For more information refer to "CDR Example: CH0CH1 Full-Bridge/CDR/One-Level Control" in the datasheet:
+[MAX22216 evaluation kit datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max22216evkit.pdf)
+
 Used load: 12V small door lock pull solenoid (non-polarized)
 Connection: OUT0 --- Solenoid --- OUT1
 Power supply: 24V

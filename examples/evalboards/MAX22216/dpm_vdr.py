@@ -8,6 +8,9 @@ Example: MAX22216 controlling a 6V solenoid. Demonstrates detection of plunger m
 Regulation (VDR) mode. It also demonstrates internal selectable STAT alarms that can be set to output 
 a digital signal on the STAT1 pin.
 
+For more information refer to "Setup Example: VDR Solenoid" in the datasheet:
+[MAX22216 evaluation kit datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max22216evkit.pdf)
+
 Used load: 12V small door lock pull solenoid (non-polarized)
 Connection: OUT0 to COM (VM+)
 Power supply: 24V

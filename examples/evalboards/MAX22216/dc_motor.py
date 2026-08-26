@@ -14,7 +14,7 @@ opposite direction of the previous current flow, which stops the motor.
 
 The STAT function can be set to monitor the measured current and flag when it goes above a set threshold.
 
-For more information search for "Setup Example: DC Motor" in the datasheet:
+For more information refer to "Setup Example: DC Motor" in the datasheet:
 [MAX22216 evaluation kit datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max22216evkit.pdf)
 
 Used load: 12 V brushed DC motor

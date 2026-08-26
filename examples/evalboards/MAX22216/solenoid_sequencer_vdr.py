@@ -8,6 +8,9 @@ sequencer in Voltage Drive Regulation (VDR) mode. Creates a HIT period
 to open the solenoid (DC_L2H, TIME_L2H) and a HOLD period to keep it 
 open (DC_H).
 
+For more information refer to "Solenoid Sequencer Tool" in the datasheet:
+[MAX22216 evaluation kit datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max22216evkit.pdf)
+
 Used load: 12V small door lock pull solenoid (non-polarized)
 Connection: OUT0 to COM (VM+)
 Power supply: 24V
