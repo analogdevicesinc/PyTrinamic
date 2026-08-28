@@ -24,18 +24,33 @@ from pytrinamic.evalboards import MAX22216_eval
 KVDR = 30.518e-6 # Voltage Drive Mode Constant
 F_PWM_M = 100e3 # Global PWM master frequency (100KHz)
 
+GAIN = 1 # current measurement scaling factor
+SNSF = 1 # Sense-scaling factor
+KCDR = 1.017 # Current Drive Regulation Constant
+
 def calc_vdc_reg(vdc, kvdr=KVDR):
-    """Convert a target DC output voltage into the voltage-register value.
-    The MAX22216 uses the relation VOUT = KVDR * 36 * DC_L2H[15:0]DEC for the
-    output waveform level.
+    """Convert a target DC output voltage in volts into the voltage-register value.
+    The MAX22216 uses the relation VOUT = KVDR * 36 * DC_L2H[15:0]DEC.
     """
     return round(vdc / kvdr / 36)  # VOUT = KVDR x 36 x DC_L2H[15:0]DEC 
 
 def calc_time_l2h_reg(time_l2h, fpwm=F_PWM_M):
-    """Convert a time value into the TIME_L2H register value.
-    The register value is defined as TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
+    """Convert a time value in miliseconds to the TIME_L2H register value.
+    The MAX22216 uses the relation TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
     """
-    return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM  
+    return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM 
+
+def calc_dpm_start_reg(dpm_start, kcdr=KCDR, gain = GAIN, snsf = SNSF):
+    """Convert a current value in mA to the DPM_START register value.
+    The MAX22216 uses the relation DPM_START(mA) = 64 x KCDR x GAIN x SNSF x DPM_START[7:0]DEC.
+    """
+    return round(dpm_start / 64 / kcdr / gain / snsf )  # DPM_START(mA) = 64 x KCDR x GAIN x SNSF x DPM_START[7:0]DEC
+
+def calc_dpm_thld_reg(dpm_thld, kcdr=KCDR, gain = GAIN, snsf = SNSF):
+    """Convert a current value in mA to the DPM_THLD register value.
+    The MAX22216 uses the relation DPM_THLD(mA) = 8 x KCDR x GAIN x SNSF x DPM_THLD[11:0]DEC.
+    """
+    return round(dpm_thld / 8 / kcdr / gain / snsf )  # DPM_THLD(mA) = 8 x KCDR x GAIN x SNSF x DPM_THLD[11:0]DEC
 
 with ConnectionManager().connect() as my_interface:
 
@@ -56,8 +71,8 @@ with ConnectionManager().connect() as my_interface:
 
     # Configuring DPM Settings
     eval.write_register_field(MAX22216.FIELD.DPM_EN_0, 1) # Enable DPM 
-    eval.write_register_field(MAX22216.FIELD.DPM_MIN_CURRENT_0, 4) # Sets DPM_START to 260.35 mA (Register Value: 4)
-    eval.write_register_field(MAX22216.FIELD.DPM_THLD_0, 50) # Sets DPM_THLD to 406.8 mA (Register Value: 50)
+    eval.write_register_field(MAX22216.FIELD.DPM_MIN_CURRENT_0, calc_dpm_start_reg(260)) # Sets DPM_START to 260 mA 
+    eval.write_register_field(MAX22216.FIELD.DPM_THLD_0, calc_dpm_thld_reg(406)) # Sets DPM_THLD to 406 mA
 
     eval.write_register_field(MAX22216.FIELD.CNTL0, 1) # Turn the solenoid on
     time.sleep(1.0)

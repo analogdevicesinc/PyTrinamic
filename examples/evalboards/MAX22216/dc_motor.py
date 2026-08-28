@@ -35,16 +35,14 @@ SNSF = 1 # Sense-scaling factor
 KCDR = 1.017 # Current Drive Regulation Constant
 
 def calc_vdc_reg(vdc, kvdr=KVDR):
-    """Convert a target DC output voltage into the voltage-register value.
-    The MAX22216 uses the relation VOUT = KVDR * 36 * DC_L2H[15:0]DEC for the
-    output waveform level.
+    """Convert a target DC output voltage given in volts into the voltage-register value.
+    The MAX22216 uses the relation VOUT = KVDR * 36 * DC_L2H[15:0]DEC.
     """
     return round(vdc / kvdr / 36)  # VOUT = KVDR x 36 x DC_L2H[15:0]DEC 
 
 def calc_idc_reg(idc, kcdr=KCDR, gain = GAIN, snsf = SNSF):
-    """Convert a target DC output current into the current-register value.
-    The MAX22216 uses the relation IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC
-    for the output waveform level.
+    """Convert a target DC output current given in mA into the current-register value.
+    The MAX22216 uses the relation IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC.
     """
     return round(idc / kcdr / gain / snsf)  # IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC 
     
@@ -61,7 +59,7 @@ with ConnectionManager().connect() as my_interface:
 
     # Solenoid sequencer channel 0
     eval.write_register_field(MAX22216.FIELD.DC_H_0, calc_vdc_reg(12)) # Sets the DC_H level to 12 V
-    eval.write_register_field(MAX22216.FIELD.DC_L2H_0, calc_idc_reg(300)) # Sets the current limiter to 220 mA
+    eval.write_register_field(MAX22216.FIELD.DC_L2H_0, calc_idc_reg(300)) # Sets the current limiter to 300 mA
     eval.write_register_field(MAX22216.FIELD.TIME_L2H_0, calc_idc_reg(100)) # Sets the brake current to 100 mA
     eval.write_register_field(MAX22216.FIELD.CTRL_MODE_0, 2) # Sets the control mode to DC motor drive
 

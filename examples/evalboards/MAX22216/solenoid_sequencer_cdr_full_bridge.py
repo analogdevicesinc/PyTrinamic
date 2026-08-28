@@ -26,15 +26,14 @@ SNSF = 1 # Sense-scaling factor
 KCDR = 1.017 # Current Drive Regulation Constant
 
 def calc_idc_reg(idc, kcdr=KCDR, gain = GAIN, snsf = SNSF):
-    """Convert a target DC output current into the current-register value.
-    The MAX22216 uses the relation IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC
-    for the output waveform level.
+    """Convert a target DC output current in mA into the current-register value.
+    The MAX22216 uses the relation IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC.
     """
     return round(idc / kcdr / gain / snsf)  # IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC 
 
 def calc_time_l2h_reg(time_l2h, fpwm=F_PWM_M):
-    """Convert a time value into the TIME_L2H register value.
-    The register value is defined as TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
+    """Convert a time value in miliseconds into the TIME_L2H register value.
+    The MAX22216 uses the relation TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
     """
     return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM  
 

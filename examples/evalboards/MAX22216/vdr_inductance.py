@@ -31,31 +31,30 @@ SNSF = 1 # Sense-scaling factor
 KCDR = 1.017 # Current Drive Regulation Constant
 
 def calc_u_ac_scan(u_ac, kvdr=KVDR):
-    """Convert a target AC voltage into the register value used by the IC.
+    """Convert a target AC voltage in volts into the register value used by the IC.
     The MAX22216 encodes the internally generated AC amplitude as a scaled
     digital value according to: U_AC = KVDR * 36 * U_AC_SCAN.
     """
     return round(u_ac / (36 * kvdr))  # U_AC = KVDR * 36 * U_AC_SCAN
 
 def calc_f_ac_scan(f_ac, f_pwm_m=F_PWM_M):
-    """Convert an AC signal frequency into the IC's frequency register value.
+    """Convert an AC signal frequency in Hz into the IC's frequency register value.
     The device stores the AC frequency as a fraction of the PWM master
     frequency: F_AC = F_PWM_M * (F_AC_SCAN / 65535).
     """
     return round((f_ac * 65535) / f_pwm_m)  # F_AC = F_PWM_M * (F_AC_SCAN/65535)
 
 def calc_vdc_reg(vdc, kvdr=KVDR):
-    """Convert a target DC output voltage into the voltage-register value.
-    The MAX22216 uses the relation VOUT = KVDR * 36 * DC_L2H[15:0]DEC for the
-    output waveform level.
+    """Convert a target DC output voltage in volts into the voltage-register value.
+    The MAX22216 uses the relation VOUT = KVDR * 36 * DC_L2H[15:0]DEC.
     """
     return round(vdc / kvdr / 36)  # VOUT = KVDR x 36 x DC_L2H[15:0]DEC 
 
 def calc_time_l2h_reg(time_l2h, fpwm=F_PWM_M):
-    """Convert a time value into the TIME_L2H register value.
-    The register value is defined as TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
+    """Convert a time value in miliseconds into the TIME_L2H register value.
+    The MAX22216 uses the relation TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
     """
-    return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM  
+    return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM 
 
 def calc_inductance_mh(i_ac_field, u_ac=U_AC, f_ac=F_AC, kcdr=KCDR, gain=GAIN, snsf=SNSF):
     """Estimate inductance from the measured AC current field value.
