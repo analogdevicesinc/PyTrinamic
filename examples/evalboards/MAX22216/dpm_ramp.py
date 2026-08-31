@@ -44,7 +44,7 @@ with ConnectionManager().connect() as my_interface:
 
     # General settings
     eval.write_register_field(MAX22216.FIELD.ACTIVE, 1) # Enable bit to activate the IC
-    eval.write_register_field(MAX22216.FIELD.VDR_NDUTY, 1) # When set Logic High, L2H, DC_H, and DC_L registers for each channel indicate a voltage level in voltage mode.
+    eval.write_register_field(MAX22216.FIELD.VDRNVDRDUTY, 1) # When set Logic High, L2H, DC_H, and DC_L registers for each channel indicate a voltage level in voltage mode.
 
     # DPM with ramp disabled
     print("Testing DPM with Ramp disabled...")

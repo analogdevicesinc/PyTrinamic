@@ -54,7 +54,7 @@ with ConnectionManager().connect() as my_interface:
 
     # General settings
     eval.write_register_field(MAX22216.FIELD.ACTIVE, 1) # Enable bit to activate the IC
-    eval.write_register_field(MAX22216.FIELD.VDR_NDUTY, 1) # Internal voltage regulator for the voltage output
+    eval.write_register_field(MAX22216.FIELD.VDRNVDRDUTY, 1) # Internal voltage regulator for the voltage output
     eval.write_register_field(MAX22216.FIELD.CHS, 8) # Parallel full-bridge configuration
 
     # Solenoid sequencer channel 0

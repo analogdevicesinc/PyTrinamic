@@ -60,7 +60,7 @@ with ConnectionManager().connect() as my_interface:
 
     # General settings
     eval.write_register_field(MAX22216.FIELD.ACTIVE, 1) # Enable bit to activate the IC
-    eval.write_register_field(MAX22216.FIELD.VDR_NDUTY, 1) # When set Logic High, L2H, DC_H, and DC_L registers for each channel indicate a voltage level in voltage mode. 
+    eval.write_register_field(MAX22216.FIELD.VDRNVDRDUTY, 1) # When set Logic High, L2H, DC_H, and DC_L registers for each channel indicate a voltage level in voltage mode. 
 
     # DPM 
     print("Testing DPM in normal state...")
@@ -71,7 +71,7 @@ with ConnectionManager().connect() as my_interface:
 
     # Configuring DPM Settings
     eval.write_register_field(MAX22216.FIELD.DPM_EN_0, 1) # Enable DPM 
-    eval.write_register_field(MAX22216.FIELD.DPM_MIN_CURRENT_0, calc_dpm_start_reg(260)) # Sets DPM_START to 260 mA 
+    eval.write_register_field(MAX22216.FIELD.DPM_START_0, calc_dpm_start_reg(260)) # Sets DPM_START to 260 mA 
     eval.write_register_field(MAX22216.FIELD.DPM_THLD_0, calc_dpm_thld_reg(406)) # Sets DPM_THLD to 406 mA
 
     eval.write_register_field(MAX22216.FIELD.CNTL0, 1) # Turn the solenoid on

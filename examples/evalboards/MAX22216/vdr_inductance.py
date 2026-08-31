@@ -72,7 +72,7 @@ with ConnectionManager().connect() as my_interface:
 
     # General settings
     eval.write_register_field(MAX22216.FIELD.ACTIVE, 1) # Enable bit to activate the IC
-    eval.write_register_field(MAX22216.FIELD.VDR_NDUTY, 1) # When set Logic High, L2H, DC_H, and DC_L registers for each channel indicate a voltage level in voltage mode. 
+    eval.write_register_field(MAX22216.FIELD.VDRNVDRDUTY, 1) # When set Logic High, L2H, DC_H, and DC_L registers for each channel indicate a voltage level in voltage mode. 
 
     # Solenoid sequencer channel 0
     eval.write_register_field(MAX22216.FIELD.DC_L2H_0, calc_vdc_reg(8)) # # Sets the DC_L2H level to 8 V 
@@ -80,7 +80,7 @@ with ConnectionManager().connect() as my_interface:
     eval.write_register_field(MAX22216.FIELD.TIME_L2H_0, calc_time_l2h_reg(100)) # # Sets the TIME_L2H to 100 ms
 
     # Inductance measurement
-    eval.write_register_field(MAX22216.FIELD.U_AC, calc_u_ac_scan(U_AC)) # Sets the amplitude of the internally generated ac signal to 3 V
+    eval.write_register_field(MAX22216.FIELD.U_AC_SCAN, calc_u_ac_scan(U_AC)) # Sets the amplitude of the internally generated ac signal to 3 V
     eval.write_register(MAX22216.REG.F_AC, calc_f_ac_scan(F_AC)) # Sets the frequency of the internally generated ac signal to 1000 Hz
 
     eval.write_register_field(MAX22216.FIELD.L_MEAS_EN_0, 1) # Inductance measurement enabled 
