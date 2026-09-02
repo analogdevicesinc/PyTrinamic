@@ -42,7 +42,7 @@ def calc_f_ac_scan(f_ac, f_pwm_m=F_PWM_M):
     The device stores the AC frequency as a fraction of the PWM master
     frequency: F_AC = F_PWM_M * (F_AC_SCAN / 65535).
     """
-    return round((f_ac * 65535) / f_pwm_m)  # F_AC = F_PWM_M * (F_AC_SCAN/65535)
+    return round((f_ac * 65535) / (f_pwm_m * 1000))  # F_AC = F_PWM_M * (F_AC_SCAN/65535)
 
 def calc_vdc_reg(vdc, kvdr=KVDR):
     """Convert a target DC output voltage in volts into the voltage-register value.
@@ -51,7 +51,7 @@ def calc_vdc_reg(vdc, kvdr=KVDR):
     return round(vdc / kvdr / 36)  # VOUT = KVDR x 36 x DC_L2H[15:0]DEC 
 
 def calc_time_l2h_reg(time_l2h, fpwm=F_PWM_M):
-    """Convert a time value in miliseconds into the TIME_L2H register value.
+    """Convert a time value in milliseconds into the TIME_L2H register value.
     The MAX22216 uses the relation TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
     """
     return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM 

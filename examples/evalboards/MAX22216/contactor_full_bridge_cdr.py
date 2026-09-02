@@ -79,7 +79,7 @@ def get_pwm_master_index(frequency_khz):
     for key, value in F_PWM_M_MAP.items():
         if value == frequency_khz:
             return key
-    raise ValueError(f"Frequency {frequency_khz} Hz is not in F_PWM_M_MAP")
+    raise ValueError(f"Frequency {frequency_khz} KHz is not in F_PWM_M_MAP")
 
 def calc_dpm_start_reg(dpm_start, kcdr=KCDR, gain = GAIN, snsf = SNSF):
     """Convert a current value in mA to the DPM_START register value.
