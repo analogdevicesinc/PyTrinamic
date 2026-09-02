@@ -407,3 +407,13 @@ class MAX22216(TMCIc):
         RES1                  = ( 0x66, 0x00000100,  8 )
         RES2                  = ( 0x66, 0x00000200,  9 )
         RES3                  = ( 0x66, 0x00000400, 10 )
+
+        # Backwards-compatible aliases / axis field maps (used by pytrinamic.features)
+        
+        VDR_NDUTY             = VDRNVDRDUTY
+        ADC_VM_RAW            = VM_MONITOR
+        CNTL                  = [ CNTL0, CNTL1, CNTL2, CNTL3 ]
+        CTRL_MODE             = [ CTRL_MODE_0, CTRL_MODE_1, CTRL_MODE_2, CTRL_MODE_3 ]
+        DC_H                  = [ DC_H_0, DC_H_1, DC_H_2, DC_H_3 ]
+        DC_L                  = [ DC_L_0, DC_L_1, DC_L_2, DC_L_3 ]
+        DC_L2H                = [ DC_L2H_0, DC_L2H_1, DC_L2H_2, DC_L2H_3 ]

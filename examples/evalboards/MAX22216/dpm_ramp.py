@@ -22,7 +22,7 @@ from pytrinamic.ic import MAX22216
 from pytrinamic.evalboards import MAX22216_eval
 
 KVDR = 30.518e-6 # Voltage Drive Mode Constant
-F_PWM_M = 100e3 # Global PWM master frequency (100KHz)
+F_PWM_M = 100 # Global PWM master frequency in KHz (100KHz by default)
 
 def calc_vdc_reg(vdc, kvdr=KVDR):
     """Convert a target DC output voltage in volts into the voltage-register value.
@@ -31,7 +31,7 @@ def calc_vdc_reg(vdc, kvdr=KVDR):
     return round(vdc / kvdr / 36)  # VOUT = KVDR x 36 x DC_L2H[15:0]DEC 
 
 def calc_time_l2h_reg(time_l2h, fpwm=F_PWM_M):
-    """Convert a time value in miliseconds to the TIME_L2H register value.
+    """Convert a time value in milliseconds to the TIME_L2H register value.
     The MAX22216 uses the relation TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
     """
     return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM  

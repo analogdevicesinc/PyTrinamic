@@ -18,8 +18,8 @@ pytrinamic.show_info()
 with ConnectionManager().connect() as my_interface:
     print(my_interface)
 
-    ch = Channel.field(0, MAX22216.FIELD.ADC_VM_RAW, signed=True, eval_channel=1)
-    trigger = Channel.field(0, MAX22216.FIELD.ADC_VM_RAW, signed=True, eval_channel=1)
+    ch = Channel.field(0, MAX22216.FIELD.VM_MONITOR, signed=True, eval_channel=1)
+    trigger = Channel.field(0, MAX22216.FIELD.VM_MONITOR, signed=True, eval_channel=1)
 
     debug = RAMDebug(my_interface)
     debug.set_channel(ch)

@@ -34,7 +34,7 @@ with ConnectionManager().connect() as my_interface:
     max22216_eval.write_register(MAX22216.REG.GLOBAL_CFG, 0x8000)    # Activate the chip
 
     # Read voltage directly from register VM_MONITOR[0:15] (0x05)
-    VM = round(max22216_eval.read_register(MAX22216.REG.ADC_VM_MEASUREMENT) * 9.73 * 10**-3, 2)
+    VM = round(max22216_eval.read_register(MAX22216.REG.VM_MONITOR) * 9.73 * 10**-3, 2)
     print(VM)
     
     # check if voltage is in expected range of 8.7 +-0.1VDC

@@ -23,7 +23,7 @@ from pytrinamic.evalboards import MAX22216_eval
 KVDR = 30.518e-6 # Voltage Drive Mode Constant 
 U_AC = 3 # Amplitude of the internally generated ac signal (3V)
 
-F_PWM_M = 100e3 # Global PWM master frequency (100KHz)
+F_PWM_M = 100 # Global PWM master frequency in KHz (100KHz by default)
 F_AC = 1000 # Frequency of the internally generated ac signal (1000Hz)
 
 GAIN = 1 # current measurement scaling factor

@@ -27,12 +27,10 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.ic import MAX22216
 from pytrinamic.evalboards import MAX22216_eval
 
-KVDR = 30.518e-6 # Voltage Drive Mode Constant
-F_PWM_M = 100e3 # Global PWM master frequency (100KHz)
-
 GAIN = 1 # current measurement scaling factor
 SNSF = 1 # Sense-scaling factor
 KCDR = 1.017 # Current Drive Regulation Constant
+KVDR = 30.518e-6 # Voltage Drive Mode Constant
 
 def calc_vdc_reg(vdc, kvdr=KVDR):
     """Convert a target DC output voltage given in volts into the voltage-register value.

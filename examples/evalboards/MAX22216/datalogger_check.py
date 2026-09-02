@@ -18,7 +18,7 @@ with ConnectionManager().connect() as my_interface:
 
     dl.config.samples_per_channel = 10
     dl.config.log_data = {
-        "ADC_VM_MEASUREMENT": dl.DataTypeRegister(block=0, channel=1, address=MAX22216.REG.ADC_VM_MEASUREMENT),
+        "VM_MONITOR": dl.DataTypeRegister(block=0, channel=1, address=MAX22216.REG.VM_MONITOR),
     }
 
     dl.start_capture()
@@ -27,4 +27,4 @@ with ConnectionManager().connect() as my_interface:
 
     dl.download_log()
 
-    print(dl.log.data["ADC_VM_MEASUREMENT"].samples)
+    print(dl.log.data["VM_MONITOR"].samples)

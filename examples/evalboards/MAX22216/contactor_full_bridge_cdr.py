@@ -69,17 +69,17 @@ def calc_idc_reg(idc, kcdr=KCDR, gain = GAIN, snsf = SNSF):
     return round(idc / kcdr / gain / snsf)  # IOUT = KCDR x GAIN x SNSF x DC_L2H[15:0]DEC               
 
 def calc_time_l2h_reg(time_l2h, fpwm=F_PWM):
-    """Convert a time value in miliseconds into the TIME_L2H register value.
+    """Convert a time value in milliseconds into the TIME_L2H register value.
     The MAX22216 uses the relation TIME_L2H = TIME_L2H[15:0]DEC / F_PWM.
     """
     return round(time_l2h * fpwm)  # TIME_L2H = TIME_L2H[15:0]DEC/F_PWM  
 
-def get_pwm_master_index(frequency_hz):
-    """Return the map key for a given PWM master frequency in Hz."""
+def get_pwm_master_index(frequency_khz):
+    """Return the map key for a given PWM master frequency in KHz."""
     for key, value in F_PWM_M_MAP.items():
-        if value == frequency_hz:
+        if value == frequency_khz:
             return key
-    raise ValueError(f"Frequency {frequency_hz} Hz is not in F_PWM_M_MAP")
+    raise ValueError(f"Frequency {frequency_khz} Hz is not in F_PWM_M_MAP")
 
 def calc_dpm_start_reg(dpm_start, kcdr=KCDR, gain = GAIN, snsf = SNSF):
     """Convert a current value in mA to the DPM_START register value.
