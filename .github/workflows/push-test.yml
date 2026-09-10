@@ -2,6 +2,9 @@ name: Push Triggered Testrun
 
 on: push
 
+permissions:
+  contents: read
+
 jobs:
   test:
 
