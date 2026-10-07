@@ -27,15 +27,15 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                                           +------------------------+                     
-                                           | SPI encoder feedback   |                     
-                                           |                        |                     
-                             +-----+  +----|--------------+       +---++--------------+   
-                      USB    |     |==|                   |-------|   ||              |   
+                                           +------------------------+
+                                           | SPI encoder feedback   |
+                                           |                        |
+                             +-----+  +----|--------------+       +---++--------------+
+                      USB    |     |==|                   |-------|   ||              |
                       -------|     |==|                   |-------|SPI||              |===
- Connected to the machine    |     |==|                   |-------|ENC||BLDC QBL4208  |   
- running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++--------------+   
-                             +-----+  +-------------------+                               
+ Connected to the machine    |     |==|                   |-------|ENC||BLDC QBL4208  |
+ running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++--------------+
+                             +-----+  +-------------------+
 
 #############################################################################################################
 # connection_mode == headless
@@ -46,18 +46,19 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
 USB-UART Cable - Connected to the machine running this script.
-   -------+                                                                     
-          | +-------------------------+                     
-          | |  SPI encoder feedback   |                     
-          | |                         |                     
-        +-|-|---------------+       +---++--------------+   
-        |                   |-------|   ||              |   
+   -------+
+          | +-------------------------+
+          | |  SPI encoder feedback   |
+          | |                         |
+        +-|-|---------------+       +---++--------------+
+        | | |  RST <-> GND  |-------|   ||              |
         |                   |-------|SPI||              |===
-        |                   |-------|ENC||BLDC QBL4208  |   
-        |TMC9660-3PH-EVAL   |       +---++--------------+   
-        +-------------------+                               
-                                                                                          
+        |                   |-------|ENC||BLDC QBL4208  |
+        |TMC9660-3PH-EVAL   |       +---++--------------+
+        +-------------------+
+                  Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
 """
+
 import time
 import statistics
 from dataclasses import dataclass
@@ -76,7 +77,7 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 example_mode: Literal["check angle", "move motor closed loop"] = "check angle"
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 if connection_mode == "with_landungsbruecke":
     cm = ConnectionManager()
@@ -84,9 +85,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -108,6 +108,7 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.SPI_ENCODER_DIRECTION, 1)
 
     if example_mode == "check angle":
+
         @dataclass
         class Sample:
             open_loop_position: int
@@ -124,23 +125,49 @@ with cm.connect() as my_interface:
         samples_per_s: int = 10
         # .. and record the open loop angle and the SPI encoder angle
         while time.time() - start_time_s < 4:
-            samples.append(Sample(tmc9660_device.get_parameter(TMC9660.ap.OPENLOOP_ANGLE),
-                                  tmc9660_device.get_parameter(TMC9660.ap.SPI_ENCODER_COMMUTATION_ANGLE)))
-            time.sleep(1/samples_per_s)
+            samples.append(
+                Sample(
+                    tmc9660_device.get_parameter(TMC9660.ap.OPENLOOP_ANGLE),
+                    tmc9660_device.get_parameter(TMC9660.ap.SPI_ENCODER_COMMUTATION_ANGLE),
+                )
+            )
+            time.sleep(1 / samples_per_s)
         # Stop the motor
         tmc9660_device.set_parameter(TMC9660.ap.TARGET_VELOCITY, 0)
         time.sleep(0.1)
         tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
         # Do some checks
-        slope_open_loop_angle = statistics.mean([c_int16(samples[i+1].open_loop_position - samples[i].open_loop_position).value for i in range(len(samples) - 1)]) * samples_per_s
-        slope_spi_enc_angle = statistics.mean([c_int16(samples[i+1].spi_enc_position - samples[i].spi_enc_position).value for i in range(len(samples) - 1)]) * samples_per_s
+        slope_open_loop_angle = (
+            statistics.mean(
+                [
+                    c_int16(samples[i + 1].open_loop_position - samples[i].open_loop_position).value
+                    for i in range(len(samples) - 1)
+                ]
+            )
+            * samples_per_s
+        )
+        slope_spi_enc_angle = (
+            statistics.mean(
+                [
+                    c_int16(samples[i + 1].spi_enc_position - samples[i].spi_enc_position).value
+                    for i in range(len(samples) - 1)
+                ]
+            )
+            * samples_per_s
+        )
         slope_error = abs(slope_spi_enc_angle - slope_open_loop_angle) / 2**16
         if abs(slope_spi_enc_angle) / 2**16 < 0.1:
-            print("The SPI encoder angle does not or just barely change. Check the SPI encoder connection! Or maybe the open loop voltage is not high enough.")
+            print(
+                "The SPI encoder angle does not or just barely change. Check the SPI encoder connection! Or maybe the open loop voltage is not high enough."
+            )
         elif slope_open_loop_angle * slope_spi_enc_angle < 0:
-            print("The the SPI encoder seems to be inverted. Try to invert the SPI_ENCODER_DIRECTION setting to fix this!")
+            print(
+                "The the SPI encoder seems to be inverted. Try to invert the SPI_ENCODER_DIRECTION setting to fix this!"
+            )
         elif slope_error > 0.01:
-            print(f"The SPI encoder angle slope is not parallel to the open-loop angle slope! The error is {slope_error:.3}.")
+            print(
+                f"The SPI encoder angle slope is not parallel to the open-loop angle slope! The error is {slope_error:.3}."
+            )
         else:
             print("The SPI encoder angle looks plausible.")
         # Plot the angles if matplotlib is installed

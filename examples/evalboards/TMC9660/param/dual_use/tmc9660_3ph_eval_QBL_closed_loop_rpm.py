@@ -56,9 +56,10 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +---++--------------+             
-        |  |                |-------|   ||              |             
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +---++--------------+        
+        |  |  RST <-> GND   |-------|   ||              |             
         |                   |-------|   ||              |===             
         |                   |-------|ABN||BLDC QBL4208  |             
         |TMC9660-3PH-EVAL   |       +---++--------------+             
@@ -85,6 +86,7 @@ Wiring:
                               | Green       | B        |       | Green       | V           |
                               | Yellow      | N        |       | Withe       | W           |
 """
+
 import time
 from typing import Literal, List, Union
 from dataclasses import dataclass
@@ -97,7 +99,7 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Select the FOC feedback
 commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encoder"
@@ -111,9 +113,9 @@ motor_pole_pairs = 4
 encoder_resolution = 4096
 
 # Calculate the velocity scaling factor
-kv_same = (2**16*motor_pole_pairs)*2**24/40e6/60
-kv_abn = (encoder_resolution)*2**24/40e6/60
-kv_hall = (6*motor_pole_pairs)*2**24/40e6/60
+kv_same = (2**16 * motor_pole_pairs) * 2**24 / 40e6 / 60
+kv_abn = (encoder_resolution) * 2**24 / 40e6 / 60
+kv_hall = (6 * motor_pole_pairs) * 2**24 / 40e6 / 60
 
 
 class TimeoutTimer:
@@ -137,9 +139,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -171,7 +172,7 @@ with cm.connect() as my_interface:
         tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
     elif commutation_feedback_select == "Digital hall":
         tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
-    
+
     if velocity_feedback_select == "Same as commutation":
         kv = kv_same
         tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.SAME_AS_COMMUTATION)
@@ -183,15 +184,15 @@ with cm.connect() as my_interface:
         tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.DIGITAL_HALL)
 
     # Calculate the acceleration scaling factor
-    ka = kv*2**17/40e6
+    ka = kv * 2**17 / 40e6
     print(f"kv: {kv}")
     print(f"ka: {ka}")
 
     target_velocity_rpm = 4000
-    target_velocity_internal = int(target_velocity_rpm*kv)
+    target_velocity_internal = int(target_velocity_rpm * kv)
     acceleration_rpm_s = 2000  # [rpm/s]
-    acceleration_internal =  int(acceleration_rpm_s*ka)
-    
+    acceleration_internal = int(acceleration_rpm_s * ka)
+
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_ENABLE, 1)
     # Enable 4 point ramp mode by disabling 6/8 point ramp mode.
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_V1, 0)
@@ -202,7 +203,7 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_VMAX, target_velocity_internal)
     print(f"RAMP_AMAX/RAMP_DMAX: {acceleration_internal}")
     print(f"RAMP_VMAX: {target_velocity_internal}")
-    
+
     # Rotate the motor and record the velocity.
     # And then stop the motor but record the velocity as well.
     samples: List[Sample] = []
@@ -216,8 +217,8 @@ with cm.connect() as my_interface:
 
 # Plot the velocity curve
 fig, ax = plt.subplots()
-t = [sample.time-samples[0].time for sample in samples]
-v = [sample.actual_velocity_internal/kv for sample in samples]
+t = [sample.time - samples[0].time for sample in samples]
+v = [sample.actual_velocity_internal / kv for sample in samples]
 ax.plot(t, v, label="velocity")
 ax.legend()
 plt.show()

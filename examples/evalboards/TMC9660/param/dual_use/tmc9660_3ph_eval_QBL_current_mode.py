@@ -23,13 +23,13 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+       +--------------+             
-                     USB    |     |==|                   |-------|              |             
-                     -------|     |==|                   |-------|              |===             
-Connected to the machine    |     |==|                   |-------|BLDC QBL4208  |             
-running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+             
-                            +-----+  +-------------------+                         
-                    
+                            +-----+  +-------------------+       +--------------+
+                     USB    |     |==|                   |-------|              |
+                     -------|     |==|                   |-------|              |===
+Connected to the machine    |     |==|                   |-------|BLDC QBL4208  |
+running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+
+                            +-----+  +-------------------+
+
 
 #############################################################################################################
 # connection_mode == headless
@@ -40,15 +40,17 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +--------------+             
-        |  |                |-------|              |             
-        |                   |-------|              |===             
-        |                   |-------|BLDC QBL4208  |             
-        |TMC9660-3PH-EVAL   |       +--------------+             
-        +-------------------+                  
-       
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +--------------+
+        |  |  RST <-> GND   |-------|              |
+        |                   |-------|              |===
+        |                   |-------|BLDC QBL4208  |
+        |TMC9660-3PH-EVAL   |       +--------------+
+        +-------------------+
+
 """
+
 import time
 from typing import Literal, List, Union
 from dataclasses import dataclass
@@ -61,14 +63,16 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = int(1024*2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM)
-adc_clipping_current_ampere = 2.5/CSA_GAIN/R_SHUNT_OHM
-print(f"ADC clipping current: {adc_clipping_current_ampere:.3}A")  # The maximum current that can be measured by the ADCs
+current_scaling_factor = int(1024 * 2.5 * 1000 / (2**16 - 1) / CSA_GAIN / R_SHUNT_OHM)
+adc_clipping_current_ampere = 2.5 / CSA_GAIN / R_SHUNT_OHM
+print(
+    f"ADC clipping current: {adc_clipping_current_ampere:.3}A"
+)  # The maximum current that can be measured by the ADCs
 
 
 class TimeoutTimer:
@@ -92,9 +96,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -105,7 +108,7 @@ with cm.connect() as my_interface:
 
     # Increase the output voltage limit
     tmc9660_device.set_parameter(TMC9660.ap.OUTPUT_VOLTAGE_LIMIT, 16000)
-    
+
     # Set the motor parameters
     tmc9660_device.set_parameter(TMC9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
     tmc9660_device.set_parameter(TMC9660.ap.MOTOR_POLE_PAIRS, 4)
@@ -117,7 +120,7 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.MAX_FLUX, 2000)
     tmc9660_device.set_parameter(TMC9660.ap.OPENLOOP_CURRENT, 2000)
     tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_CURRENT_MODE)
-    
+
     # Move the motor in open loop current mode, while recording the ADC values of the phase currents measurement ADCs.
     # Note that the ADC values are not the actual phase currents, but the raw ADC values!
     samples_i0: List[Sample] = []
@@ -131,7 +134,9 @@ with cm.connect() as my_interface:
             samples_i0.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ADC_I0)))
             samples_i1.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ADC_I1)))
             samples_i2.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ADC_I2)))
-            samples_current.append(Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ACTUAL_TOTAL_MOTOR_CURRENT)))
+            samples_current.append(
+                Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.ACTUAL_TOTAL_MOTOR_CURRENT))
+            )
 
     # Remove power from the motor
     tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
@@ -139,12 +144,12 @@ with cm.connect() as my_interface:
 # Plot the phase currents and the actual total motor current
 fig, ax = plt.subplots()
 for i, samples in enumerate([samples_i0, samples_i1, samples_i2]):
-    t = [sample.time-samples[0].time for sample in samples]
+    t = [sample.time - samples[0].time for sample in samples]
     # We reusing the current_scaling_factor to scale the ADC values to the actual phase currents.
-    phase_current_ma = [sample.x*current_scaling_factor/1024 for sample in samples]
+    phase_current_ma = [sample.x * current_scaling_factor / 1024 for sample in samples]
     ax.plot(t, phase_current_ma, label=f"I{i}")
     ax.legend()
-t = [sample.time-samples_current[0].time for sample in samples_current]
-ax.plot(t, [sample.x for sample in samples_current], label=f"Current")
+t = [sample.time - samples_current[0].time for sample in samples_current]
+ax.plot(t, [sample.x for sample in samples_current], label="Current")
 ax.legend()
 plt.show()

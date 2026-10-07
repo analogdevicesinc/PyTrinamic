@@ -15,23 +15,23 @@ J = m * R² / 2 = 1000g * (3cm)² / 2 = 4500g*cm²
 
 A 100Ohm / 10W brake chopper load resistor is used.
 
-      V ▲                                                                  
-        │                                                                  
-        │                                                                  
-    BRAKE_CHOPPER_VOLTAGE_LIMIT                                            
-   ───────────────────────────────────██────────██───────██───────────     
-  ▲ │   │                           ███ ██     ████     ████               
-  | │   │                          ██    █   ██   ██   ██  ██              
-  | ▼ BRAKE_CHOPPER_HYSTERESIS    ██     █████     ████     ██             
-  |  ────────────────────────────██──────────────────────────█────────     
-  |     │                       ██                           █             
+      V ▲
+        │
+        │
+    BRAKE_CHOPPER_VOLTAGE_LIMIT
+   ───────────────────────────────────██────────██───────██───────────
+  ▲ │   │                           ███ ██     ████     ████
+  | │   │                          ██    █   ██   ██   ██  ██
+  | ▼ BRAKE_CHOPPER_HYSTERESIS    ██     █████     ████     ██
+  |  ────────────────────────────██──────────────────────────█────────
+  |     │                       ██                           █
   |     │████████████████████████                            ████████████  supply_voltage
-  |     │                       |◀──    brake phase     ──▶|                                       
-  |     │                                                                      
-  |     │                                                                  
+  |     │                       |◀──    brake phase     ──▶|
+  |     │
+  |     │
         └──────────────────────────────────────────────────────────────────▶
                                                                           t
-         
+
 The required TMC-EvalSystem firmware is 3.10.7 or later.
 
 The TMC9660-3PH-EVAL is supplied with 24V.
@@ -51,17 +51,17 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+       +---++--------------+ +--+            
-                     USB    |     |==|                   |-------|   ||              | |  |          
-                     -------|     |==|                   |-------|   ||              |=|  |           
-Connected to the machine    |     |==|                   |-------|ABN||BLDC QBL4208  | |  |          
-running this script.        |     |==|                   |       +---++--------------+ +--+       
-                            |LB   |==|TMC9660-3PH-EVAL   |---R100  |   |              
-                            +-----+  +-------------------+         |   |                    
-                                                   | |             |   | Digital hall feedback                   
-                                                   | +-----------------+                    
-                                                   |               | ABN encoder feedback                       
-                                                   +---------------+                      
+                            +-----+  +-------------------+       +---++--------------+ +--+
+                     USB    |     |==|                   |-------|   ||              | |  |
+                     -------|     |==|                   |-------|   ||              |=|  |
+Connected to the machine    |     |==|                   |-------|ABN||BLDC QBL4208  | |  |
+running this script.        |     |==|                   |       +---++--------------+ +--+
+                            |LB   |==|TMC9660-3PH-EVAL   |---R100  |   |
+                            +-----+  +-------------------+         |   |
+                                                   | |             |   | Digital hall feedback
+                                                   | +-----------------+
+                                                   |               | ABN encoder feedback
+                                                   +---------------+
 
 #############################################################################################################
 # connection_mode == headless
@@ -72,18 +72,19 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +---++--------------+ +--+        
-        |  |                |-------|   ||              | |  |        
-        |                   |-------|   ||              |=|  |           
-        |                   |-------|ABN||BLDC QBL4208  | |  |        
-        |                   |       +---++--------------+ +--+ 
-        |TMC9660-3PH-EVAL   |---R100  |   |    
-        +-------------------+         |   |                    
-                      | |             |   | Digital hall feedback                   
-                      | +-----------------+                    
-                      |               | ABN encoder feedback                       
-                      +---------------+        
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +---++--------------+ +--+
+        |  |  RST <-> GND   |-------|   ||              | |  |
+        |                   |-------|   ||              |=|  |
+        |                   |-------|ABN||BLDC QBL4208  | |  |
+        |                   |       +---++--------------+ +--+
+        |TMC9660-3PH-EVAL   |---R100  |   |
+        +-------------------+         |   |
+                      | |             |   | Digital hall feedback
+                      | +-----------------+
+                      |               | ABN encoder feedback
+                      +---------------+
 #############################################################################################################
 # Notes
 #############################################################################################################
@@ -98,10 +99,11 @@ Wiring:
 |-------------|-------|       |-------------|----------|       |-------------|-------------|     |---------------|
 | Black       | U     |       | Red         | +5V      |       | Red         | +5V         |     | +VM           |
 | Red         | V     |       | Black       | GND      |       | Black       | GND         |     | BRAKE CH      |
-| Yellow      | W     |       | Withe       | A        |       | Blue        | U           |     
-                              | Green       | B        |       | Green       | V           |     
-                              | Yellow      | N        |       | Withe       | W           |     
+| Yellow      | W     |       | Withe       | A        |       | Blue        | U           |
+                              | Green       | B        |       | Green       | V           |
+                              | Yellow      | N        |       | Withe       | W           |
 """
+
 import time
 from typing import Literal, List, Union
 from dataclasses import dataclass
@@ -114,7 +116,7 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Motor specification
 motor_pole_pairs = 4
@@ -125,12 +127,12 @@ encoder_resolution = 4096
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = int(1024*2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM)
+current_scaling_factor = int(1024 * 2.5 * 1000 / (2**16 - 1) / CSA_GAIN / R_SHUNT_OHM)
 
 # Calculate the velocity scaling factor
-kv = (encoder_resolution)*2**24/40e6/60
+kv = (encoder_resolution) * 2**24 / 40e6 / 60
 # Calculate the acceleration scaling factor
-ka = kv*2**17/40e6
+ka = kv * 2**17 / 40e6
 
 
 class TimeoutTimer:
@@ -160,9 +162,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -171,11 +172,13 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
 
     # Adapt the over voltage protection to the actual supply voltage.
-    bc_hysteresis = 5 # 0.5 Volts -> let the voltage bounce in this range
-    bc_hysteresis_stop = 2 # 0.2 Volts -> bounce area should start at supply voltage plus this value
+    bc_hysteresis = 5  # 0.5 Volts -> let the voltage bounce in this range
+    bc_hysteresis_stop = 2  # 0.2 Volts -> bounce area should start at supply voltage plus this value
     supply_voltage = tmc9660_device.get_parameter(TMC9660.ap.SUPPLY_VOLTAGE)
     tmc9660_device.set_parameter(TMC9660.ap.BRAKE_CHOPPER_HYSTERESIS, bc_hysteresis)
-    tmc9660_device.set_parameter(TMC9660.ap.BRAKE_CHOPPER_VOLTAGE_LIMIT, supply_voltage + bc_hysteresis + bc_hysteresis_stop)
+    tmc9660_device.set_parameter(
+        TMC9660.ap.BRAKE_CHOPPER_VOLTAGE_LIMIT, supply_voltage + bc_hysteresis + bc_hysteresis_stop
+    )
     tmc9660_device.set_parameter(TMC9660.ap.BRAKE_CHOPPER_ENABLE.choice.ENABLED)
 
     # Set the commutation mode to system off - in case it was on before
@@ -213,10 +216,10 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.VELOCITY_SENSOR_SELECTION.choice.ABN1_ENCODER)
 
     target_velocity_rpm = 2000
-    target_velocity_internal = int(target_velocity_rpm*kv)
+    target_velocity_internal = int(target_velocity_rpm * kv)
     acceleration_rpm_s = 1000  # [rpm/s]
-    acceleration_internal =  int(acceleration_rpm_s*ka)
-    
+    acceleration_internal = int(acceleration_rpm_s * ka)
+
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_ENABLE, 1)
     # Enable 4 point ramp mode by disabling 6/8 point ramp mode.
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_V1, 0)
@@ -225,7 +228,7 @@ with cm.connect() as my_interface:
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_AMAX, acceleration_internal)
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_DMAX, acceleration_internal)
     tmc9660_device.set_parameter(TMC9660.ap.RAMP_VMAX, target_velocity_internal)
-    
+
     # Rotate the motor and then stop the motor.
     # During the deceleration (target_velocity == 0) sample the supply voltage and the BRAKE_CHOPPER_ACTIVE flag.
     samples: List[Record] = []
@@ -236,7 +239,12 @@ with cm.connect() as my_interface:
         while not timer.has_expired():
             if target_velocity == 0:
                 supply_voltage = Sample(time.perf_counter(), tmc9660_device.get_parameter(TMC9660.ap.SUPPLY_VOLTAGE))
-                brake_chopper_active = Sample(time.perf_counter(), TMC9660.ap.GENERAL_STATUS_FLAGS.BRAKE_CHOPPER_ACTIVE.get(tmc9660_device.get_parameter(TMC9660.ap.GENERAL_STATUS_FLAGS)))
+                brake_chopper_active = Sample(
+                    time.perf_counter(),
+                    TMC9660.ap.GENERAL_STATUS_FLAGS.BRAKE_CHOPPER_ACTIVE.get(
+                        tmc9660_device.get_parameter(TMC9660.ap.GENERAL_STATUS_FLAGS)
+                    ),
+                )
                 samples.append(Record(supply_voltage, brake_chopper_active))
 
     tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.SYSTEM_OFF)
@@ -246,7 +254,7 @@ t_sv = [record.supply_voltage.time_stamp - start_time for record in samples]
 sv = [record.supply_voltage.value for record in samples]
 ax0.plot(t_sv, sv, "r-", label="supply_voltage")
 t_bca = [record.brake_chopper_active.time_stamp - start_time for record in samples]
-bca = [record.brake_chopper_active.value*100 for record in samples]
+bca = [record.brake_chopper_active.value * 100 for record in samples]
 ax1.plot(t_bca, bca, "b-", label="brake_chopper_active")
 fig.legend()
 plt.show()

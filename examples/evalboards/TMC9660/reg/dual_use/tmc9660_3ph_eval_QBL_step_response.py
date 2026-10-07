@@ -22,13 +22,13 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+       +--------------+             
-                     USB    |     |==|                   |-------|              |             
-                     -------|     |==|                   |-------|              |===             
-Connected to the machine    |     |==|                   |-------|BLDC QBL4208  |             
-running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+             
+                            +-----+  +-------------------+       +--------------+
+                     USB    |     |==|                   |-------|              |
+                     -------|     |==|                   |-------|              |===
+Connected to the machine    |     |==|                   |-------|BLDC QBL4208  |
+running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +--------------+
                             +-----+  +-------------------+
-              
+
 #############################################################################################################
 # connection_mode == headless
 #############################################################################################################
@@ -38,13 +38,14 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +--------------+             
-        |  |                |-------|              |             
-        |                   |-------|              |===             
-        |                   |-------|BLDC QBL4208  |             
-        |TMC9660-3PH-EVAL   |       +--------------+             
-        +-------------------+  
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +--------------+
+        |  |  RST <-> GND   |-------|              |
+        |                   |-------|              |===
+        |                   |-------|BLDC QBL4208  |
+        |TMC9660-3PH-EVAL   |       +--------------+
+        +-------------------+
 """
 
 import time
@@ -59,12 +60,12 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
+current_scaling_factor = 2.5 * 1000 / (2**16 - 1) / CSA_GAIN / R_SHUNT_OHM
 
 target_current_ma = 2000  # 2000mA Open loop current
 
@@ -83,9 +84,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -114,14 +114,14 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.GDRV_TIMING.T_DRIVE_SINK_UVW, 3)
     tmc9660_device.write(TMC9660.MCC.GDRV_TIMING.T_DRIVE_SOURCE_UVW, 3)
     tmc9660_device.write(TMC9660.MCC.GDRV_BBM, 0)
-    
+
     # Set the PWM frequency and other PWM settings
     tmc9660_device.write(TMC9660.MCC.PWM_MAXCNT, 4799)  # Default for 25KHz
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.SV_MODE.choice.BOTTOM_OFFSET)
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.DUTY_CYCLE_OFFSET, 0)
-    tmc9660_device.write(TMC9660.MCC.PWM_SWITCH_LIMIT, int(0xFFFF * 0.8)) # 80% of the max
+    tmc9660_device.write(TMC9660.MCC.PWM_SWITCH_LIMIT, int(0xFFFF * 0.8))  # 80% of the max
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP.choice.OFF_LSON)
-    time.sleep(0.001) # Wait for bst caps to charge
+    time.sleep(0.001)  # Wait for bst caps to charge
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP.choice.CENTERED)
 
     # Enable PWM channels
@@ -135,8 +135,12 @@ with cm.connect() as my_interface:
 
     # Set limits
     tmc9660_device.write(TMC9660.MCC.PID_UQ_UD_LIMITS, 6000)
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_FLUX_LIMIT, current_ma_to_internal(target_current_ma*1.2))
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(target_current_ma*1.2))
+    tmc9660_device.write(
+        TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_FLUX_LIMIT, current_ma_to_internal(target_current_ma * 1.2)
+    )
+    tmc9660_device.write(
+        TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(target_current_ma * 1.2)
+    )
 
     # Set PID coefficients
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
@@ -173,13 +177,15 @@ with cm.connect() as my_interface:
         ]
         dl.config.trigger.edge = dl.TriggerEdge.RISING
         dl.config.trigger.on_data = TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET
-        dl.config.trigger.threshold = current_ma_to_internal(target_current_ma//4)
+        dl.config.trigger.threshold = current_ma_to_internal(target_current_ma // 4)
         dl.config.trigger.pretrigger_samples_per_channel = 32
 
         dl.start_capture()
 
         # Apply flux
-        tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, current_ma_to_internal(target_current_ma))
+        tmc9660_device.write(
+            TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, current_ma_to_internal(target_current_ma)
+        )
 
         dl.wait_for_capture_completion()
 
@@ -188,10 +194,20 @@ with cm.connect() as my_interface:
         tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET, 0)
 
         # Plot the current curve
-        ax.plot(dl.log.time_vector, [current_internal_to_ma(x) for x in dl.log.data["PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET"].samples] , label="Target Current")
-        ax.plot(dl.log.time_vector, [current_internal_to_ma(x) for x in dl.log.data["PID_TORQUE_FLUX_ACTUAL.PID_FLUX_ACTUAL"].samples] , label="Actual Current")
-        ax.set_title(f"FLUX.P = {settings[TMC9660.MCC.PID_FLUX_COEFF.P]}; FLUX.I = {settings[TMC9660.MCC.PID_FLUX_COEFF.I]}")
+        ax.plot(
+            dl.log.time_vector,
+            [current_internal_to_ma(x) for x in dl.log.data["PID_TORQUE_FLUX_TARGET.PID_FLUX_TARGET"].samples],
+            label="Target Current",
+        )
+        ax.plot(
+            dl.log.time_vector,
+            [current_internal_to_ma(x) for x in dl.log.data["PID_TORQUE_FLUX_ACTUAL.PID_FLUX_ACTUAL"].samples],
+            label="Actual Current",
+        )
+        ax.set_title(
+            f"FLUX.P = {settings[TMC9660.MCC.PID_FLUX_COEFF.P]}; FLUX.I = {settings[TMC9660.MCC.PID_FLUX_COEFF.I]}"
+        )
         ax.legend()
-        
+
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.STOPPED)
     plt.show()

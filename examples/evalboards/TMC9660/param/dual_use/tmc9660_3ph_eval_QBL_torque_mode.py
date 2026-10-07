@@ -23,16 +23,16 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+       +---++--------------+             
-                     USB    |     |==|                   |-------|   ||              |             
-                     -------|     |==|                   |-------|   ||              |===             
-Connected to the machine    |     |==|                   |-------|ABN||BLDC QBL4208  |             
-running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++--------------+             
-                            +-----+  +-------------------+         |   |                    
-                                                   | |             |   | Digital hall feedback                   
-                                                   | +-----------------+                    
-                                                   |               | ABN encoder feedback                       
-                                                   +---------------+                      
+                            +-----+  +-------------------+       +---++--------------+
+                     USB    |     |==|                   |-------|   ||              |
+                     -------|     |==|                   |-------|   ||              |===
+Connected to the machine    |     |==|                   |-------|ABN||BLDC QBL4208  |
+running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++--------------+
+                            +-----+  +-------------------+         |   |
+                                                   | |             |   | Digital hall feedback
+                                                   | +-----------------+
+                                                   |               | ABN encoder feedback
+                                                   +---------------+
 
 #############################################################################################################
 # connection_mode == headless
@@ -43,17 +43,18 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +---++--------------+             
-        |  |                |-------|   ||              |             
-        |                   |-------|   ||              |===             
-        |                   |-------|ABN||BLDC QBL4208  |             
-        |TMC9660-3PH-EVAL   |       +---++--------------+             
-        +-------------------+         |   |                    
-                      | |             |   | Digital hall feedback                   
-                      | +-----------------+                    
-                      |               | ABN encoder feedback                       
-                      +---------------+       
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +---++--------------+
+        |  |  RST <-> GND   |-------|   ||              |
+        |                   |-------|   ||              |===
+        |                   |-------|ABN||BLDC QBL4208  |
+        |TMC9660-3PH-EVAL   |       +---++--------------+
+        +-------------------+         |   |
+                      | |             |   | Digital hall feedback
+                      | +-----------------+
+                      |               | ABN encoder feedback
+                      +---------------+
 #############################################################################################################
 # Notes
 #############################################################################################################
@@ -70,8 +71,9 @@ Wiring:
 | Red         | V     |       | Black       | GND      |       | Black       | GND         |
 | Yellow      | W     |       | Withe       | A        |       | Blue        | U           |
                               | Green       | B        |       | Green       | V           |
-                              | Yellow      | N        |       | Withe       | W           | 
+                              | Yellow      | N        |       | Withe       | W           |
 """
+
 import time
 from typing import Literal, List, Union
 from dataclasses import dataclass
@@ -84,7 +86,7 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Select the FOC feedback
 commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encoder"
@@ -92,7 +94,7 @@ commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encod
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = int(1024*2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM)
+current_scaling_factor = int(1024 * 2.5 * 1000 / (2**16 - 1) / CSA_GAIN / R_SHUNT_OHM)
 
 
 class TimeoutTimer:
@@ -116,9 +118,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -150,7 +151,7 @@ with cm.connect() as my_interface:
         tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_ABN)
     elif commutation_feedback_select == "Digital hall":
         tmc9660_device.set_parameter(TMC9660.ap.COMMUTATION_MODE.choice.FOC_HALL_SENSOR)
-    
+
     torque_ma = 1200
     # Rotate the motor and record the torque.
     # And then stop the motor but record the torque as well.
@@ -165,7 +166,7 @@ with cm.connect() as my_interface:
 
 # Plot the torque curve
 fig, ax = plt.subplots()
-t = [sample.time-samples[0].time for sample in samples]
+t = [sample.time - samples[0].time for sample in samples]
 v = [sample.actual_torque for sample in samples]
 ax.plot(t, v, label="torque")
 ax.legend()

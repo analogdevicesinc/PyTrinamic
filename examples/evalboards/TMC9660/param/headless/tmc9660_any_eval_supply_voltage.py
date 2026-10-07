@@ -14,10 +14,10 @@ On Windows this can be done with:
         ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
-   --------+                       
-           |  USB-UART Cable - Connected to the machine running this script.                                       
+   --------+
+           |  USB-UART Cable - Connected to the machine running this script.
         +--|-----------------+
-        |  |                 |
+        |  |  RST <-> GND    |  Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
         |                    |
         |TMC9660-3PH-EVAL or |
         |TMC9660-STEPPER-EVAL|
@@ -33,7 +33,6 @@ from pytrinamic.ic import TMC9660
 com_port = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() as my_interface:
-
     tmc9660 = TMC9660(my_interface)
 
     for _ in range(10):

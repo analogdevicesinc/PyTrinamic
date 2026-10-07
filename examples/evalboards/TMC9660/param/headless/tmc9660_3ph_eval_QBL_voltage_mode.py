@@ -12,14 +12,15 @@ On Windows this can be done with:
         ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
-   --------+                       
-           |  USB-UART Cable - Connected to the machine running this script.                                       
-        +--|----------------+       +--------------+             
-        |  |                |-------|              |             
-        |                   |-------|              |===             
-        |                   |-------|BLDC QBL4208  |             
-        |TMC9660-3PH-EVAL   |       +--------------+             
-        +-------------------+                             
+   --------+
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +--------------+
+        |  |  RST <-> GND   |-------|              |
+        |                   |-------|              |===
+        |                   |-------|BLDC QBL4208  |
+        |TMC9660-3PH-EVAL   |       +--------------+
+        +-------------------+
 """
 
 import time
@@ -31,7 +32,6 @@ from pytrinamic.ic import TMC9660
 com_port = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() as my_interface:
-
     tmc9660 = TMC9660(my_interface)
 
     tmc9660.set_parameter(tmc9660.ap.MOTOR_TYPE.choice.BLDC_MOTOR)
@@ -39,7 +39,7 @@ with ConnectionManager(f"--interface serial_tmcl --port {com_port}").connect() a
     tmc9660.set_parameter(tmc9660.ap.COMMUTATION_MODE.choice.FOC_OPENLOOP_VOLTAGE_MODE)
 
     tmc9660.set_parameter(tmc9660.ap.TARGET_VELOCITY, 10_000)
-    
+
     start_time_s = time.time()
     while time.time() - start_time_s < 4:
         print(f"Actual velocity: {tmc9660.get_parameter(tmc9660.ap.ACTUAL_VELOCITY)}")

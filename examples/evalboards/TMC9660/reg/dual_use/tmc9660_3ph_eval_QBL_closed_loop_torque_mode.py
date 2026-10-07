@@ -25,17 +25,17 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+       +---++--------------+             
-                     USB    |     |==|                   |-------|   ||              |             
-                     -------|     |==|                   |-------|   ||              |===             
-Connected to the machine    |     |==|                   |-------|ABN||BLDC QBL4208  |             
-running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++--------------+             
-                            +-----+  +-------------------+         |   |                    
-                                                   | |             |   | Digital hall feedback                   
-                                                   | +-----------------+                    
-                                                   |               | ABN encoder feedback                       
-                                                   +---------------+   
-              
+                            +-----+  +-------------------+       +---++--------------+
+                     USB    |     |==|                   |-------|   ||              |
+                     -------|     |==|                   |-------|   ||              |===
+Connected to the machine    |     |==|                   |-------|ABN||BLDC QBL4208  |
+running this script.        |LB   |==|TMC9660-3PH-EVAL   |       +---++--------------+
+                            +-----+  +-------------------+         |   |
+                                                   | |             |   | Digital hall feedback
+                                                   | +-----------------+
+                                                   |               | ABN encoder feedback
+                                                   +---------------+
+
 #############################################################################################################
 # connection_mode == headless
 #############################################################################################################
@@ -45,17 +45,18 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +---++--------------+             
-        |  |                |-------|   ||              |             
-        |                   |-------|   ||              |===             
-        |                   |-------|ABN||BLDC QBL4208  |             
-        |TMC9660-3PH-EVAL   |       +---++--------------+             
-        +-------------------+         |   |                    
-                      | |             |   | Digital hall feedback                   
-                      | +-----------------+                    
-                      |               | ABN encoder feedback                       
-                      +---------------+   
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +---++--------------+
+        |  |  RST <-> GND   |-------|   ||              |
+        |                   |-------|   ||              |===
+        |                   |-------|ABN||BLDC QBL4208  |
+        |TMC9660-3PH-EVAL   |       +---++--------------+
+        +-------------------+         |   |
+                      | |             |   | Digital hall feedback
+                      | +-----------------+
+                      |               | ABN encoder feedback
+                      +---------------+
 
 #############################################################################################################
 # Notes
@@ -87,7 +88,7 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Select the FOC feedback
 commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encoder"
@@ -95,12 +96,12 @@ commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encod
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
+current_scaling_factor = 2.5 * 1000 / (2**16 - 1) / CSA_GAIN / R_SHUNT_OHM
 
 MOTOR_POLE_PAIRS = 4
 ABN_COUNTS_PER_REVOLUTION = 4096
 
-velocity_scaling_factor = 2**40*MOTOR_POLE_PAIRS/40e6/60
+velocity_scaling_factor = 2**40 * MOTOR_POLE_PAIRS / 40e6 / 60
 
 target_current_ma = 2000  # Closed loop current in [mA], use a negative value to rotate in the opposite direction
 
@@ -118,7 +119,7 @@ def velocity_internal_to_rpm(interal_value):
 
 
 def velocity_rpm_to_internal(rpm_value):
-    return int(rpm_value*velocity_scaling_factor)
+    return int(rpm_value * velocity_scaling_factor)
 
 
 @dataclass
@@ -142,9 +143,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -173,14 +173,14 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.GDRV_TIMING.T_DRIVE_SINK_UVW, 3)
     tmc9660_device.write(TMC9660.MCC.GDRV_TIMING.T_DRIVE_SOURCE_UVW, 3)
     tmc9660_device.write(TMC9660.MCC.GDRV_BBM, 0)
-    
+
     # Set the PWM frequency and other PWM settings
     tmc9660_device.write(TMC9660.MCC.PWM_MAXCNT, 4799)  # Default for 25KHz
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.SV_MODE.choice.BOTTOM_OFFSET)
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.DUTY_CYCLE_OFFSET, 0)
-    tmc9660_device.write(TMC9660.MCC.PWM_SWITCH_LIMIT, int(0xFFFF * 0.8)) # 80% of the max
+    tmc9660_device.write(TMC9660.MCC.PWM_SWITCH_LIMIT, int(0xFFFF * 0.8))  # 80% of the max
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP.choice.OFF_LSON)
-    time.sleep(0.001) # Wait for bst caps to charge
+    time.sleep(0.001)  # Wait for bst caps to charge
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP.choice.CENTERED)
 
     # Enable PWM channels
@@ -195,8 +195,12 @@ with cm.connect() as my_interface:
     # Set limits
     tmc9660_device.write(TMC9660.MCC.PID_UQ_UD_LIMITS, 12000)  # This limits the velocity to around 4000 RPM
     # Allow a little bit of overshoot for the current
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_FLUX_LIMIT, current_ma_to_internal(abs(target_current_ma)*1.2))
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(abs(target_current_ma)*1.2))
+    tmc9660_device.write(
+        TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_FLUX_LIMIT, current_ma_to_internal(abs(target_current_ma) * 1.2)
+    )
+    tmc9660_device.write(
+        TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(abs(target_current_ma) * 1.2)
+    )
 
     # Set PID coefficients
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
@@ -213,17 +217,19 @@ with cm.connect() as my_interface:
     # Configure ABN settings
     tmc9660_device.write(TMC9660.MCC.ABN_MODE.DIRECTION.choice.POS)
     tmc9660_device.write(TMC9660.MCC.ABN_CPR, ABN_COUNTS_PER_REVOLUTION)
-    tmc9660_device.write(TMC9660.MCC.ABN_CPR_INV, 2**32//ABN_COUNTS_PER_REVOLUTION)
+    tmc9660_device.write(TMC9660.MCC.ABN_CPR_INV, 2**32 // ABN_COUNTS_PER_REVOLUTION)
     # Take over hall phi_e for rough encoder alignment
     tmc9660_device.write(TMC9660.MCC.ABN_COUNT, 0)
-    tmc9660_device.write(TMC9660.MCC.ABN_PHI_E_OFFSET, tmc9660_device.read(TMC9660.MCC.HALL_PHI_E_EXTRAPOLATED_PHI_E.PHI_E))
+    tmc9660_device.write(
+        TMC9660.MCC.ABN_PHI_E_OFFSET, tmc9660_device.read(TMC9660.MCC.HALL_PHI_E_EXTRAPOLATED_PHI_E.PHI_E)
+    )
 
     # Configure phi_e source and motion mode
     if commutation_feedback_select == "ABN encoder":
         tmc9660_device.write(TMC9660.MCC.PHI_E_SELECTION.PHI_E_SELECTION.choice.PHI_E_ABN)
     elif commutation_feedback_select == "Digital hall":
         tmc9660_device.write(TMC9660.MCC.PHI_E_SELECTION.PHI_E_SELECTION.choice.PHI_E_HAL)
-    
+
     # Revert potentialy changed velocity mesurement changes
     tmc9660_device.write(TMC9660.MCC.VELOCITY_CONFIG.SELECTION.choice.PHI_E)
 
@@ -231,8 +237,10 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.TORQUE)
 
     # Apply torque
-    tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_TORQUE_TARGET, current_ma_to_internal(target_current_ma))
-    
+    tmc9660_device.write(
+        TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_TORQUE_TARGET, current_ma_to_internal(target_current_ma)
+    )
+
     timer = TimeoutTimer(timeout_in_seconds=10)
     while not timer.has_expired():
         current_ma = current_internal_to_ma(tmc9660_device.read(TMC9660.MCC.PID_TORQUE_FLUX_ACTUAL.PID_TORQUE_ACTUAL))
@@ -245,4 +253,3 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_TARGET.PID_TORQUE_TARGET, 0)
     time.sleep(4)
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.STOPPED)
-

@@ -9,39 +9,39 @@ Depending on the chosen `number_of_ramp_points` the actual velocity curve is sup
 number_of_ramp_points = 4
                                                      
     RAMPER_V_TARGET ->              --------------  
-                                   /              \                                      
-                                  /                \                                       
-                   RAMPER_A_MAX  /                  \  RAMPER_D_MAX                                    
-                                /                    \                           
-                               /                      \                                    
-                              /                        \                                    
-                          0 -/                          \----------   
+                                   /              \\                                      
+                                  /                \\                                       
+                   RAMPER_A_MAX  /                  \\  RAMPER_D_MAX                                    
+                                /                    \\                           
+                               /                      \\                                    
+                              /                        \\                                    
+                          0 -/                          \\----------   
 
 #############################################################################################################
                           
 number_of_ramp_points = 6
                                                                        
     RAMPER_V_TARGET ->                     -------  
-                                          /       \                                      
-                           RAMPER_A_MAX  /         \  RAMPER_D_MAX                                    
-                                        /           \                                      
-    RAMPER_V2 ->                     --/             \--                              
-                       RAMPER_A2  --/                   \--  RAMPER_D2                                  
-                               --/                         \--                                  
-                          0 --/                               \----------   
+                                          /       \\                                      
+                           RAMPER_A_MAX  /         \\  RAMPER_D_MAX                                    
+                                        /           \\                                      
+    RAMPER_V2 ->                     --/             \\--                              
+                       RAMPER_A2  --/                   \\--  RAMPER_D2                                  
+                               --/                         \\--                                  
+                          0 --/                               \\----------   
 
 #############################################################################################################
                         
 number_of_ramp_points = 8
 
     RAMPER_V_TARGET ->                       -------  
-                            RAMPER_A_MAX  --/       \--  RAMPER_D_MAX
-    RAMPER_V1 ->                       --/             \--       
-                           RAMPER_A2  /                   \  RAMPER_D2                                 
-    RAMPER_V2 ->                     /                     \                                      
-                       RAMPER_A1  --/                       \--  RAMPER_D1                           
-                               --/                             \--                                     
-                          0 --/                                   \----------   
+                            RAMPER_A_MAX  --/       \\--  RAMPER_D_MAX
+    RAMPER_V1 ->                       --/             \\--       
+                           RAMPER_A2  /                   \\  RAMPER_D2                                 
+    RAMPER_V2 ->                     /                     \\                                      
+                       RAMPER_A1  --/                       \\--  RAMPER_D1                           
+                               --/                             \\--                                     
+                          0 --/                                   \\----------   
 
 #############################################################################################################
 
@@ -84,9 +84,10 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
-        +--|----------------+       +---++--------------+             
-        |  |                |-------|   ||              |             
+           | USB-UART Cable - Connected to the machine running this script.
+           |     Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
+        +--|----------------+       +---++--------------+        
+        |  |  RST <-> GND   |-------|   ||              |             
         |                   |-------|   ||              |===             
         |                   |-------|ABN||BLDC QBL4208  |             
         |TMC9660-3PH-EVAL   |       +---++--------------+             
@@ -128,34 +129,36 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 # Select the FOC feedback
 commutation_feedback_select: Literal["ABN encoder", "Digital hall"] = "ABN encoder"
 
 # Select the velocity feedback
 # Idealy the "count" selection is used.
-velocity_feedback_select: Literal["Same as commutation", "ABN encoder count", "Digital hall count"] = "ABN encoder count"
+velocity_feedback_select: Literal["Same as commutation", "ABN encoder count", "Digital hall count"] = (
+    "ABN encoder count"
+)
 
 number_of_ramp_points: Literal[4, 6, 8] = 6
 
 # Current scaling factor
 R_SHUNT_OHM = 0.003  # TMC9660-3PH-EVAL specific shunt resistor value
 CSA_GAIN = 10
-current_scaling_factor = 2.5*1000/(2**16-1)/CSA_GAIN/R_SHUNT_OHM
+current_scaling_factor = 2.5 * 1000 / (2**16 - 1) / CSA_GAIN / R_SHUNT_OHM
 
 MOTOR_POLE_PAIRS = 4
 ABN_COUNTS_PER_REVOLUTION = 4096
 
 
 if velocity_feedback_select == "Same as commutation":
-    velocity_scaling_factor = 2**40*MOTOR_POLE_PAIRS/40e6/60
+    velocity_scaling_factor = 2**40 * MOTOR_POLE_PAIRS / 40e6 / 60
 elif velocity_feedback_select == "ABN encoder count":
-    velocity_scaling_factor = 2**24*ABN_COUNTS_PER_REVOLUTION/40e6/60
+    velocity_scaling_factor = 2**24 * ABN_COUNTS_PER_REVOLUTION / 40e6 / 60
 elif velocity_feedback_select == "Digital hall count":
-    velocity_scaling_factor = 2**24*6*MOTOR_POLE_PAIRS/40e6/60
+    velocity_scaling_factor = 2**24 * 6 * MOTOR_POLE_PAIRS / 40e6 / 60
 
-acceleration_scaling_factor = velocity_scaling_factor*2**17/40e6
+acceleration_scaling_factor = velocity_scaling_factor * 2**17 / 40e6
 
 target_velocity_rpm = 2000
 current_limit_ma = 2000  # Closed loop maximum current in [mA]
@@ -174,17 +177,17 @@ def velocity_internal_to_rpm(interal_value):
 
 
 def velocity_rpm_to_internal(rpm_value):
-    return int(rpm_value*velocity_scaling_factor)
+    return int(rpm_value * velocity_scaling_factor)
 
 
 def acceleration_rpms_to_internal(rpms_value):
-    return int(rpms_value*acceleration_scaling_factor)
+    return int(rpms_value * acceleration_scaling_factor)
 
 
 @dataclass
 class Sample:
     time: float
-    actual_velocity_rpm: int
+    actual_velocity_rpm: float
 
 
 class TimeoutTimer:
@@ -202,9 +205,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -233,14 +235,14 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.GDRV_TIMING.T_DRIVE_SINK_UVW, 3)
     tmc9660_device.write(TMC9660.MCC.GDRV_TIMING.T_DRIVE_SOURCE_UVW, 3)
     tmc9660_device.write(TMC9660.MCC.GDRV_BBM, 0)
-    
+
     # Set the PWM frequency and other PWM settings
     tmc9660_device.write(TMC9660.MCC.PWM_MAXCNT, 4799)  # Default for 25KHz
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.SV_MODE.choice.BOTTOM_OFFSET)
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.DUTY_CYCLE_OFFSET, 0)
-    tmc9660_device.write(TMC9660.MCC.PWM_SWITCH_LIMIT, int(0xFFFF * 0.8)) # 80% of the max
+    tmc9660_device.write(TMC9660.MCC.PWM_SWITCH_LIMIT, int(0xFFFF * 0.8))  # 80% of the max
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP.choice.OFF_LSON)
-    time.sleep(0.001) # Wait for bst caps to charge
+    time.sleep(0.001)  # Wait for bst caps to charge
     tmc9660_device.write(TMC9660.MCC.PWM_CONFIG.CHOP.choice.CENTERED)
 
     # Enable PWM channels
@@ -253,11 +255,11 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.MOTOR_CONFIG.TYPE.choice.BLDC)
 
     # Set limits
-    tmc9660_device.write(TMC9660.MCC.PID_UQ_UD_LIMITS, 20000) # Enough headroom
+    tmc9660_device.write(TMC9660.MCC.PID_UQ_UD_LIMITS, 20000)  # Enough headroom
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_FLUX_LIMIT, current_ma_to_internal(current_limit_ma))
     tmc9660_device.write(TMC9660.MCC.PID_TORQUE_FLUX_LIMITS.PID_TORQUE_LIMIT, current_ma_to_internal(current_limit_ma))
     # Allow a little bit of overshoot for the velocity
-    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_LIMIT, velocity_rpm_to_internal(target_velocity_rpm*1.2))
+    tmc9660_device.write(TMC9660.MCC.PID_VELOCITY_LIMIT, velocity_rpm_to_internal(target_velocity_rpm * 1.2))
 
     # Set PID coefficients
     tmc9660_device.write(TMC9660.MCC.PID_CONFIG.CURRENT_NORM_P.choice.SHIFT_8)
@@ -279,10 +281,12 @@ with cm.connect() as my_interface:
     # Configure ABN settings
     tmc9660_device.write(TMC9660.MCC.ABN_MODE.DIRECTION.choice.POS)
     tmc9660_device.write(TMC9660.MCC.ABN_CPR, ABN_COUNTS_PER_REVOLUTION)
-    tmc9660_device.write(TMC9660.MCC.ABN_CPR_INV, 2**32//ABN_COUNTS_PER_REVOLUTION)
+    tmc9660_device.write(TMC9660.MCC.ABN_CPR_INV, 2**32 // ABN_COUNTS_PER_REVOLUTION)
     # Take over hall phi_e for rough encoder alignment
     tmc9660_device.write(TMC9660.MCC.ABN_COUNT, 0)
-    tmc9660_device.write(TMC9660.MCC.ABN_PHI_E_OFFSET, tmc9660_device.read(TMC9660.MCC.HALL_PHI_E_EXTRAPOLATED_PHI_E.PHI_E))
+    tmc9660_device.write(
+        TMC9660.MCC.ABN_PHI_E_OFFSET, tmc9660_device.read(TMC9660.MCC.HALL_PHI_E_EXTRAPOLATED_PHI_E.PHI_E)
+    )
 
     # Configure phi_e source and motion mode
     if commutation_feedback_select == "ABN encoder":
@@ -296,34 +300,58 @@ with cm.connect() as my_interface:
         tmc9660_device.write(TMC9660.MCC.VELOCITY_CONFIG.SELECTION.choice.ABN_COUNT)
     elif velocity_feedback_select == "Digital hall count":
         tmc9660_device.write(TMC9660.MCC.VELOCITY_CONFIG.SELECTION.choice.HALL_COUNT)
-    
+
     # Configure the ramp generator
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_ENABLE, 1)
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.RAMP_MODE.choice.VELOCITY)
     if number_of_ramp_points == 4:
-        tmc9660_device.write(TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(1000))  # Acceleration 1000 RPM per second
-        tmc9660_device.write(TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(1000))  # Deceleration 1000 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(1000)
+        )  # Acceleration 1000 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(1000)
+        )  # Deceleration 1000 RPM per second
         tmc9660_device.write(TMC9660.MCC.RAMPER_V2, 0)
         tmc9660_device.write(TMC9660.MCC.RAMPER_V1, 0)
     elif number_of_ramp_points == 6:
-        tmc9660_device.write(TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(1000))  # Acceleration 1000 RPM per second
-        tmc9660_device.write(TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(1000))  # Deceleration 1000 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(1000)
+        )  # Acceleration 1000 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(1000)
+        )  # Deceleration 1000 RPM per second
         tmc9660_device.write(TMC9660.MCC.RAMPER_V2, velocity_rpm_to_internal(1000))
-        tmc9660_device.write(TMC9660.MCC.RAMPER_A2, acceleration_rpms_to_internal(500))  # Acceleration 500 RPM per second
-        tmc9660_device.write(TMC9660.MCC.RAMPER_D2, acceleration_rpms_to_internal(500))  # Deceleration 500 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_A2, acceleration_rpms_to_internal(500)
+        )  # Acceleration 500 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_D2, acceleration_rpms_to_internal(500)
+        )  # Deceleration 500 RPM per second
         tmc9660_device.write(TMC9660.MCC.RAMPER_V1, velocity_rpm_to_internal(0))
     elif number_of_ramp_points == 8:
-        tmc9660_device.write(TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(500))  # Acceleration 500 RPM per second
-        tmc9660_device.write(TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(500))  # Deceleration 500 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_A_MAX, acceleration_rpms_to_internal(500)
+        )  # Acceleration 500 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_D_MAX, acceleration_rpms_to_internal(500)
+        )  # Deceleration 500 RPM per second
         tmc9660_device.write(TMC9660.MCC.RAMPER_V2, velocity_rpm_to_internal(1600))
-        tmc9660_device.write(TMC9660.MCC.RAMPER_A2, acceleration_rpms_to_internal(1000))  # Acceleration 1000 RPM per second
-        tmc9660_device.write(TMC9660.MCC.RAMPER_D2, acceleration_rpms_to_internal(1000))  # Deceleration 1000 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_A2, acceleration_rpms_to_internal(1000)
+        )  # Acceleration 1000 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_D2, acceleration_rpms_to_internal(1000)
+        )  # Deceleration 1000 RPM per second
         tmc9660_device.write(TMC9660.MCC.RAMPER_V1, velocity_rpm_to_internal(400))
-        tmc9660_device.write(TMC9660.MCC.RAMPER_A1, acceleration_rpms_to_internal(500))  # Acceleration 500 RPM per second
-        tmc9660_device.write(TMC9660.MCC.RAMPER_D1, acceleration_rpms_to_internal(500))  # Deceleration 500 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_A1, acceleration_rpms_to_internal(500)
+        )  # Acceleration 500 RPM per second
+        tmc9660_device.write(
+            TMC9660.MCC.RAMPER_D1, acceleration_rpms_to_internal(500)
+        )  # Deceleration 500 RPM per second
 
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.VELOCITY)
-    
+
     # Rotate the motor and record the velocity.
     # And then stop the motor but record the velocity as well.
     samples: List[Sample] = []
@@ -331,13 +359,17 @@ with cm.connect() as my_interface:
         tmc9660_device.write(TMC9660.MCC.RAMPER_V_TARGET, velocity_rpm_to_internal(target_velocity))
         timer = TimeoutTimer(timeout)
         while not timer.has_expired():
-            samples.append(Sample(time.perf_counter(), velocity_internal_to_rpm(tmc9660_device.read(TMC9660.MCC.PID_VELOCITY_ACTUAL))))
+            samples.append(
+                Sample(
+                    time.perf_counter(), velocity_internal_to_rpm(tmc9660_device.read(TMC9660.MCC.PID_VELOCITY_ACTUAL))
+                )
+            )
 
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.STOPPED)
 
 # Plot the velocity curve
 fig, ax = plt.subplots()
-t = [sample.time-samples[0].time for sample in samples]
+t = [sample.time - samples[0].time for sample in samples]
 v = [sample.actual_velocity_rpm for sample in samples]
 ax.plot(t, v, label="velocity")
 ax.legend()

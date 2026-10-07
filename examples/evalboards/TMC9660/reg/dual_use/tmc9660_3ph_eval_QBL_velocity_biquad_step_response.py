@@ -30,7 +30,7 @@ Important: first connect USB and then power the TMC9660-3PH-EVAL.
 Connected to the machine    |     |==|                   |
 running this script.        |LB   |==|TMC9660-3PH-EVAL   |
                             +-----+  +-------------------+
-              
+
 #############################################################################################################
 # connection_mode == headless
 #############################################################################################################
@@ -40,9 +40,9 @@ On Windows the config upload and app start can be done with:
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
    --------+
-           | USB-UART Cable - Connected to the machine running this script.  
+           | USB-UART Cable - Connected to the machine running this script.
         +--|----------------+
-        |  |                |
+        |  |  RST <-> GND   |  Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
         |                   |
         |                   |
         |TMC9660-3PH-EVAL   |
@@ -63,7 +63,7 @@ from pytrinamic.tools import calculate_biquad_filter_coefficients, LowPassFilter
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 
 @dataclass
@@ -78,9 +78,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
@@ -90,17 +89,13 @@ with cm.connect() as my_interface:
     tmc9660_device.write(TMC9660.MCC.VELOCITY_EXT.VELOCITY_EXT, 0)
     time.sleep(1)
 
-    settings = [
-        Setting("LP1", LowPassFilterSpec(fc=1000)),
-        Setting("LP2", LowPassFilterSpec(fc=1000, q=0.7071))
-    ]
+    settings = [Setting("LP1", LowPassFilterSpec(fc=1000)), Setting("LP2", LowPassFilterSpec(fc=1000, q=0.7071))]
 
     fix, ax = plt.subplots()
 
     dl = tmc9660_device.datalogger
 
     for setting in settings:
-
         result = calculate_biquad_filter_coefficients(chip_type="TMC9660", filter_spec=setting.filter_spec)
         tmc9660_device.write(TMC9660.MCC.BIQUAD_V_A_1, result.normalized_coefficients.a_1)
         tmc9660_device.write(TMC9660.MCC.BIQUAD_V_A_2, result.normalized_coefficients.a_2)
@@ -128,9 +123,13 @@ with cm.connect() as my_interface:
         dl.download_log()
 
         # Plot the PID_VELOCITY_ACTUAL curve / the step response
-        ax.plot(dl.log.time_vector, [x for x in dl.log.data["PID_VELOCITY_ACTUAL.PID_VELOCITY_ACTUAL"].samples] , label=f"PID_VELOCITY_ACTUAL {setting.name}")
-        
+        ax.plot(
+            dl.log.time_vector,
+            [x for x in dl.log.data["PID_VELOCITY_ACTUAL.PID_VELOCITY_ACTUAL"].samples],
+            label=f"PID_VELOCITY_ACTUAL {setting.name}",
+        )
+
         ax.legend()
-        
+
     tmc9660_device.write(TMC9660.MCC.MOTION_CONFIG.MOTION_MODE.choice.STOPPED)
     plt.show()

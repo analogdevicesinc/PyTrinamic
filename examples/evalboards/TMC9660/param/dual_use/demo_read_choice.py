@@ -15,13 +15,13 @@ Where <COM-PORT> needs to be replaced by the COM port of the Landungsbruecke.
 
 Important: first connect USB and then power the TMC9660-3PH-EVAL.
 
-                            +-----+  +-------------------+     
-                     USB    |     |==|                   |     
-                     -------|     |==|                   |        
-Connected to the machine    |     |==|                   |     
-running this script.        |LB   |==|TMC9660-3PH-EVAL   |     
                             +-----+  +-------------------+
-                   
+                     USB    |     |==|                   |
+                     -------|     |==|                   |
+Connected to the machine    |     |==|                   |
+running this script.        |LB   |==|TMC9660-3PH-EVAL   |
+                            +-----+  +-------------------+
+
 
 #############################################################################################################
 # connection_mode == headless
@@ -31,15 +31,16 @@ On Windows the config upload and app start can be done with:
         ubltools_1.0.1/ublcli.exe --port <COM-PORT> start
 Where <COM-PORT> needs to be replaced by the COM port of the USB-UART cable.
 
-   --------+                       
-           |  USB-UART Cable - Connected to the machine running this script.                                       
+   --------+
+           |  USB-UART Cable - Connected to the machine running this script.
         +--|----------------+
-        |  |                |
+        |  |  RST <-> GND   |  Add a jumper between RST and GND on the TMC9660-3PH-EVAL.
         |                   |
         |                   |
         |TMC9660-3PH-EVAL   |
         +-------------------+
 """
+
 from typing import Literal, Union
 
 from pytrinamic.connections import ConnectionManager
@@ -48,7 +49,7 @@ from pytrinamic.evalboards import TMC9660_3PH_eval
 
 # Select the connection mode
 connection_mode: Literal["with_landungsbruecke", "headless"] = "with_landungsbruecke"
-com_port_in_headless_mode = "COM5" # Note: Change this to the com port of the USB-UART cable used.
+com_port_in_headless_mode = "COM5"  # Note: Change this to the com port of the USB-UART cable used.
 
 
 if connection_mode == "with_landungsbruecke":
@@ -57,9 +58,8 @@ elif connection_mode == "headless":
     cm = ConnectionManager(f"--interface serial_tmcl --port {com_port_in_headless_mode}")
 
 with cm.connect() as my_interface:
-
     tmc9660_device: Union[TMC9660_3PH_eval, TMC9660]
-    
+
     if connection_mode == "with_landungsbruecke":
         tmc9660_device = TMC9660_3PH_eval(my_interface)
     elif connection_mode == "headless":
