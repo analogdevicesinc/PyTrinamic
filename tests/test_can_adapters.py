@@ -26,20 +26,23 @@ from pytrinamic.connections import PcanTmclInterface
 from pytrinamic.connections import SlcanTmclInterface
 from pytrinamic.connections import IxxatTmclInterface
 
-slcan_com_port = 'COM15'
+slcan_com_port = "COM15"
 
 ap = {
-    'Maximum current': 6,
-    'Microstep resolution': 140,
+    "Maximum current": 6,
+    "Microstep resolution": 140,
 }
 
 
-@pytest.fixture(scope='function', params=[
-    KvaserTmclInterface,
-    PcanTmclInterface,
-    SlcanTmclInterface,
-    IxxatTmclInterface,
-])
+@pytest.fixture(
+    scope="function",
+    params=[
+        KvaserTmclInterface,
+        PcanTmclInterface,
+        SlcanTmclInterface,
+        IxxatTmclInterface,
+    ],
+)
 def can_adapter(request):
     can_tmcl_interface_class = request.param
     if can_tmcl_interface_class == PcanTmclInterface:
@@ -57,32 +60,34 @@ def test_adapter_classes(can_adapter):
     tmcm1241s = [TMCLModule(can_adapter, module_id=mid) for mid in range(3, 6)]
     for tmcm1241 in tmcm1241s:
         assert tmcm1241.get_global_parameter(71, 0) == tmcm1241.module_id
-        assert tmcm1241.get_axis_parameter(ap['Microstep resolution'], 0) == 8
+        assert tmcm1241.get_axis_parameter(ap["Microstep resolution"], 0) == 8
     for tmcm1241 in tmcm1241s:
-        tmcm1241.set_axis_parameter(ap['Maximum current'], 0, 10+tmcm1241.module_id)
-        assert tmcm1241.get_axis_parameter(ap['Maximum current'], 0) == 10+tmcm1241.module_id
+        tmcm1241.set_axis_parameter(ap["Maximum current"], 0, 10 + tmcm1241.module_id)
+        assert tmcm1241.get_axis_parameter(ap["Maximum current"], 0) == 10 + tmcm1241.module_id
     for tmcm1241 in tmcm1241s:
-        tmcm1241.set_axis_parameter(ap['Maximum current'], 0, 20+tmcm1241.module_id)
-        assert tmcm1241.get_axis_parameter(ap['Maximum current'], 0) == 20+tmcm1241.module_id
+        tmcm1241.set_axis_parameter(ap["Maximum current"], 0, 20 + tmcm1241.module_id)
+        assert tmcm1241.get_axis_parameter(ap["Maximum current"], 0) == 20 + tmcm1241.module_id
 
 
-@pytest.mark.parametrize('cm_call', [
-    f"--interface ixxat_tmcl",
-    f"--interface kvaser_tmcl",
-    f"--interface pcan_tmcl",
-    f"--interface slcan_tmcl --port {slcan_com_port}",
-])
+@pytest.mark.parametrize(
+    "cm_call",
+    [
+        "--interface ixxat_tmcl",
+        "--interface kvaser_tmcl",
+        "--interface pcan_tmcl",
+        f"--interface slcan_tmcl --port {slcan_com_port}",
+    ],
+)
 def test_connection_manager(cm_call):
     cm = ConnectionManager(cm_call)
     with cm.connect() as interface:
         tmcm1241s = [TMCLModule(interface, module_id=mid) for mid in range(3, 6)]
         for tmcm1241 in tmcm1241s:
             assert tmcm1241.get_global_parameter(71, 0) == tmcm1241.module_id
-            assert tmcm1241.get_axis_parameter(ap['Microstep resolution'], 0) == 8
+            assert tmcm1241.get_axis_parameter(ap["Microstep resolution"], 0) == 8
         for tmcm1241 in tmcm1241s:
-            tmcm1241.set_axis_parameter(ap['Maximum current'], 0, 10+tmcm1241.module_id)
-            assert tmcm1241.get_axis_parameter(ap['Maximum current'], 0) == 10+tmcm1241.module_id
+            tmcm1241.set_axis_parameter(ap["Maximum current"], 0, 10 + tmcm1241.module_id)
+            assert tmcm1241.get_axis_parameter(ap["Maximum current"], 0) == 10 + tmcm1241.module_id
         for tmcm1241 in tmcm1241s:
-            tmcm1241.set_axis_parameter(ap['Maximum current'], 0, 20+tmcm1241.module_id)
-            assert tmcm1241.get_axis_parameter(ap['Maximum current'], 0) == 20+tmcm1241.module_id
-
+            tmcm1241.set_axis_parameter(ap["Maximum current"], 0, 20 + tmcm1241.module_id)
+            assert tmcm1241.get_axis_parameter(ap["Maximum current"], 0) == 20 + tmcm1241.module_id
