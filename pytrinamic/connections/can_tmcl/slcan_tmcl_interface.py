@@ -28,10 +28,9 @@ class SlcanTmclInterface(CanTmclInterface):
 
         self.logger.info("Connect to bus. (Baudrate=%s)", self._serial_baudrate)
         try:
-            self._connection = can.Bus(interface='slcan',
-                                       channel=self._channel,
-                                       bitrate=self._bitrate,
-                                       ttyBaudrate=self._serial_baudrate)
+            self._connection = can.Bus(
+                interface="slcan", channel=self._channel, bitrate=self._bitrate, tty_baudrate=self._serial_baudrate
+            )
             self._connection.set_filters([{"can_id": host_id, "can_mask": 0x7F}])
         except can.CanError as e:
             self._connection = None
@@ -40,10 +39,10 @@ class SlcanTmclInterface(CanTmclInterface):
     @classmethod
     def list(cls):
         """
-            Return a list of available connection ports as a list of strings.
+        Return a list of available connection ports as a list of strings.
 
-            This function is required for using this interface with the
-            connection manager.
+        This function is required for using this interface with the
+        connection manager.
         """
         connected = []
         for element in sorted(comports()):
