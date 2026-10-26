@@ -29,7 +29,12 @@ We welcome pull requests! If you have major changes or questions about implement
 Please ensure contributed Python code adheres to the [PEP 8](https://peps.python.org/pep-0008/) Python code style guide and the [PEP 257](https://peps.python.org/pep-0257/) style guide for docstrings.
 If you want to express details in docstrings using a markup language, please use [reStructuredText](reStructuredText) like proposed in [PEP 287](https://peps.python.org/pep-0287/) and when documenting parameters, variables, attributes, exceptions use the [Sphinx style](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists).
 
-Additionally, please use double quotes (") for string constants.
+Additionally, please use double quotes (") for string literals and triple double quotes (""") for multiline strings.
+
+PyTrinamic uses [Ruff](https://docs.astral.sh/ruff/) for formatting and linting. Its configuration is in [pyproject.toml](pyproject.toml).
+
+* For formatting, follow the [Ruff Formatter](https://docs.astral.sh/ruff/formatter/) instructions.
+* For linting, follow the [Ruff Linter](https://docs.astral.sh/ruff/linter/) instructions.
 
 
 ## License

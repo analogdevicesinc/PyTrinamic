@@ -39,3 +39,12 @@ find = {}
 
 [tool.setuptools.dynamic]
 version = { attr = "pytrinamic.version.__version__" }
+
+[tool.ruff]
+line-length = 100
+# We allow for higher-level features of Python 3.10 for new code.
+target-version = "py310"
+
+[tool.ruff.lint]
+# Ignore Ruff's I001 warning about import order
+ignore = ["I001"]
